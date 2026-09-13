@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { RITUALS } from "@/content/rituals";
 import { TAROT_SPREADS } from "@/content/tarot";
 import { PROBLEM_HUBS } from "@/content/problems";
+import { CORRESPONDENCES } from "@/content/correspondences";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://witchr.com";
@@ -23,7 +24,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...PROBLEM_HUBS.map((hub) => `${baseUrl}/${hub.slug}`),
     ...RITUALS.map((ritual) => `${baseUrl}/rituals/${ritual.slug}`),
     ...TAROT_SPREADS.map((spread) => `${baseUrl}/tarot/${spread.slug}`),
+    ...CORRESPONDENCES.map((c) => `${baseUrl}/${c.routePrefix}/${c.slug}`),
   ];
+
 
   // Strictly filter out any empty, whitespace, or invalid non-canonical URLs
   const validUniqueUrls = Array.from(

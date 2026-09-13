@@ -4,6 +4,7 @@ import { ProblemHub } from "@/content/types";
 import { getRitualBySlug } from "@/content/rituals";
 import { getTarotBySlug } from "@/content/tarot";
 import { getSigilById } from "@/content/sigils";
+import { getCorrespondencesByHub } from "@/content/correspondences";
 import { RitualCard } from "./RitualCard";
 import { SigilVisual } from "./SigilVisual";
 import { JsonLd, getBreadcrumbJsonLd, getWebPageJsonLd } from "./JsonLd";
@@ -25,6 +26,9 @@ export function ProblemHubView({ hub }: ProblemHubViewProps) {
   const sigils = hub.sigilIds
     .map((id) => getSigilById(id))
     .filter((s): s is NonNullable<typeof s> => !!s);
+
+  const correspondences = getCorrespondencesByHub(hub.slug);
+
 
   const breadcrumbs = getBreadcrumbJsonLd([
     { name: "Home", item: "https://witchr.com" },
@@ -192,6 +196,55 @@ export function ProblemHubView({ hub }: ProblemHubViewProps) {
         </section>
       )}
 
+      {/* Essential Protection Correspondences */}
+      {correspondences.length > 0 && (
+        <section className="space-y-6" aria-labelledby="correspondences-heading">
+          <div className="border-b border-border-subtle pb-4 flex items-center justify-between">
+            <div>
+              <span className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon flex items-center gap-1.5">
+                <FourPointStar className="w-2.5 h-2.5" />
+                <span>Reference Codex</span>
+              </span>
+              <h2 id="correspondences-heading" className="text-2xl sm:text-4xl font-display font-semibold text-bone mt-1 tracking-wide">
+                Essential {hub.title} Correspondences
+              </h2>
+            </div>
+            <span className="text-xs font-mono text-bone-dim hidden sm:inline">
+              {correspondences.length} Core Entries
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {correspondences.map((item) => (
+              <Link
+                key={item.slug}
+                href={`/${item.routePrefix}/${item.slug}`}
+                className="tarot-frame p-6 flex flex-col justify-between space-y-4 group transition-all hover:border-lavender/60 hover:shadow-glow-purple"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10.5px] font-mono uppercase tracking-ceremonial text-lavender-moon">
+                      {item.categoryLabel}
+                    </span>
+                    <ArrowRight className="w-3.5 h-3.5 text-bone-dim group-hover:text-lavender-light group-hover:translate-x-0.5 transition-all" />
+                  </div>
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-bone group-hover:text-lavender-light transition-colors">
+                    {item.name}
+                  </h3>
+                  <p className="text-sm text-bone-muted leading-relaxed font-sans line-clamp-3">
+                    {item.oneLiner}
+                  </p>
+                </div>
+                <div className="pt-2 border-t border-border-subtle/60 flex items-center gap-1.5 text-xs font-mono text-lavender-dim group-hover:text-lavender transition-colors">
+                  <span>Explore meaning & ritual use</span>
+                  <span aria-hidden="true">→</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Subtle Companion Field Guide Slot (dormant until official Etsy product URL is configured) */}
       <ProductCTA
         title={`The Witchr ${hub.title} Grimoire & Field Guide`}
@@ -199,6 +252,7 @@ export function ProblemHubView({ hub }: ProblemHubViewProps) {
         productUrl={null}
         eyebrow="Printable Field Guide"
       />
+
 
       {/* Celestial Divider */}
       <CelestialDivider />

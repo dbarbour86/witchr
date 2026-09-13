@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 7 7 11;
+    --foreground: 232 227 240;
+  }
+
+  * {
+    border-color: #2a2042;
+  }
+
+  body {
+    background-color: #07070b;
+    color: #e8e3f0;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    /* Layered starry night backdrop */
+    background-image: 
+      radial-gradient(1px 1px at 20px 30px, rgba(216, 199, 242, 0.45), rgba(0,0,0,0)),
+      radial-gradient(1.5px 1.5px at 140px 90px, rgba(203, 183, 255, 0.5), rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 260px 180px, rgba(185, 162, 214, 0.35), rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 380px 240px, rgba(216, 199, 242, 0.4), rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 520px 120px, rgba(203, 183, 255, 0.45), rgba(0,0,0,0)),
+      radial-gradient(1.5px 1.5px at 680px 320px, rgba(185, 162, 214, 0.3), rgba(0,0,0,0)),
+      radial-gradient(800px 500px at 50% 0%, rgba(52, 40, 76, 0.35), transparent 85%),
+      radial-gradient(1000px 700px at 50% 100%, rgba(29, 22, 48, 0.4), transparent 90%);
+    background-size: 700px 500px, 700px 500px, 700px 500px, 700px 500px, 700px 500px, 700px 500px, 100% 100%, 100% 100%;
+    background-repeat: repeat, repeat, repeat, repeat, repeat, repeat, no-repeat, no-repeat;
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background-color: #34284c;
+    color: #d8c7f2;
+  }
+}
+
+/* Ornate Tarot Card Frame Styling */
+.tarot-frame {
+  position: relative;
+  background-color: #12101a;
+  border: 1px solid #2a2042;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 40px -8px rgba(7, 7, 11, 0.9), inset 0 0 0 1px rgba(185, 162, 214, 0.12);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tarot-frame::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(185, 162, 214, 0.08);
+  border-radius: calc(0.75rem - 3px);
+  pointer-events: none;
+}
+
+.tarot-frame:hover {
+  border-color: #72589f;
+  box-shadow: 0 14px 45px -6px rgba(7, 7, 11, 0.95), 0 0 35px -5px rgba(185, 162, 214, 0.25), inset 0 0 0 1px rgba(185, 162, 214, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Grimoire Panel Frame */
+.grimoire-panel {
+  position: relative;
+  background: linear-gradient(180deg, #151221 0%, #12101a 100%);
+  border: 1px solid #4a386c;
+  box-shadow: 0 12px 50px -10px rgba(7, 7, 11, 0.95), inset 0 0 0 1px rgba(203, 183, 255, 0.1);
+}
+
+.grimoire-panel::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed rgba(185, 162, 214, 0.15);
+  pointer-events: none;
+}
+
+/* Celestial Glow Effect */
+.celestial-glow {
+  text-shadow: 0 0 20px rgba(203, 183, 255, 0.4);
+}
+
+/* Custom gothic celestial scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #07070b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2042;
+  border-radius: 3px;
+  border: 1px solid #1a1628;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a386c;
+}
+
+/* Hide scrollbar utility for filter strips */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -24,9 +24,11 @@ export function RitualCard({ ritual, featured = false }: RitualCardProps) {
     symbol: "✧",
   };
 
+  const displayTime = ritual.estimatedTime.replace(/\s*minutes?/, " min");
+
   return (
     <article
-      className={`group relative flex flex-col justify-between p-6 sm:p-7 rounded-xl border bg-surface/90 hover:bg-surface-elevated/90 transition-all duration-300 shadow-card hover:shadow-card-tarot hover:border-lavender/50 ${
+      className={`group relative flex flex-col justify-between p-5 sm:p-6 rounded-xl border bg-surface/90 hover:bg-surface-elevated/90 transition-all duration-300 shadow-card hover:shadow-card-tarot hover:border-lavender/50 ${
         featured ? "border-border-ornate" : "border-border"
       }`}
     >
@@ -46,28 +48,28 @@ export function RitualCard({ ritual, featured = false }: RitualCardProps) {
 
       <div>
         {/* Category Badge & Duration */}
-        <div className="flex items-center justify-between gap-2 mb-4 pt-1">
+        <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5 mb-4 pt-1">
           <span
-            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[10.5px] font-mono uppercase tracking-wideDisplay border ${catStyle.badge}`}
+            className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider border shrink-0 ${catStyle.badge}`}
           >
             <span>{catStyle.symbol}</span>
             <span>{ritual.category}</span>
           </span>
-          <div className="flex items-center gap-2.5 text-xs font-mono text-bone-dim">
+          <div className="flex items-center gap-2 text-[11px] font-mono text-bone-dim shrink-0">
             <span className="inline-flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-lavender-dim" />
-              {ritual.estimatedTime}
+              <Clock className="w-3 h-3 text-lavender-dim shrink-0" />
+              <span>{displayTime}</span>
             </span>
-            <span>·</span>
+            <span className="text-bone-dim/40">·</span>
             <span className="inline-flex items-center gap-1">
-              <Feather className="w-3.5 h-3.5 text-lavender-dim" />
-              {ritual.difficulty}
+              <Feather className="w-3 h-3 text-lavender-dim shrink-0" />
+              <span>{ritual.difficulty}</span>
             </span>
           </div>
         </div>
 
         {/* Title */}
-        <h3 className="font-serif text-xl sm:text-2xl font-semibold text-bone group-hover:text-lavender-light transition-colors leading-snug tracking-tight">
+        <h3 className="font-serif text-xl sm:text-2xl font-semibold text-bone group-hover:text-lavender-light transition-colors leading-snug tracking-tight break-words">
           <Link href={`/rituals/${ritual.slug}`} className="focus:outline-none">
             <span className="absolute inset-0" aria-hidden="true" />
             {ritual.title}
@@ -84,9 +86,9 @@ export function RitualCard({ ritual, featured = false }: RitualCardProps) {
       <div className="mt-6 pt-4 border-t border-border-subtle flex items-center justify-between text-xs text-bone-dim">
         <span className="flex items-center gap-1">
           <FourPointStar className="w-2.5 h-2.5 text-lavender-dim opacity-70" />
-          <span>{ritual.supplies.length} ritual items</span>
+          <span>{ritual.supplies.length} items</span>
         </span>
-        <span className="inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-wideDisplay text-lavender group-hover:text-lavender-light transition-colors">
+        <span className="inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-wideDisplay text-lavender group-hover:text-lavender-light transition-colors shrink-0">
           <span>Perform</span>
           <ArrowUpRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
         </span>

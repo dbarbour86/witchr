@@ -87,6 +87,7 @@ export interface GrimoireItem {
   notes?: string;
   badge?: string;
   hex?: string;
+  link?: string;
 }
 
 export interface GrimoireSection {

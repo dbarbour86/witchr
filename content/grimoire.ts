@@ -72,6 +72,7 @@ export const GRIMOIRE_SECTIONS: GrimoireSection[] = [
         modernContext: "The universal herb of focus and boundary work. Burning a sprig or steeping it in wash water sharpens presence.",
         badge: "Pantry Staple",
         notes: "Safe, abundant, and aromatically stimulating.",
+        link: "/herbs/rosemary",
       },
       {
         name: "Coarse Salt",
@@ -79,6 +80,7 @@ export const GRIMOIRE_SECTIONS: GrimoireSection[] = [
         modernContext: "The oldest boundary element on earth. Used to delineate physical circles and mark 'nothing passes this line.'",
         badge: "Mineral Foundation",
         notes: "Not technically a botanical, but the bedrock of protective practice.",
+        link: "/ingredients/salt",
       },
       {
         name: "Bay Laurel (Bay Leaves)",
@@ -86,13 +88,15 @@ export const GRIMOIRE_SECTIONS: GrimoireSection[] = [
         modernContext: "Write a single word or figure on a dry leaf and safely burn it in a heatproof dish to anchor intent.",
         badge: "Intention Anchor",
         notes: "Crackles cleanly when lit; always use a ceramic or cast-iron vessel.",
+        link: "/herbs/bay-leaf",
       },
       {
         name: "Lavender",
         traditionalAssociation: "Peace, restful sleep, pacifying wrath, and emotional balance.",
-        modernContext: "Clinically proven to down-regulate sympathetic nervous arousal. Excellent for sleep rituals and diffusing tension.",
+        modernContext: "A traditional favorite for evening unwinding, emotional calm, and quiet reflection. Widely used in sleep rituals and space cleansing.",
         badge: "Calming",
         notes: "Use dry buds in sleep sachets or infused baths.",
+        link: "/herbs/lavender",
       },
       {
         name: "Cinnamon",
@@ -100,6 +104,7 @@ export const GRIMOIRE_SECTIONS: GrimoireSection[] = [
         modernContext: "Adds quickening heat to sluggish situations. Used in money candle dressings and home blessing sweeps.",
         badge: "Stimulating",
         notes: "Potent topical irritant—never apply concentrated cinnamon oil directly to bare skin.",
+        link: "/herbs/cinnamon",
       },
       {
         name: "Garden Sage (Salvia officinalis)",
@@ -107,6 +112,7 @@ export const GRIMOIRE_SECTIONS: GrimoireSection[] = [
         modernContext: "Common culinary sage cleans the air and brings domestic calm without cultural appropriation.",
         badge: "Domestic Clearing",
         notes: "Distinguish from wild White Sage (Salvia apiana), which faces over-harvesting and cultural sensitivity.",
+        link: "/herbs/sage",
       },
     ],
   },

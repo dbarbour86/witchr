@@ -104,6 +104,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/herbs" className="hover:text-lavender-light transition-colors">
+                  Herb Directory
+                </Link>
+              </li>
+              <li>
                 <Link href="/tarot" className="hover:text-lavender-light transition-colors">
                   Tarot Spreads
                 </Link>

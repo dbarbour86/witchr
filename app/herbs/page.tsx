@@ -378,6 +378,21 @@ export default function HerbsHubPage() {
           </Link>
 
           <Link
+            href="/correspondences"
+            className="p-5 rounded-xl bg-surface border border-border-subtle hover:border-lavender/60 transition-colors group space-y-2 block"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon font-semibold">
+                Correspondences Codex
+              </span>
+              <ArrowRight className="w-3.5 h-3.5 text-bone-dim group-hover:text-lavender group-hover:translate-x-1 transition-all" />
+            </div>
+            <p className="text-sm text-bone-muted font-sans leading-relaxed">
+              Explore how botanicals connect with candles, minerals, and symbols across <strong className="text-bone font-medium">Protection</strong>, <strong className="text-bone font-medium">Love</strong>, and <strong className="text-bone font-medium">Cleansing</strong>.
+            </p>
+          </Link>
+
+          <Link
             href="/grimoire"
             className="p-5 rounded-xl bg-surface border border-border-subtle hover:border-lavender/60 transition-colors group space-y-2 block"
           >

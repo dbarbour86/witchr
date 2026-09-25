@@ -4,6 +4,8 @@ export function GrimoireStar({ className = "w-4 h-4 text-lavender" }: { classNam
   return (
     <svg
       viewBox="0 0 24 24"
+      width="16"
+      height="16"
       fill="currentColor"
       className={className}
       aria-hidden="true"
@@ -16,7 +18,7 @@ export function GrimoireStar({ className = "w-4 h-4 text-lavender" }: { classNam
 
 export function FourPointStar({ className = "w-3 h-3 text-lavender-moon" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 20 20" fill="currentColor" className={className} aria-hidden="true">
+    <svg viewBox="0 0 20 20" width="12" height="12" fill="currentColor" className={className} aria-hidden="true">
       <path d="M10 0L12 7.5L19.5 9.5L12 11.5L10 19L8 11.5L0.5 9.5L8 7.5Z" />
     </svg>
   );
@@ -26,6 +28,8 @@ export function TarotCornerFlourish({ className = "w-5 h-5 text-lavender-dim" }:
   return (
     <svg
       viewBox="0 0 24 24"
+      width="20"
+      height="20"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.2"
@@ -48,18 +52,18 @@ export function CelestialDivider({ className = "w-full my-6 text-lavender-dim" }
       <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-border-highlight to-border-ornate" />
       <div className="flex items-center gap-2 px-2 text-lavender">
         {/* Waxing crescent */}
-        <svg viewBox="0 0 16 16" fill="currentColor" className="w-3.5 h-3.5 opacity-70">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" className="w-3.5 h-3.5 opacity-70">
           <path d="M8 1a7 7 0 1 0 7 7c0-3.86-3.14-7-7-7zm0 12.5A5.5 5.5 0 0 1 8 2.5a6.96 6.96 0 0 1 4.5 1.66A5.5 5.5 0 0 1 8 13.5z" />
         </svg>
         {/* Full moon with inner star */}
         <div className="relative flex items-center justify-center">
-          <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-lavender-light">
+          <svg viewBox="0 0 20 20" width="20" height="20" fill="currentColor" className="w-5 h-5 text-lavender-light">
             <circle cx="10" cy="10" r="8" />
           </svg>
           <FourPointStar className="w-2.5 h-2.5 text-surface absolute" />
         </div>
         {/* Waning crescent */}
-        <svg viewBox="0 0 16 16" fill="currentColor" className="w-3.5 h-3.5 opacity-70">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" className="w-3.5 h-3.5 opacity-70">
           <path d="M8 1a7 7 0 1 1-7 7c0-3.86 3.14-7 7-7zm0 12.5A5.5 5.5 0 0 0 8 2.5a6.96 6.96 0 0 0-4.5 1.66A5.5 5.5 0 0 0 8 13.5z" />
         </svg>
       </div>
@@ -73,7 +77,7 @@ export function MoonPhaseRibbon({ className = "w-full my-4 text-lavender" }: { c
     <div className={`flex items-center justify-center gap-4 sm:gap-6 py-3 ${className}`} aria-hidden="true">
       {/* New Moon */}
       <div className="flex flex-col items-center gap-1 opacity-60 hover:opacity-100 transition-opacity">
-        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-4 h-4">
+        <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-4 h-4">
           <circle cx="10" cy="10" r="7.5" strokeDasharray="2 2" />
         </svg>
         <span className="text-[9px] font-mono tracking-wider uppercase text-bone-dim hidden sm:inline">New</span>
@@ -81,7 +85,7 @@ export function MoonPhaseRibbon({ className = "w-full my-4 text-lavender" }: { c
 
       {/* Waxing Crescent */}
       <div className="flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity">
-        <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+        <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" className="w-4 h-4">
           <path d="M10 2a8 8 0 1 0 8 8c0-4.42-3.58-8-8-8zm0 14.5A6.5 6.5 0 0 1 10 3.5a8.2 8.2 0 0 1 5.3 1.95A6.5 6.5 0 0 1 10 16.5z" />
         </svg>
         <span className="text-[9px] font-mono tracking-wider uppercase text-bone-dim hidden sm:inline">Waxing</span>
@@ -90,7 +94,7 @@ export function MoonPhaseRibbon({ className = "w-full my-4 text-lavender" }: { c
       {/* Full Moon */}
       <div className="flex flex-col items-center gap-1 text-lavender-moon scale-110">
         <div className="p-1 rounded-full border border-lavender/40 shadow-glow-purple">
-          <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+          <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" className="w-4 h-4">
             <circle cx="10" cy="10" r="7.5" />
           </svg>
         </div>
@@ -99,7 +103,7 @@ export function MoonPhaseRibbon({ className = "w-full my-4 text-lavender" }: { c
 
       {/* Waning Crescent */}
       <div className="flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity">
-        <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+        <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" className="w-4 h-4">
           <path d="M10 2a8 8 0 1 1-8 8c0-4.42 3.58-8 8-8zm0 14.5A6.5 6.5 0 0 0 10 3.5a8.2 8.2 0 0 0-5.3 1.95A6.5 6.5 0 0 0 10 16.5z" />
         </svg>
         <span className="text-[9px] font-mono tracking-wider uppercase text-bone-dim hidden sm:inline">Waning</span>
@@ -107,7 +111,7 @@ export function MoonPhaseRibbon({ className = "w-full my-4 text-lavender" }: { c
 
       {/* Dark Moon */}
       <div className="flex flex-col items-center gap-1 opacity-60 hover:opacity-100 transition-opacity">
-        <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 opacity-30">
+        <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" className="w-4 h-4 opacity-30">
           <circle cx="10" cy="10" r="7" />
         </svg>
         <span className="text-[9px] font-mono tracking-wider uppercase text-bone-dim hidden sm:inline">Dark</span>

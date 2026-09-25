@@ -78,6 +78,31 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
   const parentHref = isHerb ? "/herbs" : `/${item.relatedHubSlug || "protection"}`;
   const parentUrl = `https://witchr.com${parentHref}`;
 
+  const primaryIntentLower = (item.primaryIntent || "").toLowerCase();
+  let intentGuide = { name: "Protection Guide", href: "/correspondences/protection" };
+  if (
+    primaryIntentLower.includes("love") ||
+    primaryIntentLower.includes("passion") ||
+    item.relatedHubSlug === "love"
+  ) {
+    intentGuide = { name: "Love Guide", href: "/correspondences/love" };
+  } else if (
+    primaryIntentLower.includes("clean") ||
+    primaryIntentLower.includes("purif") ||
+    primaryIntentLower.includes("truth") ||
+    item.slug === "white" ||
+    item.relatedHubSlug === "letting-go"
+  ) {
+    intentGuide = { name: "Cleansing Guide", href: "/correspondences/cleansing" };
+  } else if (
+    primaryIntentLower.includes("protect") ||
+    item.relatedHubSlug === "protection"
+  ) {
+    intentGuide = { name: "Protection Guide", href: "/correspondences/protection" };
+  } else {
+    intentGuide = { name: "Correspondences Codex", href: "/correspondences" };
+  }
+
   const breadcrumbs = getBreadcrumbJsonLd([
     { name: "Home", item: "https://witchr.com" },
     {
@@ -601,6 +626,13 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
               className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light hidden sm:flex items-center gap-1 min-h-[44px]"
             >
               <span>Spell Finder</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+            <Link
+              href={intentGuide.href}
+              className="text-xs font-mono uppercase tracking-wideDisplay text-lavender-moon hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
+            >
+              <span>{intentGuide.name}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
             <Link

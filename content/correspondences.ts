@@ -792,6 +792,7 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       },
       {
         name: "White Candle",
+        link: "/candles/white",
         purpose:
           "Burned alongside black in dual-candle balance rites: black absorbs the expired past while white illuminates the clean future.",
       },
@@ -859,6 +860,447 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       "Black Candle Meaning in Witchcraft: Uses, Protection & Correspondences",
     seoDescription:
       "Understand the true meaning of black candles in witchcraft. Learn how black candles are used for protection, banishing negativity, cord-cutting, and closure.",
+  },
+  {
+    slug: "white",
+    name: "White Candle",
+    h1: "White Candle Meaning in Witchcraft",
+    category: "candle",
+    categoryLabel: "Candle",
+    primaryIntent: "Cleansing & Truth",
+    routePrefix: "candles",
+    oneLiner:
+      "The universal illuminator: an all-purpose ritual flame for space clearing, fresh beginnings, honest truth, and spiritual clarity.",
+    quickAnswer:
+      "In witchcraft, white candles represent purification, spiritual clarity, honest truth, and new beginnings. Containing all visible colors of the light spectrum, white is traditionally regarded as the universal substitute candle in folk magic and modern Wicca. Burning a white candle clears stagnant mental chatter, illuminates obscured situations, blesses new spaces or endeavors, and establishes a neutral, peaceful atmosphere for focused ritual intention.",
+    referenceTable: [
+      {
+        label: "Primary Associations",
+        value:
+          "Purification, spiritual clarity, honest truth, universal substitution, fresh beginnings",
+      },
+      {
+        label: "Intentions",
+        value:
+          "Space clearing, resetting stagnant energy, honest communication, peaceful sanctuary, unclouded vision",
+      },
+      {
+        label: "Classical Element",
+        value:
+          "Spirit / All Elements (Air and Light; unpartitioned elemental radiance)",
+      },
+      {
+        label: "Planetary Ruler",
+        value:
+          "Moon (lunar illumination, intuitive clarity, reflective light) & Sun (solar radiance)",
+      },
+      {
+        label: "Common Forms",
+        value:
+          "Taper candles, 4-inch chime/spell mini-tapers, tea lights, thick pillar candles, plain beeswax tapers",
+      },
+      {
+        label: "Common Pairings",
+        value:
+          "[Black Candle](/candles/black) (dual balancing & shadow work), [Coarse Salt](/ingredients/salt) (purification barrier), [Rosemary](/herbs/rosemary) (solar cleansing), [Lavender](/herbs/lavender) (tranquil peace), Clear quartz",
+      },
+      {
+        label: "Symbolic Key",
+        value:
+          "The Pristine Slate, Full Spectrum Light, Universal Wildcard, Unclouded Truth",
+      },
+    ],
+    correspondences: {
+      uses: [
+        "Space clearing & energetic reset",
+        "Honest communication & truth",
+        "Blessing new beginnings & thresholds",
+        "Universal substitution for any candle color",
+      ],
+      element: "Spirit / All Elements",
+      planet: "Moon / Sun",
+      colors: ["White", "Ivory", "Silver", "Clear"],
+      intentions: [
+        "Purification",
+        "Mental clarity",
+        "Truth & honesty",
+        "Peaceful sanctuary",
+        "Fresh starts",
+      ],
+      symbolicAssociations: [
+        "Wholeness",
+        "Full spectrum light",
+        "Clean slate",
+        "Neutrality",
+        "Illumination",
+      ],
+    },
+    traditionalLore: [
+      "In optical physics, white light is the combination of all wavelengths in the visible spectrum. Historically in esoteric traditions, this optical wholeness led occultists and folk practitioners to assign white to Spirit, pure consciousness, and undifferentiated divine light.",
+      "In European and Appalachian folk magic, practical economics shaped ritual tradition: expensive synthetic dyes and tinted waxes were luxuries unavailable to ordinary working-class practitioners. Natural tallow and undyed beeswax were white or off-white, making the plain white candle the historical foundation of domestic folk magic for centuries.",
+    ],
+    modernWitchrUse: [
+      "Modern witchcraft honors the white candle as the essential, no-nonsense reset button. When your thoughts are tangled or a room feels stagnant after arguments, an unassuming white flame clears the mental slate without unnecessary theatrical complexity.",
+      "Witchr emphasizes intention and somatic focus over material hoarding. You do not need twenty colored candles to practice meaningful ritual; a simple white taper carries all the elemental power of fire and focused will you require.",
+      "Always observe fire safety: burn candles on heat-resistant ceramic or metal surfaces, keep wicks trimmed to a quarter inch to reduce soot, and never leave an open flame unattended.",
+    ],
+    detailedSections: [
+      {
+        id: "candle-meaning",
+        title: "What Does a White Candle Mean in Witchcraft?",
+        content: [
+          "In the language of modern witchcraft, the white candle represents the primordial blank slate. It is the color of fresh dawn light, untrodden snow, and the quiet clarity that arrives after a storm has passed. Where black wax absorbs discord and marks final endings, white wax emits clarity, opens blocked air, and illuminates what is true.",
+          "Unlike dramatic pop-culture depictions of magic, the energy of a white candle is calm, neutral, and clarifying. It does not force outcomes or manipulate external circumstances. Instead, it creates an unpolluted sanctuary where you can hear your own thoughts, release accumulated psychological static, and see situations without the distortion of panic or wishful thinking.",
+          "Because white light encompasses all colors of the rainbow, a white flame resonates with wholeness. In energetic terms, burning a white candle helps align scattered thoughts and returns an overstimulated nervous system to baseline calm.",
+        ],
+      },
+      {
+        id: "universal-substitute",
+        title: "The Universal Substitute Tradition (And Its Realistic Boundaries)",
+        content: [
+          "One of the foundational rules taught to beginner witches is that a white candle can substitute for any other candle color in any ritual. If a spell calls for green (wealth), blue (peace), red (vitality), or yellow (focus), traditional lore holds that an ordinary white candle works just as effectively.",
+          "**Why the Substitution Works:** Color magic relies primarily on psychological association. Colors act as visual triggers that anchor the practitioner's subconscious mind to a specific intention. Because white contains all wavelengths of light, it metaphysically holds the latent potential of every color. More importantly, historical folk practitioners used white and beeswax candles simply because colored waxes were cost-prohibitive or non-existent in their regions.",
+          "**Where Specific Colors Still Excel:** While a white candle will never fail or invalidate a working, specific colors like [black candles](/candles/black) or [red candles](/candles/red) provide sharper somatic contrast. If you are conducting a painful cord-cutting or establishing an unbreachable perimeter, a black candle provides a visual weight that reinforces closure in a way white wax cannot quite duplicate. Use white freely as a substitute, but treat distinct colors as deliberate sensory amplifiers when you have them on hand.",
+        ],
+      },
+      {
+        id: "core-uses",
+        title: "Core Witchcraft Uses for White Candles",
+        content: [
+          "Practitioners work with white candles across four foundational ritual categories:",
+        ],
+        subsections: [
+          {
+            title: "1. Space Clearing & Energetic Reset",
+            content: [
+              "When an apartment feels heavy, stale, or tense following a difficult confrontation or weeks of indoor fatigue, lighting a white candle at the center of the room acts as an energetic broom. When paired with opening windows and burning a sprig of [rosemary](/herbs/rosemary) or [garden sage](/herbs/sage), it signals that stagnant air is being released and refreshed.",
+            ],
+          },
+          {
+            title: "2. Truth, Honesty & Cutting Through Confusion",
+            content: [
+              "White candles are the traditional tool for clarity workings. When dealing with mixed messages, deceit, or self-delusion, lighting a white candle while journaling strips away romanticized rationalizations and forces honest reality to the surface.",
+            ],
+          },
+          {
+            title: "3. Blessing New Beginnings & Fresh Chapters",
+            content: [
+              "Moving into a new home, launching a project, starting a new job, or beginning a fresh personal habit calls for white wax. It blesses the empty container before life's inevitable clutter arrives, dedicating the new chapter to peace, health, and clear boundaries.",
+            ],
+          },
+          {
+            title: "4. Lunar Meditation & Altar Consecration",
+            content: [
+              "Aligned with the Moon and reflective lunar light, white tapers provide serene illumination during tarot readings, breathwork, and evening reflection. They calm physical agitation without demanding aggressive energy.",
+            ],
+          },
+        ],
+      },
+      {
+        id: "how-to-dress-burn",
+        title: "How to Inscribe, Dress, and Burn a White Candle",
+        content: [
+          "Follow these practical, grounded steps to prepare a white candle for ritual work:",
+          "**1. Match Size to Purpose:** For a single focused intention or meditation, use a 4-inch chime/spell candle (burn time 20–30 minutes). For house-clearing or multi-day dedication, choose a tall glass jar candle or pillar.",
+          "**2. Inscribe for Attraction or Blessing:** If you are inviting peace, clarity, or blessing into your space, use a pin or toothpick to carve your intention from the base upward toward the wick—symbolically drawing energy into your life.",
+          "**3. Anoint Upward:** Place 2–3 drops of plain olive oil or sweet almond oil on the candle, rubbing upward from base to wick. Roll the oiled candle lightly in crushed [lavender](/herbs/lavender) for tranquility or dried [rosemary](/herbs/rosemary) for sharp mental clarity.",
+          "**4. Safe Disposal:** Allow the candle to burn down in a fireproof dish. Discard any remaining wax remnants in your normal trash with clean gratitude.",
+        ],
+      },
+    ],
+    pairings: [
+      {
+        name: "Black Candle",
+        link: "/candles/black",
+        purpose:
+          "Burned together in dual balance rituals: the black candle absorbs expired discord while the white candle illuminates the new beginning.",
+      },
+      {
+        name: "Coarse Sea Salt",
+        link: "/ingredients/salt",
+        purpose:
+          "Placed in a ring around the white candle to ground the flame and seal the clarified space with protective mineral stability.",
+      },
+      {
+        name: "Rosemary",
+        link: "/herbs/rosemary",
+        purpose:
+          "Burned or dressed onto white wax to elevate atmospheric clarity and reinforce mental focus during cleansing rites.",
+      },
+      {
+        name: "Lavender",
+        link: "/herbs/lavender",
+        purpose:
+          "Paired with white candles in evening rituals to unwind nervous system agitation and foster peaceful sanctuary.",
+      },
+      {
+        name: "Garden Sage",
+        link: "/herbs/sage",
+        purpose:
+          "Smoked alongside a white flame to reset lingering heavy energy after moving or concluding difficult interpersonal conflicts.",
+      },
+    ],
+    faqs: [
+      {
+        question: "What does a white candle mean in witchcraft?",
+        answer:
+          "A white candle represents purification, spiritual clarity, truth, and fresh beginnings. In color magic, white embodies the full optical spectrum, making it the premier tool for resetting mental static, blessing new spaces, and clearing stagnant energy.",
+      },
+      {
+        question: "Can a white candle really substitute for any other candle color?",
+        answer:
+          "Yes. In modern witchcraft and historical folk traditions, white candles are widely accepted as universal substitutes. Your clear mental focus, intention, and real-world follow-through matter far more than having specialized dyed waxes.",
+      },
+      {
+        question: "Can I burn a white candle and a black candle together?",
+        answer:
+          "Yes, this is a classic occult pairing for energetic balance. The black candle acts as an absorber to neutralize grief, discord, or expired attachments, while the white candle illuminates the fresh path forward.",
+      },
+      {
+        question: "What does a white candle mean for protection?",
+        answer:
+          "While black candles protect by absorbing negativity and setting hard boundaries, white candles protect by filling the space with radiant, unclouded light—creating an atmosphere so pure and clear that chaotic discord naturally cannot gain purchase.",
+      },
+      {
+        question: "How should I dispose of white candle wax remains?",
+        answer:
+          "Once the wax has cooled completely in your heatproof holder, simply scrape it into scrap paper and discard it in your domestic waste bin. Natural folk magic treats spent wax as inert material once the flame has concluded.",
+      },
+    ],
+    safetyNotes: [
+      "Fire Safety: Never leave an open flame unattended. Always burn white chime or taper candles in dedicated fireproof ceramic, cast-iron, or glass holders on a sturdy, level surface.",
+      "Herb Dressing Caution: When rolling candles in dried herbs like rosemary or lavender, use only a light dusting. Excessive dry plant material can act as a secondary wick, creating sudden flare-ups.",
+      "Ventilation: Ensure adequate airflow when burning candles, especially if pairing with herbal smoke or incense, to maintain healthy indoor air quality.",
+      "Grounded Action: Lighting a candle for clarity or peace is an internal alignment tool; follow it up with honest conversations, boundary setting, and organized physical tidying.",
+    ],
+    tryIt: {
+      title: "The Clean Slate Morning Reset",
+      instruction:
+        "Light a simple white candle at your kitchen table before looking at your phone. Inhale slowly for four counts and exhale for four. State clearly: 'Today begins with clean hands and unclouded vision.' Let the flame burn for ten minutes while you drink a glass of water.",
+    },
+    relatedHubSlug: "letting-go",
+    relatedRitualSlugs: [
+      "new-beginning",
+      "confidence-before-you-walk-in",
+      "leave-me-alone-protection",
+    ],
+    sources: [
+      "Buckland, Raymond. Practical Candleburning Rituals (1970).",
+      "Cunningham, Scott. Cunningham's Encyclopedia of Magical Herbs (1985).",
+      "Valiente, Doreen. Natural Magic (1975).",
+    ],
+    seoTitle:
+      "White Candle Meaning in Witchcraft: Uses, Symbolism & Correspondences",
+    seoDescription:
+      "Discover the true meaning of white candles in witchcraft. Learn correspondences for cleansing, truth, spiritual clarity, and the universal substitute tradition.",
+  },
+  {
+    slug: "red",
+    name: "Red Candle",
+    h1: "Red Candle Meaning in Witchcraft",
+    category: "candle",
+    categoryLabel: "Candle",
+    primaryIntent: "Vitality & Passion",
+    routePrefix: "candles",
+    oneLiner:
+      "The primal flame of physical vitality, passionate attraction, somatic courage, and breaking through executive paralysis.",
+    quickAnswer:
+      "In witchcraft, red candles symbolize vitality, passionate attraction, physical stamina, and unapologetic courage. Ruled by Mars and aligned with the primal element of Fire, red wax carries the rapid, assertive pulse of life force and blood. Lighting a red candle is traditionally used to break through executive freeze, ignite mutual romantic sparks, summon vocal authority before intimidating confrontations, and fuel decisive physical momentum.",
+    referenceTable: [
+      {
+        label: "Primary Associations",
+        value:
+          "Vitality, passionate attraction, somatic courage, breaking paralysis, assertive willpower",
+      },
+      {
+        label: "Intentions",
+        value:
+          "Igniting romantic sparks, vocal boldness, revitalizing exhausted stamina, sovereign desire, overcoming hesitation",
+      },
+      {
+        label: "Classical Element",
+        value: "Fire (combustive, active, heat-generating, assertive)",
+      },
+      {
+        label: "Planetary Ruler",
+        value:
+          "Mars (courage, assertive action, decisive conflict, stamina, passionate drive)",
+      },
+      {
+        label: "Common Forms",
+        value:
+          "Taper candles, 4-inch chime/spell mini-tapers, tea lights, thick pillar candles",
+      },
+      {
+        label: "Common Pairings",
+        value:
+          "[Cinnamon](/herbs/cinnamon) (speed & thermal acceleration), [Sweet Basil](/herbs/basil) (harmonious warmth & courage), [Rosemary](/herbs/rosemary) (sharp focus & solar drive), Carnelian or Iron",
+      },
+      {
+        label: "Symbolic Key",
+        value:
+          "The Crimson Pulse, Combustive Will, Sovereign Desire, Breaking the Freeze",
+      },
+    ],
+    correspondences: {
+      uses: [
+        "Igniting mutual romantic passion & magnetism",
+        "Shattering executive freeze & procrastination",
+        "Summoning vocal authority before negotiations",
+        "Revitalizing low physical drive & motivation",
+      ],
+      element: "Fire",
+      planet: "Mars",
+      colors: ["Crimson Red", "Scarlet", "Ruby", "Blood Red"],
+      intentions: [
+        "Courage & confidence",
+        "Romantic desire & passion",
+        "Vitality & stamina",
+        "Overcoming hesitation",
+        "Decisive momentum",
+      ],
+      symbolicAssociations: [
+        "The heartbeat & blood",
+        "Primal fire",
+        "Assertive boundary defense",
+        "Raw life force",
+        "Combustion",
+      ],
+    },
+    traditionalLore: [
+      "Throughout the history of Western astrology and ceremonial magic, red corresponds to Mars—the Roman god of vitality, iron, combat, and unapologetic physical force. Mars rules the bloodstream, muscle tension, and the survival instinct that compels an organism to fight for its existence and desires.",
+      "In Mediterranean and European folk traditions, red was used both as an aggressive stimulus (igniting passion, athletic victory, and sexual attraction) and as an assertive ward against malice. Red strings and red cords were tied around wrists and infants' cradles to deflect the envious gaze with active, burning counter-energy.",
+    ],
+    modernWitchrUse: [
+      "Modern witchcraft uses the red candle as a powerful psychological antidote to passivity. When you have spent weeks analyzing a decision, procrastinating out of fear, or waiting for 'permission' to take up space, lighting red wax breaks the freeze state and demands somatic action.",
+      "In love and relationship work, Witchr strictly frames red candles around sovereign attraction, mutual chemistry, and personal magnetism. We do not endorse coercive 'obsession' magic; real passion flourishes when two sovereign adults choose each other with mutual desire and intact dignity.",
+      "Always respect open flame safety: red candles burn fast and hot; ensure sturdy fireproof holders and maintain safe distances from flammable textiles.",
+    ],
+    detailedSections: [
+      {
+        id: "candle-meaning",
+        title: "What Does a Red Candle Mean in Witchcraft?",
+        content: [
+          "Red is the color of the arterial pulse, molten lava, and the raw combustible spark. In witchcraft, a red candle is not a subtle or gentle instrument. It represents active, kinetic energy—the biological drive to breathe, hunt, love, speak, and defend what is yours.",
+          "Where white candles offer quiet clarity and black candles offer protective silence, the red candle is loud. It brings blood to the surface. Astrologically ruled by Mars, red wax channels the assertive archetypes of courage, physical endurance, sexual vitality, and righteous indignation.",
+          "When you light a red candle, you are making a ceremonial statement that you refuse to stay passive. It is the flame chosen when something in your life requires friction, heat, and immediate momentum.",
+        ],
+      },
+      {
+        id: "passion-and-sovereignty",
+        title: "Passion, Romance, and Sovereign Desire Without Coercion",
+        content: [
+          "Red candles have a long-standing association with love spells, but modern practitioners draw a firm ethical line between mutual passion and manipulative control. Witchr rejects coercive magic aimed at overriding someone else's free will. Attempting to bend another person's emotions is rooted in desperate insecurity and produces toxic dynamics.",
+          "**The True Power of Red in Romance:** Burning a red candle for love is about personal magnetism, erotic vitality, and the courage to show up authentically. It is used to reignite physical intimacy in established relationships, dissolve romantic timidness, and help you recognize your own inherent desirability without needing external validation.",
+          "When paired with herbs like [cinnamon](/herbs/cinnamon) or [sweet basil](/herbs/basil), red wax warms the emotional climate and sparks playful, uninhibited connection between equals.",
+        ],
+      },
+      {
+        id: "courage-and-breaking-freeze",
+        title: "Courage, Vocal Authority, and Shattering Executive Freeze",
+        content: [
+          "Perhaps the most practical, modern application of a red candle has nothing to do with romance: it is about breaking psychological paralysis.",
+          "**Defeating Imposter Syndrome:** Before stepping into a critical salary negotiation, speaking before an audience, or confronting an overstepping colleague, lighting a red chime candle acts as a somatic catalyst. Its fierce color and heat stimulate the nervous system, reminding you to ground your feet, deepen your breathing, and speak with an unyielding spine.",
+          "**Shattering Procrastination:** When executive dysfunction leaves you staring blankly at a screen for hours, burn a 4-inch red candle with the explicit vow: 'I will work with complete focus until this candle is spent.' The visible ticking clock of melting crimson wax creates urgent, actionable focus.",
+        ],
+      },
+      {
+        id: "how-to-dress-burn",
+        title: "How to Inscribe, Dress, and Burn a Red Candle",
+        content: [
+          "Follow these practical steps to harness the assertive fire of a red candle safely:",
+          "**1. Inscribe with Assertive Intent:** Use a nail, iron pin, or athame to carve concise, active verbs into the wax: 'SPEAK', 'MOVE', 'IGNITE', or 'COURAGE'. Carve upward toward the wick to attract momentum into your body.",
+          "**2. Anoint with Warming Botanicals:** Lightly coat the candle in olive oil or jojoba oil, stroking upward. Roll the wax in ground [cinnamon](/herbs/cinnamon) for thermal speed or crushed [rosemary](/herbs/rosemary) for unwavering solar focus.",
+          "**3. Burn with Direct Presence:** Never light a red candle and walk away. Sit before the flame for the first five minutes. Feel the warmth on your face, square your shoulders, and consciously step into your full physical authority.",
+          "**4. Responsible Clean Up:** Once the wax has burned out completely in a fireproof dish, discard the residual wax. Wash your hands thoroughly, especially if you worked with warming spices.",
+        ],
+      },
+    ],
+    pairings: [
+      {
+        name: "Cinnamon",
+        link: "/herbs/cinnamon",
+        purpose:
+          "Dressed onto red wax to accelerate ritual timing, generate intense thermal energy, and spark mutual romantic chemistry.",
+      },
+      {
+        name: "Sweet Basil",
+        link: "/herbs/basil",
+        purpose:
+          "Balances fierce Martian heat with joyous domestic harmony, ensuring that passion remains warm rather than combative.",
+      },
+      {
+        name: "Rosemary",
+        link: "/herbs/rosemary",
+        purpose:
+          "Sharpens the mind so that bold courage does not degenerate into reckless or thoughtless impulse.",
+      },
+      {
+        name: "White Candle",
+        link: "/candles/white",
+        purpose:
+          "Burned beside red in balance rites to ensure that intense romantic passion remains tethered to honest emotional truth.",
+      },
+      {
+        name: "Thyme",
+        link: "/herbs/thyme",
+        purpose:
+          "Reinforces somatic bravery and nervous system resilience when preparing for high-stakes interpersonal confrontations.",
+      },
+    ],
+    faqs: [
+      {
+        question: "What does a red candle mean in witchcraft?",
+        answer:
+          "A red candle represents vitality, passionate attraction, physical stamina, and unapologetic courage. Aligned with Mars and the Fire element, it is used to break procrastination freeze, fuel romantic intimacy, and summon confidence.",
+      },
+      {
+        question: "Can a red candle be used for love spells?",
+        answer:
+          "Yes, but with an emphasis on mutual passion and sovereign attraction rather than manipulation. Red candles amplify personal magnetism, sensual vitality, and romantic bravery without overriding anyone's consent or free will.",
+      },
+      {
+        question: "What is the difference between a red candle and a pink candle?",
+        answer:
+          "Red candles channel raw kinetic fire, physical passion, sexual desire, and assertive courage. Pink candles channel gentle affection, emotional vulnerability, self-compassion, and friendship. Red is the roaring blaze; pink is the tender hearth.",
+      },
+      {
+        question: "Can burning a red candle help with procrastination or low motivation?",
+        answer:
+          "Yes. Psychologically and ceremonially, red is a stimulating color. Lighting a red mini-taper sets an urgent physical timer that helps interrupt decision paralysis and jump-start executive action.",
+      },
+      {
+        question: "What day of the week is best for burning a red candle?",
+        answer:
+          "In traditional astrological magic, Tuesday is ruled by Mars, making it the classical day for red candle workings involving courage, passion, conflict resolution, and athletic vitality.",
+      },
+    ],
+    safetyNotes: [
+      "Fire Safety: Red chime candles often burn with a robust, energetic flame. Always place them in dedicated heatproof ceramic or heavy metal candleholders on a flat, non-flammable surface.",
+      "Skin Sensitivity: If anointing your red candle with cinnamon or clove oils, dilute heavily in a carrier oil or apply with a cotton swab; warming spices can cause skin redness and irritation.",
+      "Emotional Grounding: Because Mars energy is intense, avoid burning red candles when you are already in a state of explosive, reactive rage. Use black or lavender to calm anger first, then red when you are ready for disciplined action.",
+      "Real-World Follow-Through: A red candle provides the somatic spark; you must supply the movement. Apply for the role, make the phone call, or step onto the workout floor.",
+    ],
+    tryIt: {
+      title: "The Pre-Action Courage Anchor",
+      instruction:
+        "Light a red chime candle five minutes before a nerve-wracking phone call or meeting. Stare directly at the base of the flame, plant both feet flat on the floor, and breathe deeply into your belly. Say: 'I have the right to take up space.' Extinguish the flame and immediately take the action.",
+    },
+    relatedHubSlug: "confidence",
+    relatedRitualSlugs: [
+      "confidence-before-you-walk-in",
+      "stop-shrinking",
+      "love-without-losing-yourself",
+    ],
+    sources: [
+      "Agrippa, Heinrich Cornelius. Three Books of Occult Philosophy (1533).",
+      "Buckland, Raymond. Practical Candleburning Rituals (1970).",
+      "Cunningham, Scott. Cunningham's Encyclopedia of Magical Herbs (1985).",
+    ],
+    seoTitle:
+      "Red Candle Meaning in Witchcraft: Uses, Passion & Courage Correspondences",
+    seoDescription:
+      "Explore the spiritual meaning of red candles in witchcraft. Learn traditional correspondences for vitality, romantic passion, courage, and breaking executive freeze.",
   },
   {
     slug: "pentagram",
@@ -1616,6 +2058,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
         link: "/herbs/rosemary",
         purpose:
           "Clears mental static and reinforces personal boundaries while cinnamon attracts warm creative momentum.",
+      },
+      {
+        name: "Red Candle",
+        link: "/candles/red",
+        purpose:
+          "Dressed with ground cinnamon to generate intense kinetic heat, shatter procrastination freeze, and ignite romantic chemistry.",
       },
     ],
     faqs: [

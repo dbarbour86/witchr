@@ -209,9 +209,38 @@ export function ProblemHubView({ hub }: ProblemHubViewProps) {
                 Essential {hub.title} Correspondences
               </h2>
             </div>
-            <span className="text-xs font-mono text-bone-dim hidden sm:inline">
-              {correspondences.length} Core Entries
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono text-bone-dim hidden sm:inline">
+                {correspondences.length} Core Entries
+              </span>
+              {hub.slug === "protection" && (
+                <Link
+                  href="/correspondences/protection"
+                  className="text-xs font-mono uppercase tracking-wideDisplay text-lavender-moon hover:text-lavender-light flex items-center gap-1"
+                >
+                  <span>Protection Guide</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              )}
+              {hub.slug === "love" && (
+                <Link
+                  href="/correspondences/love"
+                  className="text-xs font-mono uppercase tracking-wideDisplay text-lavender-moon hover:text-lavender-light flex items-center gap-1"
+                >
+                  <span>Love Guide</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              )}
+              {hub.slug === "letting-go" && (
+                <Link
+                  href="/correspondences/cleansing"
+                  className="text-xs font-mono uppercase tracking-wideDisplay text-lavender-moon hover:text-lavender-light flex items-center gap-1"
+                >
+                  <span>Cleansing Guide</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              )}
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

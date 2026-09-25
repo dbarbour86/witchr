@@ -23,7 +23,7 @@ export function Footer() {
               aria-label="Witchr Homepage"
             >
               <div className="w-8 h-8 rounded-lg bg-background border border-border-highlight flex items-center justify-center text-lavender group-hover:border-lavender/60 transition-colors shadow-subtle">
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-lavender-moon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" className="w-4 h-4 text-lavender-moon">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.85 0 3.58-.5 5.07-1.38-4.22-.92-7.37-4.68-7.37-9.19 0-4.08 2.61-7.55 6.27-8.83C14.73 2.22 13.4 2 12 2z" />
                 </svg>
               </div>
@@ -106,6 +106,11 @@ export function Footer() {
               <li>
                 <Link href="/herbs" className="hover:text-lavender-light transition-colors">
                   Herb Directory
+                </Link>
+              </li>
+              <li>
+                <Link href="/correspondences" className="hover:text-lavender-light transition-colors">
+                  Correspondences Codex
                 </Link>
               </li>
               <li>

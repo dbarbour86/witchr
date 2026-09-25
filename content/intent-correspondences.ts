@@ -27,10 +27,18 @@ export interface IntentCombiningStep {
   instruction: string;
 }
 
+export interface ImageAsset {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 export interface IntentCorrespondenceData {
   slug: "protection" | "love" | "cleansing";
   title: string;
   h1: string;
+  heroImage?: ImageAsset;
   intentBadge: string;
   seoTitle: string;
   seoDescription: string;
@@ -67,6 +75,12 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
     slug: "protection",
     title: "Protection",
     h1: "Protection Correspondences in Witchcraft",
+    heroImage: {
+      src: "/images/protection-correspondences-collage.webp",
+      alt: "Purple and black screenprint collage of protective ritual elements including black tourmaline, iron key, and bay leaves",
+      width: 1600,
+      height: 893,
+    },
     intentBadge: "Perimeter & Boundary Defense",
     seoTitle: "Protection Correspondences in Witchcraft: Herbs, Candles & Symbols",
     seoDescription:

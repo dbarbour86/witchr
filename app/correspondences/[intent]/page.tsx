@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
   getIntentCorrespondence,
@@ -157,6 +158,23 @@ export default async function IntentCorrespondencePage({
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-bone tracking-wide leading-[1.1] celestial-glow">
           {data.h1}
         </h1>
+
+        {/* Hero Artwork (Controlled Implementation) */}
+        {data.heroImage && (
+          <div className="pt-2">
+            <div className="relative w-full aspect-[16/9] rounded-lg overflow-hidden border border-border-highlight shadow-card bg-surface">
+              <Image
+                src={data.heroImage.src}
+                alt={data.heroImage.alt}
+                width={data.heroImage.width}
+                height={data.heroImage.height}
+                priority
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 1024px, 1024px"
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+          </div>
+        )}
 
         <div className="space-y-4 text-base sm:text-lg text-bone-muted leading-relaxed font-sans pt-1">
           {data.intro.map((para, idx) => (

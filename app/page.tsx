@@ -135,49 +135,31 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right Hero Tarot Masterpiece Centerpiece */}
+            {/* Right Hero Tarot Card Centerpiece */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-[380px] sm:max-w-[420px] rounded-2xl p-2.5 bg-gradient-to-b from-border-ornate via-border-highlight to-border shadow-glow-moon group">
-                {/* Ornate Arched Frame Outer Container */}
-                <div className="relative rounded-xl overflow-hidden bg-surface-card border border-border-ornate/80">
-                  {/* Decorative corner stars */}
-                  <div className="absolute top-3 left-3 z-20 pointer-events-none">
-                    <TarotCornerFlourish className="w-6 h-6 text-lavender-moon" />
-                  </div>
-                  <div className="absolute top-3 right-3 z-20 pointer-events-none rotate-90">
-                    <TarotCornerFlourish className="w-6 h-6 text-lavender-moon" />
-                  </div>
-                  <div className="absolute bottom-3 left-3 z-20 pointer-events-none -rotate-90">
-                    <TarotCornerFlourish className="w-6 h-6 text-lavender-moon" />
-                  </div>
-                  <div className="absolute bottom-3 right-3 z-20 pointer-events-none 180">
-                    <TarotCornerFlourish className="w-6 h-6 text-lavender-moon" />
-                  </div>
+              <div className="relative w-full max-w-[380px] sm:max-w-[420px] rounded-xl overflow-hidden border border-border-highlight bg-surface-card shadow-card group">
+                {/* Hero Artwork */}
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-black">
+                  <Image
+                    src="/images/witchr-homepage-hero.webp"
+                    alt="Purple and black screenprint illustration of a serene modern occult witch figure with perched raven, crescent moon, and sacred geometry"
+                    fill
+                    priority
+                    sizes="(max-width: 640px) 90vw, (max-width: 1024px) 380px, 420px"
+                    className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                  />
+                  {/* Subtle bottom vignette to blend into plinth */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-surface-card via-transparent to-transparent opacity-50 pointer-events-none" />
+                </div>
 
-                  {/* Arched Hero Artwork */}
-                  <div className="relative aspect-[3/4] w-full overflow-hidden">
-                    <Image
-                      src="/hero-celestial.jpg"
-                      alt="Dark celestial occult artwork featuring a hooded figure with glowing celestial hands, crescent moon, and geometric talisman"
-                      fill
-                      priority
-                      sizes="(max-width: 640px) 90vw, (max-width: 1024px) 380px, 420px"
-                      className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                    />
-
-                    {/* Top and bottom dark vignette blends */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-black/40 pointer-events-none" />
-                  </div>
-
-                  {/* Tarot Card Bottom Plinth */}
-                  <div className="p-4 bg-gradient-to-b from-surface/90 to-surface-card border-t border-border-highlight/60 text-center space-y-1 relative z-10">
-                    <span className="text-[10px] font-mono uppercase tracking-ceremonial text-lavender-moon">
-                      ARCANUM · THE MODERN PRACTITIONER
-                    </span>
-                    <p className="font-serif text-sm font-semibold text-bone tracking-wide">
-                      “Three Paths · One Sovereign Will”
-                    </p>
-                  </div>
+                {/* Tarot Card Bottom Plinth */}
+                <div className="p-4 bg-surface border-t border-border-highlight/60 text-center space-y-1 relative z-10">
+                  <span className="text-[10px] font-mono uppercase tracking-ceremonial text-lavender-moon">
+                    ARCANUM · THE MODERN PRACTITIONER
+                  </span>
+                  <p className="font-serif text-sm font-semibold text-bone tracking-wide">
+                    “Three Paths · One Sovereign Will”
+                  </p>
                 </div>
               </div>
             </div>

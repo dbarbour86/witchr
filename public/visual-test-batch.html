@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Witchr Visual Test Batch · Controlled Inspection Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-void: #09090b;
+      --bg-surface: #121118;
+      --bg-surface-elevated: #1a1824;
+      --purple-electric: #8a2be2;
+      --purple-light: #b784f4;
+      --bone: #f3f0e6;
+      --bone-muted: #a39fae;
+      --border-dim: #272338;
+      --border-highlight: #453b66;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--bone);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 2.5rem 1.5rem 6rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border-dim);
+      padding-bottom: 2.5rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-highlight);
+      color: var(--purple-light);
+      padding: 0.35rem 1rem;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--bone);
+      margin-bottom: 0.75rem;
+      text-shadow: 0 0 24px rgba(138, 43, 226, 0.35);
+    }
+
+    .subhead {
+      color: var(--bone-muted);
+      max-width: 720px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3.5rem;
+    }
+
+    .asset-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-dim);
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(138, 43, 226, 0.1);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .asset-card:hover {
+      border-color: var(--border-highlight);
+    }
+
+    .image-preview-box {
+      background: #000;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-dim);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .image-preview-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 2rem;
+    }
+
+    .card-header-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-dim);
+      padding-bottom: 1.25rem;
+    }
+
+    .asset-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--bone);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .asset-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      background: rgba(138, 43, 226, 0.15);
+      border: 1px solid rgba(138, 43, 226, 0.4);
+      color: var(--purple-light);
+      border-radius: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .spec-item {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-dim);
+      border-radius: 0.5rem;
+      padding: 0.85rem 1rem;
+    }
+
+    .spec-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--bone-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .spec-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--bone);
+      word-break: break-all;
+    }
+
+    .spec-value code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--purple-light);
+    }
+
+    .detail-section {
+      margin-top: 1.25rem;
+    }
+
+    .detail-heading {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--purple-light);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .detail-content {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-dim);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: var(--bone-muted);
+      line-height: 1.55;
+    }
+
+    .prompt-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: #cfcbdb;
+      white-space: pre-wrap;
+    }
+
+    .compliance-checklist {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .compliance-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      background: rgba(46, 125, 50, 0.15);
+      border: 1px solid rgba(76, 175, 80, 0.4);
+      color: #81c784;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+    }
+
+    .links-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-dim);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.25rem;
+      border-radius: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--purple-electric);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #731ec2;
+      box-shadow: 0 0 16px rgba(138, 43, 226, 0.5);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-highlight);
+      color: var(--bone);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-surface-elevated);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">✦ Witchr Visual System · Controlled Test Batch ✦</div>
+      <h1>Visual Test Batch Inspection</h1>
+      <p class="subhead">
+        Inspection gallery for the 4-asset controlled visual test batch. Generated using the permanent Witchr Visual Style System: strict duotone (#8A2BE2 & #000000), risograph halftone, 1-bit dithering, and distressed occult-zine aesthetic.
+      </p>
+    </header>
+
+    <div class="gallery-grid">
+      <!-- 1. Rosemary -->
+      <article class="asset-card" id="rosemary">
+        <div class="image-preview-box">
+          <img src="/images/test-batch/rosemary-witchcraft-hero.webp" alt="Purple and black screenprint illustration of rosemary sprigs and botanical needles" loading="eager">
+        </div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <h2 class="asset-title">1. Rosemary Herb Hero</h2>
+              <p style="color: var(--bone-muted); font-size: 0.9rem; margin-top: 0.25rem;">Specimen & Botanical Anatomy Focus · Dominant Silhouette</p>
+            </div>
+            <span class="asset-tag">Herb Page Hero (Template A)</span>
+          </div>
+
+          <div class="specs-grid">
+            <div class="spec-item">
+              <div class="spec-label">Filename</div>
+              <div class="spec-value"><code>rosemary-witchcraft-hero.webp</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Dimensions</div>
+              <div class="spec-value">1600 × 893 px (16:9)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">File Size</div>
+              <div class="spec-value">350.6 KB (WebP Optimized)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Intended Page</div>
+              <div class="spec-value"><a href="/herbs/rosemary" style="color: var(--purple-light); text-decoration: none;">/herbs/rosemary</a></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Intended Placement</div>
+              <div class="spec-value">Hero header container above article title</div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <div class="detail-heading">✦ Accurate Alt Text</div>
+            <div class="detail-content">"Purple and black screenprint illustration of rosemary sprigs and botanical needles"</div>
+          </div>
+
+          <div class="detail-section">
+            <div class="detail-heading">✦ Generation Prompt Used</div>
+            <div class="detail-content prompt-text">A dramatic editorial composition featuring fresh rosemary sprigs as the dominant subject, clearly identifiable by their needle-like leaves, woody stems, and subtle small blossoms. Surrounding the sprigs are restrained occult botanical accents, delicate crescent moon shapes, faint rising ritual smoke, and subtle geometric sigil lines that frame the plant without overpowering its form. Rendered in Witchr's signature visual style: high-contrast strict duotone using vivid electric purple (#8A2BE2) and deep solid black (#000000), raw screenprint and risograph aesthetic, heavy halftone dot textures, 1-bit dithered transitions, distressed photocopy grain, scratched ink overlay, dark brutalist occult-zine mood, sharp readable silhouette, strong focal point, purely visual composition, NO TEXT, no words, no letters, no typography, no watermarks, no photorealism, no 3D render.</div>
+          </div>
+
+          <div class="compliance-checklist">
+            <span class="compliance-pill">✓ Strict Purple/Black Duotone</span>
+            <span class="compliance-pill">✓ Recognizable Botanical Anatomy</span>
+            <span class="compliance-pill">✓ No Text / Typography</span>
+            <span class="compliance-pill">✓ Risograph Halftone Shading</span>
+            <span class="compliance-pill">✓ Restrained Occult Framing</span>
+          </div>
+
+          <div class="links-row">
+            <a href="/images/test-batch/rosemary-witchcraft-hero.webp" target="_blank" class="btn btn-outline">View Full-Res Asset</a>
+            <a href="/herbs/rosemary" target="_blank" class="btn btn-outline">Inspect Target Page</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 2. Black Candle -->
+      <article class="asset-card" id="black-candle">
+        <div class="image-preview-box">
+          <img src="/images/test-batch/black-candle-witchcraft-hero.webp" alt="Purple and black screenprint illustration of a tall black pillar candle with ritual flame" loading="eager">
+        </div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <h2 class="asset-title">2. Black Candle Hero</h2>
+              <p style="color: var(--bone-muted); font-size: 0.9rem; margin-top: 0.25rem;">Flame, Wax Cascades & Ritual Presence · Unmistakable Focal Point</p>
+            </div>
+            <span class="asset-tag">Candle Page Hero (Template B)</span>
+          </div>
+
+          <div class="specs-grid">
+            <div class="spec-item">
+              <div class="spec-label">Filename</div>
+              <div class="spec-value"><code>black-candle-witchcraft-hero.webp</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Dimensions</div>
+              <div class="spec-value">1600 × 893 px (16:9)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">File Size</div>
+              <div class="spec-value">62.5 KB (WebP Optimized)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Intended Page</div>
+              <div class="spec-value"><a href="/candles/black" style="color: var(--purple-light); text-decoration: none;">/candles/black</a></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Intended Placement</div>
+              <div class="spec-value">Hero header container above article title</div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <div class="detail-heading">✦ Accurate Alt Text</div>
+            <div class="detail-content">"Purple and black screenprint illustration of a tall black pillar candle with ritual flame"</div>
+          </div>
+
+          <div class="detail-section">
+            <div class="detail-heading">✦ Generation Prompt Used</div>
+            <div class="detail-content prompt-text">A high-contrast graphic composition featuring a single tall, rugged black pillar candle as the dominant subject, with an electric burning flame, melting wax cascades, and an intense ritual presence set centrally against negative space. Supporting occult elements include stylized tendrils of smoke curling upward, faint concentric lunar orbit rings, and minimalist ritual circle markings beneath the base, keeping the candle as the unmistakable focal point. Rendered in Witchr's signature visual style: high-contrast strict duotone using vivid electric purple (#8A2BE2) and deep solid black (#000000), raw screenprint and risograph aesthetic, heavy halftone dot textures, 1-bit dithered transitions, distressed photocopy grain, scratched ink overlay, dark brutalist occult-zine mood, sharp readable silhouette, strong focal point, purely visual composition, NO TEXT, no words, no letters, no typography, no watermarks, no photorealism, no 3D render.</div>
+          </div>
+
+          <div class="compliance-checklist">
+            <span class="compliance-pill">✓ Strict Purple/Black Duotone</span>
+            <span class="compliance-pill">✓ Central Wax & Flame Silhouette</span>
+            <span class="compliance-pill">✓ No Text / Typography</span>
+            <span class="compliance-pill">✓ Smoke & Lunar Orbit Detail</span>
+            <span class="compliance-pill">✓ 62.5 KB Ultra-Fast Loading</span>
+          </div>
+
+          <div class="links-row">
+            <a href="/images/test-batch/black-candle-witchcraft-hero.webp" target="_blank" class="btn btn-outline">View Full-Res Asset</a>
+            <a href="/candles/black" target="_blank" class="btn btn-outline">Inspect Target Page</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3. Salt -->
+      <article class="asset-card" id="salt">
+        <div class="image-preview-box">
+          <img src="/images/test-batch/salt-witchcraft-specimen.webp" alt="Purple and black screenprint illustration of coarse ritual salt crystals spilling from a stone bowl" loading="eager">
+        </div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <h2 class="asset-title">3. Salt Ingredient Specimen</h2>
+              <p style="color: var(--bone-muted); font-size: 0.9rem; margin-top: 0.25rem;">Mineral Crystal Facets & Spilling Relic Presentation</p>
+            </div>
+            <span class="asset-tag">Ingredient Specimen (Template C)</span>
+          </div>
+
+          <div class="specs-grid">
+            <div class="spec-item">
+              <div class="spec-label">Filename</div>
+              <div class="spec-value"><code>salt-witchcraft-specimen.webp</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Dimensions</div>
+              <div class="spec-value">1600 × 893 px (16:9)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">File Size</div>
+              <div class="spec-value">273.2 KB (WebP Optimized)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Intended Page</div>
+              <div class="spec-value"><a href="/ingredients/salt" style="color: var(--purple-light); text-decoration: none;">/ingredients/salt</a></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Intended Placement</div>
+              <div class="spec-value">Specimen hero container above ingredient overview</div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <div class="detail-heading">✦ Accurate Alt Text</div>
+            <div class="detail-content">"Purple and black screenprint illustration of coarse ritual salt crystals spilling from a stone bowl"</div>
+          </div>
+
+          <div class="detail-section">
+            <div class="detail-heading">✦ Generation Prompt Used</div>
+            <div class="detail-content prompt-text">A centered editorial specimen composition featuring coarse mineral sea salt crystals spilling from an ancient carved dark stone ritual dish as the unmistakable focal point against a deep black void. Crisp angular crystal facets catching stark graphic light, accompanied by a restrained perimeter circle of fine protective grain texture and subtle warding markings. Rendered in Witchr's signature visual style: high-contrast strict duotone using vivid electric purple (#8A2BE2) and deep solid black (#000000), raw screenprint and risograph aesthetic, heavy halftone dot textures, 1-bit dithered transitions, distressed photocopy grain, scratched ink overlay, dark brutalist occult-zine mood, sharp readable silhouette, strong focal point, purely visual composition, NO TEXT, no words, no letters, no typography, no watermarks, no photorealism, no 3D render.</div>
+          </div>
+
+          <div class="compliance-checklist">
+            <span class="compliance-pill">✓ Strict Purple/Black Duotone</span>
+            <span class="compliance-pill">✓ Salt Crystals Dominate Composition</span>
+            <span class="compliance-pill">✓ Carved Stone Relic Presentation</span>
+            <span class="compliance-pill">✓ No Text / Typography</span>
+            <span class="compliance-pill">✓ Halftone Grain & Stippling</span>
+          </div>
+
+          <div class="links-row">
+            <a href="/images/test-batch/salt-witchcraft-specimen.webp" target="_blank" class="btn btn-outline">View Full-Res Asset</a>
+            <a href="/ingredients/salt" target="_blank" class="btn btn-outline">Inspect Target Page</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4. Protection Correspondences -->
+      <article class="asset-card" id="protection">
+        <div class="image-preview-box">
+          <img src="/images/test-batch/protection-correspondences-collage.webp" alt="Purple and black screenprint collage of protective ritual elements including black tourmaline, iron key, and bay leaves" loading="eager">
+        </div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <h2 class="asset-title">4. Protection Correspondences Collage</h2>
+              <p style="color: var(--bone-muted); font-size: 0.9rem; margin-top: 0.25rem;">Curated Multi-Object Hierarchy · Central Tourmaline & Protective Relics</p>
+            </div>
+            <span class="asset-tag">Correspondence Collage (Template D)</span>
+          </div>
+
+          <div class="specs-grid">
+            <div class="spec-item">
+              <div class="spec-label">Filename</div>
+              <div class="spec-value"><code>protection-correspondences-collage.webp</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Dimensions</div>
+              <div class="spec-value">1600 × 893 px (16:9)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">File Size</div>
+              <div class="spec-value">312.8 KB (WebP Optimized)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Intended Page</div>
+              <div class="spec-value"><a href="/correspondences/protection" style="color: var(--purple-light); text-decoration: none;">/correspondences/protection</a></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Intended Placement</div>
+              <div class="spec-value">Guide hero header above correspondences breakdown</div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <div class="detail-heading">✦ Accurate Alt Text</div>
+            <div class="detail-content">"Purple and black screenprint collage of protective ritual elements including black tourmaline, iron key, and bay leaves"</div>
+          </div>
+
+          <div class="detail-section">
+            <div class="detail-heading">✦ Generation Prompt Used</div>
+            <div class="detail-content prompt-text">A symbolic editorial collage representing occult protection, centered on a dominant raw black tourmaline crystal cluster as the core focal point. Deliberately arranged in orbit around it are clear supporting protective objects: an antique forged iron skeleton key, dried bay leaves, a protective pentacle medallion, and a coiled rowan twig circle. The composition maintains a strict visual hierarchy with the tourmaline commanding the center while supporting objects rest in disciplined alignment. Rendered in Witchr's signature visual style: high-contrast strict duotone using vivid electric purple (#8A2BE2) and deep solid black (#000000), raw screenprint and risograph aesthetic, heavy halftone dot textures, 1-bit dithered transitions, distressed photocopy grain, scratched ink overlay, dark brutalist occult-zine mood, sharp readable silhouette, strong focal point, purely visual composition, NO TEXT, no words, no letters, no typography, no watermarks, no photorealism, no 3D render.</div>
+          </div>
+
+          <div class="compliance-checklist">
+            <span class="compliance-pill">✓ Strict Purple/Black Duotone</span>
+            <span class="compliance-pill">✓ Central Tourmaline Focal Point</span>
+            <span class="compliance-pill">✓ Rowan Twig, Iron Key & Bay Leaves Orbit</span>
+            <span class="compliance-pill">✓ Disciplined Multi-Object Hierarchy</span>
+            <span class="compliance-pill">✓ No Text / Typography</span>
+          </div>
+
+          <div class="links-row">
+            <a href="/images/test-batch/protection-correspondences-collage.webp" target="_blank" class="btn btn-outline">View Full-Res Asset</a>
+            <a href="/correspondences/protection" target="_blank" class="btn btn-outline">Inspect Target Page</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 5. Homepage Hero Figure -->
+      <article class="asset-card" id="homepage-hero">
+        <div class="image-preview-box" style="max-height: 600px;">
+          <img src="/images/witchr-homepage-hero.webp" alt="Purple and black screenprint illustration of a serene modern occult witch figure with perched raven, crescent moon, and sacred geometry" style="aspect-ratio: 3 / 4; max-width: 450px;" loading="eager">
+        </div>
+        <div class="card-body">
+          <div class="card-header-row">
+            <div>
+              <h2 class="asset-title">5. Homepage Hero Figure Card</h2>
+              <p style="color: var(--bone-muted); font-size: 0.9rem; margin-top: 0.25rem;">Calm Power, Ritual Intelligence, Raven, Crescent Moon & Sacred Geometry</p>
+            </div>
+            <span class="asset-tag">Homepage Hero Card (3:4 Ratio)</span>
+          </div>
+
+          <div class="specs-grid">
+            <div class="spec-item">
+              <div class="spec-label">Filename</div>
+              <div class="spec-value"><code>witchr-homepage-hero.webp</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Dimensions</div>
+              <div class="spec-value">1195 × 1600 px (3:4 Portrait)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">File Size</div>
+              <div class="spec-value">140.6 KB (WebP Optimized)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Intended Page</div>
+              <div class="spec-value"><a href="/" style="color: var(--purple-light); text-decoration: none;">/ (Homepage)</a></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Intended Placement</div>
+              <div class="spec-value">Homepage hero tarot card plinth beside headline</div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <div class="detail-heading">✦ Accurate Alt Text</div>
+            <div class="detail-content">"Purple and black screenprint illustration of a serene modern occult witch figure with perched raven, crescent moon, and sacred geometry"</div>
+          </div>
+
+          <div class="detail-section">
+            <div class="detail-heading">✦ Generation Prompt Used</div>
+            <div class="detail-content prompt-text">A commanding editorial portrait of a modern witch-like feminine figure embodying calm power, ritual intelligence, and sovereign intuition. She stands in a sharp, elegant silhouette with a composed, knowing expression, draped in dark minimalist ceremonial vestments. Behind her head rises a luminous crescent moon casting a stark celestial halo, intersected by restrained fine-line sacred geometry, delicate occult circles, and faint tendrils of rising incense smoke. A perched raven rests in quiet vigilance near her shoulder against deep negative space. The composition is spacious, centered, balanced, and free of clutter. Rendered in Witchr's signature visual style: high-contrast strict duotone using vivid electric purple (#8A2BE2) and deep solid black (#000000), raw screenprint and risograph aesthetic, heavy halftone dot textures, 1-bit dithered transitions, distressed photocopy grain, scratched ink overlay, dark brutalist occult-zine mood, sharp readable silhouette, strong focal point, purely visual composition, NO TEXT, no words, no letters, no typography, no watermarks, no photorealism, no 3D render, no glossy digital painting, no fantasy cosplay.</div>
+          </div>
+
+          <div class="compliance-checklist">
+            <span class="compliance-pill">✓ Strict Purple/Black Duotone</span>
+            <span class="compliance-pill">✓ Single Dominant Silhouette</span>
+            <span class="compliance-pill">✓ Crescent Moon Halo & Raven</span>
+            <span class="compliance-pill">✓ Halftone Dot & Risograph Texture</span>
+            <span class="compliance-pill">✓ 3:4 Tarot Card Alignment</span>
+            <span class="compliance-pill">✓ No Text / Typography</span>
+            <span class="compliance-pill">✓ 140.6 KB Lightweight</span>
+          </div>
+
+          <div class="links-row">
+            <a href="/images/witchr-homepage-hero.webp" target="_blank" class="btn btn-outline">View Full-Res Asset</a>
+            <a href="/" target="_blank" class="btn btn-outline">View Homepage</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</body>
+</html>

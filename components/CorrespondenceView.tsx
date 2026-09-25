@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { CorrespondenceItem } from "@/content/correspondences";
 import { getRitualBySlug } from "@/content/rituals";
 import { RitualCard } from "./RitualCard";
@@ -173,6 +174,23 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
         <p className="text-lg sm:text-xl text-bone-muted leading-relaxed font-serif italic pt-1">
           {item.oneLiner}
         </p>
+
+        {/* Hero Artwork (Controlled Implementation) */}
+        {item.heroImage && (
+          <div className="pt-2">
+            <div className="relative w-full aspect-[16/9] rounded-lg overflow-hidden border border-border-highlight shadow-card bg-surface">
+              <Image
+                src={item.heroImage.src}
+                alt={item.heroImage.alt}
+                width={item.heroImage.width}
+                height={item.heroImage.height}
+                priority
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 896px, 896px"
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+          </div>
+        )}
       </header>
 
       {/* 3. Quick Answer (For Humans & Answer Engines) */}

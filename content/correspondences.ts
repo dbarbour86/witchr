@@ -26,10 +26,18 @@ export interface PairingItem {
   purpose: string;
 }
 
+export interface ImageAsset {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 export interface CorrespondenceItem {
   slug: string;
   name: string;
   h1?: string;
+  heroImage?: ImageAsset;
   category: "herb" | "ingredient" | "candle" | "symbol";
   categoryLabel: string;
   primaryIntent: string;
@@ -67,6 +75,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
     slug: "rosemary",
     name: "Rosemary",
     h1: "Rosemary in Witchcraft",
+    heroImage: {
+      src: "/images/rosemary-witchcraft-hero.webp",
+      alt: "Purple and black screenprint illustration of rosemary sprigs and botanical needles",
+      width: 1600,
+      height: 893,
+    },
     category: "herb",
     categoryLabel: "Herb",
     primaryIntent: "Protection",
@@ -302,6 +316,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
     slug: "basil",
     name: "Basil",
     h1: "Basil in Witchcraft",
+    heroImage: {
+      src: "/images/basil-witchcraft-hero.webp",
+      alt: "Purple and black screenprint illustration of sweet basil leaves and botanical stem",
+      width: 1600,
+      height: 893,
+    },
     category: "herb",
     categoryLabel: "Herb",
     primaryIntent: "Protection",
@@ -538,6 +558,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
     slug: "salt",
     name: "Salt",
     h1: "Salt in Witchcraft",
+    heroImage: {
+      src: "/images/salt-witchcraft-specimen.webp",
+      alt: "Purple and black screenprint illustration of coarse ritual salt crystals spilling from a stone bowl",
+      width: 1600,
+      height: 893,
+    },
     category: "ingredient",
     categoryLabel: "Ritual Ingredient",
     primaryIntent: "Protection",
@@ -627,6 +653,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
     slug: "black",
     name: "Black Candle",
     h1: "Black Candle Meaning in Witchcraft",
+    heroImage: {
+      src: "/images/black-candle-witchcraft-hero.webp",
+      alt: "Purple and black screenprint illustration of a tall black pillar candle with ritual flame",
+      width: 1600,
+      height: 893,
+    },
     category: "candle",
     categoryLabel: "Candle",
     primaryIntent: "Protection",
@@ -1397,6 +1429,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
     slug: "lavender",
     name: "Lavender",
     h1: "Lavender in Witchcraft",
+    heroImage: {
+      src: "/images/lavender-witchcraft-hero.webp",
+      alt: "Purple and black screenprint illustration of flowering lavender spikes and slender leaves",
+      width: 1600,
+      height: 893,
+    },
     category: "herb",
     categoryLabel: "Herb",
     primaryIntent: "Peace & Emotional Healing",
@@ -1644,6 +1682,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
     slug: "sage",
     name: "Sage",
     h1: "Sage in Witchcraft",
+    heroImage: {
+      src: "/images/sage-witchcraft-hero.webp",
+      alt: "Purple and black screenprint illustration of pebbled garden sage leaves on a woody stem",
+      width: 1600,
+      height: 893,
+    },
     category: "herb",
     categoryLabel: "Herb",
     primaryIntent: "Purification & Wisdom",
@@ -1884,6 +1928,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
     slug: "cinnamon",
     name: "Cinnamon",
     h1: "Cinnamon in Witchcraft",
+    heroImage: {
+      src: "/images/cinnamon-witchcraft-hero.webp",
+      alt: "Purple and black screenprint illustration of curled cinnamon bark quills and radiating solar rays",
+      width: 1600,
+      height: 893,
+    },
     category: "herb",
     categoryLabel: "Herb",
     primaryIntent: "Prosperity & Speed",
@@ -2125,6 +2175,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
     slug: "bay-leaf",
     name: "Bay Leaf",
     h1: "Bay Leaf in Witchcraft",
+    heroImage: {
+      src: "/images/bay-leaf-witchcraft-hero.webp",
+      alt: "Purple and black screenprint illustration of whole bay laurel leaves with solar aura",
+      width: 1600,
+      height: 893,
+    },
     category: "herb",
     categoryLabel: "Herb",
     primaryIntent: "Manifestation & Protection",
@@ -2364,6 +2420,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
     slug: "mugwort",
     name: "Mugwort",
     h1: "Mugwort in Witchcraft",
+    heroImage: {
+      src: "/images/mugwort-witchcraft-hero.webp",
+      alt: "Purple and black screenprint illustration of pinnatifid mugwort leaves and night moths",
+      width: 1600,
+      height: 893,
+    },
     category: "herb",
     categoryLabel: "Herb",
     primaryIntent: "Divination & Psychic Protection",

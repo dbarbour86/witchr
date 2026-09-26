@@ -114,3 +114,107 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* =========================================================================
+   WITCHR SANCTUM OCCULT WORKSTATION DESIGN SYSTEM
+   ========================================================================= */
+
+/* Subtle distressed risograph / occult print texture */
+.sanctum-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* Occult Workstation Modular Panel */
+.sanctum-panel {
+  position: relative;
+  background-color: #080310;
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  box-shadow: 0 10px 35px -8px rgba(4, 1, 8, 0.95), inset 0 0 0 1px rgba(168, 85, 247, 0.08);
+  border-radius: 0.5rem;
+}
+
+.sanctum-panel-glow {
+  border-color: rgba(168, 85, 247, 0.45);
+  box-shadow: 0 14px 45px -8px rgba(4, 1, 8, 0.98), 0 0 25px -4px rgba(168, 85, 247, 0.25), inset 0 0 0 1px rgba(192, 132, 252, 0.15);
+}
+
+/* Corner bracket accents */
+.sanctum-corners {
+  position: relative;
+}
+.sanctum-corners::before,
+.sanctum-corners::after {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  pointer-events: none;
+  border-color: rgba(192, 132, 252, 0.5);
+  z-index: 10;
+}
+.sanctum-corners::before {
+  top: 4px;
+  left: 4px;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+.sanctum-corners::after {
+  bottom: 4px;
+  right: 4px;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+/* Ritual Parchment Document Styling (as seen in right-side working reference) */
+.sanctum-parchment {
+  position: relative;
+  background: radial-gradient(circle at 50% 15%, #130a21 0%, #090412 100%);
+  border: 1px solid rgba(192, 132, 252, 0.35);
+  box-shadow: 0 16px 50px -10px rgba(0, 0, 0, 0.95), inset 0 0 0 1px rgba(168, 85, 247, 0.15);
+}
+.sanctum-parchment::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Pantry Ingredient Pill */
+.sanctum-pill {
+  position: relative;
+  background-color: #0e071c;
+  border: 1px solid rgba(147, 51, 234, 0.3);
+  color: #e8e3f0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sanctum-pill:hover {
+  border-color: rgba(168, 85, 247, 0.65);
+  background-color: #170c2e;
+  color: #ffffff;
+}
+.sanctum-pill-active {
+  background: linear-gradient(135deg, #6b21a8 0%, #7e22ce 100%) !important;
+  border-color: #c084fc !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 16px -2px rgba(168, 85, 247, 0.45);
+}
+
+/* Electric Purple Buttons */
+.sanctum-btn-electric {
+  background: linear-gradient(135deg, #7e22ce 0%, #9333ea 100%);
+  color: #ffffff;
+  border: 1px solid #c084fc;
+  box-shadow: 0 0 20px -3px rgba(168, 85, 247, 0.5);
+  transition: all 0.2s ease;
+}
+.sanctum-btn-electric:hover {
+  background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
+  box-shadow: 0 0 28px -2px rgba(192, 132, 252, 0.7);
+  transform: translateY(-1px);
+}
+.sanctum-btn-electric:active {
+  transform: translateY(0px);
+}
+

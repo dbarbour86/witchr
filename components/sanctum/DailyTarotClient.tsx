@@ -16,7 +16,8 @@ import { recordSanctumTestEvent } from "@/lib/sanctum/test-events";
 import { SanctumCardBack } from "@/components/sanctum/SanctumCardBack";
 import { SanctumCardFace } from "@/components/sanctum/SanctumCardFace";
 import { FourPointStar, CelestialDivider, GrimoireStar, TarotCornerFlourish } from "@/components/OrnateFrames";
-import { Sparkles, BookOpen, Check, RefreshCw, Compass, ArrowRight, ArrowLeft } from "lucide-react";
+import { SanctumCrest, MoonPhaseStrip } from "@/components/sanctum/SanctumSymbols";
+import { Sparkles, BookOpen, Check, RefreshCw, Compass, ArrowRight, ArrowLeft, Printer } from "lucide-react";
 
 export function DailyTarotClient() {
   const [mounted, setMounted] = useState(false);
@@ -56,7 +57,7 @@ export function DailyTarotClient() {
     setIsDrawing(true);
     recordSanctumTestEvent("daily_tarot_started");
 
-    // Brief ceremonial timing (respecting natural anticipation)
+    // Brief ceremonial timing
     setTimeout(() => {
       const drawnCard = getRandomSanctumTarotCard();
       const today = getTodayLocalDateString();
@@ -112,262 +113,293 @@ export function DailyTarotClient() {
     setTimeout(() => setDevMessage(null), 3000);
   };
 
+  const handlePrint = () => {
+    if (typeof window !== "undefined") {
+      window.print();
+    }
+  };
+
   return (
-    <div className="space-y-12">
+    <div className="w-full space-y-6">
       {/* Dev Mode Reset Control (Only in non-production) */}
       {process.env.NODE_ENV !== "production" && (
-        <div className="p-3 rounded-lg bg-surface border border-dashed border-border-highlight flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
-          <div className="flex items-center gap-2 text-lavender-moon">
-            <span className="w-2 h-2 rounded-full bg-rust animate-pulse" />
-            <span className="font-semibold uppercase tracking-wider">Dev Test Bar</span>
-            <span className="text-bone-dim">·</span>
-            <span className="text-bone-dim">
+        <div className="p-3 rounded-lg bg-[#0e071c] border border-dashed border-purple-800/60 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+          <div className="flex items-center gap-2 text-purple-300">
+            <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+            <span className="font-semibold uppercase tracking-wider">Tester Dev Bar</span>
+            <span className="text-purple-600">·</span>
+            <span className="text-bone-muted">
               {reading ? `Active draw: ${reading.cardName} (${reading.localDate})` : "No draw active"}
             </span>
-            {devMessage && <span className="text-lavender-light italic">({devMessage})</span>}
+            {devMessage && <span className="text-purple-200 italic">({devMessage})</span>}
           </div>
           <button
             type="button"
             onClick={handleDevReset}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface-elevated hover:bg-surface-hover text-lavender-light border border-border-ornate text-[11px] uppercase tracking-wider transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#1c0c36] hover:bg-purple-900 text-purple-200 border border-purple-700 text-[10px] uppercase tracking-wider transition-colors"
           >
             <RefreshCw className="w-3 h-3" />
-            <span>Reset Today's Draw</span>
+            <span>Reset Today&apos;s Draw</span>
           </button>
         </div>
       )}
 
-      {/* Main Title & Context Header */}
-      <div className="text-center max-w-2xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface border border-border-highlight text-lavender-moon text-xs font-mono uppercase tracking-ceremonial">
-          <Sparkles className="w-3 h-3" />
-          <span>{reading ? "Today’s Arcana" : "Single-Card Divination"}</span>
-        </div>
+      {/* Occult Split Altar Workstation */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* =========================================================================
+            LEFT COLUMN: THE CARD ALTAR
+           ========================================================================= */}
+        <section
+          className="lg:col-span-5 sanctum-panel sanctum-corners p-6 sm:p-8 border border-purple-900/60 flex flex-col items-center justify-between gap-6 min-h-[560px]"
+          aria-labelledby="card-altar-heading"
+        >
+          {/* Altar Header */}
+          <div className="w-full flex items-center justify-between border-b border-purple-900/40 pb-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-purple-400" />
+              <h2
+                id="card-altar-heading"
+                className="font-serif text-sm font-bold uppercase tracking-[0.18em] text-transparent bg-clip-text bg-gradient-to-r from-bone to-purple-200"
+              >
+                The Card Altar
+              </h2>
+            </div>
+            <span className="text-[10px] font-mono uppercase tracking-widest text-purple-400/80">
+              {reading ? "Drawn Today" : "Single Inquest"}
+            </span>
+          </div>
 
-        <h1 className="text-3xl sm:text-5xl font-display font-bold text-bone tracking-wide celestial-glow">
-          {reading ? "TODAY’S CARD" : "DAILY TAROT"}
-        </h1>
+          {/* Interactive Card Presentation Altar */}
+          <div className="relative flex flex-col items-center justify-center my-auto py-2 w-full">
+            <div
+              className={`w-full flex justify-center transition-all duration-700 ease-out transform-gpu ${
+                isDrawing
+                  ? "scale-95 opacity-70 rotate-1 shadow-[0_0_30px_rgba(168,85,247,0.5)]"
+                  : "scale-100 opacity-100 rotate-0"
+              }`}
+            >
+              {reading && card ? (
+                <div className="animate-in fade-in zoom-in-95 duration-500 flex flex-col items-center gap-3">
+                  <SanctumCardFace card={card} size="large" />
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-purple-300 flex items-center gap-1.5 pt-1">
+                    <FourPointStar className="w-2.5 h-2.5 text-purple-400" />
+                    <span>Drawn for {reading.localDate}</span>
+                  </span>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-3">
+                  <SanctumCardBack
+                    size="large"
+                    label="The Oracle Deck"
+                    sublabel={isDrawing ? "Shuffling the Arcana..." : "Face Down // Major Arcana"}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
 
-        <p className="text-sm sm:text-base text-bone-muted font-sans leading-relaxed">
-          {reading
-            ? "Your card for today has been drawn. Use this mirror to examine your posture, evaluate unconscious friction, and navigate your day with grounded intention."
-            : "Draw one card for reflection and guidance. Approach this draw not to predict what will happen to you today, but to reveal what perspective will serve you best."}
-        </p>
-
-        <CelestialDivider className="max-w-xs mx-auto my-4" />
-      </div>
-
-      {/* Interactive Card Stage */}
-      <div className="tarot-frame p-6 sm:p-12 flex flex-col items-center justify-center gap-8 shadow-card-tarot relative overflow-hidden">
-        {/* Subtle decorative stars */}
-        <div className="absolute top-2.5 left-2.5 pointer-events-none opacity-40">
-          <TarotCornerFlourish className="w-4 h-4 text-lavender-moon" />
-        </div>
-        <div className="absolute top-2.5 right-2.5 pointer-events-none opacity-40 rotate-90">
-          <TarotCornerFlourish className="w-4 h-4 text-lavender-moon" />
-        </div>
-
-        {/* Card Display Container with 3D Flip transition */}
-        <div className="relative flex flex-col items-center justify-center min-h-[440px] w-full max-w-[320px]">
-          {/* Card Presentation */}
-          <div
-            className={`w-full flex justify-center transition-all duration-700 ease-out transform-gpu motion-reduce:transition-none ${
-              isDrawing
-                ? "scale-95 opacity-70 rotate-1 shadow-glow-purple"
-                : "scale-100 opacity-100 rotate-0"
-            }`}
-          >
-            {reading && card ? (
-              <div className="animate-in fade-in zoom-in-95 duration-500 flex flex-col items-center gap-3">
-                <SanctumCardFace card={card} size="large" />
-                <span className="text-[11px] font-mono uppercase tracking-ceremonial text-lavender-moon flex items-center gap-1.5">
-                  <FourPointStar className="w-2.5 h-2.5" />
-                  <span>Drawn for {reading.localDate}</span>
-                </span>
+          {/* Action Button & Instructions */}
+          <div className="w-full flex flex-col items-center gap-3 text-center pt-3 border-t border-purple-900/40">
+            {!reading ? (
+              <div className="w-full space-y-3">
+                <p className="text-[11px] text-bone-muted font-sans max-w-xs mx-auto leading-relaxed">
+                  Hold a question or simply invite perspective on where your energy is focused today.
+                </p>
+                <button
+                  type="button"
+                  onClick={handleDraw}
+                  disabled={isDrawing || !mounted}
+                  className="w-full py-3.5 px-6 rounded-xl sanctum-btn-electric font-mono text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                  aria-label="Draw your daily tarot card"
+                >
+                  <FourPointStar className={`w-3.5 h-3.5 ${isDrawing ? "animate-spin" : ""}`} />
+                  <span>{isDrawing ? "INVOKING ARCANA..." : "DRAW TODAY'S CARD"}</span>
+                  <FourPointStar className={`w-3.5 h-3.5 ${isDrawing ? "animate-spin" : ""}`} />
+                </button>
               </div>
             ) : (
-              <div className="flex flex-col items-center gap-3">
-                <SanctumCardBack
-                  size="large"
-                  label="The Oracle Deck"
-                  sublabel={isDrawing ? "Shuffling the Arcana..." : "Face Down // Arcana Arcana"}
-                />
+              <div className="w-full space-y-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#120722] border border-purple-800 text-[10px] font-mono uppercase tracking-wider text-purple-300">
+                  <Check className="w-3 h-3 text-emerald-400" />
+                  <span>Daily Inquest Complete</span>
+                </div>
+                <p className="text-[11px] text-bone-dim font-sans">
+                  Each seeker receives one diagnostic card draw per calendar day. Return tomorrow for your next reflection.
+                </p>
               </div>
             )}
           </div>
-        </div>
+        </section>
 
-        {/* Action Controls */}
-        <div className="flex flex-col items-center gap-4 text-center max-w-md">
-          {!reading ? (
-            <div className="space-y-4">
-              <div className="space-y-1">
-                <span className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon block">
-                  HOLD YOUR QUESTION IN MIND
-                </span>
-                <p className="text-xs text-bone-muted font-sans max-w-sm">
-                  A specific question is optional. You may also simply invite whatever perspective is most needed for your current circumstance.
+        {/* =========================================================================
+            RIGHT COLUMN: DIAGNOSTIC INTERPRETATION FOLIO
+           ========================================================================= */}
+        <section
+          className="lg:col-span-7 sanctum-parchment rounded-xl p-6 sm:p-9 border border-purple-500/40 relative shadow-2xl min-h-[560px] flex flex-col justify-between"
+          aria-labelledby="diagnostic-folio-heading"
+        >
+          {/* Ornate Corner Flourishes */}
+          <div className="absolute top-2 left-2 pointer-events-none opacity-60">
+            <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
+          </div>
+          <div className="absolute top-2 right-2 pointer-events-none opacity-60 rotate-90">
+            <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
+          </div>
+          <div className="absolute bottom-2 left-2 pointer-events-none opacity-60 -rotate-90">
+            <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
+          </div>
+          <div className="absolute bottom-2 right-2 pointer-events-none opacity-60 rotate-180">
+            <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
+          </div>
+
+          {/* DORMANT STATE: Waiting for Draw */}
+          {!reading && (
+            <div className="my-auto text-center space-y-6 py-12 px-4 relative z-10">
+              <div className="w-20 h-20 mx-auto rounded-full bg-[#130728] border border-purple-600/50 flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.35)]">
+                <SanctumCrest className="w-14 h-14" />
+              </div>
+
+              <div className="space-y-2 max-w-md mx-auto">
+                <div className="text-[10px] font-mono uppercase tracking-[0.24em] text-purple-300">
+                  Station // Diagnostic Folio
+                </div>
+                <h3
+                  id="diagnostic-folio-heading"
+                  className="font-serif text-2xl sm:text-3xl font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200"
+                >
+                  The Arcana Mirror
+                </h3>
+                <p className="text-xs sm:text-sm text-bone-muted font-sans leading-relaxed">
+                  Draw a card from the altar to reveal its traditional symbolism, psychological inquiry, diagnostic blind spots, and grounded practical application for today.
                 </p>
               </div>
 
-              <button
-                type="button"
-                onClick={handleDraw}
-                disabled={isDrawing || !mounted}
-                className="group relative inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl bg-surface-elevated hover:bg-surface-hover active:scale-[0.98] text-lavender-light border border-border-ornate hover:border-lavender font-mono text-xs uppercase tracking-ceremonial font-semibold shadow-glow-subtle hover:shadow-glow-purple transition-all duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 min-h-[44px]"
-                aria-label="Draw your daily tarot card"
-              >
-                <FourPointStar className={`w-3 h-3 text-lavender-moon ${isDrawing ? "animate-spin" : ""}`} />
-                <span>{isDrawing ? "INVOKING ARCANA..." : "DRAW YOUR CARD"}</span>
-                <FourPointStar className={`w-3 h-3 text-lavender-moon ${isDrawing ? "animate-spin" : ""}`} />
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              <span className="text-xs font-mono uppercase tracking-ceremonial text-bone-dim">
-                Daily Allotment Claimed
-              </span>
-              <p className="text-xs text-bone-muted font-sans">
-                Each visitor receives one daily reflection card per calendar day. Return tomorrow for your next draw.
-              </p>
+              <div className="flex justify-center pt-2">
+                <MoonPhaseStrip />
+              </div>
             </div>
           )}
-        </div>
-      </div>
 
-      {/* Structured Reading Presentation (When Card is Revealed) */}
-      {reading && card && (
-        <div className="tarot-frame p-6 sm:p-10 md:p-12 shadow-card-tarot space-y-10 animate-in fade-in duration-500">
-          {/* Card Header & Numeral */}
-          <div className="border-b border-border-subtle pb-6 space-y-2">
-            <div className="flex items-center justify-between text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">
-              <span>Position I // Daily Mirror</span>
-              <span>Major Arcana</span>
-            </div>
+          {/* ACTIVE STATE: Card Revealed */}
+          {reading && card && (
+            <article className="space-y-7 relative z-10">
+              {/* Header */}
+              <header className="border-b border-purple-900/40 pb-5 space-y-2">
+                <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300">
+                  <span>POSITION I // DAILY MIRROR</span>
+                  <span>MAJOR ARCANA</span>
+                </div>
 
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-bone celestial-glow">
-              {card.name} — {card.numeral}
-            </h2>
+                <div className="flex items-baseline justify-between gap-4">
+                  <h2
+                    id="diagnostic-folio-heading"
+                    className="font-serif text-2xl sm:text-4xl font-bold uppercase tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200 drop-shadow-[0_0_12px_rgba(192,132,252,0.3)]"
+                  >
+                    {card.name} — {card.numeral}
+                  </h2>
+                </div>
 
-            {/* Keywords */}
-            <div className="pt-2 flex flex-wrap gap-2 text-xs font-mono text-lavender-light">
-              {card.shortKeywords.map((kw, i) => (
-                <span
-                  key={i}
-                  className="px-3 py-1 rounded-full bg-surface-elevated border border-border-ornate/60"
-                >
-                  {kw}
+                {/* Keywords Chips */}
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {card.shortKeywords.map((kw, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2.5 py-0.5 rounded-full bg-[#130728] border border-purple-700/60 text-[10px] font-mono uppercase tracking-wider text-purple-200"
+                    >
+                      {kw}
+                    </span>
+                  ))}
+                </div>
+              </header>
+
+              {/* Interpretation Section 1: The Card */}
+              <section className="space-y-1.5" aria-labelledby="the-card-heading">
+                <h4 id="the-card-heading" className="text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300 font-bold">
+                  The Card
+                </h4>
+                <p className="text-xs sm:text-sm text-bone-muted font-sans leading-relaxed bg-[#0a0414] p-3.5 rounded-lg border border-purple-900/40">
+                  {reading.interpretation.theCard}
+                </p>
+              </section>
+
+              {/* Interpretation Section 2: What This May Reflect Today */}
+              <section className="space-y-1.5" aria-labelledby="reflect-heading">
+                <h4 id="reflect-heading" className="text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300 font-bold">
+                  What This May Reflect Today
+                </h4>
+                <p className="text-xs sm:text-sm text-bone font-sans leading-relaxed bg-[#0c051a] p-3.5 rounded-lg border border-purple-900/40">
+                  {reading.interpretation.whatThisMayReflectToday}
+                </p>
+              </section>
+
+              {/* Interpretation Section 3: Daily Inquiry */}
+              <section className="p-4 rounded-xl bg-[#110624] border border-purple-700/50 space-y-1.5 shadow-[0_0_15px_rgba(88,28,135,0.25)]">
+                <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300 font-bold flex items-center gap-1.5">
+                  <FourPointStar className="w-3 h-3 text-purple-400" />
+                  <span>Daily Inquiry</span>
                 </span>
-              ))}
-            </div>
-          </div>
+                <p className="font-serif text-sm sm:text-base text-purple-100 italic leading-relaxed">
+                  “{reading.interpretation.reflectionPrompt}”
+                </p>
+              </section>
 
-          {/* Section 1: The Card */}
-          <section className="space-y-3" aria-labelledby="the-card-heading">
-            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">
-              <FourPointStar className="w-2.5 h-2.5" />
-              <h3 id="the-card-heading" className="font-semibold">
-                THE CARD
-              </h3>
-            </div>
-            <p className="text-sm sm:text-base text-bone font-serif leading-relaxed italic">
-              {reading.interpretation.theCard}
-            </p>
-          </section>
+              {/* Interpretation Section 4: Practical Takeaway */}
+              <section className="space-y-1.5" aria-labelledby="practical-heading">
+                <h4 id="practical-heading" className="text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300 font-bold">
+                  Practical Takeaway
+                </h4>
+                <p className="text-xs sm:text-sm text-bone-muted font-sans leading-relaxed bg-[#0a0414] p-3.5 rounded-lg border border-purple-900/40">
+                  {reading.interpretation.practicalTakeaway}
+                </p>
+              </section>
 
-          {/* Section 2: What This May Reflect Today */}
-          <section className="space-y-3" aria-labelledby="reflect-heading">
-            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">
-              <FourPointStar className="w-2.5 h-2.5" />
-              <h3 id="reflect-heading" className="font-semibold">
-                WHAT THIS MAY REFLECT TODAY
-              </h3>
-            </div>
-            <p className="text-sm sm:text-base text-bone-muted font-sans leading-relaxed">
-              {reading.interpretation.whatThisMayReflectToday}
-            </p>
-          </section>
+              {/* Actions Footer */}
+              <div className="pt-5 border-t border-purple-900/40 flex flex-wrap items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={handleSaveToGrimoire}
+                  disabled={isSaved}
+                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-mono text-xs uppercase tracking-wider font-bold transition-all ${
+                    isSaved
+                      ? "bg-purple-950/80 text-purple-300 border border-purple-600/50 cursor-default"
+                      : "sanctum-btn-electric"
+                  }`}
+                >
+                  {isSaved ? (
+                    <>
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Saved to Grimoire</span>
+                    </>
+                  ) : (
+                    <>
+                      <BookOpen className="w-3.5 h-3.5" />
+                      <span>Save to Grimoire</span>
+                    </>
+                  )}
+                </button>
 
-          {/* Section 3: Consider (Reflection Prompt) */}
-          <section className="p-6 rounded-xl bg-surface-elevated/70 border border-border-ornate space-y-2 shadow-subtle" aria-labelledby="consider-heading">
-            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">
-              <FourPointStar className="w-2.5 h-2.5" />
-              <h3 id="consider-heading" className="font-semibold">
-                CONSIDER
-              </h3>
-            </div>
-            <p className="font-serif text-base sm:text-lg text-bone italic leading-relaxed">
-              “{reading.interpretation.reflectionPrompt}”
-            </p>
-          </section>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handlePrint}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#120722] hover:bg-[#1c0c36] border border-purple-900/60 text-purple-300 hover:text-white text-xs font-mono uppercase tracking-wider transition-colors"
+                  >
+                    <Printer className="w-3.5 h-3.5 text-purple-400" />
+                    <span>Print Card</span>
+                  </button>
 
-          {/* Section 4: Carry This With You (Practical Takeaway) */}
-          <section className="p-6 rounded-xl bg-surface border border-border-highlight space-y-2" aria-labelledby="carry-heading">
-            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-ceremonial text-lavender-light">
-              <FourPointStar className="w-2.5 h-2.5" />
-              <h3 id="carry-heading" className="font-semibold">
-                CARRY THIS WITH YOU
-              </h3>
-            </div>
-            <p className="text-sm sm:text-base text-bone-muted font-sans leading-relaxed">
-              {reading.interpretation.practicalTakeaway}
-            </p>
-          </section>
-
-          {/* Save to Grimoire Action Bar */}
-          <div className="pt-6 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="text-center sm:text-left space-y-1">
-              <h4 className="font-serif text-base font-semibold text-bone">
-                Archival Ledger
-              </h4>
-              <p className="text-xs text-bone-muted font-sans">
-                Record this reading into your private Sanctum Grimoire for longitudinal reflection.
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleSaveToGrimoire}
-              disabled={isSaved}
-              className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-xs font-mono uppercase tracking-ceremonial font-semibold transition-all min-h-[44px] ${
-                isSaved
-                  ? "bg-surface-elevated text-lavender-light border border-border-highlight cursor-default"
-                  : "bg-surface-elevated hover:bg-surface-hover text-lavender-light border border-border-ornate hover:border-lavender shadow-glow-subtle cursor-pointer"
-              }`}
-              aria-label={isSaved ? "Reading bound to your grimoire" : "Save reading to grimoire"}
-            >
-              {isSaved ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-lavender-moon" />
-                  <span>BOUND TO YOUR GRIMOIRE</span>
-                </>
-              ) : (
-                <>
-                  <BookOpen className="w-3.5 h-3.5 text-lavender-moon" />
-                  <span>SAVE TO GRIMOIRE</span>
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Bottom Cross-Links & Navigation */}
-      <div className="p-5 rounded-xl bg-surface/60 border border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono">
-        <Link
-          href="/sanctum"
-          className="inline-flex items-center gap-1.5 text-bone-muted hover:text-lavender-light transition-colors uppercase tracking-ceremonial"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Return to Sanctum Hub</span>
-        </Link>
-        <Link
-          href="/sanctum/tarot/three-card"
-          className="inline-flex items-center gap-1.5 text-lavender-moon hover:text-lavender-light transition-colors uppercase tracking-ceremonial font-semibold"
-        >
-          <span>Explore Three-Card Spread</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </Link>
+                  <Link
+                    href="/sanctum/tarot/three-card"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#120722] hover:bg-[#1c0c36] border border-purple-900/60 text-purple-300 hover:text-white text-xs font-mono uppercase tracking-wider transition-colors"
+                  >
+                    <span>3-Card Spread</span>
+                    <ArrowRight className="w-3 h-3 text-purple-400" />
+                  </Link>
+                </div>
+              </div>
+            </article>
+          )}
+        </section>
       </div>
     </div>
   );

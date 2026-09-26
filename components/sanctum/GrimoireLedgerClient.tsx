@@ -20,6 +20,7 @@ import {
   GrimoireStar,
   TarotCornerFlourish,
 } from "@/components/OrnateFrames";
+import { SanctumCrest, MoonPhaseStrip } from "@/components/sanctum/SanctumSymbols";
 import { SanctumMarksSection } from "@/components/sanctum/SanctumMarksSection";
 import {
   BookOpen,
@@ -32,7 +33,8 @@ import {
   AlertTriangle,
   ArrowRight,
   ShieldAlert,
-  HelpCircle,
+  Printer,
+  Calendar,
 } from "lucide-react";
 
 export function GrimoireLedgerClient() {
@@ -108,74 +110,75 @@ export function GrimoireLedgerClient() {
     refreshEntries();
   };
 
+  const handlePrintModal = () => {
+    if (typeof window !== "undefined") {
+      window.print();
+    }
+  };
+
   if (!mounted) {
     return (
-      <div className="text-center py-20 text-bone-muted font-mono text-xs">
-        <FourPointStar className="w-4 h-4 text-lavender-moon animate-spin mx-auto mb-3" />
-        <span>Accessing Private Grimoire Ledger...</span>
+      <div className="text-center py-20 text-purple-300 font-mono text-xs">
+        <FourPointStar className="w-5 h-5 text-purple-400 animate-spin mx-auto mb-3" />
+        <span>Accessing Private Grimoire Archive...</span>
       </div>
     );
   }
 
   return (
-    <div className="space-y-12">
-      {/* Title & Context */}
-      <div className="text-center max-w-2xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface border border-border-highlight text-lavender-moon text-xs font-mono uppercase tracking-ceremonial">
-          <BookOpen className="w-3.5 h-3.5" />
-          <span>Archival Ledger</span>
+    <div className="w-full space-y-8">
+      {/* Title & Archival Context */}
+      <div className="sanctum-panel sanctum-corners p-6 sm:p-8 border border-purple-900/60 relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="space-y-2 text-center sm:text-left">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#130728] border border-purple-800/60 text-purple-300 text-[10px] font-mono uppercase tracking-[0.24em]">
+            <BookOpen className="w-3 h-3 text-purple-400" />
+            <span>Private Sanctum Archive</span>
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200 tracking-wide uppercase">
+            My Grimoire Ledger
+          </h1>
+
+          <p className="text-xs sm:text-sm text-bone-muted font-sans leading-relaxed max-w-xl">
+            Your private occult archive within the Sanctum. Saved daily tarot reflections, three-card diagnostic spreads, and synthesized workings are preserved here for longitudinal study.
+          </p>
         </div>
 
-        <h1 className="text-3xl sm:text-5xl font-display font-bold text-bone tracking-wide celestial-glow">
-          MY GRIMOIRE
-        </h1>
-
-        <p className="text-sm sm:text-base text-bone-muted font-sans leading-relaxed">
-          Your private record within the Sanctum. Saved daily tarot reflections, three-card diagnostic spreads, and synthesized workings are archived here for longitudinal study.
-        </p>
-
-        <CelestialDivider className="max-w-xs mx-auto my-4" />
+        <div className="hidden sm:flex flex-col items-center justify-center p-3.5 rounded-xl bg-[#0b0416] border border-purple-900/60 text-center shrink-0">
+          <SanctumCrest className="w-12 h-12 mb-1" />
+          <span className="text-[9px] font-mono tracking-widest text-purple-300 uppercase">
+            VAULT ACTIVE
+          </span>
+        </div>
       </div>
 
-      {/* Sanctum Progression & Marks */}
+      {/* Sanctum Progression & Marks Section */}
       <SanctumMarksSection />
 
-      {/* Grimoire Archival Records */}
-      <div className="pt-6 border-t border-border-subtle/80 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-display font-bold text-bone tracking-wide">
-              SAVED RECORDS & READINGS
-            </h2>
-            <p className="text-xs text-bone-muted font-sans mt-0.5">
-              Individual divination archives and synthesized workings stored in this browser.
-            </p>
-          </div>
-        </div>
-
-        {/* Stats Summary & Filter Tabs Bar (Shown when entries exist) */}
-        {totalCount > 0 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-surface/80 border border-border-subtle">
+      {/* Grimoire Archival Records Filter & Grid */}
+      <div className="space-y-6 pt-4">
+        {/* Section Heading & Filter Bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-[#090314] border border-purple-900/50">
           {/* Subtle Stats */}
-          <div className="flex items-center gap-4 text-xs font-mono text-bone-dim">
+          <div className="flex items-center gap-4 text-xs font-mono text-purple-300/80">
             <span className="flex items-center gap-1.5">
-              <span className="text-lavender-light font-semibold">{totalCount}</span>
+              <span className="text-purple-200 font-bold text-sm">{totalCount}</span>
               <span>Total Entries</span>
             </span>
-            <span>·</span>
+            <span className="text-purple-700">·</span>
             <span className="flex items-center gap-1.5">
-              <span className="text-lavender-moon font-semibold">{tarotCount}</span>
+              <span className="text-purple-200 font-bold">{tarotCount}</span>
               <span>Tarot</span>
             </span>
-            <span>·</span>
+            <span className="text-purple-700">·</span>
             <span className="flex items-center gap-1.5">
-              <span className="text-lavender-moon font-semibold">{workingsCount}</span>
+              <span className="text-purple-200 font-bold">{workingsCount}</span>
               <span>Workings</span>
             </span>
           </div>
 
           {/* Filter Chips */}
-          <div className="flex items-center gap-1.5 bg-background p-1 rounded-lg border border-border-highlight" role="tablist">
+          <div className="flex items-center gap-1.5 bg-[#0e071c] p-1 rounded-lg border border-purple-900/60" role="tablist">
             {(["ALL", "TAROT", "WORKINGS"] as const).map((tab) => {
               const isActive = filter === tab;
               return (
@@ -187,8 +190,8 @@ export function GrimoireLedgerClient() {
                   onClick={() => setFilter(tab)}
                   className={`px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wider transition-colors ${
                     isActive
-                      ? "bg-surface-elevated text-lavender-light border border-border-ornate shadow-subtle font-semibold"
-                      : "text-bone-muted hover:text-bone"
+                      ? "bg-purple-900/80 text-white border border-purple-500 font-bold shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                      : "text-purple-300/70 hover:text-white"
                   }`}
                 >
                   {tab === "ALL" && `All (${totalCount})`}
@@ -199,289 +202,281 @@ export function GrimoireLedgerClient() {
             })}
           </div>
         </div>
-      )}
 
-      {/* Empty State Presentation */}
-      {filteredEntries.length === 0 && (
-        <div className="tarot-frame p-8 sm:p-14 text-center shadow-card-tarot space-y-6 relative overflow-hidden">
-          <div className="absolute top-2.5 left-2.5 pointer-events-none opacity-40">
-            <TarotCornerFlourish className="w-4 h-4 text-lavender-moon" />
-          </div>
-          <div className="absolute top-2.5 right-2.5 pointer-events-none opacity-40 rotate-90">
-            <TarotCornerFlourish className="w-4 h-4 text-lavender-moon" />
-          </div>
+        {/* Empty State Presentation */}
+        {filteredEntries.length === 0 && (
+          <div className="sanctum-panel sanctum-corners p-8 sm:p-14 text-center border border-purple-900/60 space-y-6 relative overflow-hidden">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-[#130728] border border-purple-700/60 flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+              <BookOpen className="w-8 h-8 text-purple-300" />
+            </div>
 
-          <div className="w-16 h-16 mx-auto rounded-2xl bg-surface-elevated border border-border-ornate/60 flex items-center justify-center shadow-glow-subtle">
-            <BookOpen className="w-8 h-8 text-lavender-dim" />
-          </div>
+            <div className="space-y-2 max-w-md mx-auto">
+              <h3 className="font-serif text-2xl font-bold uppercase tracking-wide text-bone">
+                {totalCount === 0 ? "Your Ledger is Empty" : "No Entries in this Category"}
+              </h3>
+              <p className="text-xs sm:text-sm text-bone-muted font-sans leading-relaxed">
+                {totalCount === 0
+                  ? "Saved daily tarot readings, diagnostic spreads, and customized workings will be recorded here once you perform active inquests in the Sanctum."
+                  : `You currently have no saved ${filter.toLowerCase()} records. Select another category or perform a new working.`}
+              </p>
+            </div>
 
-          <div className="space-y-2 max-w-md mx-auto">
-            <h2 className="font-serif text-2xl font-semibold text-bone">
-              {totalCount === 0 ? "Your Ledger is Empty" : "No Entries in this Category"}
-            </h2>
-            <p className="text-sm text-bone-muted font-sans leading-relaxed">
-              {totalCount === 0
-                ? "Saved daily tarot readings, diagnostic spreads, and customized workings will be recorded here once you perform active inquests in the Sanctum."
-                : `You currently have no saved ${filter.toLowerCase()} records. Select another category or perform a new working.`}
+            {/* Quick Action Buttons */}
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/sanctum/tarot"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg sanctum-btn-electric text-xs font-mono uppercase tracking-wider font-bold"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Draw a Daily Card</span>
+              </Link>
+              <Link
+                href="/sanctum/tarot/three-card"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#140826] hover:bg-[#1f0d38] text-purple-200 border border-purple-800 text-xs font-mono uppercase tracking-wider"
+              >
+                <Compass className="w-3.5 h-3.5 text-purple-400" />
+                <span>Three-Card Reading</span>
+              </Link>
+              <Link
+                href="/sanctum/working"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#140826] hover:bg-[#1f0d38] text-purple-200 border border-purple-800 text-xs font-mono uppercase tracking-wider"
+              >
+                <Wand2 className="w-3.5 h-3.5 text-purple-400" />
+                <span>Create a Working</span>
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Archive Entries Grid */}
+        {filteredEntries.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filteredEntries.map((entry) => {
+              if (entry.type === "daily") {
+                const d = entry as SanctumDailyReading;
+                return (
+                  <article
+                    key={d.id}
+                    className="sanctum-panel sanctum-corners p-6 flex flex-col justify-between hover:border-purple-400/80 hover:shadow-[0_0_20px_rgba(168,85,247,0.25)] transition-all duration-200 group"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-purple-300">
+                        <span className="flex items-center gap-1.5 font-bold">
+                          <Sparkles className="w-3 h-3 text-purple-400" />
+                          <span>Daily Tarot</span>
+                        </span>
+                        <span className="text-purple-400/80">{d.localDate}</span>
+                      </div>
+
+                      <h3 className="font-serif text-lg font-bold text-bone group-hover:text-purple-200 transition-colors uppercase tracking-wide">
+                        {d.cardName} — {d.cardNumeral}
+                      </h3>
+
+                      <div className="flex flex-wrap gap-1 text-[9px] font-mono text-purple-300/80">
+                        {d.shortKeywords.map((kw, i) => (
+                          <span key={i} className="px-2 py-0.5 rounded bg-[#130728] border border-purple-900/60">
+                            {kw}
+                          </span>
+                        ))}
+                      </div>
+
+                      <p className="text-xs text-bone-muted font-sans line-clamp-3 leading-relaxed pt-1">
+                        {d.interpretation.whatThisMayReflectToday}
+                      </p>
+                    </div>
+
+                    <div className="mt-5 pt-3 border-t border-purple-900/40 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => setActiveEntry(d)}
+                        className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-purple-300 hover:text-white font-bold transition-colors"
+                      >
+                        <span>Open Entry</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setEntryToDelete(d)}
+                        className="p-1.5 rounded hover:bg-purple-950/60 text-purple-400/60 hover:text-red-400 transition-colors"
+                        aria-label={`Remove ${d.cardName} from grimoire`}
+                        title="Remove from Grimoire"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </article>
+                );
+              }
+
+              if (entry.type === "three-card") {
+                const tc = entry as SanctumThreeCardReading;
+                return (
+                  <article
+                    key={tc.id}
+                    className="sanctum-panel sanctum-corners p-6 flex flex-col justify-between hover:border-purple-400/80 hover:shadow-[0_0_20px_rgba(168,85,247,0.25)] transition-all duration-200 group"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-purple-300">
+                        <span className="flex items-center gap-1.5 font-bold">
+                          <Compass className="w-3 h-3 text-purple-400" />
+                          <span>Triad Spread</span>
+                        </span>
+                        <span className="text-purple-400/80">{tc.localDate}</span>
+                      </div>
+
+                      {tc.question && (
+                        <p className="text-xs font-serif italic text-purple-200 line-clamp-1">
+                          “{tc.question}”
+                        </p>
+                      )}
+
+                      <div className="space-y-1 text-xs font-mono">
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="text-purple-400/80">I. Situation:</span>
+                          <span className="font-semibold text-bone">
+                            {tc.positions.situation.cardName}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="text-purple-400/80">II. Challenge:</span>
+                          <span className="font-semibold text-bone">
+                            {tc.positions.challenge.cardName}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="text-purple-400/80">III. Guidance:</span>
+                          <span className="font-semibold text-bone">
+                            {tc.positions.guidance.cardName}
+                          </span>
+                        </div>
+                      </div>
+
+                      <p className="text-xs text-bone-muted font-sans line-clamp-2 leading-relaxed pt-1">
+                        {tc.combinedSynthesis}
+                      </p>
+                    </div>
+
+                    <div className="mt-5 pt-3 border-t border-purple-900/40 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => setActiveEntry(tc)}
+                        className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-purple-300 hover:text-white font-bold transition-colors"
+                      >
+                        <span>Open Entry</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setEntryToDelete(tc)}
+                        className="p-1.5 rounded hover:bg-purple-950/60 text-purple-400/60 hover:text-red-400 transition-colors"
+                        aria-label="Remove three-card reading from grimoire"
+                        title="Remove from Grimoire"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </article>
+                );
+              }
+
+              if (entry.type === "working") {
+                const w = entry as SanctumWorkingRecord;
+                return (
+                  <article
+                    key={w.id}
+                    className="sanctum-panel sanctum-corners p-6 flex flex-col justify-between hover:border-purple-400/80 hover:shadow-[0_0_20px_rgba(168,85,247,0.25)] transition-all duration-200 group"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-purple-300">
+                        <span className="flex items-center gap-1.5 font-bold">
+                          <Wand2 className="w-3 h-3 text-purple-400" />
+                          <span>Working</span>
+                        </span>
+                        <span className="text-purple-400/80">{w.localDate}</span>
+                      </div>
+
+                      <h3 className="font-serif text-lg font-bold text-bone group-hover:text-purple-200 transition-colors line-clamp-1 uppercase">
+                        {w.title}
+                      </h3>
+
+                      <div className="text-[11px] font-mono text-purple-300/80">
+                        <span>Focus: </span>
+                        <span className="text-purple-100 font-medium">{w.intention}</span>
+                      </div>
+
+                      <div className="flex flex-wrap gap-1 text-[9px] font-mono text-purple-300/80">
+                        {w.usedIngredients.map((item, i) => (
+                          <span key={i} className="px-2 py-0.5 rounded bg-[#130728] border border-purple-900/60">
+                            ✓ {item}
+                          </span>
+                        ))}
+                      </div>
+
+                      <p className="text-xs text-bone-muted font-sans line-clamp-2 leading-relaxed pt-1">
+                        {w.practicalTakeaway || w.intentionDescription}
+                      </p>
+                    </div>
+
+                    <div className="mt-5 pt-3 border-t border-purple-900/40 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => setActiveEntry(w)}
+                        className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-purple-300 hover:text-white font-bold transition-colors"
+                      >
+                        <span>Open Entry</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setEntryToDelete(w)}
+                        className="p-1.5 rounded hover:bg-purple-950/60 text-purple-400/60 hover:text-red-400 transition-colors"
+                        aria-label={`Remove ${w.title} from grimoire`}
+                        title="Remove from Grimoire"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </article>
+                );
+              }
+
+              return null;
+            })}
+          </div>
+        )}
+
+        {/* Destructive Purge Section & Privacy Notice */}
+        <div className="mt-14 pt-8 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-purple-300/70">
+          <div className="text-center sm:text-left space-y-1">
+            <p className="flex items-center gap-1.5 justify-center sm:justify-start">
+              <FourPointStar className="w-3 h-3 text-purple-400" />
+              <span>Local Storage Notice: Your saved Grimoire entries are stored in this browser.</span>
+            </p>
+            <p className="text-[11px] text-purple-400/60">
+              When consulting the Oracle, only active card or working parameters are sent securely for interpretation. Clearing browser data will erase this ledger.
             </p>
           </div>
 
-          {/* Quick Action Buttons */}
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="/sanctum/tarot"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-surface-elevated hover:bg-surface-hover text-lavender-light border border-border-ornate hover:border-lavender text-xs font-mono uppercase tracking-ceremonial font-semibold shadow-glow-subtle transition-all min-h-[44px]"
+          {totalCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowPurgeModal(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-purple-900/60 hover:border-red-600 text-purple-300 hover:text-red-400 text-[11px] uppercase tracking-wider transition-colors shrink-0"
             >
-              <Sparkles className="w-3.5 h-3.5 text-lavender-moon" />
-              <span>DRAW A DAILY CARD</span>
-            </Link>
-            <Link
-              href="/sanctum/tarot/three-card"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-surface hover:bg-surface-elevated text-bone-muted hover:text-bone border border-border-subtle hover:border-border-highlight text-xs font-mono uppercase tracking-ceremonial font-semibold transition-all min-h-[44px]"
-            >
-              <Compass className="w-3.5 h-3.5 text-lavender-dim" />
-              <span>BEGIN A THREE-CARD READING</span>
-            </Link>
-            <Link
-              href="/sanctum/working"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-surface hover:bg-surface-elevated text-bone-muted hover:text-bone border border-border-subtle hover:border-border-highlight text-xs font-mono uppercase tracking-ceremonial font-semibold transition-all min-h-[44px]"
-            >
-              <Wand2 className="w-3.5 h-3.5 text-lavender-dim" />
-              <span>CREATE A WORKING</span>
-            </Link>
-          </div>
+              <Trash2 className="w-3 h-3" />
+              <span>Purge Grimoire</span>
+            </button>
+          )}
         </div>
-      )}
-
-      {/* Archive Entries Grid (Newest First) */}
-      {filteredEntries.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredEntries.map((entry) => {
-            if (entry.type === "daily") {
-              const d = entry as SanctumDailyReading;
-              return (
-                <article
-                  key={d.id}
-                  className="tarot-frame p-6 flex flex-col justify-between hover:border-lavender-moon/60 transition-all duration-200 group"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-ceremonial text-lavender-moon">
-                      <span className="flex items-center gap-1.5">
-                        <Sparkles className="w-3 h-3 text-lavender-moon" />
-                        <span>Daily Tarot</span>
-                      </span>
-                      <span className="text-bone-dim">{d.localDate}</span>
-                    </div>
-
-                    <h3 className="font-serif text-xl font-bold text-bone group-hover:text-lavender-light transition-colors">
-                      {d.cardName} — {d.cardNumeral}
-                    </h3>
-
-                    <div className="flex flex-wrap gap-1 text-[10px] font-mono text-lavender-dim">
-                      {d.shortKeywords.map((kw, i) => (
-                        <span key={i} className="px-2 py-0.5 rounded bg-surface border border-border-subtle">
-                          {kw}
-                        </span>
-                      ))}
-                    </div>
-
-                    <p className="text-xs text-bone-muted font-sans line-clamp-3 leading-relaxed pt-1">
-                      {d.interpretation.whatThisMayReflectToday}
-                    </p>
-                  </div>
-
-                  <div className="mt-6 pt-4 border-t border-border-subtle flex items-center justify-between">
-                    <button
-                      type="button"
-                      onClick={() => setActiveEntry(d)}
-                      className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-lavender-moon hover:text-lavender-light font-semibold transition-colors"
-                    >
-                      <span>Open Entry</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setEntryToDelete(d)}
-                      className="p-1.5 rounded hover:bg-surface-elevated text-bone-dim hover:text-rust transition-colors"
-                      aria-label={`Remove ${d.cardName} from grimoire`}
-                      title="Remove from Grimoire"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </article>
-              );
-            }
-
-            if (entry.type === "three-card") {
-              const tc = entry as SanctumThreeCardReading;
-              return (
-                <article
-                  key={tc.id}
-                  className="tarot-frame p-6 flex flex-col justify-between hover:border-lavender-moon/60 transition-all duration-200 group"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-ceremonial text-lavender-moon">
-                      <span className="flex items-center gap-1.5">
-                        <Compass className="w-3 h-3 text-lavender-moon" />
-                        <span>Three-Card Reading</span>
-                      </span>
-                      <span className="text-bone-dim">{tc.localDate}</span>
-                    </div>
-
-                    {tc.question && (
-                      <p className="text-xs font-serif italic text-lavender-light line-clamp-1">
-                        “{tc.question}”
-                      </p>
-                    )}
-
-                    <div className="space-y-1 text-xs font-mono text-bone">
-                      <div className="flex items-center justify-between">
-                        <span className="text-bone-dim">I. Situation:</span>
-                        <span className="font-semibold text-lavender-light">
-                          {tc.positions.situation.cardName}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-bone-dim">II. Challenge:</span>
-                        <span className="font-semibold text-lavender-light">
-                          {tc.positions.challenge.cardName}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-bone-dim">III. Guidance:</span>
-                        <span className="font-semibold text-lavender-light">
-                          {tc.positions.guidance.cardName}
-                        </span>
-                      </div>
-                    </div>
-
-                    <p className="text-xs text-bone-muted font-sans line-clamp-2 leading-relaxed pt-1">
-                      {tc.combinedSynthesis}
-                    </p>
-                  </div>
-
-                  <div className="mt-6 pt-4 border-t border-border-subtle flex items-center justify-between">
-                    <button
-                      type="button"
-                      onClick={() => setActiveEntry(tc)}
-                      className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-lavender-moon hover:text-lavender-light font-semibold transition-colors"
-                    >
-                      <span>Open Entry</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setEntryToDelete(tc)}
-                      className="p-1.5 rounded hover:bg-surface-elevated text-bone-dim hover:text-rust transition-colors"
-                      aria-label="Remove three-card reading from grimoire"
-                      title="Remove from Grimoire"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </article>
-              );
-            }
-
-            if (entry.type === "working") {
-              const w = entry as SanctumWorkingRecord;
-              return (
-                <article
-                  key={w.id}
-                  className="tarot-frame p-6 flex flex-col justify-between hover:border-lavender-moon/60 transition-all duration-200 group"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-ceremonial text-lavender-moon">
-                      <span className="flex items-center gap-1.5">
-                        <Wand2 className="w-3 h-3 text-lavender-moon" />
-                        <span>Working</span>
-                      </span>
-                      <span className="text-bone-dim">{w.localDate}</span>
-                    </div>
-
-                    <h3 className="font-serif text-lg font-bold text-bone group-hover:text-lavender-light transition-colors line-clamp-1">
-                      {w.title}
-                    </h3>
-
-                    <div className="text-[11px] font-mono text-lavender-dim">
-                      <span>Focus: </span>
-                      <span className="text-bone font-medium">{w.intention}</span>
-                    </div>
-
-                    <div className="flex flex-wrap gap-1 text-[10px] font-mono text-bone-dim">
-                      {w.usedIngredients.map((item, i) => (
-                        <span key={i} className="px-2 py-0.5 rounded bg-surface border border-border-subtle">
-                          ✓ {item}
-                        </span>
-                      ))}
-                    </div>
-
-                    <p className="text-xs text-bone-muted font-sans line-clamp-2 leading-relaxed pt-1">
-                      {w.practicalTakeaway || w.intentionDescription}
-                    </p>
-                  </div>
-
-                  <div className="mt-6 pt-4 border-t border-border-subtle flex items-center justify-between">
-                    <button
-                      type="button"
-                      onClick={() => setActiveEntry(w)}
-                      className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-lavender-moon hover:text-lavender-light font-semibold transition-colors"
-                    >
-                      <span>Open Entry</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setEntryToDelete(w)}
-                      className="p-1.5 rounded hover:bg-surface-elevated text-bone-dim hover:text-rust transition-colors"
-                      aria-label={`Remove ${w.title} from grimoire`}
-                      title="Remove from Grimoire"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </article>
-              );
-            }
-
-            return null;
-          })}
-        </div>
-      )}
-
-      {/* Destructive Purge Section & Privacy Notice */}
-      <div className="mt-14 pt-8 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-bone-dim">
-        <div className="text-center sm:text-left space-y-1">
-          <p className="flex items-center gap-1.5 justify-center sm:justify-start">
-            <FourPointStar className="w-3 h-3 text-lavender-dim" />
-            <span>Local Storage Notice: Your saved Grimoire entries are stored in this browser.</span>
-          </p>
-          <p className="text-[11px] text-bone-dim">
-            When consulting the Oracle, only active card or working parameters are sent securely for interpretation. Clearing browser data will erase this ledger.
-          </p>
-        </div>
-
-        {totalCount > 0 && (
-          <button
-            type="button"
-            onClick={() => setShowPurgeModal(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-border-subtle hover:border-rust/60 text-bone-dim hover:text-rust text-[11px] uppercase tracking-wider transition-colors shrink-0"
-          >
-            <Trash2 className="w-3 h-3" />
-            <span>Purge Grimoire</span>
-          </button>
-        )}
-      </div>
       </div>
 
-      {/* MODAL: Full Entry Detail View */}
+      {/* MODAL: Full Entry Detail View (Occult Folio Parchment) */}
       {activeEntry && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-entry-title"
@@ -489,292 +484,338 @@ export function GrimoireLedgerClient() {
             if (e.target === e.currentTarget) setActiveEntry(null);
           }}
         >
-          <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-surface-elevated border border-border-ornate p-6 sm:p-10 shadow-card-tarot space-y-8 relative">
+          <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl sanctum-parchment border border-purple-500/60 p-6 sm:p-10 shadow-2xl space-y-8 relative">
+            {/* Ornate Corner Flourishes */}
+            <div className="absolute top-2 left-2 pointer-events-none opacity-60">
+              <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
+            </div>
+            <div className="absolute top-2 right-2 pointer-events-none opacity-60 rotate-90">
+              <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
+            </div>
+
             {/* Close Button */}
             <button
               type="button"
               onClick={() => setActiveEntry(null)}
-              className="absolute top-4 right-4 p-2 rounded-lg text-bone-dim hover:text-bone hover:bg-surface border border-transparent hover:border-border-subtle transition-colors"
+              className="absolute top-4 right-4 p-2 rounded-lg text-purple-300 hover:text-white hover:bg-purple-950/60 border border-transparent hover:border-purple-800 transition-colors"
               aria-label="Close entry modal"
             >
               <X className="w-5 h-5" />
             </button>
 
-            {/* Entry Detail Rendering */}
+            {/* DAILY TAROT ENTRY DETAIL */}
             {activeEntry.type === "daily" && (() => {
               const d = activeEntry as SanctumDailyReading;
               const cardData = getSanctumTarotCardById(d.cardId);
 
               return (
-                <div className="space-y-8">
-                  <header className="border-b border-border-subtle pb-4 space-y-1">
-                    <span className="text-[11px] font-mono uppercase tracking-ceremonial text-lavender-moon flex items-center gap-1.5">
-                      <Sparkles className="w-3 h-3" />
-                      <span>Daily Tarot Archive · {d.localDate}</span>
-                    </span>
-                    <h2 id="modal-entry-title" className="font-display text-3xl font-bold text-bone celestial-glow">
+                <div className="space-y-6">
+                  <header className="border-b border-purple-900/40 pb-5 space-y-2">
+                    <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-purple-300">
+                      <span>DAILY MIRROR INQUEST</span>
+                      <span>RECORD DATE: {d.localDate}</span>
+                    </div>
+
+                    <h2
+                      id="modal-entry-title"
+                      className="font-serif text-2xl sm:text-3xl font-bold uppercase tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200"
+                    >
                       {d.cardName} — {d.cardNumeral}
                     </h2>
+
                     <div className="flex flex-wrap gap-1.5 pt-1">
                       {d.shortKeywords.map((kw, i) => (
-                        <span key={i} className="px-2.5 py-0.5 rounded-full bg-surface border border-border-ornate/60 text-xs font-mono text-lavender-light">
+                        <span key={i} className="px-2.5 py-0.5 rounded-full bg-[#130728] border border-purple-700/60 text-[10px] font-mono uppercase tracking-wider text-purple-200">
                           {kw}
                         </span>
                       ))}
                     </div>
                   </header>
 
-                  {cardData && (
-                    <div className="flex justify-center py-2">
-                      <SanctumCardFace card={cardData} size="default" />
-                    </div>
-                  )}
+                  <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+                    {cardData && (
+                      <div className="shrink-0 flex justify-center">
+                        <SanctumCardFace card={cardData} size="default" />
+                      </div>
+                    )}
 
-                  <div className="space-y-6 text-sm leading-relaxed">
-                    <section className="space-y-1">
-                      <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">The Card</h4>
-                      <p className="text-bone font-serif italic">{d.interpretation.theCard}</p>
-                    </section>
-                    <section className="space-y-1">
-                      <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">What This May Reflect Today</h4>
-                      <p className="text-bone-muted font-sans">{d.interpretation.whatThisMayReflectToday}</p>
-                    </section>
-                    <section className="p-4 rounded-xl bg-surface border border-border-ornate space-y-1">
-                      <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">Consider</h4>
-                      <p className="font-serif italic text-bone">“{d.interpretation.reflectionPrompt}”</p>
-                    </section>
-                    <section className="p-4 rounded-xl bg-surface border border-border-highlight space-y-1">
-                      <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-light">Carry This With You</h4>
-                      <p className="text-bone-muted font-sans">{d.interpretation.practicalTakeaway}</p>
-                    </section>
+                    <div className="space-y-4 flex-1 text-xs">
+                      <div>
+                        <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold mb-1">
+                          Traditional Archetype
+                        </h4>
+                        <p className="text-bone-muted font-sans leading-relaxed bg-[#0a0414] p-3 rounded-lg border border-purple-900/40">
+                          {d.interpretation.theCard}
+                        </p>
+                      </div>
+
+                      <div>
+                        <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold mb-1">
+                          Reflective Guidance
+                        </h4>
+                        <p className="text-bone font-sans leading-relaxed bg-[#0c051a] p-3 rounded-lg border border-purple-900/40">
+                          {d.interpretation.whatThisMayReflectToday}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-[#110624] border border-purple-700/50 space-y-1">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold block">
+                      Daily Inquiry
+                    </span>
+                    <p className="font-serif text-sm text-purple-100 italic leading-relaxed">
+                      “{d.interpretation.reflectionPrompt}”
+                    </p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                      Practical Psychological Takeaway
+                    </h4>
+                    <p className="text-xs text-bone-muted font-sans leading-relaxed bg-[#0a0414] p-3 rounded-lg border border-purple-900/40">
+                      {d.interpretation.practicalTakeaway}
+                    </p>
                   </div>
                 </div>
               );
             })()}
 
+            {/* THREE-CARD ENTRY DETAIL */}
             {activeEntry.type === "three-card" && (() => {
               const tc = activeEntry as SanctumThreeCardReading;
 
               return (
-                <div className="space-y-8">
-                  <header className="border-b border-border-subtle pb-4 space-y-1">
-                    <span className="text-[11px] font-mono uppercase tracking-ceremonial text-lavender-moon flex items-center gap-1.5">
-                      <Compass className="w-3 h-3" />
-                      <span>Three-Card Diagnostic Spread · {tc.localDate}</span>
-                    </span>
-                    <h2 id="modal-entry-title" className="font-display text-3xl font-bold text-bone celestial-glow">
-                      Triad Inquest
+                <div className="space-y-6">
+                  <header className="border-b border-purple-900/40 pb-5 space-y-2">
+                    <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-purple-300">
+                      <span>TRIAD SPREAD RECORD</span>
+                      <span>RECORD DATE: {tc.localDate}</span>
+                    </div>
+
+                    <h2
+                      id="modal-entry-title"
+                      className="font-serif text-2xl sm:text-3xl font-bold uppercase tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200"
+                    >
+                      Three-Card Diagnostic Spread
                     </h2>
+
                     {tc.question && (
-                      <p className="text-sm font-serif italic text-lavender-light pt-1">
-                        Question: “{tc.question}”
+                      <p className="text-sm font-serif italic text-purple-200">
+                        “{tc.question}”
                       </p>
                     )}
                   </header>
 
-                  {/* 3 Positions */}
-                  <div className="space-y-4">
-                    <h3 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">
-                      Positions Breakdown
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                      {(["situation", "challenge", "guidance"] as const).map((posKey) => {
-                        const pos = tc.positions[posKey];
-                        return (
-                          <div key={posKey} className="p-3.5 rounded-xl bg-surface border border-border-subtle space-y-1">
-                            <span className="text-[10px] font-mono uppercase text-lavender-dim block">
-                              {pos.positionLabel}
-                            </span>
-                            <h4 className="font-serif text-sm font-bold text-bone">
-                              {pos.cardName} ({pos.cardNumeral})
-                            </h4>
-                            <p className="text-xs text-bone-muted font-sans leading-relaxed pt-1">
-                              {pos.contextualMeaning}
-                            </p>
-                          </div>
-                        );
-                      })}
-                    </div>
+                  {/* 3 Positions Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {Object.values(tc.positions).map((pos) => (
+                      <div
+                        key={pos.positionKey}
+                        className="p-3.5 rounded-lg bg-[#0b0416] border border-purple-900/50 space-y-1.5 text-xs"
+                      >
+                        <div className="flex items-center justify-between border-b border-purple-900/40 pb-1">
+                          <span className="font-mono text-[10px] uppercase tracking-wider text-purple-400 font-bold">
+                            {pos.positionLabel}
+                          </span>
+                          <span className="font-serif text-[10px] text-purple-200 font-semibold">
+                            {pos.cardName}
+                          </span>
+                        </div>
+                        <p className="text-bone-muted font-sans leading-relaxed text-[11px]">
+                          {pos.contextualMeaning}
+                        </p>
+                      </div>
+                    ))}
                   </div>
 
-                  {/* The Oracle's Reading */}
-                  <div className="space-y-6 pt-4 border-t border-border-subtle">
-                    <h3 className="font-display text-2xl font-bold text-bone">THE ORACLE&apos;S READING</h3>
-                    <section className="space-y-1">
-                      <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">The Pattern</h4>
-                      <p className="text-bone font-serif italic text-sm sm:text-base leading-relaxed">
-                        {tc.combinedSynthesis}
+                  <div className="space-y-1.5">
+                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                      The Synthesis Arc
+                    </h4>
+                    <p className="text-xs text-bone font-sans leading-relaxed bg-[#0c051a] p-3.5 rounded-lg border border-purple-900/40">
+                      {tc.combinedSynthesis}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="p-3.5 rounded-lg bg-[#110624] border border-purple-700/50 space-y-1">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold block">
+                        Consider
+                      </span>
+                      <p className="font-serif text-xs text-purple-100 italic leading-relaxed">
+                        “{tc.reflectionPrompt}”
                       </p>
-                    </section>
-                    <section className="p-4 rounded-xl bg-surface border border-border-ornate space-y-1">
-                      <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">Consider</h4>
-                      <p className="font-serif italic text-bone text-sm sm:text-base">“{tc.reflectionPrompt}”</p>
-                    </section>
-                    <section className="p-4 rounded-xl bg-surface border border-border-highlight space-y-1">
-                      <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-light">Carry This With You</h4>
-                      <p className="text-bone-muted font-sans text-sm">{tc.practicalTakeaway}</p>
-                    </section>
+                    </div>
+
+                    <div className="p-3.5 rounded-lg bg-[#0b0416] border border-purple-900/50 space-y-1">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold block">
+                        Carry With You
+                      </span>
+                      <p className="text-xs text-bone-muted font-sans leading-relaxed">
+                        {tc.practicalTakeaway}
+                      </p>
+                    </div>
                   </div>
                 </div>
               );
             })()}
 
+            {/* WORKING ENTRY DETAIL */}
             {activeEntry.type === "working" && (() => {
               const w = activeEntry as SanctumWorkingRecord;
 
               return (
-                <div className="space-y-8">
-                  <header className="border-b border-border-subtle pb-4 space-y-1">
-                    <span className="text-[11px] font-mono uppercase tracking-ceremonial text-lavender-moon flex items-center gap-1.5">
-                      <Wand2 className="w-3 h-3" />
-                      <span>Working Formulation · {w.localDate}</span>
-                    </span>
-                    <h2 id="modal-entry-title" className="font-display text-3xl font-bold text-bone celestial-glow">
+                <div className="space-y-6">
+                  <header className="border-b border-purple-900/40 pb-5 space-y-2">
+                    <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-purple-300">
+                      <span>SYNTHESIZED WORKING</span>
+                      <span>RECORD DATE: {w.localDate}</span>
+                    </div>
+
+                    <h2
+                      id="modal-entry-title"
+                      className="font-serif text-2xl sm:text-3xl font-bold uppercase tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200"
+                    >
                       {w.title}
                     </h2>
-                    <p className="text-sm font-serif italic text-lavender-light">
+
+                    <p className="text-sm font-serif italic text-purple-200">
                       “{w.intentionDescription}”
                     </p>
                   </header>
 
-                  <section className="space-y-2">
-                    <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">You Will Need</h4>
+                  <div className="space-y-2">
+                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                      Tools & Ingredients
+                    </h4>
                     <div className="flex flex-wrap gap-1.5">
-                      {w.usedIngredients.map((item, i) => (
-                        <span key={i} className="px-3 py-1 rounded bg-surface border border-border-ornate text-xs font-mono text-bone font-medium">
+                      {w.usedIngredients.map((item, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2.5 py-1 rounded bg-[#130728] border border-purple-700/60 text-xs font-mono text-purple-100"
+                        >
                           ✓ {item}
                         </span>
                       ))}
                     </div>
-                  </section>
+                  </div>
 
-                  <section className="space-y-3">
-                    <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">Why These Ingredients</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {w.ingredientReasons.map((r, i) => (
-                        <div key={i} className="p-3.5 rounded-xl bg-surface border border-border-subtle space-y-1">
-                          <span className="font-serif text-sm font-bold text-bone">{r.name}</span>
-                          <p className="text-xs text-lavender-light italic">{r.correspondence}</p>
-                          <p className="text-xs text-bone-muted">{r.reason}</p>
+                  <div className="space-y-2">
+                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                      Symbolic Correspondences
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {w.ingredientReasons.map((wt, idx) => (
+                        <div
+                          key={idx}
+                          className="p-3 rounded-lg bg-[#0c051a] border border-purple-900/50 space-y-1 text-xs"
+                        >
+                          <span className="font-serif font-bold text-purple-200 block">{wt.name}</span>
+                          <p className="text-[11px] text-bone-muted font-sans">{wt.reason}</p>
                         </div>
                       ))}
                     </div>
-                  </section>
+                  </div>
 
-                  <section className="space-y-2">
-                    <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">Preparation</h4>
-                    <ul className="space-y-1 text-sm text-bone-muted font-sans">
-                      {w.preparationSteps.map((p, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <span className="text-xs font-mono text-lavender-dim mt-0.5">{i + 1}.</span>
-                          <span>{p}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </section>
-
-                  <section className="space-y-3">
-                    <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">The Working</h4>
-                    <ol className="space-y-3">
-                      {w.ritualSteps.map((step) => (
-                        <li key={step.step} className="p-4 rounded-xl bg-surface border border-border-subtle space-y-1">
-                          <span className="text-xs font-mono text-lavender-moon font-semibold">Step {step.step}: {step.title}</span>
-                          <p className="text-sm text-bone-muted font-sans leading-relaxed">{step.instruction}</p>
+                  <div className="space-y-2">
+                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                      Preparation
+                    </h4>
+                    <ol className="space-y-1 text-xs text-bone-muted font-sans">
+                      {w.preparationSteps.map((prep, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="font-mono text-purple-400 font-semibold">{idx + 1}.</span>
+                          <span>{prep}</span>
                         </li>
                       ))}
                     </ol>
-                  </section>
+                  </div>
 
-                  <section className="p-4 rounded-xl bg-surface border border-border-highlight space-y-1">
-                    <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-light">Closing & Disposal</h4>
-                    <p className="text-sm text-bone-muted font-sans">{w.closing}</p>
-                  </section>
-
-                  {w.optionalTiming && (
-                    <p className="text-xs font-mono text-bone-dim italic">
-                      {w.optionalTiming}
-                    </p>
-                  )}
-
-                  <section className="p-4 rounded-xl bg-surface border border-border-ornate space-y-1">
-                    <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">Consider</h4>
-                    <p className="font-serif italic text-bone text-sm sm:text-base">“{w.reflectionPrompt}”</p>
-                  </section>
-
-                  <section className="p-4 rounded-xl bg-surface border border-border-highlight space-y-1">
-                    <h4 className="text-xs font-mono uppercase tracking-ceremonial text-lavender-light">Carry This With You</h4>
-                    <p className="text-bone-muted font-sans text-sm">{w.practicalTakeaway}</p>
-                  </section>
-
-                  {w.safetyNotes && (
-                    <div className="p-3.5 rounded-xl bg-background border border-border-subtle flex items-start gap-2.5 text-xs text-bone-muted">
-                      <ShieldAlert className="w-4 h-4 text-rust shrink-0 mt-0.5" />
-                      <p>{w.safetyNotes}</p>
+                  <div className="space-y-2">
+                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                      Working Mechanics
+                    </h4>
+                    <div className="space-y-2">
+                      {w.ritualSteps.map((step) => (
+                        <div
+                          key={step.step}
+                          className="p-3 rounded-lg bg-[#0e061c] border border-purple-900/50 space-y-1 text-xs"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="w-4 h-4 rounded-full bg-purple-950 border border-purple-500 text-purple-200 font-mono text-[9px] font-bold flex items-center justify-center shrink-0">
+                              {step.step}
+                            </span>
+                            <span className="font-serif font-bold text-purple-100">{step.title}</span>
+                          </div>
+                          <p className="text-bone-muted font-sans pl-6">{step.instruction}</p>
+                        </div>
+                      ))}
                     </div>
-                  )}
+                  </div>
+
+                  <div className="p-3 rounded-lg bg-[#0b0416] border border-purple-900/40 text-xs space-y-1">
+                    <span className="text-[9px] font-mono uppercase tracking-widest text-purple-400 font-bold block">
+                      Closing
+                    </span>
+                    <p className="text-bone-muted font-sans italic">{w.closing}</p>
+                  </div>
                 </div>
               );
             })()}
 
-            {/* Modal Actions */}
-            <div className="pt-6 border-t border-border-subtle flex items-center justify-between">
+            {/* Modal Bottom Action Bar */}
+            <div className="pt-6 border-t border-purple-900/40 flex flex-wrap items-center justify-between gap-3">
               <button
                 type="button"
-                onClick={() => {
-                  setEntryToDelete(activeEntry);
-                }}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border-subtle hover:border-rust text-bone-dim hover:text-rust text-xs font-mono uppercase tracking-wider transition-colors"
+                onClick={handlePrintModal}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#140826] hover:bg-[#1f0d38] border border-purple-800 text-purple-200 text-xs font-mono uppercase tracking-wider transition-colors"
               >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Remove From Grimoire</span>
+                <Printer className="w-3.5 h-3.5 text-purple-400" />
+                <span>Print Record</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveEntry(null)}
-                className="px-6 py-2.5 rounded-lg bg-surface hover:bg-surface-elevated text-lavender-light border border-border-ornate text-xs font-mono uppercase tracking-ceremonial font-semibold transition-colors"
+                className="px-5 py-2 rounded-lg sanctum-btn-electric text-xs font-mono uppercase tracking-wider font-bold"
               >
-                Close Entry
+                Close Folio
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* CONFIRMATION MODAL: Delete Single Entry */}
+      {/* CONFIRMATION MODAL: Single Entry Deletion */}
       {entryToDelete && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-md animate-in fade-in duration-150"
-          role="alertdialog"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+          role="dialog"
           aria-modal="true"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setEntryToDelete(null);
-          }}
         >
-          <div className="w-full max-w-md rounded-2xl bg-surface-elevated border border-border-ornate p-6 space-y-4 shadow-card-tarot">
-            <div className="flex items-center gap-2 text-rust text-sm font-mono uppercase tracking-ceremonial font-semibold">
-              <AlertTriangle className="w-4 h-4 text-rust shrink-0" />
-              <span>Remove Entry</span>
+          <div className="w-full max-w-md rounded-2xl bg-[#0c0418] border border-red-900/80 p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center gap-2 text-red-400 font-mono text-xs uppercase tracking-wider font-bold">
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+              <span>Confirm Entry Removal</span>
             </div>
-
-            <p className="text-sm text-bone font-sans leading-relaxed">
-              Remove this entry from your Grimoire? This cannot be undone.
+            <p className="text-xs text-bone-muted font-sans leading-relaxed">
+              Are you sure you wish to remove this record from your private browser grimoire? This action cannot be reversed.
             </p>
-
             <div className="pt-2 flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setEntryToDelete(null)}
-                className="px-4 py-2 rounded-lg bg-surface text-bone-muted hover:text-bone text-xs font-mono uppercase tracking-wider transition-colors"
+                className="px-4 py-2 rounded-lg bg-[#140826] text-bone-muted hover:text-white text-xs font-mono uppercase tracking-wider"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleConfirmDelete}
-                className="px-4 py-2 rounded-lg bg-rust/20 hover:bg-rust/30 text-rust border border-rust/60 text-xs font-mono uppercase tracking-wider font-semibold transition-colors"
+                className="px-4 py-2 rounded-lg bg-red-950 hover:bg-red-900 border border-red-700 text-red-200 text-xs font-mono uppercase tracking-wider font-bold"
               >
-                Confirm Removal
+                Remove Record
               </button>
             </div>
           </div>
@@ -784,37 +825,32 @@ export function GrimoireLedgerClient() {
       {/* CONFIRMATION MODAL: Purge Entire Grimoire */}
       {showPurgeModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-md animate-in fade-in duration-150"
-          role="alertdialog"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+          role="dialog"
           aria-modal="true"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setShowPurgeModal(false);
-          }}
         >
-          <div className="w-full max-w-md rounded-2xl bg-surface-elevated border border-rust/70 p-6 space-y-4 shadow-card-tarot">
-            <div className="flex items-center gap-2 text-rust text-sm font-mono uppercase tracking-ceremonial font-semibold">
-              <AlertTriangle className="w-4 h-4 text-rust shrink-0" />
-              <span>Purge Entire Grimoire</span>
+          <div className="w-full max-w-md rounded-2xl bg-[#0c0418] border border-red-900/80 p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center gap-2 text-red-400 font-mono text-xs uppercase tracking-wider font-bold">
+              <ShieldAlert className="w-4 h-4 shrink-0" />
+              <span>Purge Entire Local Ledger?</span>
             </div>
-
-            <p className="text-sm text-bone font-sans leading-relaxed">
-              This will permanently remove all locally saved tarot readings and workings from this browser. This cannot be undone.
+            <p className="text-xs text-bone-muted font-sans leading-relaxed">
+              This will permanently erase all saved daily tarot draws, three-card readings, and synthesized workings stored in this browser. Sacred Marks earned will also be reset.
             </p>
-
             <div className="pt-2 flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setShowPurgeModal(false)}
-                className="px-4 py-2 rounded-lg bg-surface text-bone-muted hover:text-bone text-xs font-mono uppercase tracking-wider transition-colors"
+                className="px-4 py-2 rounded-lg bg-[#140826] text-bone-muted hover:text-white text-xs font-mono uppercase tracking-wider"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleConfirmPurge}
-                className="px-4 py-2 rounded-lg bg-rust/30 hover:bg-rust/50 text-rust border border-rust text-xs font-mono uppercase tracking-wider font-semibold transition-colors"
+                className="px-4 py-2 rounded-lg bg-red-950 hover:bg-red-900 border border-red-700 text-red-200 text-xs font-mono uppercase tracking-wider font-bold"
               >
-                Confirm Purge
+                Purge All Records
               </button>
             </div>
           </div>

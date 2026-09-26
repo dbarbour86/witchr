@@ -1,10 +1,19 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { MoonPhaseRibbon, CelestialDivider, FourPointStar } from "./OrnateFrames";
 
 export function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  // If inside the Sanctum workstation shell, do not render marketing footer
+  if (pathname?.startsWith("/sanctum")) {
+    return null;
+  }
 
   return (
     <footer className="bg-surface/90 border-t border-border mt-24 text-bone-muted relative overflow-hidden">

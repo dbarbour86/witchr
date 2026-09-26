@@ -19,7 +19,8 @@ import { recordSanctumTestEvent } from "@/lib/sanctum/test-events";
 import { SanctumCardBack } from "@/components/sanctum/SanctumCardBack";
 import { SanctumCardFace } from "@/components/sanctum/SanctumCardFace";
 import { FourPointStar, CelestialDivider, GrimoireStar, TarotCornerFlourish } from "@/components/OrnateFrames";
-import { Compass, BookOpen, Check, RefreshCw, ArrowLeft, ArrowRight, HelpCircle } from "lucide-react";
+import { SanctumCrest, MoonPhaseStrip } from "@/components/sanctum/SanctumSymbols";
+import { Compass, BookOpen, Check, RefreshCw, ArrowLeft, ArrowRight, HelpCircle, Printer, Sparkles } from "lucide-react";
 
 export function ThreeCardReadingClient() {
   const [question, setQuestion] = useState("");
@@ -226,96 +227,94 @@ export function ThreeCardReadingClient() {
     setFallbackNotice(null);
   };
 
+  const handlePrint = () => {
+    if (typeof window !== "undefined") {
+      window.print();
+    }
+  };
+
   return (
-    <div className="space-y-12">
-      {/* Title & Context */}
-      <div className="text-center max-w-2xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface border border-border-highlight text-lavender-moon text-xs font-mono uppercase tracking-ceremonial">
-          <Compass className="w-3.5 h-3.5" />
-          <span>Diagnostic Triad Spread</span>
-        </div>
-
-        <h1 className="text-3xl sm:text-5xl font-display font-bold text-bone tracking-wide celestial-glow">
-          {reading ? "TRIAD INQUEST COMPLETE" : "THREE-CARD READING"}
-        </h1>
-
-        <p className="text-sm sm:text-base text-bone-muted font-sans leading-relaxed">
-          Explore a question through Situation, Challenge, and Guidance. A grounded diagnostic triad to separate where you are, what friction exists, and where to apply clean effort.
-        </p>
-
-        <CelestialDivider className="max-w-xs mx-auto my-4" />
-      </div>
-
-      {/* Optional User Question Input (Visible before draw, summarized after) */}
+    <div className="w-full space-y-6">
+      {/* Optional User Question Console */}
       {!reading && (
-        <div className="max-w-2xl mx-auto p-6 rounded-2xl bg-surface/80 border border-border-highlight space-y-3 shadow-card-tarot">
-          <div className="flex items-center justify-between">
-            <label
-              htmlFor="tarot-question-input"
-              className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon flex items-center gap-1.5"
+        <section
+          className="sanctum-panel sanctum-corners p-5 sm:p-6 border border-purple-900/60 space-y-3"
+          aria-labelledby="triad-console-heading"
+        >
+          <div className="flex items-center justify-between border-b border-purple-900/40 pb-2">
+            <h2
+              id="triad-console-heading"
+              className="text-xs font-mono uppercase tracking-[0.2em] text-purple-300 flex items-center gap-2 font-bold"
             >
-              <HelpCircle className="w-3.5 h-3.5" />
+              <HelpCircle className="w-3.5 h-3.5 text-purple-400" />
               <span>Optional Focal Question</span>
-            </label>
-            <span className="text-[10px] font-mono uppercase text-bone-dim">Optional</span>
+            </h2>
+            <span className="text-[10px] font-mono uppercase text-purple-400/70">Console // 02</span>
           </div>
 
-          <p className="text-xs text-bone-muted font-sans">
-            Focus on an acute circumstance, dilemma, or internal friction. Do not ask for guaranteed future outcomes.
+          <p className="text-xs text-bone-muted font-sans leading-relaxed">
+            Name an acute dilemma, tension, or crossroad. The triad separates your ground (<span className="text-purple-300">Situation</span>), your friction point (<span className="text-purple-300">Challenge</span>), and your recommended leverage (<span className="text-purple-300">Guidance</span>).
           </p>
 
           <input
-            id="tarot-question-input"
             type="text"
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             disabled={isDrawing}
-            placeholder="What would you like perspective on?"
-            className="w-full px-4 py-3 rounded-lg bg-background border border-border-highlight focus:border-lavender-moon focus:outline-none focus:ring-1 focus:ring-lavender-moon text-sm text-bone font-sans transition-colors placeholder:text-bone-dim"
+            placeholder="What circumstance or friction requires diagnostic clarity?"
+            className="w-full px-4 py-3 rounded-lg bg-[#080312] border border-purple-900/80 focus:border-purple-400 focus:outline-none text-xs text-bone font-sans transition-colors placeholder:text-bone-dim"
           />
 
-          {/* Quick Clickable Suggestions */}
-          <div className="pt-1 flex flex-wrap gap-1.5 items-center">
-            <span className="text-[10px] font-mono text-bone-dim mr-1">Suggestions:</span>
+          {/* Suggestion Chips */}
+          <div className="flex flex-wrap gap-1.5 items-center pt-1">
+            <span className="text-[10px] font-mono text-purple-400/80 mr-1 uppercase">Sample Inquiries:</span>
             {sampleQuestions.map((sq, i) => (
               <button
                 key={i}
                 type="button"
                 onClick={() => setQuestion(sq)}
-                className="text-[11px] font-mono text-bone-muted hover:text-lavender-light hover:bg-surface-elevated px-2 py-0.5 rounded border border-border-subtle transition-colors text-left"
+                className="text-[10px] font-mono text-purple-200/80 hover:text-white bg-[#120722] hover:bg-[#1f0d38] px-2.5 py-1 rounded border border-purple-900/60 hover:border-purple-600 transition-colors"
               >
                 “{sq}”
               </button>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
       {/* Active Question Banner (After Reveal) */}
       {reading && reading.question && (
-        <div className="max-w-2xl mx-auto p-4 rounded-xl bg-surface-elevated/70 border border-border-ornate flex items-center gap-3 text-xs font-mono text-bone-muted">
-          <HelpCircle className="w-4 h-4 text-lavender-moon shrink-0" />
-          <div>
-            <span className="text-lavender-dim uppercase tracking-wider block text-[10px]">
-              Inquiry Focus
+        <div className="p-3.5 rounded-lg bg-[#0f0620] border border-purple-800/60 flex items-center gap-3 text-xs font-mono text-purple-200">
+          <HelpCircle className="w-4 h-4 text-purple-400 shrink-0" />
+          <div className="flex-1">
+            <span className="text-purple-400 uppercase tracking-widest text-[9px] block">
+              Focal Inquiry
             </span>
             <span className="text-sm font-serif italic text-bone">“{reading.question}”</span>
           </div>
         </div>
       )}
 
-      {/* Cards Display Stage */}
-      <div className="tarot-frame p-6 sm:p-10 shadow-card-tarot space-y-8 relative overflow-hidden">
-        {/* Subtle decorative flourishes */}
-        <div className="absolute top-2.5 left-2.5 pointer-events-none opacity-40">
-          <TarotCornerFlourish className="w-4 h-4 text-lavender-moon" />
-        </div>
-        <div className="absolute top-2.5 right-2.5 pointer-events-none opacity-40 rotate-90">
-          <TarotCornerFlourish className="w-4 h-4 text-lavender-moon" />
+      {/* Triad Cards Altar Stage */}
+      <section
+        className="sanctum-panel sanctum-corners p-6 sm:p-8 border border-purple-900/60 space-y-6 relative overflow-hidden"
+        aria-labelledby="triad-altar-heading"
+      >
+        <div className="flex items-center justify-between border-b border-purple-900/40 pb-3">
+          <div className="flex items-center gap-2">
+            <Compass className="w-4 h-4 text-purple-400" />
+            <h3
+              id="triad-altar-heading"
+              className="font-serif text-sm font-bold uppercase tracking-[0.18em] text-transparent bg-clip-text bg-gradient-to-r from-bone to-purple-200"
+            >
+              The Triad Spread Altar
+            </h3>
+          </div>
+          <MoonPhaseStrip />
         </div>
 
         {/* 3-Card Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
           {THREE_CARD_POSITIONS.map((pos, idx) => {
             const isCardRevealed = revealedIndex >= idx;
             const currentCard = cards ? cards[idx] : null;
@@ -326,17 +325,17 @@ export function ThreeCardReadingClient() {
                 className="flex flex-col items-center text-center space-y-3 w-full max-w-[260px]"
               >
                 {/* Position Marker */}
-                <div className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">
-                  <span className="w-1.5 h-1.5 rounded-full bg-lavender-moon" />
+                <div className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest text-purple-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
                   <span>Position {pos.numeral}: {pos.label}</span>
                 </div>
 
-                {/* Card Stage with Flip Transition */}
-                <div className="w-full flex justify-center transition-all duration-500 ease-out transform-gpu motion-reduce:transition-none">
+                {/* Card Stage */}
+                <div className="w-full flex justify-center transition-all duration-500 ease-out transform-gpu">
                   {isCardRevealed && currentCard ? (
                     <div className="animate-in fade-in zoom-in-95 duration-500 flex flex-col items-center gap-2">
                       <SanctumCardFace card={currentCard} size="default" />
-                      <span className="text-[11px] font-mono uppercase tracking-wider text-bone-dim">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-purple-200 font-semibold pt-1">
                         {currentCard.name} ({currentCard.numeral})
                       </span>
                     </div>
@@ -353,227 +352,174 @@ export function ThreeCardReadingClient() {
           })}
         </div>
 
-        {/* Draw Action Controls */}
-        {!reading && !isSynthesizing && (
-          <div className="pt-6 border-t border-border-subtle flex flex-col items-center gap-3">
+        {/* Trigger Button (if not yet revealed) */}
+        {!reading && (
+          <div className="pt-4 border-t border-purple-900/40 flex justify-center">
             <button
               type="button"
               onClick={handleDraw}
-              disabled={isDrawing || isSynthesizing}
-              className="group relative inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl bg-surface-elevated hover:bg-surface-hover active:scale-[0.98] text-lavender-light border border-border-ornate hover:border-lavender font-mono text-xs uppercase tracking-ceremonial font-semibold shadow-glow-subtle hover:shadow-glow-purple transition-all duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 min-h-[44px]"
-              aria-label="Shuffle and draw three cards"
+              disabled={isDrawing}
+              className="py-3.5 px-8 rounded-xl sanctum-btn-electric font-mono text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <FourPointStar className={`w-3 h-3 text-lavender-moon ${isDrawing ? "animate-spin" : ""}`} />
-              <span>{isDrawing ? "INVOKING TRIAD..." : "SHUFFLE & DRAW"}</span>
-              <FourPointStar className={`w-3 h-3 text-lavender-moon ${isDrawing ? "animate-spin" : ""}`} />
+              <FourPointStar className={`w-3.5 h-3.5 ${isDrawing ? "animate-spin" : ""}`} />
+              <span>{isDrawing ? "INVOKING SPREAD..." : "LAY THE TRIAD SPREAD"}</span>
+              <FourPointStar className={`w-3.5 h-3.5 ${isDrawing ? "animate-spin" : ""}`} />
             </button>
-
-            <span className="text-[11px] font-mono text-bone-dim tracking-wider uppercase">
-              Draws three unique cards with zero duplication
-            </span>
           </div>
         )}
+      </section>
 
-        {/* Oracle Synthesis In-Progress Status Banner */}
-        {isSynthesizing && (
-          <div className="pt-6 border-t border-border-subtle/80 flex flex-col items-center justify-center text-center space-y-2 py-4 animate-in fade-in duration-300">
-            <div className="flex items-center gap-2 text-lavender-moon font-mono text-xs uppercase tracking-ceremonial font-semibold">
-              <FourPointStar className="w-3.5 h-3.5 animate-spin" />
-              <span>THE ORACLE IS READING THE PATTERN...</span>
-              <FourPointStar className="w-3.5 h-3.5 animate-spin" />
-            </div>
-            <p className="text-xs text-bone-dim font-serif italic">
-              Following the threads across Situation, Challenge, and Guidance...
-            </p>
+      {/* Synthesizing Status */}
+      {isSynthesizing && (
+        <div className="sanctum-panel p-8 text-center space-y-3 border border-purple-600/50 animate-pulse">
+          <FourPointStar className="w-5 h-5 text-purple-400 animate-spin mx-auto" />
+          <div className="font-mono text-xs uppercase tracking-widest text-purple-200 font-bold">
+            THE ORACLE IS SYNTHESIZING YOUR SPREAD...
           </div>
-        )}
-      </div>
+          <p className="text-xs text-bone-muted font-serif italic">
+            Connecting situation, friction, and guidance into an actionable pattern...
+          </p>
+        </div>
+      )}
 
-      {/* Structured Reading Results (Appears after cards are revealed) */}
-      {reading && cards && (
-        <div className="space-y-10 animate-in fade-in duration-500">
-          {/* Individual Position Meanings */}
-          <div className="tarot-frame p-6 sm:p-10 shadow-card-tarot space-y-8">
-            <div className="border-b border-border-subtle pb-4">
-              <span className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon flex items-center gap-1.5">
-                <FourPointStar className="w-2.5 h-2.5" />
-                <span>Diagnostic Breakdown</span>
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-display font-semibold text-bone mt-1 tracking-wide">
-                Individual Position Meanings
-              </h2>
-            </div>
-
-            <div className="space-y-6">
-              {THREE_CARD_POSITIONS.map((pos) => {
-                const posData = reading.positions[pos.key];
-                return (
-                  <div
-                    key={pos.key}
-                    className="p-5 rounded-xl bg-surface border border-border-subtle space-y-2"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border-subtle/60 pb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs text-lavender-moon font-semibold">
-                          Position {pos.numeral}: {pos.label}
-                        </span>
-                        <span className="text-bone-dim text-xs">·</span>
-                        <span className="font-serif text-sm font-bold text-bone">
-                          {posData.cardName} ({posData.cardNumeral})
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1 text-[11px] font-mono text-lavender-light">
-                        {posData.shortKeywords.map((kw, idx) => (
-                          <span key={idx} className="px-2 py-0.5 rounded bg-surface-elevated">
-                            {kw}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <p className="text-xs font-mono text-bone-dim italic">
-                      Inquiry: “{pos.inquiry}”
-                    </p>
-
-                    <p className="text-sm text-bone-muted font-sans leading-relaxed pt-1">
-                      {posData.contextualMeaning}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
+      {/* Triad Synthesis Parchment Document */}
+      {reading && (
+        <article className="sanctum-parchment rounded-xl p-6 sm:p-9 border border-purple-500/40 relative shadow-2xl space-y-8 animate-in fade-in duration-500">
+          {/* Ornate Corner Flourishes */}
+          <div className="absolute top-2 left-2 pointer-events-none opacity-60">
+            <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
+          </div>
+          <div className="absolute top-2 right-2 pointer-events-none opacity-60 rotate-90">
+            <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
+          </div>
+          <div className="absolute bottom-2 left-2 pointer-events-none opacity-60 -rotate-90">
+            <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
+          </div>
+          <div className="absolute bottom-2 right-2 pointer-events-none opacity-60 rotate-180">
+            <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
           </div>
 
-          {/* Dedicated Section: THE ORACLE'S READING */}
-          <div className="tarot-frame p-6 sm:p-10 md:p-12 shadow-card-tarot space-y-10">
-            <div className="border-b border-border-subtle pb-6 space-y-2">
-              <span className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon flex items-center gap-1.5">
-                <GrimoireStar className="w-3 h-3 text-lavender-moon" />
-                <span>Synthesized Inquest</span>
-              </span>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-bone celestial-glow">
-                THE ORACLE&apos;S READING
-              </h2>
-              <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-                <p className="text-xs text-bone-dim font-mono">
-                  Holistic diagnostic synthesis of Situation + Challenge + Guidance
-                </p>
+          <header className="border-b border-purple-900/40 pb-5 space-y-2">
+            <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300">
+              <span>TRIAD DIAGNOSTIC FOLIO</span>
+              <div>
                 {oracleSource === "oracle-ai" ? (
-                  <span className="px-2.5 py-0.5 rounded-full bg-surface border border-border-ornate/80 text-[10px] font-mono uppercase tracking-wider text-lavender-moon flex items-center gap-1 font-semibold">
-                    <FourPointStar className="w-2.5 h-2.5 text-lavender-moon" />
-                    <span>Oracle AI Synthesis</span>
+                  <span className="px-2 py-0.5 rounded bg-purple-900/60 border border-purple-400 text-purple-200 text-[9px] font-bold">
+                    ✦ Oracle AI Synthesis
                   </span>
                 ) : (
-                  fallbackNotice && (
-                    <span className="text-[11px] font-serif italic text-bone-dim">
-                      {fallbackNotice}
-                    </span>
-                  )
+                  <span className="px-2 py-0.5 rounded bg-purple-950 border border-purple-800 text-bone-dim text-[9px]">
+                    Written Tradition
+                  </span>
                 )}
               </div>
             </div>
 
-            {/* Subsection 1: THE PATTERN */}
-            <section className="space-y-3" aria-labelledby="the-pattern-heading">
-              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">
-                <FourPointStar className="w-2.5 h-2.5" />
-                <h3 id="the-pattern-heading" className="font-semibold">
-                  THE PATTERN
-                </h3>
-              </div>
-              <p className="text-sm sm:text-base text-bone font-serif leading-relaxed italic">
-                {reading.combinedSynthesis}
-              </p>
-            </section>
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold uppercase tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200">
+              Triad Inquest Synthesis
+            </h2>
+          </header>
 
-            {/* Subsection 2: CONSIDER */}
-            <section
-              className="p-6 rounded-xl bg-surface-elevated/70 border border-border-ornate space-y-2 shadow-subtle"
-              aria-labelledby="triad-consider-heading"
-            >
-              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">
-                <FourPointStar className="w-2.5 h-2.5" />
-                <h3 id="triad-consider-heading" className="font-semibold">
-                  CONSIDER
-                </h3>
+          {/* 3 Positions Breakdowns */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {Object.values(reading.positions).map((pos) => (
+              <div
+                key={pos.positionKey}
+                className="p-4 rounded-lg bg-[#0b0416] border border-purple-900/50 space-y-2"
+              >
+                <div className="flex items-center justify-between border-b border-purple-900/40 pb-1.5">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-purple-400 font-bold">
+                    {pos.positionLabel}
+                  </span>
+                  <span className="text-[10px] font-serif text-purple-200 font-semibold">
+                    {pos.cardName}
+                  </span>
+                </div>
+                <p className="text-xs text-bone-muted font-sans leading-relaxed">
+                  {pos.contextualMeaning}
+                </p>
               </div>
-              <p className="font-serif text-base sm:text-lg text-bone italic leading-relaxed">
+            ))}
+          </div>
+
+          {/* Combined Pattern */}
+          <section className="space-y-1.5">
+            <h4 className="text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300 font-bold">
+              The Pattern & Arc
+            </h4>
+            <div className="p-4 rounded-lg bg-[#0e061c] border border-purple-900/50 text-xs sm:text-sm text-bone font-sans leading-relaxed">
+              {reading.combinedSynthesis}
+            </div>
+          </section>
+
+          {/* Consider & Carry */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="p-4 rounded-lg bg-[#110624] border border-purple-700/50 space-y-1.5">
+              <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300 font-bold block">
+                Consider
+              </span>
+              <p className="font-serif text-sm text-purple-100 italic leading-relaxed">
                 “{reading.reflectionPrompt}”
               </p>
-            </section>
+            </div>
 
-            {/* Subsection 3: CARRY THIS WITH YOU */}
-            <section
-              className="p-6 rounded-xl bg-surface border border-border-highlight space-y-2"
-              aria-labelledby="triad-carry-heading"
-            >
-              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-ceremonial text-lavender-light">
-                <FourPointStar className="w-2.5 h-2.5" />
-                <h3 id="triad-carry-heading" className="font-semibold">
-                  CARRY THIS WITH YOU
-                </h3>
-              </div>
-              <p className="text-sm sm:text-base text-bone-muted font-sans leading-relaxed">
+            <div className="p-4 rounded-lg bg-[#0b0416] border border-purple-900/50 space-y-1.5">
+              <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300 font-bold block">
+                Carry With You
+              </span>
+              <p className="text-xs sm:text-sm text-bone-muted font-sans leading-relaxed">
                 {reading.practicalTakeaway}
               </p>
-            </section>
+            </div>
+          </div>
 
-            {/* Save to Grimoire & Begin Another Reading Bar */}
-            <div className="pt-6 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Bottom Actions */}
+          <div className="pt-5 border-t border-purple-900/40 flex flex-wrap items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={handleSaveToGrimoire}
+              disabled={isSaved}
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-mono text-xs uppercase tracking-wider font-bold transition-all ${
+                isSaved
+                  ? "bg-purple-950/80 text-purple-300 border border-purple-600/50 cursor-default"
+                  : "sanctum-btn-electric"
+              }`}
+            >
+              {isSaved ? (
+                <>
+                  <Check className="w-3.5 h-3.5" />
+                  <span>Saved to Grimoire</span>
+                </>
+              ) : (
+                <>
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>Save to Grimoire</span>
+                </>
+              )}
+            </button>
+
+            <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={handleSaveToGrimoire}
-                disabled={isSaved}
-                className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-xs font-mono uppercase tracking-ceremonial font-semibold transition-all min-h-[44px] ${
-                  isSaved
-                    ? "bg-surface-elevated text-lavender-light border border-border-highlight cursor-default"
-                    : "bg-surface-elevated hover:bg-surface-hover text-lavender-light border border-border-ornate hover:border-lavender shadow-glow-subtle cursor-pointer"
-                }`}
-                aria-label={isSaved ? "Reading bound to your grimoire" : "Save reading to grimoire"}
+                onClick={handlePrint}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#120722] hover:bg-[#1c0c36] border border-purple-900/60 text-purple-300 hover:text-white text-xs font-mono uppercase tracking-wider transition-colors"
               >
-                {isSaved ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-lavender-moon" />
-                    <span>BOUND TO YOUR GRIMOIRE</span>
-                  </>
-                ) : (
-                  <>
-                    <BookOpen className="w-3.5 h-3.5 text-lavender-moon" />
-                    <span>SAVE TO GRIMOIRE</span>
-                  </>
-                )}
+                <Printer className="w-3.5 h-3.5 text-purple-400" />
+                <span>Print Reading</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleBeginAnother}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-surface hover:bg-surface-elevated text-bone-muted hover:text-bone border border-border-subtle hover:border-border-highlight text-xs font-mono uppercase tracking-ceremonial font-semibold transition-all min-h-[44px]"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#120722] hover:bg-[#1c0c36] border border-purple-900/60 text-purple-300 hover:text-white text-xs font-mono uppercase tracking-wider transition-colors"
               >
-                <RefreshCw className="w-3.5 h-3.5 text-lavender-dim" />
-                <span>BEGIN ANOTHER READING</span>
+                <RefreshCw className="w-3.5 h-3.5 text-purple-400" />
+                <span>Lay Another Spread</span>
               </button>
             </div>
           </div>
-        </div>
+        </article>
       )}
-
-      {/* Navigation Sub-Links */}
-      <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono">
-        <Link
-          href="/sanctum/tarot"
-          className="inline-flex items-center gap-1.5 text-bone-muted hover:text-lavender-light transition-colors uppercase tracking-ceremonial"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Single Daily Tarot Draw</span>
-        </Link>
-        <Link
-          href="/sanctum/grimoire"
-          className="inline-flex items-center gap-1.5 text-lavender-moon hover:text-lavender-light transition-colors uppercase tracking-ceremonial font-semibold"
-        >
-          <span>View My Grimoire</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </Link>
-      </div>
     </div>
   );
 }

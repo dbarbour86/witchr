@@ -27,6 +27,11 @@ export function Header() {
     };
   }, [mobileMenuOpen]);
 
+  // If inside the Sanctum workstation shell, do not render public header
+  if (pathname?.startsWith("/sanctum")) {
+    return null;
+  }
+
   const navLinks = [
     { name: "Spell Finder", href: "/spell-finder" },
     { name: "Rituals", href: "/rituals" },

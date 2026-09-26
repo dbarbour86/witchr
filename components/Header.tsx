@@ -123,6 +123,23 @@ export function Header() {
             </div>
 
             <nav className="flex flex-col gap-2" aria-label="Mobile Navigation">
+              <Link
+                href="/sanctum"
+                className={`flex items-center justify-between px-4 py-3 rounded-lg text-lg font-serif transition-colors min-h-[48px] ${
+                  pathname.startsWith("/sanctum")
+                    ? "bg-surface-elevated text-lavender-light font-semibold border-l-2 border-lavender shadow-glow-subtle"
+                    : "text-lavender-moon hover:text-lavender-light hover:bg-surface border border-border-highlight/50"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <FourPointStar className="w-3.5 h-3.5 text-lavender-moon" />
+                  <span>The Sanctum</span>
+                </span>
+                <span className="text-[10px] font-mono uppercase tracking-ceremonial px-2 py-0.5 rounded bg-surface border border-border-highlight text-lavender-dim">
+                  Interactive
+                </span>
+              </Link>
+
               {navLinks.map((link) => {
                 const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
                 return (

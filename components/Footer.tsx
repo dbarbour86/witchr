@@ -96,6 +96,12 @@ export function Footer() {
             </div>
             <ul className="space-y-2.5 text-sm">
               <li>
+                <Link href="/sanctum" className="text-lavender-moon hover:text-lavender-light transition-colors flex items-center gap-1.5 font-medium">
+                  <span>The Sanctum</span>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-surface border border-border-highlight text-lavender-dim font-mono uppercase">Interactive</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/spell-finder" className="hover:text-lavender-light transition-colors">
                   Spell Finder Tool
                 </Link>

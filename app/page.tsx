@@ -93,22 +93,22 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
             {/* Left Hero Narrative */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface border border-border-highlight text-xs font-mono uppercase tracking-ceremonial text-lavender-moon mx-auto lg:mx-0 shadow-subtle">
-                <FourPointStar className="w-3 h-3 text-lavender-moon" />
+            <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-center lg:text-left">
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-surface border border-border-highlight text-[10px] sm:text-xs font-mono uppercase tracking-wider sm:tracking-ceremonial text-lavender-moon mx-auto lg:mx-0 shadow-subtle max-w-full">
+                <FourPointStar className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-lavender-moon shrink-0" />
                 <span>Gothic Occult Self-Guidance</span>
-                <FourPointStar className="w-3 h-3 text-lavender-moon" />
+                <FourPointStar className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-lavender-moon shrink-0" />
               </div>
 
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-bold text-bone tracking-wide leading-[1.08] celestial-glow">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-bone tracking-wide leading-[1.1] celestial-glow">
                 Witchcraft for modern problems.
               </h1>
 
-              <p className="text-lg sm:text-xl md:text-2xl text-bone-muted font-serif italic max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-bone-muted font-serif italic max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                 Bad breakup. Shitty job. No direction. Weird energy. Start with what’s bothering you.
               </p>
 
-              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <Link
                   href="/spell-finder"
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-surface-elevated hover:bg-surface-hover text-lavender-light border border-border-ornate hover:border-lavender font-mono text-xs uppercase tracking-ceremonial font-semibold shadow-glow-purple transition-all duration-300 min-h-[50px] active:scale-[0.98]"
@@ -126,7 +126,7 @@ export default function HomePage() {
               </div>
 
               {/* Ceremonial Sub-Tagline */}
-              <div className="pt-4 flex items-center justify-center lg:justify-start gap-3 text-xs font-mono text-bone-dim">
+              <div className="pt-3 sm:pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-3 text-[11px] sm:text-xs font-mono text-bone-dim">
                 <span>01. Name the wound</span>
                 <span>·</span>
                 <span>02. Seal the boundary</span>

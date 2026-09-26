@@ -1,10 +1,19 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { MoonPhaseRibbon, CelestialDivider, FourPointStar } from "./OrnateFrames";
 
 export function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  // If inside the Sanctum workstation shell, do not render marketing footer
+  if (pathname?.startsWith("/sanctum")) {
+    return null;
+  }
 
   return (
     <footer className="bg-surface/90 border-t border-border mt-24 text-bone-muted relative overflow-hidden">
@@ -95,6 +104,12 @@ export function Footer() {
               Occult Library
             </div>
             <ul className="space-y-2.5 text-sm">
+              <li>
+                <Link href="/sanctum" className="text-lavender-moon hover:text-lavender-light transition-colors flex items-center gap-1.5 font-medium">
+                  <span>The Sanctum</span>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-surface border border-border-highlight text-lavender-dim font-mono uppercase">Interactive</span>
+                </Link>
+              </li>
               <li>
                 <Link href="/spell-finder" className="hover:text-lavender-light transition-colors">
                   Spell Finder Tool

@@ -106,9 +106,9 @@ export function SanctumCardFace({ card, size = "large", className = "" }: Sanctu
 
   return (
     <div
-      className={`group relative w-full ${
-        isLarge ? "max-w-[280px] h-[420px]" : "max-w-[220px] h-[340px]"
-      } rounded-xl p-3 bg-gradient-to-b from-[#1a142c] via-[#120f20] to-[#07070b] border border-border-ornate shadow-card-tarot flex flex-col justify-between select-none ${className}`}
+      className={`group relative ${
+        isLarge ? "w-[260px] sm:w-[280px]" : "w-[200px] sm:w-[220px]"
+      } aspect-[2/3] shrink-0 rounded-xl p-3 bg-gradient-to-b from-[#1a142c] via-[#120f20] to-[#07070b] border border-border-ornate shadow-card-tarot flex flex-col justify-between select-none overflow-hidden ${className}`}
     >
       {/* Ornate Corner Flourishes */}
       <div className="absolute top-2 left-2 pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity">
@@ -129,7 +129,7 @@ export function SanctumCardFace({ card, size = "large", className = "" }: Sanctu
       <div className="absolute inset-3 rounded border border-border-subtle/40 pointer-events-none" />
 
       {/* Card Header: Numeral & Constellation Dot */}
-      <div className="relative z-10 pt-2 text-center flex items-center justify-center gap-2">
+      <div className="relative z-10 pt-1 text-center flex items-center justify-center gap-2 shrink-0">
         <span className="w-1.5 h-1.5 rounded-full bg-lavender-moon/60" />
         <span className="font-serif text-sm font-bold tracking-widest text-lavender-moon">
           {card.numeral}
@@ -138,14 +138,14 @@ export function SanctumCardFace({ card, size = "large", className = "" }: Sanctu
       </div>
 
       {/* Card Body: Art Image (Future) or Procedural Ceremonial Motif */}
-      <div className="relative z-10 flex-1 flex items-center justify-center my-2 overflow-hidden rounded-lg bg-background/50 border border-border-subtle/50">
+      <div className="relative z-10 flex-1 min-h-0 w-full flex items-center justify-center my-1.5 overflow-hidden rounded-lg bg-background/50 border border-border-subtle/50">
         {card.image?.src ? (
           <Image
             src={card.image.src}
             alt={card.image.alt}
             fill
-            sizes="(max-width: 640px) 240px, 280px"
-            className="object-cover"
+            sizes={isLarge ? "280px" : "220px"}
+            className="object-contain"
           />
         ) : (
           renderCardMotif()
@@ -153,11 +153,15 @@ export function SanctumCardFace({ card, size = "large", className = "" }: Sanctu
       </div>
 
       {/* Card Footer: Name & Arcana Type */}
-      <div className="relative z-10 pb-2 text-center space-y-1">
-        <h3 className="font-display text-base font-bold tracking-wide text-bone group-hover:text-lavender-light transition-colors uppercase">
+      <div className="relative z-10 pb-1 px-1 text-center shrink-0 w-full overflow-hidden flex flex-col justify-center min-h-[40px]">
+        <h3
+          className={`font-display font-bold tracking-wide text-bone group-hover:text-lavender-light transition-colors uppercase leading-tight line-clamp-2 ${
+            isLarge ? "text-sm sm:text-base" : "text-xs sm:text-sm"
+          }`}
+        >
           {card.name}
         </h3>
-        <p className="text-[10px] font-mono uppercase tracking-ceremonial text-lavender-dim">
+        <p className="text-[10px] font-mono uppercase tracking-ceremonial text-lavender-dim pt-0.5">
           Major Arcana
         </p>
       </div>

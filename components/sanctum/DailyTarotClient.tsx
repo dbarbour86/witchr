@@ -179,15 +179,15 @@ export function DailyTarotClient() {
               }`}
             >
               {reading && card ? (
-                <div className="animate-in fade-in zoom-in-95 duration-500 flex flex-col items-center gap-3">
+                <div className="animate-in fade-in zoom-in-95 duration-500 flex flex-col items-center gap-3 w-[260px] sm:w-[280px]">
                   <SanctumCardFace card={card} size="large" />
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-purple-300 flex items-center gap-1.5 pt-1">
-                    <FourPointStar className="w-2.5 h-2.5 text-purple-400" />
-                    <span>Drawn for {reading.localDate}</span>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-purple-300 flex items-center justify-center gap-1.5 pt-1 text-center w-full">
+                    <FourPointStar className="w-2.5 h-2.5 text-purple-400 shrink-0" />
+                    <span className="truncate">Drawn for {reading.localDate}</span>
                   </span>
                 </div>
               ) : (
-                <div className="flex flex-col items-center gap-3">
+                <div className="flex flex-col items-center gap-3 w-[260px] sm:w-[280px]">
                   <SanctumCardBack
                     size="large"
                     label="The Oracle Deck"

@@ -534,7 +534,7 @@ export function GrimoireLedgerClient() {
 
                   <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
                     {cardData && (
-                      <div className="shrink-0 flex justify-center">
+                      <div className="shrink-0 flex justify-center w-[200px] sm:w-[220px] mx-auto sm:mx-0">
                         <SanctumCardFace card={cardData} size="default" />
                       </div>
                     )}

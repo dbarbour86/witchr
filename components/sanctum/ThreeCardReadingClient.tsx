@@ -314,7 +314,7 @@ export function ThreeCardReadingClient() {
         </div>
 
         {/* 3-Card Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start justify-items-center w-full">
           {THREE_CARD_POSITIONS.map((pos, idx) => {
             const isCardRevealed = revealedIndex >= idx;
             const currentCard = cards ? cards[idx] : null;
@@ -322,10 +322,10 @@ export function ThreeCardReadingClient() {
             return (
               <div
                 key={pos.key}
-                className="flex flex-col items-center text-center space-y-3 w-full max-w-[260px]"
+                className="flex flex-col items-center text-center space-y-3 w-full min-w-0 max-w-[240px] mx-auto"
               >
                 {/* Position Marker */}
-                <div className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest text-purple-300">
+                <div className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest text-purple-300 shrink-0">
                   <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
                   <span>Position {pos.numeral}: {pos.label}</span>
                 </div>
@@ -333,11 +333,13 @@ export function ThreeCardReadingClient() {
                 {/* Card Stage */}
                 <div className="w-full flex justify-center transition-all duration-500 ease-out transform-gpu">
                   {isCardRevealed && currentCard ? (
-                    <div className="animate-in fade-in zoom-in-95 duration-500 flex flex-col items-center gap-2">
+                    <div className="animate-in fade-in zoom-in-95 duration-500 flex flex-col items-center gap-2 w-[200px] sm:w-[220px]">
                       <SanctumCardFace card={currentCard} size="default" />
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-purple-200 font-semibold pt-1">
-                        {currentCard.name} ({currentCard.numeral})
-                      </span>
+                      <div className="w-full text-center px-1">
+                        <span className="text-[11px] font-mono uppercase tracking-wider text-purple-200 font-semibold block leading-tight break-words">
+                          {currentCard.name} ({currentCard.numeral})
+                        </span>
+                      </div>
                     </div>
                   ) : (
                     <SanctumCardBack

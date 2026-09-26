@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { MoonPhaseRibbon, CelestialDivider, FourPointStar } from "./OrnateFrames";
 
 export function Footer() {
@@ -19,17 +20,18 @@ export function Footer() {
           <div className="md:col-span-2 space-y-4">
             <Link
               href="/"
-              className="inline-flex items-center gap-2.5 text-bone hover:text-lavender-light transition-colors group"
+              className="inline-flex items-center gap-2.5 text-bone hover:opacity-90 transition-opacity group"
               aria-label="Witchr Homepage"
             >
-              <div className="w-8 h-8 rounded-lg bg-background border border-border-highlight flex items-center justify-center text-lavender group-hover:border-lavender/60 transition-colors shadow-subtle">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" className="w-4 h-4 text-lavender-moon">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.85 0 3.58-.5 5.07-1.38-4.22-.92-7.37-4.68-7.37-9.19 0-4.08 2.61-7.55 6.27-8.83C14.73 2.22 13.4 2 12 2z" />
-                </svg>
+              <div className="relative h-16 md:h-20 flex items-center">
+                <Image
+                  src="/images/witchr-logo.webp"
+                  alt="Witchr"
+                  width={470}
+                  height={339}
+                  className="h-16 md:h-20 w-auto object-contain"
+                />
               </div>
-              <span className="font-display text-2xl md:text-3xl font-bold tracking-ceremonial text-bone">
-                WITCHR
-              </span>
             </Link>
             <p className="text-sm md:text-base text-bone-muted max-w-md leading-relaxed">
               Witchcraft for modern problems. An occult self-guidance platform offering practical rituals, diagnostic tarot spreads, and visual sigils for human friction.

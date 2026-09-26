@@ -150,6 +150,17 @@ export default function HomePage() {
                   />
                   {/* Subtle bottom vignette to blend into plinth */}
                   <div className="absolute inset-0 bg-gradient-to-t from-surface-card via-transparent to-transparent opacity-50 pointer-events-none" />
+
+                  {/* Ceremonial Witchr Logo Overlay */}
+                  <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 w-28 sm:w-36 z-10 pointer-events-none transition-transform duration-500 group-hover:scale-105">
+                    <Image
+                      src="/images/witchr-logo.webp"
+                      alt="Witchr"
+                      width={470}
+                      height={339}
+                      className="w-full h-auto object-contain filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] drop-shadow-[0_0_14px_rgba(157,78,221,0.5)]"
+                    />
+                  </div>
                 </div>
 
                 {/* Tarot Card Bottom Plinth */}

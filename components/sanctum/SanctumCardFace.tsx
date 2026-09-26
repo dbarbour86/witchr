@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
 import { SanctumTarotCard } from "@/content/sanctum-tarot";
 import {
@@ -19,9 +21,11 @@ interface SanctumCardFaceProps {
 }
 
 export function SanctumCardFace({ card, size = "large", className = "" }: SanctumCardFaceProps) {
+  const [imageError, setImageError] = useState(false);
   const isLarge = size === "large";
+  const widthClass = isLarge ? "w-[260px] sm:w-[280px]" : "w-[200px] sm:w-[220px]";
 
-  // Render card-specific occult ceremonial motif
+  // Render card-specific occult ceremonial motif for procedural fallback
   const renderCardMotif = () => {
     switch (card.image.motif) {
       case "fool":
@@ -67,6 +71,38 @@ export function SanctumCardFace({ card, size = "large", className = "" }: Sanctu
           </div>
         );
 
+      case "temperance":
+        return (
+          <div className="relative flex items-center justify-center w-full h-full py-4">
+            <div className="w-28 h-28 rounded-full border border-dashed border-border-ornate/50 absolute" />
+            <div className="w-20 h-20 rounded-full border border-border-ornate/80 flex items-center justify-center bg-surface-elevated/90 shadow-glow-subtle relative z-10">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="text-lavender-moon">
+                <path d="M6 3h12l-2 7a4 4 0 0 1-8 0L6 3z" />
+                <path d="M12 14v6" />
+                <path d="M8 20h8" />
+              </svg>
+            </div>
+            <div className="absolute bottom-2 text-lavender-moon">
+              <FourPointStar className="w-3 h-3" />
+            </div>
+          </div>
+        );
+
+      case "moon":
+        return (
+          <div className="relative flex items-center justify-center w-full h-full py-4">
+            <CelestialCircle className="w-28 h-28 text-lavender-dim/25 absolute animate-spin-slow opacity-60" />
+            <div className="w-20 h-20 rounded-full border border-border-ornate/80 flex items-center justify-center bg-surface-elevated/90 shadow-glow-subtle relative z-10">
+              <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor" className="text-lavender-moon">
+                <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z" />
+              </svg>
+            </div>
+            <div className="absolute top-2 right-4 text-lavender-light">
+              <FourPointStar className="w-3.5 h-3.5" />
+            </div>
+          </div>
+        );
+
       case "hermit":
         return (
           <div className="relative flex items-center justify-center w-full h-full py-4">
@@ -104,11 +140,29 @@ export function SanctumCardFace({ card, size = "large", className = "" }: Sanctu
     }
   };
 
+  // If card image source is available and has not errored, render the full canonical tarot card artwork
+  if (card.image?.src && !imageError) {
+    return (
+      <div
+        className={`group relative ${widthClass} aspect-[2/3] shrink-0 rounded-xl overflow-hidden border border-border-ornate shadow-card-tarot hover:border-lavender-moon/80 hover:shadow-glow-purple transition-all duration-300 select-none bg-surface ${className}`}
+      >
+        <Image
+          src={card.image.src}
+          alt={card.image.alt || `${card.name} Tarot Card`}
+          fill
+          sizes={isLarge ? "280px" : "220px"}
+          className="object-cover"
+          priority
+          onError={() => setImageError(true)}
+        />
+      </div>
+    );
+  }
+
+  // High-fidelity procedural SVG fallback when image is missing or failed to load
   return (
     <div
-      className={`group relative ${
-        isLarge ? "w-[260px] sm:w-[280px]" : "w-[200px] sm:w-[220px]"
-      } aspect-[2/3] shrink-0 rounded-xl p-3 bg-gradient-to-b from-[#1a142c] via-[#120f20] to-[#07070b] border border-border-ornate shadow-card-tarot flex flex-col justify-between select-none overflow-hidden ${className}`}
+      className={`group relative ${widthClass} aspect-[2/3] shrink-0 rounded-xl p-3 bg-gradient-to-b from-[#1a142c] via-[#120f20] to-[#07070b] border border-border-ornate shadow-card-tarot flex flex-col justify-between select-none overflow-hidden ${className}`}
     >
       {/* Ornate Corner Flourishes */}
       <div className="absolute top-2 left-2 pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity">
@@ -137,19 +191,9 @@ export function SanctumCardFace({ card, size = "large", className = "" }: Sanctu
         <span className="w-1.5 h-1.5 rounded-full bg-lavender-moon/60" />
       </div>
 
-      {/* Card Body: Art Image (Future) or Procedural Ceremonial Motif */}
+      {/* Card Body: Procedural Ceremonial Motif */}
       <div className="relative z-10 flex-1 min-h-0 w-full flex items-center justify-center my-1.5 overflow-hidden rounded-lg bg-background/50 border border-border-subtle/50">
-        {card.image?.src ? (
-          <Image
-            src={card.image.src}
-            alt={card.image.alt}
-            fill
-            sizes={isLarge ? "280px" : "220px"}
-            className="object-contain"
-          />
-        ) : (
-          renderCardMotif()
-        )}
+        {renderCardMotif()}
       </div>
 
       {/* Card Footer: Name & Arcana Type */}

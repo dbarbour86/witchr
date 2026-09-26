@@ -14,10 +14,14 @@ export interface SanctumTarotCard {
   image: {
     src?: string;
     alt: string;
-    motif: "fool" | "magician" | "high-priestess" | "hermit" | "death";
+    motif: "fool" | "magician" | "high-priestess" | "temperance" | "moon" | "hermit" | "death";
   };
 }
 
+/**
+ * Standardized Sanctum MVP 5-Card Tarot Deck.
+ * Canonical card artwork lives in /images/sanctum/tarot/
+ */
 export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
   {
     id: "card_00_fool",
@@ -46,6 +50,7 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
     practicalTakeaway:
       "Take one low-stakes, imperfect step today on a task you have been over-analyzing. Do not polish it before you begin; simply cross the threshold.",
     image: {
+      src: "/images/sanctum/tarot/the-fool.png",
       alt: "The Fool — Occult ceremonial tarot motif of the threshold and wandering star",
       motif: "fool",
     },
@@ -77,6 +82,7 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
     practicalTakeaway:
       "Clear your immediate physical workspace of three unnecessary distractions and complete one concentrated 25-minute block of focused effort before nightfall.",
     image: {
+      src: "/images/sanctum/tarot/the-magician.png",
       alt: "The Magician — Occult ceremonial tarot motif of focused elemental mastery",
       motif: "magician",
     },
@@ -108,10 +114,81 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
     practicalTakeaway:
       "Spend ten uninterrupted minutes in silence today without your phone, notebook, or media. Give your thoughts room to settle before making your next decision.",
     image: {
+      src: "/images/sanctum/tarot/the-high-priestess.png",
       alt: "The High Priestess — Occult ceremonial tarot motif of the veiled moon and instinct",
       motif: "high-priestess",
     },
   },
+  {
+    id: "card_14_temperance",
+    slug: "temperance",
+    number: 14,
+    numeral: "XIV",
+    name: "Temperance",
+    shortKeywords: ["Measured Synthesis", "Alchemical Balance", "Patient Blending"],
+    traditionalThemes: [
+      "The blending of opposing forces",
+      "Calibrated patience and moderation",
+      "Inner alchemy through gradual adjustment",
+      "Finding equilibrium under dynamic tension",
+    ],
+    reversedThemes: [
+      "Impulsive extremes or all-or-nothing thinking",
+      "Forcing premature synthesis",
+      "Volatile reactions disrupting steady momentum",
+    ],
+    traditionalMeaning:
+      "An angel with radiant wings stands with one foot on terra firma and one in living water, pouring liquid steadily between two chalices without spilling a drop. Temperance represents the sacred art of continuous, conscious calibration—the patient alchemy that transforms disparate elements into a harmonious whole.",
+    reflectiveInterpretation:
+      "Temperance invites you to step back from all-or-nothing ultimatums and consider where steady, gradual adjustment will yield more durable power than a violent swing of the pendulum. When we feel pressured to solve a complex dilemma through sudden rupture, this card reminds us that the highest mastery is often the quiet refusal to rush the distillation. Balance is not a frozen posture, but an active practice of continuous micro-corrections.",
+    reflectionPrompt:
+      "Where in your life are you treating a delicate process of calibration as if it were an emergency that demands an extreme reaction?",
+    practicalTakeaway:
+      "Identify one situation where you are swinging between extremes. Rather than forcing a drastic resolution today, make one small, steady adjustment that restores breathing room.",
+    image: {
+      src: "/images/sanctum/tarot/temperance.png",
+      alt: "Temperance — Occult ceremonial tarot card of alchemy, balance, and measured integration",
+      motif: "temperance",
+    },
+  },
+  {
+    id: "card_18_moon",
+    slug: "the-moon",
+    number: 18,
+    numeral: "XVIII",
+    name: "The Moon",
+    shortKeywords: ["Subconscious Currents", "Nocturnal Instinct", "Navigating Illusion"],
+    traditionalThemes: [
+      "Illuminating what hides beneath daylight logic",
+      "Unconscious patterns and shadow dynamics",
+      "The uncanny threshold between fear and intuition",
+      "Walking by lunar reflection rather than solar clarity",
+    ],
+    reversedThemes: [
+      "Paranoia masquerading as psychic discernment",
+      "Spinning narratives from unverified anxiety",
+      "Drowning in emotional fog or projection",
+    ],
+    traditionalMeaning:
+      "Two hounds bay at the radiant nocturnal moon as a crayfish ascends from the primordial deep waters between two stone towers. The Moon represents the realm of the unconscious, memory, dream-states, and instinct—the shadowy terrain where things are rarely what they seem upon first glance, requiring deep discernment to separate genuine signal from emotional echo.",
+    reflectiveInterpretation:
+      "The Moon indicates that the landscape you are traversing is saturated with projection, distorted perception, or submerged anxieties. Daylight certainty is unavailable right now, and attempting to force neat rational explanations will only compound the confusion. This card invites you to slow your pace, observe the shadows without panicking, and distinguish between a visceral gut warning and a phantom bred from past scars.",
+    reflectionPrompt:
+      "What fear or assumption are you treating as an objective fact, when it may simply be an unverified shadow cast by past experience?",
+    practicalTakeaway:
+      "Do not make permanent commitments or confrontational declarations under emotional fog today. Write down your swirling assumptions, sleep on them, and review them in clear morning light.",
+    image: {
+      src: "/images/sanctum/tarot/the-moon.png",
+      alt: "The Moon — Occult ceremonial tarot card of nocturnal instinct, illusion, and subconscious currents",
+      motif: "moon",
+    },
+  },
+];
+
+/**
+ * Archived cards preserved for backward-compatibility with previously stored local test readings.
+ */
+export const ARCHIVED_SANCTUM_CARDS: SanctumTarotCard[] = [
   {
     id: "card_09_hermit",
     slug: "the-hermit",
@@ -176,15 +253,20 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
   },
 ];
 
+export const ALL_SANCTUM_TAROT_CARDS: SanctumTarotCard[] = [
+  ...SANCTUM_TAROT_DECK,
+  ...ARCHIVED_SANCTUM_CARDS,
+];
+
 export function getRandomSanctumTarotCard(): SanctumTarotCard {
   const index = Math.floor(Math.random() * SANCTUM_TAROT_DECK.length);
   return SANCTUM_TAROT_DECK[index];
 }
 
 export function getSanctumTarotCardById(id: string): SanctumTarotCard | undefined {
-  return SANCTUM_TAROT_DECK.find((c) => c.id === id);
+  return ALL_SANCTUM_TAROT_CARDS.find((c) => c.id === id);
 }
 
 export function getSanctumTarotCardBySlug(slug: string): SanctumTarotCard | undefined {
-  return SANCTUM_TAROT_DECK.find((c) => c.slug === slug);
+  return ALL_SANCTUM_TAROT_CARDS.find((c) => c.slug === slug);
 }

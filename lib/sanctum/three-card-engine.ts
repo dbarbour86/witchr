@@ -59,6 +59,22 @@ const POSITION_INTERPRETATIONS: Record<string, Record<SpreadPositionKey, string>
     guidance:
       "Step back from debate and observe. Protect a pocket of silence before committing to a stance. Listen to what your body and quiet intuition report when you stop looking for external consensus.",
   },
+  card_14_temperance: {
+    situation:
+      "Temperance marks a dynamic requiring careful blending and continuous calibration. Different pressures, obligations, or emotions are in play, requiring steady hands to maintain equilibrium rather than sudden rupture.",
+    challenge:
+      "The friction of Temperance is the temptation toward all-or-nothing extremes or restless impatience. You may be trying to force a swift outcome when what is actually needed is the stamina to let elements distill in their own time.",
+    guidance:
+      "Practice conscious moderation and gradual adjustment. Do not swing between reactive poles; blend opposing considerations patiently. Small, steady corrections will yield far greater leverage than a dramatic overreaction.",
+  },
+  card_18_moon: {
+    situation:
+      "The Moon shows that this circumstance is steeped in ambiguity, unverified projections, or submerged emotional currents. Not all facts are visible in the daylight, and much is being filtered through fear or imagination.",
+    challenge:
+      "The obstacle here is mistaking anxious illusions for objective truth. You risk reacting to shadowy phantoms, catastrophizing unverified signals, or allowing unexamined dread to distort your discernment.",
+    guidance:
+      "Navigate by instinct, not paranoia. Slow down and refuse to draw hasty conclusions while the fog is thick. Distinguish between what you actually know for certain and what your anxiety is projecting into the dark.",
+  },
   card_09_hermit: {
     situation:
       "The Hermit marks a phase of necessary interiority and deliberate stepping back. The matter at hand cannot be resolved through collective consensus; it requires private examination and personal alignment.",

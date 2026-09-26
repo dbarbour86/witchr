@@ -69,7 +69,7 @@ export default function TarotIndexPage() {
         {TAROT_SPREADS.map((spread) => (
           <article
             key={spread.slug}
-            className="tarot-frame group p-7 flex flex-col justify-between"
+            className="tarot-frame group p-7 flex flex-col justify-between h-full min-h-[260px]"
           >
             <div className="absolute top-2.5 left-2.5 pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity">
               <TarotCornerFlourish className="w-4 h-4 text-lavender-moon" />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GrimoireStar, FourPointStar } from "./OrnateFrames";
@@ -8,6 +8,7 @@ import { Menu, X, ArrowRight, Sparkles } from "lucide-react";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const hamburgerButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
   // Close mobile menu on route change
@@ -15,16 +16,29 @@ export function Header() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll and manage escape key when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
+      const originalOverflow = document.body.style.overflow;
+      const originalTouchAction = document.body.style.touchAction;
       document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+      document.body.style.touchAction = "none";
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setMobileMenuOpen(false);
+          hamburgerButtonRef.current?.focus();
+        }
+      };
+
+      window.addEventListener("keydown", handleKeyDown);
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.body.style.touchAction = originalTouchAction;
+        window.removeEventListener("keydown", handleKeyDown);
+      };
     }
-    return () => {
-      document.body.style.overflow = "";
-    };
   }, [mobileMenuOpen]);
 
   // If inside the Sanctum workstation shell, do not render public header
@@ -42,8 +56,8 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/85 backdrop-blur-md border-b border-border-subtle transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 md:h-20 flex items-center justify-between">
+    <header className="sticky top-0 z-50 w-full bg-[#07070b]/95 backdrop-blur-md border-b border-border-subtle transition-colors">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between">
         {/* Ceremonial Brand Wordmark */}
         <Link
           href="/"
@@ -89,7 +103,7 @@ export function Header() {
           })}
         </nav>
 
-        {/* Desktop CTA */}
+        {/* Desktop CTA (hidden on mobile) */}
         <div className="hidden md:flex items-center gap-4">
           <Link
             href="/spell-finder"
@@ -100,85 +114,105 @@ export function Header() {
           </Link>
         </div>
 
-        {/* Mobile Hamburger Button */}
+        {/* Mobile Hamburger / Close Button */}
         <button
+          ref={hamburgerButtonRef}
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="md:hidden inline-flex items-center justify-center p-2.5 rounded-lg text-bone-muted hover:text-lavender-light hover:bg-surface border border-transparent hover:border-border-highlight transition-colors min-w-[44px] min-h-[44px]"
           aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-navigation-drawer"
           aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
         >
           {mobileMenuOpen ? <X className="w-6 h-6 text-lavender-light" /> : <Menu className="w-6 h-6 text-lavender-light" />}
         </button>
       </div>
 
-      {/* Mobile Menu Drawer Overlay */}
+      {/* Mobile Menu Drawer Overlay & Backdrop */}
       {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 top-18 bg-background/95 backdrop-blur-xl z-40 md:hidden flex flex-col justify-between p-6 border-t border-border-highlight animate-in fade-in duration-200"
-          aria-modal="true"
-          role="dialog"
-        >
-          <div className="space-y-4 pt-2">
-            <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
-              <span className="text-[11px] font-mono uppercase tracking-ceremonial text-lavender-dim">
-                The Grimoire Folio
-              </span>
-              <GrimoireStar className="w-3.5 h-3.5 text-lavender-dim" />
+        <>
+          {/* Dimmed backdrop to completely suppress underlying page */}
+          <div
+            className="fixed inset-0 top-16 bg-black/80 z-40 md:hidden backdrop-blur-sm transition-opacity"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+
+          {/* Opaque Mobile Menu Drawer */}
+          <div
+            id="mobile-navigation-drawer"
+            className="fixed inset-x-0 top-16 h-[calc(100dvh-4rem)] max-h-[calc(100dvh-4rem)] bg-[#07070b] border-t border-border-highlight z-50 md:hidden flex flex-col justify-between p-6 pb-8 overflow-y-auto shadow-2xl animate-in fade-in duration-200"
+            aria-modal="true"
+            role="dialog"
+            aria-label="Mobile Navigation"
+          >
+            <div className="space-y-4 pt-1">
+              <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
+                <span className="text-[11px] font-mono uppercase tracking-ceremonial text-lavender-dim">
+                  The Grimoire Folio
+                </span>
+                <GrimoireStar className="w-3.5 h-3.5 text-lavender-dim" />
+              </div>
+
+              <nav className="flex flex-col gap-2" aria-label="Mobile Navigation List">
+                {/* The Sanctum Interactive Entry */}
+                <Link
+                  href="/sanctum"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-serif transition-colors min-h-[48px] ${
+                    pathname.startsWith("/sanctum")
+                      ? "bg-surface-elevated text-lavender-light font-semibold border-l-2 border-lavender shadow-glow-subtle"
+                      : "text-lavender-moon hover:text-lavender-light bg-surface/70 hover:bg-surface border border-border-highlight/60"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <FourPointStar className="w-3.5 h-3.5 text-lavender-moon" />
+                    <span>The Sanctum</span>
+                  </span>
+                  <span className="text-[10px] font-mono uppercase tracking-ceremonial px-2 py-0.5 rounded bg-surface border border-border-highlight text-lavender-dim">
+                    Interactive
+                  </span>
+                </Link>
+
+                {/* Primary Nav Links */}
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+                  return (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-serif transition-colors min-h-[48px] ${
+                        isActive
+                          ? "bg-surface-elevated text-lavender-light font-semibold border-l-2 border-lavender shadow-glow-subtle"
+                          : "text-bone hover:text-lavender-light bg-surface/30 hover:bg-surface border border-border-subtle/50"
+                      }`}
+                    >
+                      <span>{link.name}</span>
+                      <ArrowRight className="w-4 h-4 text-bone-dim" />
+                    </Link>
+                  );
+                })}
+              </nav>
             </div>
 
-            <nav className="flex flex-col gap-2" aria-label="Mobile Navigation">
+            {/* Single Primary Mobile CTA */}
+            <div className="space-y-4 pt-6 mt-6 border-t border-border-subtle shrink-0">
               <Link
-                href="/sanctum"
-                className={`flex items-center justify-between px-4 py-3 rounded-lg text-lg font-serif transition-colors min-h-[48px] ${
-                  pathname.startsWith("/sanctum")
-                    ? "bg-surface-elevated text-lavender-light font-semibold border-l-2 border-lavender shadow-glow-subtle"
-                    : "text-lavender-moon hover:text-lavender-light hover:bg-surface border border-border-highlight/50"
-                }`}
+                href="/spell-finder"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2.5 py-3.5 px-5 rounded-xl bg-surface-elevated hover:bg-surface-hover text-lavender-light font-mono text-xs uppercase tracking-ceremonial font-semibold border border-lavender/50 shadow-glow-purple transition-all text-center min-h-[48px] active:scale-[0.98]"
               >
-                <span className="flex items-center gap-2">
-                  <FourPointStar className="w-3.5 h-3.5 text-lavender-moon" />
-                  <span>The Sanctum</span>
-                </span>
-                <span className="text-[10px] font-mono uppercase tracking-ceremonial px-2 py-0.5 rounded bg-surface border border-border-highlight text-lavender-dim">
-                  Interactive
-                </span>
+                <Sparkles className="w-4 h-4 text-lavender-moon" />
+                <span>Find a ritual</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
-
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
-                return (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    className={`flex items-center justify-between px-4 py-3 rounded-lg text-lg font-serif transition-colors min-h-[48px] ${
-                      isActive
-                        ? "bg-surface-elevated text-lavender-light font-semibold border-l-2 border-lavender shadow-glow-subtle"
-                        : "text-bone-muted hover:text-bone hover:bg-surface"
-                    }`}
-                  >
-                    <span>{link.name}</span>
-                    <ArrowRight className="w-4 h-4 text-bone-dim" />
-                  </Link>
-                );
-              })}
-            </nav>
+              <p className="text-center text-xs text-bone-dim font-serif italic">
+                Witchcraft for modern problems.
+              </p>
+            </div>
           </div>
-
-          <div className="space-y-4 pt-6 border-t border-border-subtle">
-            <Link
-              href="/spell-finder"
-              className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-lg bg-surface-elevated hover:bg-surface-hover text-lavender-light font-mono text-xs uppercase tracking-ceremonial font-semibold border border-lavender/50 shadow-glow-purple transition-all text-center min-h-[48px]"
-            >
-              <Sparkles className="w-4 h-4 text-lavender-moon" />
-              <span>Find a ritual</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <p className="text-center text-xs text-bone-dim font-serif italic">
-              Witchcraft for modern problems.
-            </p>
-          </div>
-        </div>
+        </>
       )}
     </header>
   );

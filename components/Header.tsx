@@ -38,7 +38,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/85 backdrop-blur-md border-b border-border-subtle transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 md:h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between">
         {/* Ceremonial Brand Wordmark */}
         <Link
           href="/"
@@ -107,56 +107,71 @@ export function Header() {
         </button>
       </div>
 
-      {/* Mobile Menu Drawer Overlay */}
+      {/* Mobile Menu Drawer Overlay & Backdrop */}
       {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 top-18 bg-background/95 backdrop-blur-xl z-40 md:hidden flex flex-col justify-between p-6 border-t border-border-highlight animate-in fade-in duration-200"
-          aria-modal="true"
-          role="dialog"
-        >
-          <div className="space-y-4 pt-2">
-            <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
-              <span className="text-[11px] font-mono uppercase tracking-ceremonial text-lavender-dim">
-                The Grimoire Folio
-              </span>
-              <GrimoireStar className="w-3.5 h-3.5 text-lavender-dim" />
+        <>
+          {/* Dimmed backdrop to completely suppress underlying page */}
+          <div
+            className="fixed inset-0 top-16 bg-black/80 z-40 md:hidden backdrop-blur-sm transition-opacity"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+
+          {/* Opaque Mobile Menu Drawer */}
+          <div
+            id="mobile-navigation-drawer"
+            className="fixed inset-x-0 top-16 h-[calc(100dvh-4rem)] max-h-[calc(100dvh-4rem)] bg-[#07070b] border-t border-border-highlight z-50 md:hidden flex flex-col justify-between p-6 pb-8 overflow-y-auto shadow-2xl animate-in fade-in duration-200"
+            aria-modal="true"
+            role="dialog"
+            aria-label="Mobile Navigation"
+          >
+            <div className="space-y-4 pt-1">
+              <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
+                <span className="text-[11px] font-mono uppercase tracking-ceremonial text-lavender-dim">
+                  The Grimoire Folio
+                </span>
+                <GrimoireStar className="w-3.5 h-3.5 text-lavender-dim" />
+              </div>
+
+              <nav className="flex flex-col gap-2" aria-label="Mobile Navigation List">
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+                  return (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-serif transition-colors min-h-[48px] ${
+                        isActive
+                          ? "bg-surface-elevated text-lavender-light font-semibold border-l-2 border-lavender shadow-glow-subtle"
+                          : "text-bone hover:text-lavender-light bg-surface/30 hover:bg-surface border border-border-subtle/50"
+                      }`}
+                    >
+                      <span>{link.name}</span>
+                      <ArrowRight className="w-4 h-4 text-bone-dim" />
+                    </Link>
+                  );
+                })}
+              </nav>
             </div>
 
-            <nav className="flex flex-col gap-2" aria-label="Mobile Navigation">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
-                return (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    className={`flex items-center justify-between px-4 py-3 rounded-lg text-lg font-serif transition-colors min-h-[48px] ${
-                      isActive
-                        ? "bg-surface-elevated text-lavender-light font-semibold border-l-2 border-lavender shadow-glow-subtle"
-                        : "text-bone-muted hover:text-bone hover:bg-surface"
-                    }`}
-                  >
-                    <span>{link.name}</span>
-                    <ArrowRight className="w-4 h-4 text-bone-dim" />
-                  </Link>
-                );
-              })}
-            </nav>
+            {/* Single Primary Mobile CTA */}
+            <div className="space-y-4 pt-6 mt-6 border-t border-border-subtle shrink-0">
+              <Link
+                href="/spell-finder"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2.5 py-3.5 px-5 rounded-xl bg-surface-elevated hover:bg-surface-hover text-lavender-light font-mono text-xs uppercase tracking-ceremonial font-semibold border border-lavender/50 shadow-glow-purple transition-all text-center min-h-[48px] active:scale-[0.98]"
+              >
+                <Sparkles className="w-4 h-4 text-lavender-moon" />
+                <span>Find a ritual</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <p className="text-center text-xs text-bone-dim font-serif italic">
+                Witchcraft for modern problems.
+              </p>
+            </div>
           </div>
-
-          <div className="space-y-4 pt-6 border-t border-border-subtle">
-            <Link
-              href="/spell-finder"
-              className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-lg bg-surface-elevated hover:bg-surface-hover text-lavender-light font-mono text-xs uppercase tracking-ceremonial font-semibold border border-lavender/50 shadow-glow-purple transition-all text-center min-h-[48px]"
-            >
-              <Sparkles className="w-4 h-4 text-lavender-moon" />
-              <span>Find a ritual</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <p className="text-center text-xs text-bone-dim font-serif italic">
-              Witchcraft for modern problems.
-            </p>
-          </div>
-        </div>
+        </>
       )}
     </header>
   );

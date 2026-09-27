@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { OracleFigure } from "@/components/sanctum/OracleFigure";
 import { FourPointStar, TarotCornerFlourish } from "@/components/OrnateFrames";
 import {
@@ -20,6 +20,7 @@ import {
   Info,
 } from "lucide-react";
 import type { OracleChatMessage, OracleSuggestedAction, OracleConversationOutput } from "@/lib/sanctum/oracle/types";
+import { ORACLE_PENDING_INQUIRY_KEY } from "@/lib/sanctum/oracle/types";
 import { recordSanctumTestEvent } from "@/lib/sanctum/test-events";
 
 const ORACLE_CHAT_STORAGE_KEY = "witchr_sanctum_oracle_chat";
@@ -52,6 +53,7 @@ const INITIAL_ORACLE_MESSAGE: ChatEntry = {
 };
 
 export function OracleChatClient() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q");
 
@@ -63,23 +65,59 @@ export function OracleChatClient() {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const hasConsumedPendingRef = useRef(false);
 
-  // Load chat history from localStorage safely
+  // Load chat history from localStorage safely and process pending entrance handoff
   useEffect(() => {
     setMounted(true);
+
+    if (hasConsumedPendingRef.current) return;
+    hasConsumedPendingRef.current = true;
+
+    let loadedMessages = [INITIAL_ORACLE_MESSAGE];
     try {
       const stored = localStorage.getItem(ORACLE_CHAT_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
+          loadedMessages = parsed;
           setMessages(parsed);
-          return;
         }
       }
     } catch {
       // Fallback to initial greeting
     }
-  }, []);
+
+    // 1. Consume pending inquiry from sessionStorage (entrance handoff)
+    let pendingInquiry: string | null = null;
+    try {
+      pendingInquiry = sessionStorage.getItem(ORACLE_PENDING_INQUIRY_KEY);
+      if (pendingInquiry) {
+        sessionStorage.removeItem(ORACLE_PENDING_INQUIRY_KEY);
+      }
+    } catch {
+      // Storage quota or private mode fallback
+    }
+
+    // 2. Legacy URL query parameter support (?q=...)
+    if (!pendingInquiry && initialQuery && initialQuery.trim().length > 0) {
+      pendingInquiry = initialQuery.trim();
+    }
+
+    // Clean address bar immediately if a query parameter was present
+    if (initialQuery) {
+      router.replace("/sanctum/oracle");
+    }
+
+    // 3. Dispatch pending inquiry exactly once
+    if (pendingInquiry && pendingInquiry.trim().length > 0) {
+      const query = pendingInquiry.trim().slice(0, MAX_MESSAGE_LENGTH);
+      const lastMessage = loadedMessages[loadedMessages.length - 1];
+      if (!lastMessage || lastMessage.content !== query) {
+        handleSendMessage(query, loadedMessages);
+      }
+    }
+  }, [initialQuery, router]);
 
   // Save to localStorage whenever messages change (bounded to 10)
   useEffect(() => {
@@ -97,19 +135,7 @@ export function OracleChatClient() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
-  // Handle incoming query parameter from entrance
-  useEffect(() => {
-    if (initialQuery && initialQuery.trim().length > 0 && mounted) {
-      const query = initialQuery.trim().slice(0, MAX_MESSAGE_LENGTH);
-      // Only auto-send if not already the last message
-      const lastMessage = messages[messages.length - 1];
-      if (!lastMessage || lastMessage.content !== query) {
-        handleSendMessage(query);
-      }
-    }
-  }, [initialQuery, mounted]);
-
-  const handleSendMessage = async (textToSend?: string) => {
+  const handleSendMessage = async (textToSend?: string, baseMessages?: ChatEntry[]) => {
     const content = (textToSend || inputText).trim();
     if (!content || isLoading) return;
 
@@ -123,15 +149,16 @@ export function OracleChatClient() {
 
     recordSanctumTestEvent("oracle_consulted", content);
 
-    const nextMessages = [...messages, userMessage].slice(-MAX_HISTORY_MESSAGES);
+    const activeMessages = baseMessages || messages;
+    const nextMessages = [...activeMessages, userMessage].slice(-MAX_HISTORY_MESSAGES);
     setMessages(nextMessages);
     setInputText("");
     setIsLoading(true);
 
     try {
-      // Prepare history payload for API
-      const historyPayload: OracleChatMessage[] = nextMessages
-        .slice(-6)
+      // Prepare history payload for API (up to last 10 prior messages before current inquiry)
+      const historyPayload: OracleChatMessage[] = activeMessages
+        .slice(-MAX_HISTORY_MESSAGES)
         .map((m) => ({ role: m.role, content: m.content }));
 
       const res = await fetch("/api/sanctum/oracle", {

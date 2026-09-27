@@ -134,13 +134,27 @@ OUTPUT SCHEMA (Return ONLY valid JSON):
  * Builds prompt for conversational Oracle dialogue.
  */
 export function buildConversationPrompt(input: OracleConversationInput): string {
-  const historyText = input.history && input.history.length > 0
-    ? input.history.slice(-6).map((m) => `${m.role === "user" ? "Practitioner" : "Oracle"}: ${m.content}`).join("\n")
+  // Take up to 10 prior dialogue messages, filtering out empty entries
+  const historyEntries = (input.history || [])
+    .filter((m) => m && typeof m.content === "string" && m.content.trim().length > 0)
+    .slice(-10);
+
+  // If the last history message matches the current message, drop it so it is not duplicated
+  if (
+    historyEntries.length > 0 &&
+    historyEntries[historyEntries.length - 1].role === "user" &&
+    historyEntries[historyEntries.length - 1].content.trim() === input.message.trim()
+  ) {
+    historyEntries.pop();
+  }
+
+  const historyText = historyEntries.length > 0
+    ? historyEntries.map((m) => `${m.role === "user" ? "Practitioner" : "Oracle"}: ${m.content.trim()}`).join("\n")
     : "No prior exchange in this session.";
 
   return `The practitioner is speaking directly to the Oracle in the Sanctum Chamber.
 
-Recent Dialogue Context:
+Recent Dialogue Context (prior turns):
 ${historyText}
 
 Current Practitioner Message:
@@ -148,11 +162,12 @@ Current Practitioner Message:
 
 STRICT GUIDELINES:
 1. "reply": A concise, perceptive, grounded response (75-160 words).
-   - Acknowledge their situation or inquiry with calm clarity.
-   - Reframing: If the user asks a predictive "Will X happen?" or "What does my future hold?" question, gently and clearly reframe from fortune-telling to their personal agency and sovereignty.
+   - Address the practitioner's specific situation or dilemma directly in the very first sentence. NEVER use generic canned openings like "I hear what you bring into the chamber" or "Confusion often disguises an uncomfortable truth".
+   - Contextual Continuity: If the practitioner provides a short follow-up or uses pronouns/fragments (e.g., "The money is what scares me", "Why did they do that?"), interpret it within the context of the recent dialogue exchange above.
+   - Reframing: If the user asks a predictive "Will X happen?" or "What does my future hold?" or "Will I get rich?" question, gently and clearly reframe from fortune-telling to their personal agency and sovereignty today.
    - If they ask about rituals, herbs, or correspondences, draw on grounded tradition (e.g. rosemary for mental clarity, black candle for protective boundaries, salt for grounding).
    - Avoid fake mysticism, theatrical claims, omniscience, or guarantees.
-2. "reflectionQuestion": Exactly ONE brief, piercing, constructive question (15-35 words) that invites honest self-inquiry, OR null if the exchange is concluding.
+2. "reflectionQuestion": Exactly ONE brief, piercing, constructive question (15-35 words) that invites honest self-inquiry into their specific situation, OR null if the exchange is concluding.
 3. "suggestedAction": If a specific Witchr Sanctum tool is genuinely relevant right now, suggest ONE action object. Options:
    - For daily reflection/grounding: { "label": "Draw Today's Card", "href": "/sanctum/tarot", "type": "tarot" }
    - For acute friction, decision-making, or complex circumstances: { "label": "Lay a Three-Card Spread", "href": "/sanctum/tarot/three-card", "type": "spread" }

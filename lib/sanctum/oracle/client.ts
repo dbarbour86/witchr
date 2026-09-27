@@ -22,42 +22,61 @@ interface ProviderConfig {
 }
 
 /**
- * Resolves configured AI credentials from server environment.
+ * Resolves all configured AI providers from server environment in priority order.
  */
-function resolveProviderConfig(): ProviderConfig | null {
-  // Check Gemini first
+function resolveAvailableProviders(): ProviderConfig[] {
+  const preferred = (process.env.ORACLE_AI_PROVIDER || "").toLowerCase().trim();
+
   const geminiKey =
     process.env.GEMINI_API_KEY ||
     process.env.GOOGLE_API_KEY ||
-    (process.env.ORACLE_AI_PROVIDER === "gemini" ? process.env.ORACLE_AI_API_KEY : undefined);
+    (preferred === "gemini" ? process.env.ORACLE_AI_API_KEY : undefined);
 
-  if (geminiKey && geminiKey.trim().length > 0) {
-    return { provider: "gemini", apiKey: geminiKey.trim() };
-  }
-
-  // Check OpenAI
   const openaiKey =
     process.env.OPENAI_API_KEY ||
-    (process.env.ORACLE_AI_PROVIDER === "openai" ? process.env.ORACLE_AI_API_KEY : undefined);
+    (preferred === "openai" ? process.env.ORACLE_AI_API_KEY : undefined);
 
-  if (openaiKey && openaiKey.trim().length > 0) {
-    return { provider: "openai", apiKey: openaiKey.trim() };
+  const providers: ProviderConfig[] = [];
+
+  if (preferred === "openai") {
+    if (openaiKey && openaiKey.trim().length > 0) {
+      providers.push({ provider: "openai", apiKey: openaiKey.trim() });
+    }
+    if (geminiKey && geminiKey.trim().length > 0) {
+      providers.push({ provider: "gemini", apiKey: geminiKey.trim() });
+    }
+  } else {
+    // Default: Gemini first, then OpenAI
+    if (geminiKey && geminiKey.trim().length > 0) {
+      providers.push({ provider: "gemini", apiKey: geminiKey.trim() });
+    }
+    if (openaiKey && openaiKey.trim().length > 0) {
+      providers.push({ provider: "openai", apiKey: openaiKey.trim() });
+    }
   }
 
-  // Generic fallback key with default provider (gemini)
-  const genericKey = process.env.ORACLE_AI_API_KEY;
-  if (genericKey && genericKey.trim().length > 0) {
-    return { provider: "gemini", apiKey: genericKey.trim() };
+  // Generic fallback key if no specific provider matched
+  if (providers.length === 0) {
+    const genericKey = process.env.ORACLE_AI_API_KEY;
+    if (genericKey && genericKey.trim().length > 0) {
+      providers.push({ provider: "gemini", apiKey: genericKey.trim() });
+    }
   }
 
-  return null;
+  return providers;
+}
+
+function resolveProviderConfig(): ProviderConfig | null {
+  const all = resolveAvailableProviders();
+  return all.length > 0 ? all[0] : null;
 }
 
 /**
- * Invokes Gemini 1.5 Flash via standard REST API with structured JSON output.
+ * Invokes Gemini Flash via standard REST API with structured JSON output.
  */
 async function callGemini(apiKey: string, prompt: string, signal: AbortSignal): Promise<string> {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const model = process.env.GEMINI_MODEL || "gemini-flash-latest";
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
   const res = await fetch(url, {
     method: "POST",
@@ -330,10 +349,13 @@ export async function generateConversationOracleResponse(
   input: OracleConversationInput
 ): Promise<OracleApiResponse<OracleConversationOutput>> {
   const startTime = Date.now();
-  const providerConfig = resolveProviderConfig();
+  const availableProviders = resolveAvailableProviders();
 
   // If no AI keys configured, immediately use deterministic written tradition fallback
-  if (!providerConfig) {
+  if (availableProviders.length === 0) {
+    if (process.env.NODE_ENV !== "production") {
+      console.log("[Sanctum Oracle] fallback used: provider_unavailable");
+    }
     return {
       success: true,
       meta: {
@@ -346,68 +368,91 @@ export async function generateConversationOracleResponse(
     };
   }
 
-  try {
-    const prompt = buildConversationPrompt(input);
-    const timeoutMs = 8_000;
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
+  const prompt = buildConversationPrompt(input);
+  let lastError = "Provider execution failed";
+  let lastProviderUsed: "gemini" | "openai" = availableProviders[0].provider;
 
-    let rawOutput = "";
-    try {
-      if (providerConfig.provider === "gemini") {
-        rawOutput = await callGemini(providerConfig.apiKey, prompt, controller.signal);
-      } else {
-        rawOutput = await callOpenAI(providerConfig.apiKey, prompt, controller.signal);
-      }
-    } finally {
-      clearTimeout(timer);
-    }
-
-    // Parse JSON
-    let parsed: unknown;
-    try {
-      parsed = JSON.parse(rawOutput);
-    } catch {
-      const match = rawOutput.match(/\{[\s\S]*\}/);
-      if (match) {
-        parsed = JSON.parse(match[0]);
-      } else {
-        throw new Error("Provider returned non-JSON output");
-      }
-    }
-
-    // Validate structured conversation output
-    const validation = validateConversationOutput(parsed);
-    if (!validation.valid || !validation.data) {
-      throw new Error(`Validation failed: ${validation.error}`);
-    }
-
-    return {
-      success: true,
-      meta: {
-        source: "oracle-ai",
-        fallback: false,
-        provider: providerConfig.provider,
-        latencyMs: Date.now() - startTime,
-      },
-      data: validation.data,
-    };
-  } catch (error) {
-    const errorMsg = error instanceof Error ? error.message : "Unknown error";
+  for (const providerConfig of availableProviders) {
+    lastProviderUsed = providerConfig.provider;
     if (process.env.NODE_ENV !== "production") {
-      console.warn(`[Oracle Conversation] Provider execution failed: ${errorMsg}. Falling back to written tradition.`);
+      console.log(`[Sanctum Oracle] provider: ${providerConfig.provider}`);
     }
 
-    return {
-      success: true,
-      meta: {
-        source: "written-tradition",
-        fallback: true,
-        fallbackReason: "Provider execution failed",
-        provider: providerConfig.provider,
-        latencyMs: Date.now() - startTime,
-      },
-      data: getConversationFallback(input),
-    };
+    try {
+      const timeoutMs = 12_000;
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+      let rawOutput = "";
+      try {
+        if (providerConfig.provider === "gemini") {
+          rawOutput = await callGemini(providerConfig.apiKey, prompt, controller.signal);
+        } else {
+          rawOutput = await callOpenAI(providerConfig.apiKey, prompt, controller.signal);
+        }
+      } finally {
+        clearTimeout(timer);
+      }
+
+      // Clean potential markdown code fence
+      const cleanJson = rawOutput.replace(/^```json\s*/i, "").replace(/^```\s*/, "").replace(/\s*```$/, "").trim();
+
+      // Parse JSON
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(cleanJson);
+      } catch {
+        const match = cleanJson.match(/\{[\s\S]*\}/);
+        if (match) {
+          parsed = JSON.parse(match[0]);
+        } else {
+          throw new Error("Provider returned non-JSON output");
+        }
+      }
+
+      // Validate structured conversation output
+      const validation = validateConversationOutput(parsed);
+      if (!validation.valid || !validation.data) {
+        throw new Error(`Validation failed: ${validation.error}`);
+      }
+
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[Sanctum Oracle] provider response accepted");
+      }
+
+      return {
+        success: true,
+        meta: {
+          source: "oracle-ai",
+          fallback: false,
+          provider: providerConfig.provider,
+          latencyMs: Date.now() - startTime,
+        },
+        data: validation.data,
+      };
+    } catch (error) {
+      lastError = error instanceof Error ? error.message : "Unknown error";
+      if (process.env.NODE_ENV !== "production") {
+        console.log(`[Sanctum Oracle] provider ${providerConfig.provider} error: ${lastError}`);
+      }
+      // If there is another provider in availableProviders, the loop automatically tries the next one!
+    }
   }
+
+  // All configured providers failed, use deterministic fallback
+  if (process.env.NODE_ENV !== "production") {
+    console.log(`[Sanctum Oracle] fallback used: provider_error (${lastError})`);
+  }
+
+  return {
+    success: true,
+    meta: {
+      source: "written-tradition",
+      fallback: true,
+      fallbackReason: lastError,
+      provider: lastProviderUsed,
+      latencyMs: Date.now() - startTime,
+    },
+    data: getConversationFallback(input),
+  };
 }

@@ -16,6 +16,7 @@ import {
 } from "@/components/sanctum/SanctumTriptychAssets";
 import { TarotCornerFlourish, FourPointStar } from "@/components/OrnateFrames";
 import { Shield, Layers, Send } from "lucide-react";
+import { ORACLE_PENDING_INQUIRY_KEY } from "@/lib/sanctum/oracle/types";
 
 const STARTER_CHIPS = ["I feel stuck", "I need clarity", "Something feels off"];
 
@@ -27,14 +28,22 @@ export function OracleEntranceClient() {
     e.preventDefault();
     const query = inquiryText.trim();
     if (query) {
-      router.push(`/sanctum/oracle?q=${encodeURIComponent(query)}`);
-    } else {
-      router.push("/sanctum/oracle");
+      try {
+        sessionStorage.setItem(ORACLE_PENDING_INQUIRY_KEY, query);
+      } catch {
+        // Fallback for private modes or storage quota
+      }
     }
+    router.push("/sanctum/oracle");
   };
 
   const handleChipClick = (chip: string) => {
-    router.push(`/sanctum/oracle?q=${encodeURIComponent(chip)}`);
+    try {
+      sessionStorage.setItem(ORACLE_PENDING_INQUIRY_KEY, chip);
+    } catch {
+      // Fallback for private modes or storage quota
+    }
+    router.push("/sanctum/oracle");
   };
 
   const ticketButtons = [

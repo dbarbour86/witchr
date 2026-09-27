@@ -142,6 +142,10 @@ export async function POST(req: NextRequest) {
         );
       }
 
+      if (process.env.NODE_ENV !== "production") {
+        console.log(`[Sanctum Oracle] incoming conversation request: "${payload.message.trim().slice(0, 120)}"`);
+      }
+
       const result = await generateConversationOracleResponse(payload as OracleConversationInput);
       return NextResponse.json(result, {
         headers: {

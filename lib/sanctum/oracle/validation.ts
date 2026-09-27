@@ -200,6 +200,8 @@ export function validateWorkingOutput(
 
 /**
  * Validates Conversational Oracle Output
+ * Ensures safety, structural validity, and tolerance for minor provider key variations
+ * (e.g. snake_case vs camelCase, reply vs response/message).
  */
 export function validateConversationOutput(input: unknown): ValidationResult<OracleConversationOutput> {
   if (!input || typeof input !== "object" || Array.isArray(input)) {
@@ -208,23 +210,55 @@ export function validateConversationOutput(input: unknown): ValidationResult<Ora
 
   const record = input as Record<string, unknown>;
 
-  if (!isNonEmptyString(record.reply, 10, 4000)) {
+  // Flexible key resolution for reply
+  const rawReply =
+    record.reply ?? record.response ?? record.message ?? record.reflection ?? record.text;
+
+  if (!isNonEmptyString(rawReply, 10, 4000)) {
     return { valid: false, error: "Missing or invalid 'reply' string in conversation response" };
   }
 
-  const reflectionQuestion = isNonEmptyString(record.reflectionQuestion, 5, 500)
-    ? record.reflectionQuestion.trim()
+  // Flexible key resolution for reflectionQuestion
+  const rawQuestion =
+    record.reflectionQuestion ?? record.reflection_question ?? record.reflectionQuestionText ?? record.inquest;
+
+  const reflectionQuestion = isNonEmptyString(rawQuestion, 5, 500)
+    ? rawQuestion.trim()
     : undefined;
 
   let suggestedAction: OracleSuggestedAction | null = null;
-  if (record.suggestedAction && typeof record.suggestedAction === "object" && !Array.isArray(record.suggestedAction)) {
-    const act = record.suggestedAction as Record<string, unknown>;
-    if (isNonEmptyString(act.label, 2, 80) && isNonEmptyString(act.href, 2, 200)) {
+  const rawAction = record.suggestedAction ?? record.suggested_action;
+
+  if (rawAction && typeof rawAction === "object" && !Array.isArray(rawAction)) {
+    const act = rawAction as Record<string, unknown>;
+    const rawLabel = act.label ?? act.title ?? act.name;
+    const rawHref = act.href ?? act.url ?? act.link;
+
+    if (isNonEmptyString(rawLabel, 2, 80)) {
+      let href = isNonEmptyString(rawHref, 2, 200) ? rawHref.trim() : "/sanctum/tarot";
+      // Ensure href points to valid sanctum location
+      if (!href.startsWith("/sanctum")) {
+        href = "/sanctum/tarot";
+      }
+
       const validTypes: Array<OracleSuggestedAction["type"]> = ["tarot", "spread", "working", "grimoire", "reflection"];
-      const actType = validTypes.includes(act.type as any) ? (act.type as OracleSuggestedAction["type"]) : "reflection";
+      const rawType = String(act.type || "").toLowerCase();
+      let actType: OracleSuggestedAction["type"] = "reflection";
+      if (rawType.includes("spread") || rawType.includes("three")) {
+        actType = "spread";
+      } else if (rawType.includes("tarot") || rawType.includes("card")) {
+        actType = "tarot";
+      } else if (rawType.includes("work") || rawType.includes("ritual")) {
+        actType = "working";
+      } else if (rawType.includes("grim")) {
+        actType = "grimoire";
+      } else if (validTypes.includes(rawType as any)) {
+        actType = rawType as OracleSuggestedAction["type"];
+      }
+
       suggestedAction = {
-        label: act.label.trim(),
-        href: act.href.trim(),
+        label: rawLabel.trim(),
+        href,
         type: actType,
       };
     }
@@ -233,7 +267,7 @@ export function validateConversationOutput(input: unknown): ValidationResult<Ora
   return {
     valid: true,
     data: {
-      reply: record.reply.trim(),
+      reply: rawReply.trim(),
       reflectionQuestion,
       suggestedAction,
     },

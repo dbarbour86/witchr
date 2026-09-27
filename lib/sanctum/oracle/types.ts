@@ -5,6 +5,8 @@
 
 export type OracleRequestType = "three-card" | "working" | "conversation";
 
+export const ORACLE_PENDING_INQUIRY_KEY = "witchr_sanctum_oracle_pending_inquiry";
+
 export interface OracleChatMessage {
   role: "user" | "oracle";
   content: string;

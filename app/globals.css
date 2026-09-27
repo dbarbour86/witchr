@@ -218,3 +218,68 @@
   transform: translateY(0px);
 }
 
+/* =========================================================================
+   SANCTUM PRINT STYLESHEET (Toner-saving, high-contrast, black ink on white)
+   ========================================================================= */
+@media print {
+  @page {
+    margin: 1.5cm;
+    size: auto;
+  }
+
+  html,
+  body,
+  #__next,
+  .sanctum-grain {
+    background: #ffffff !important;
+    color: #111827 !important;
+    background-image: none !important;
+  }
+
+  /* Hide navigation, headers, tester dev bars, interactive buttons, and drawer overlays */
+  header,
+  nav,
+  aside,
+  button,
+  .sanctum-btn-electric,
+  [data-print-hide],
+  .print-hide {
+    display: none !important;
+  }
+
+  /* Make panels, cards, and parchments ink-friendly white cards with clean borders */
+  .sanctum-panel,
+  .sanctum-parchment {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #d1d5db !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+
+  .sanctum-corners::before,
+  .sanctum-corners::after,
+  .sanctum-parchment::before {
+    display: none !important;
+  }
+
+  /* High contrast text hierarchy */
+  h1, h2, h3, h4, h5, h6 {
+    color: #000000 !important;
+    text-shadow: none !important;
+    -webkit-text-fill-color: #000000 !important;
+  }
+
+  p, span, li, div {
+    color: #1f2937 !important;
+    text-shadow: none !important;
+    -webkit-text-fill-color: #1f2937 !important;
+  }
+
+  /* Preserve image borders and legible layout */
+  img {
+    filter: none !important;
+    max-width: 100% !important;
+  }
+}
+

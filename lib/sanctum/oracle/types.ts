@@ -3,7 +3,29 @@
  * Defines strict, structured inputs and outputs for AI interpretation.
  */
 
-export type OracleRequestType = "three-card" | "working";
+export type OracleRequestType = "three-card" | "working" | "conversation";
+
+export interface OracleChatMessage {
+  role: "user" | "oracle";
+  content: string;
+}
+
+export interface OracleSuggestedAction {
+  label: string;
+  href: string;
+  type: "tarot" | "spread" | "working" | "grimoire" | "reflection";
+}
+
+export interface OracleConversationInput {
+  message: string;
+  history?: OracleChatMessage[];
+}
+
+export interface OracleConversationOutput {
+  reply: string;
+  reflectionQuestion?: string;
+  suggestedAction?: OracleSuggestedAction | null;
+}
 
 export interface OracleTarotCardContext {
   cardName: string;

@@ -1,8 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit } from "@/lib/sanctum/oracle/rate-limit";
-import { generateTarotOracleResponse, generateWorkingOracleResponse } from "@/lib/sanctum/oracle/client";
-import { getTarotFallback, getWorkingFallback } from "@/lib/sanctum/oracle/fallbacks";
-import { OracleTarotInput, OracleWorkingInput } from "@/lib/sanctum/oracle/types";
+import {
+  generateTarotOracleResponse,
+  generateWorkingOracleResponse,
+  generateConversationOracleResponse,
+} from "@/lib/sanctum/oracle/client";
+import {
+  getTarotFallback,
+  getWorkingFallback,
+  getConversationFallback,
+} from "@/lib/sanctum/oracle/fallbacks";
+import {
+  OracleTarotInput,
+  OracleWorkingInput,
+  OracleConversationInput,
+} from "@/lib/sanctum/oracle/types";
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +78,26 @@ export async function POST(req: NextRequest) {
             },
           }
         );
+      } else if (type === "conversation" && payload && typeof payload.message === "string") {
+        return NextResponse.json(
+          {
+            success: true,
+            meta: {
+              source: "written-tradition",
+              fallback: true,
+              fallbackReason: "Rate limit exceeded. Returned to written tradition.",
+            },
+            data: getConversationFallback(payload as OracleConversationInput),
+          },
+          {
+            status: 200,
+            headers: {
+              "X-RateLimit-Limit": String(rateLimit.limit),
+              "X-RateLimit-Remaining": "0",
+              "X-RateLimit-Reset": String(rateLimit.resetSeconds),
+            },
+          }
+        );
       }
 
       return NextResponse.json(
@@ -79,7 +111,47 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 3. Route by type
+    // 3. Validate user input bounds
+    if (typeof payload?.question === "string" && payload.question.length > 1000) {
+      return NextResponse.json(
+        { error: "Question exceeds maximum allowed limit of 1000 characters." },
+        { status: 400 }
+      );
+    }
+
+    if (typeof payload?.customIntention === "string" && payload.customIntention.length > 1000) {
+      return NextResponse.json(
+        { error: "Custom intention exceeds maximum allowed limit of 1000 characters." },
+        { status: 400 }
+      );
+    }
+
+    if (typeof payload?.message === "string" && payload.message.length > 1000) {
+      return NextResponse.json(
+        { error: "Message exceeds maximum allowed limit of 1000 characters." },
+        { status: 400 }
+      );
+    }
+
+    // 4. Route by type
+    if (type === "conversation") {
+      if (!payload || typeof payload.message !== "string" || payload.message.trim().length === 0) {
+        return NextResponse.json(
+          { error: "Missing required 'message' string in conversation payload." },
+          { status: 400 }
+        );
+      }
+
+      const result = await generateConversationOracleResponse(payload as OracleConversationInput);
+      return NextResponse.json(result, {
+        headers: {
+          "Cache-Control": "no-store",
+          "X-RateLimit-Limit": String(rateLimit.limit),
+          "X-RateLimit-Remaining": String(rateLimit.remaining),
+        },
+      });
+    }
+
     if (type === "three-card") {
       if (!payload || !payload.situation || !payload.challenge || !payload.guidance) {
         return NextResponse.json(
@@ -117,7 +189,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { error: `Unsupported Oracle request type: '${type}'. Expected 'three-card' or 'working'.` },
+      { error: `Unsupported Oracle request type: '${type}'. Expected 'conversation', 'three-card', or 'working'.` },
       { status: 400 }
     );
   } catch (error) {

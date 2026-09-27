@@ -8,11 +8,13 @@ import {
   OracleTarotOutput,
   OracleWorkingInput,
   OracleWorkingOutput,
+  OracleConversationInput,
+  OracleConversationOutput,
   OracleApiResponse,
 } from "./types";
-import { WITCHR_ORACLE_SYSTEM_PROMPT, buildTarotPrompt, buildWorkingPrompt } from "./prompts";
-import { validateTarotOutput, validateWorkingOutput } from "./validation";
-import { getTarotFallback, getWorkingFallback } from "./fallbacks";
+import { WITCHR_ORACLE_SYSTEM_PROMPT, buildTarotPrompt, buildWorkingPrompt, buildConversationPrompt } from "./prompts";
+import { validateTarotOutput, validateWorkingOutput, validateConversationOutput } from "./validation";
+import { getTarotFallback, getWorkingFallback, getConversationFallback } from "./fallbacks";
 
 interface ProviderConfig {
   provider: "gemini" | "openai";
@@ -315,6 +317,97 @@ export async function generateWorkingOracleResponse(
         latencyMs: Date.now() - startTime,
       },
       data: getWorkingFallback(input),
+    };
+  }
+}
+
+/**
+ * Executes a Conversational Oracle dialogue request through the configured AI provider.
+ * Automatically falls back to deterministic Witchr reflective counsel if provider is unconfigured,
+ * times out, or fails validation.
+ */
+export async function generateConversationOracleResponse(
+  input: OracleConversationInput
+): Promise<OracleApiResponse<OracleConversationOutput>> {
+  const startTime = Date.now();
+  const providerConfig = resolveProviderConfig();
+
+  // If no AI keys configured, immediately use deterministic written tradition fallback
+  if (!providerConfig) {
+    return {
+      success: true,
+      meta: {
+        source: "written-tradition",
+        fallback: true,
+        fallbackReason: "No AI provider configured",
+        latencyMs: Date.now() - startTime,
+      },
+      data: getConversationFallback(input),
+    };
+  }
+
+  try {
+    const prompt = buildConversationPrompt(input);
+    const timeoutMs = 8_000;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    let rawOutput = "";
+    try {
+      if (providerConfig.provider === "gemini") {
+        rawOutput = await callGemini(providerConfig.apiKey, prompt, controller.signal);
+      } else {
+        rawOutput = await callOpenAI(providerConfig.apiKey, prompt, controller.signal);
+      }
+    } finally {
+      clearTimeout(timer);
+    }
+
+    // Parse JSON
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(rawOutput);
+    } catch {
+      const match = rawOutput.match(/\{[\s\S]*\}/);
+      if (match) {
+        parsed = JSON.parse(match[0]);
+      } else {
+        throw new Error("Provider returned non-JSON output");
+      }
+    }
+
+    // Validate structured conversation output
+    const validation = validateConversationOutput(parsed);
+    if (!validation.valid || !validation.data) {
+      throw new Error(`Validation failed: ${validation.error}`);
+    }
+
+    return {
+      success: true,
+      meta: {
+        source: "oracle-ai",
+        fallback: false,
+        provider: providerConfig.provider,
+        latencyMs: Date.now() - startTime,
+      },
+      data: validation.data,
+    };
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : "Unknown error";
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(`[Oracle Conversation] Provider execution failed: ${errorMsg}. Falling back to written tradition.`);
+    }
+
+    return {
+      success: true,
+      meta: {
+        source: "written-tradition",
+        fallback: true,
+        fallbackReason: "Provider execution failed",
+        provider: providerConfig.provider,
+        latencyMs: Date.now() - startTime,
+      },
+      data: getConversationFallback(input),
     };
   }
 }

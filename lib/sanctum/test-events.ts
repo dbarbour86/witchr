@@ -26,6 +26,7 @@ export type SanctumTestEventName =
   | "working_completed"
   | "working_saved"
   | "grimoire_opened"
+  | "oracle_consulted"
   | "badge_unlocked";
 
 export interface SanctumTestEvent {

@@ -15,6 +15,7 @@ import {
 import {
   SanctumWorkingRecord,
   saveReadingToGrimoire,
+  isReadingSavedToGrimoire,
   getTodayLocalDateString,
 } from "@/lib/sanctum/storage";
 import { recordSanctumActivity } from "@/lib/sanctum/progression";
@@ -64,8 +65,14 @@ export function WorkingBuilderClient() {
   const [workingSource, setWorkingSource] = useState<"oracle-ai" | "written-tradition">("written-tradition");
   const [fallbackNotice, setFallbackNotice] = useState<string | null>(null);
 
-  // Listen for tester data reset
+  // Listen for tester data reset and Grimoire ledger updates
   useEffect(() => {
+    const syncSavedStatus = () => {
+      if (workingResult?.working?.id) {
+        setIsSaved(isReadingSavedToGrimoire(workingResult.working.id));
+      }
+    };
+
     const handleReset = () => {
       setSelectedIntention(null);
       setCustomIntention("");
@@ -80,8 +87,14 @@ export function WorkingBuilderClient() {
     };
 
     window.addEventListener("sanctum:daily-tarot-reset", handleReset);
-    return () => window.removeEventListener("sanctum:daily-tarot-reset", handleReset);
-  }, []);
+    window.addEventListener("sanctum:grimoire-updated", syncSavedStatus);
+    window.addEventListener("focus", syncSavedStatus);
+    return () => {
+      window.removeEventListener("sanctum:daily-tarot-reset", handleReset);
+      window.removeEventListener("sanctum:grimoire-updated", syncSavedStatus);
+      window.removeEventListener("focus", syncSavedStatus);
+    };
+  }, [workingResult]);
 
   // Toggle standard ingredient selection
   const toggleIngredient = (name: string) => {
@@ -290,7 +303,7 @@ export function WorkingBuilderClient() {
             LEFT COLUMN: THE ORACLE WORKSTATION CONSOLE
            ========================================================================= */}
         <section
-          className="lg:col-span-6 xl:col-span-5 sanctum-panel sanctum-corners p-5 sm:p-7 border border-purple-900/60 space-y-6"
+          className="lg:col-span-6 xl:col-span-5 sanctum-panel sanctum-corners p-5 sm:p-7 border border-purple-900/60 space-y-6 print:hidden"
           aria-labelledby="oracle-workstation-heading"
         >
           {/* Header Bar */}
@@ -397,15 +410,18 @@ export function WorkingBuilderClient() {
                 </div>
 
                 {selectedIntention === "Something Else" && (
-                  <div className="pt-2">
+                  <div className="pt-2 relative">
                     <input
                       type="text"
-                      maxLength={100}
+                      maxLength={280}
                       value={customIntention}
-                      onChange={(e) => setCustomIntention(e.target.value)}
+                      onChange={(e) => setCustomIntention(e.target.value.slice(0, 280))}
                       placeholder="e.g. Cleansing bad energy after leaving a toxic job..."
-                      className="w-full px-3 py-2 rounded-lg bg-[#0a0414] border border-purple-700 text-xs text-bone focus:outline-none focus:border-purple-400"
+                      className="w-full px-3 py-2 pr-16 rounded-lg bg-[#0a0414] border border-purple-700 text-xs text-bone focus:outline-none focus:border-purple-400"
                     />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-purple-400/60 pointer-events-none">
+                      {customIntention.length}/280
+                    </span>
                   </div>
                 )}
               </div>
@@ -474,10 +490,10 @@ export function WorkingBuilderClient() {
                       <button
                         type="button"
                         onClick={() => handleRemoveCustomIngredient(item)}
-                        className="hover:text-red-400 text-purple-400 transition-colors ml-1"
-                        aria-label={`Remove custom ingredient ${item}`}
+                        className="hover:text-red-400 text-purple-400 p-0.5 rounded transition-colors ml-1 focus:outline-none focus:ring-1 focus:ring-purple-400 cursor-pointer"
+                        aria-label={`Remove ${item}`}
                       >
-                        <X className="w-3 h-3" />
+                        <X className="w-3.5 h-3.5" />
                       </button>
                     </span>
                   ))}
@@ -524,14 +540,18 @@ export function WorkingBuilderClient() {
           </div>
 
           {/* Situation Context Note Box */}
-          <div className="space-y-1.5 pt-2">
+          <div className="space-y-1.5 pt-2 relative">
             <textarea
               rows={2}
+              maxLength={280}
               value={situationNote}
-              onChange={(e) => setSituationNote(e.target.value)}
+              onChange={(e) => setSituationNote(e.target.value.slice(0, 280))}
               placeholder="Add a note about your situation, a specific question, or any other details..."
-              className="w-full px-3.5 py-2.5 rounded-lg bg-[#090312] border border-purple-900/60 focus:border-purple-400 text-xs font-sans text-bone placeholder-bone-dim/60 focus:outline-none leading-relaxed resize-none"
+              className="w-full px-3.5 py-2.5 pb-6 rounded-lg bg-[#090312] border border-purple-900/60 focus:border-purple-400 text-xs font-sans text-bone placeholder-bone-dim/60 focus:outline-none leading-relaxed resize-none"
             />
+            <span className="absolute right-3 bottom-2 text-[10px] font-mono text-purple-400/60 pointer-events-none">
+              {situationNote.length}/280
+            </span>
           </div>
 
           {/* Validation Alert */}
@@ -604,7 +624,7 @@ export function WorkingBuilderClient() {
             RIGHT COLUMN: GOTHIC RITUAL PARCHMENT DOCUMENT
            ========================================================================= */}
         <section
-          className="lg:col-span-6 xl:col-span-7 sanctum-parchment rounded-xl p-6 sm:p-9 border border-purple-500/40 relative shadow-2xl min-h-[550px] flex flex-col justify-between"
+          className="lg:col-span-6 xl:col-span-7 sanctum-parchment rounded-xl p-6 sm:p-9 border border-purple-500/40 relative shadow-2xl min-h-[550px] flex flex-col justify-between print:w-full print:border-none print:shadow-none print:p-0"
           aria-labelledby="ritual-parchment-heading"
         >
           {/* Ornate Corner Flourishes */}
@@ -829,7 +849,7 @@ export function WorkingBuilderClient() {
               )}
 
               {/* BOTTOM ACTIONS BAR (Save to Grimoire / Printable Card) */}
-              <div className="pt-6 border-t border-purple-900/40 flex flex-wrap items-center justify-between gap-3">
+              <div className="pt-6 border-t border-purple-900/40 flex flex-wrap items-center justify-between gap-3 print:hidden">
                 <button
                   type="button"
                   onClick={handleSaveToGrimoire}

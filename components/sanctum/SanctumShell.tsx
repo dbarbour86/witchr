@@ -36,16 +36,16 @@ export function SanctumShell({ children }: SanctumShellProps) {
   const navItems = [
     {
       name: "SANCTUM",
-      sub: "Hub",
+      sub: "Chamber",
       href: "/sanctum",
       icon: Layers,
       exact: true,
     },
     {
       name: "ORACLE",
-      sub: "Workings",
-      href: "/sanctum/working",
-      icon: Wand2,
+      sub: "Dialogue",
+      href: "/sanctum/oracle",
+      icon: Sparkles,
       exact: false,
     },
     {
@@ -74,11 +74,11 @@ export function SanctumShell({ children }: SanctumShellProps) {
   return (
     <div className="min-h-screen bg-[#06020c] text-bone flex flex-col sanctum-grain selection:bg-purple-900 selection:text-lavender-light relative overflow-x-hidden">
       {/* Subtle Electric Purple Ambient Aurora Glow */}
-      <div className="fixed top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[140px] pointer-events-none -z-10" />
-      <div className="fixed bottom-0 right-1/4 w-[30rem] h-[30rem] bg-purple-950/20 rounded-full blur-[160px] pointer-events-none -z-10" />
+      <div className="fixed top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[140px] pointer-events-none -z-10 print:hidden" />
+      <div className="fixed bottom-0 right-1/4 w-[30rem] h-[30rem] bg-purple-950/20 rounded-full blur-[160px] pointer-events-none -z-10 print:hidden" />
 
       {/* Prominent WITCHR SANCTUM Workstation Top Header */}
-      <header className="sticky top-0 z-40 w-full bg-[#080312]/95 backdrop-blur-md border-b border-purple-900/40">
+      <header className="sticky top-0 z-40 w-full bg-[#080312]/95 backdrop-blur-md border-b border-purple-900/40 print:hidden">
         <div className="max-w-[1700px] mx-auto px-3 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
           {/* Left Brand Unit: Crest + Witchr Sanctum Display Title */}
           <div className="flex items-center gap-3 shrink-0">
@@ -116,20 +116,20 @@ export function SanctumShell({ children }: SanctumShellProps) {
             {/* Quick Utility Links (desktop) */}
             <div className="hidden lg:flex items-center gap-4 text-[11px] font-mono uppercase tracking-[0.18em] text-bone-muted mr-1">
               <Link
-                href="/sanctum/grimoire"
+                href="/sanctum/oracle"
                 className={`hover:text-lavender-light transition-colors py-1 ${
-                  pathname.startsWith("/sanctum/grimoire") ? "text-lavender-light font-semibold border-b border-purple-400" : ""
+                  pathname.startsWith("/sanctum/oracle") ? "text-lavender-light font-semibold border-b border-purple-400" : ""
                 }`}
               >
-                My Grimoire
+                The Oracle
               </Link>
               <Link
-                href="/sanctum/working"
+                href="/sanctum/hub"
                 className={`hover:text-lavender-light transition-colors py-1 ${
-                  pathname.startsWith("/sanctum/working") ? "text-lavender-light font-semibold border-b border-purple-400" : ""
+                  pathname.startsWith("/sanctum/hub") ? "text-lavender-light font-semibold border-b border-purple-400" : ""
                 }`}
               >
-                Spellcraft
+                Workstations
               </Link>
               <Link
                 href="/sanctum/tarot"
@@ -137,7 +137,23 @@ export function SanctumShell({ children }: SanctumShellProps) {
                   pathname.startsWith("/sanctum/tarot") ? "text-lavender-light font-semibold border-b border-purple-400" : ""
                 }`}
               >
-                Tarot Tools
+                Tarot
+              </Link>
+              <Link
+                href="/sanctum/working"
+                className={`hover:text-lavender-light transition-colors py-1 ${
+                  pathname.startsWith("/sanctum/working") ? "text-lavender-light font-semibold border-b border-purple-400" : ""
+                }`}
+              >
+                Workings
+              </Link>
+              <Link
+                href="/sanctum/grimoire"
+                className={`hover:text-lavender-light transition-colors py-1 ${
+                  pathname.startsWith("/sanctum/grimoire") ? "text-lavender-light font-semibold border-b border-purple-400" : ""
+                }`}
+              >
+                Grimoire
               </Link>
               <Link
                 href="/"
@@ -174,7 +190,7 @@ export function SanctumShell({ children }: SanctumShellProps) {
       {/* Main Workstation Body: Desktop Sidebar + Content Stage */}
       <div className="flex-1 flex max-w-[1700px] w-full mx-auto relative">
         {/* Desktop Left Workstation Navigation Dock */}
-        <aside className="hidden lg:flex flex-col justify-between w-24 shrink-0 bg-[#07030e]/80 border-r border-purple-900/35 py-6 px-2 sticky top-20 h-[calc(100vh-5rem)] z-30">
+        <aside className="hidden lg:flex flex-col justify-between w-24 shrink-0 bg-[#07030e]/80 border-r border-purple-900/35 py-6 px-2 sticky top-20 h-[calc(100vh-5rem)] z-30 print:hidden">
           {/* Vertical Navigation Bar */}
           <nav className="flex flex-col items-center gap-3 w-full" aria-label="Sanctum Primary Navigation">
             {navItems.map((item) => {
@@ -228,7 +244,7 @@ export function SanctumShell({ children }: SanctumShellProps) {
 
         {/* Mobile Navigation Drawer */}
         {mobileDrawerOpen && (
-          <div className="fixed inset-0 top-16 z-50 lg:hidden bg-[#07020d]/95 backdrop-blur-xl border-t border-purple-900/50 p-6 flex flex-col justify-between animate-in fade-in duration-200">
+          <div className="fixed inset-0 top-16 z-50 lg:hidden bg-[#07020d]/95 backdrop-blur-xl border-t border-purple-900/50 p-6 flex flex-col justify-between animate-in fade-in duration-200 print:hidden">
             <div className="space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-purple-900/40">
                 <span className="text-xs font-mono uppercase tracking-[0.2em] text-purple-300">
@@ -286,14 +302,14 @@ export function SanctumShell({ children }: SanctumShellProps) {
         )}
 
         {/* Workstation Center Canvas */}
-        <main className="flex-1 w-full min-w-0 p-3 sm:p-6 lg:p-8 flex flex-col">
+        <main className="flex-1 w-full min-w-0 p-3 sm:p-6 lg:p-8 flex flex-col print:p-0 print:m-0 print:max-w-full">
           {children}
         </main>
       </div>
 
       {/* Bottom Mobile Sticky Dock (visible only on small screens for easy thumbing) */}
       <nav
-        className="lg:hidden sticky bottom-0 z-40 w-full bg-[#080312]/95 backdrop-blur-md border-t border-purple-900/50 px-2 py-2 flex items-center justify-around"
+        className="lg:hidden sticky bottom-0 z-40 w-full bg-[#080312]/95 backdrop-blur-md border-t border-purple-900/50 px-1 py-1.5 grid grid-cols-4 items-center justify-items-center print:hidden"
         aria-label="Mobile Bottom Navigation"
       >
         {navItems.map((item) => {
@@ -303,12 +319,14 @@ export function SanctumShell({ children }: SanctumShellProps) {
             <Link
               key={item.name}
               href={item.href}
-              className={`flex flex-col items-center justify-center py-1 px-3 rounded-lg transition-colors ${
+              className={`w-full flex flex-col items-center justify-center py-1.5 px-0.5 rounded-lg transition-colors text-center ${
                 active ? "text-purple-300 bg-purple-950/60" : "text-bone-muted hover:text-white"
               }`}
             >
-              <Icon className="w-5 h-5" />
-              <span className="text-[9px] font-mono tracking-wider uppercase mt-0.5">{item.name}</span>
+              <Icon className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+              <span className="text-[8.5px] sm:text-[9px] font-mono tracking-wider uppercase mt-0.5 truncate max-w-full">
+                {item.name}
+              </span>
             </Link>
           );
         })}

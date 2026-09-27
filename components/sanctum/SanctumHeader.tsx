@@ -48,24 +48,38 @@ export function SanctumHeader({ currentSection, showBackToSanctum = false }: San
         {/* Quick Workstation Section Jumpers */}
         <div className="hidden sm:flex items-center gap-2 text-[10px] font-mono uppercase tracking-wider text-purple-300/60">
           <Link
+            href="/sanctum/oracle"
+            className="hover:text-purple-200 px-2 py-0.5 rounded hover:bg-purple-950/40 transition-colors"
+          >
+            The Oracle
+          </Link>
+          <span>·</span>
+          <Link
             href="/sanctum/tarot"
             className="hover:text-purple-200 px-2 py-0.5 rounded hover:bg-purple-950/40 transition-colors"
           >
-            Tarot Inquest
+            Tarot
           </Link>
           <span>·</span>
           <Link
             href="/sanctum/working"
             className="hover:text-purple-200 px-2 py-0.5 rounded hover:bg-purple-950/40 transition-colors"
           >
-            Oracle Synthesis
+            Workings
           </Link>
           <span>·</span>
           <Link
             href="/sanctum/grimoire"
             className="hover:text-purple-200 px-2 py-0.5 rounded hover:bg-purple-950/40 transition-colors"
           >
-            Private Ledger
+            Grimoire
+          </Link>
+          <span>·</span>
+          <Link
+            href="/sanctum/hub"
+            className="hover:text-purple-200 px-2 py-0.5 rounded hover:bg-purple-950/40 transition-colors text-purple-400"
+          >
+            Hub
           </Link>
         </div>
       </div>

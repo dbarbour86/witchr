@@ -194,6 +194,7 @@ export function saveReadingToGrimoire(reading: SanctumGrimoireReading): boolean 
         }
       }
 
+      window.dispatchEvent(new CustomEvent("sanctum:grimoire-updated", { detail: { action: "save", id: reading.id } }));
       return true;
     }
 
@@ -260,6 +261,7 @@ export function deleteGrimoireEntry(id: string): boolean {
       }
     }
 
+    window.dispatchEvent(new CustomEvent("sanctum:grimoire-updated", { detail: { action: "delete", id } }));
     return true;
   } catch (error) {
     console.error("Failed to delete Grimoire entry", error);
@@ -282,6 +284,8 @@ export function clearGrimoire(): void {
     if (currentDaily) {
       saveDailyReading({ ...currentDaily, savedToGrimoire: false });
     }
+
+    window.dispatchEvent(new CustomEvent("sanctum:grimoire-updated", { detail: { action: "clear" } }));
   } catch (error) {
     console.error("Failed to purge Grimoire ledger", error);
   }

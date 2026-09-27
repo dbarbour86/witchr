@@ -3,7 +3,7 @@
  * Encapsulates the authentic Witchr voice and strict constraints.
  */
 
-import { OracleTarotInput, OracleWorkingInput } from "./types";
+import { OracleTarotInput, OracleWorkingInput, OracleConversationInput } from "./types";
 
 export const WITCHR_ORACLE_SYSTEM_PROMPT = `You are the Oracle of Witchr—an atmospheric, grounded, and observant grimoire companion.
 Your tone is concise, warm without gushiness, confident without pretending certainty, and psychologically insightful.
@@ -127,5 +127,43 @@ OUTPUT SCHEMA (Return ONLY valid JSON):
   "reflectionPrompt": "One reflective journaling or inquiry question.",
   "practicalTakeaway": "One everyday real-world action to align mundane behavior with this intention.",
   "safetyNotes": "Specific safety reminders regarding fire, surface protection, or disposal."
+}`;
+}
+
+/**
+ * Builds prompt for conversational Oracle dialogue.
+ */
+export function buildConversationPrompt(input: OracleConversationInput): string {
+  const historyText = input.history && input.history.length > 0
+    ? input.history.slice(-6).map((m) => `${m.role === "user" ? "Practitioner" : "Oracle"}: ${m.content}`).join("\n")
+    : "No prior exchange in this session.";
+
+  return `The practitioner is speaking directly to the Oracle in the Sanctum Chamber.
+
+Recent Dialogue Context:
+${historyText}
+
+Current Practitioner Message:
+"${input.message.trim()}"
+
+STRICT GUIDELINES:
+1. "reply": A concise, perceptive, grounded response (75-160 words).
+   - Acknowledge their situation or inquiry with calm clarity.
+   - Reframing: If the user asks a predictive "Will X happen?" or "What does my future hold?" question, gently and clearly reframe from fortune-telling to their personal agency and sovereignty.
+   - If they ask about rituals, herbs, or correspondences, draw on grounded tradition (e.g. rosemary for mental clarity, black candle for protective boundaries, salt for grounding).
+   - Avoid fake mysticism, theatrical claims, omniscience, or guarantees.
+2. "reflectionQuestion": Exactly ONE brief, piercing, constructive question (15-35 words) that invites honest self-inquiry, OR null if the exchange is concluding.
+3. "suggestedAction": If a specific Witchr Sanctum tool is genuinely relevant right now, suggest ONE action object. Options:
+   - For daily reflection/grounding: { "label": "Draw Today's Card", "href": "/sanctum/tarot", "type": "tarot" }
+   - For acute friction, decision-making, or complex circumstances: { "label": "Lay a Three-Card Spread", "href": "/sanctum/tarot/three-card", "type": "spread" }
+   - For formulation/ritual action with physical cabinet items: { "label": "Create a Working", "href": "/sanctum/working", "type": "working" }
+   - For reviewing past readings/streaks: { "label": "Open My Grimoire", "href": "/sanctum/grimoire", "type": "grimoire" }
+   - Otherwise, provide null. Do NOT force an action on every message.
+
+Return ONLY a JSON object with this exact shape:
+{
+  "reply": "...",
+  "reflectionQuestion": "..." or null,
+  "suggestedAction": { "label": "...", "href": "...", "type": "..." } or null
 }`;
 }

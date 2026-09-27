@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   SanctumGrimoireReading,
@@ -49,31 +49,104 @@ export function GrimoireLedgerClient() {
   const [entryToDelete, setEntryToDelete] = useState<SanctumGrimoireReading | null>(null);
   const [showPurgeModal, setShowPurgeModal] = useState(false);
 
-  // Hydration-safe initial load, Escape key accessibility listener, and tester reset listener
+  // Accessibility refs for focus management
+  const lastTriggerRef = useRef<HTMLElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  // Hydration-safe initial load and storage update listeners
   useEffect(() => {
     setMounted(true);
     setEntries(getGrimoireEntries());
     recordSanctumTestEvent("grimoire_opened");
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setActiveEntry(null);
-        setEntryToDelete(null);
-        setShowPurgeModal(false);
-      }
-    };
-
     const handleUpdate = () => {
       setEntries(getGrimoireEntries());
     };
 
-    window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("sanctum:grimoire-updated", handleUpdate);
+    window.addEventListener("focus", handleUpdate);
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("sanctum:grimoire-updated", handleUpdate);
+      window.removeEventListener("focus", handleUpdate);
     };
   }, []);
+
+  // Modal accessibility: Escape key dismiss, focus trapping, and focus restoration
+  useEffect(() => {
+    const isAnyModalOpen = Boolean(activeEntry || entryToDelete || showPurgeModal);
+    if (!isAnyModalOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setActiveEntry(null);
+        setEntryToDelete(null);
+        setShowPurgeModal(false);
+        return;
+      }
+
+      if (e.key === "Tab" && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first || !modalRef.current.contains(document.activeElement)) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last || !modalRef.current.contains(document.activeElement)) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Initial focus into modal container or first interactive element
+    const timer = setTimeout(() => {
+      if (modalRef.current) {
+        const firstFocusable = modalRef.current.querySelector<HTMLElement>(
+          'button:not([disabled]), [href], input, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (firstFocusable) {
+          firstFocusable.focus();
+        } else {
+          modalRef.current.focus();
+        }
+      }
+    }, 40);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      clearTimeout(timer);
+      if (lastTriggerRef.current && typeof lastTriggerRef.current.focus === "function") {
+        lastTriggerRef.current.focus();
+      }
+    };
+  }, [activeEntry, entryToDelete, showPurgeModal]);
+
+  const handleOpenEntry = (e: React.MouseEvent<HTMLElement>, entry: SanctumGrimoireReading) => {
+    lastTriggerRef.current = e.currentTarget;
+    setActiveEntry(entry);
+  };
+
+  const handleOpenDelete = (e: React.MouseEvent<HTMLElement>, entry: SanctumGrimoireReading) => {
+    lastTriggerRef.current = e.currentTarget;
+    setEntryToDelete(entry);
+  };
+
+  const handleOpenPurge = (e: React.MouseEvent<HTMLElement>) => {
+    lastTriggerRef.current = e.currentTarget;
+    setShowPurgeModal(true);
+  };
 
   const refreshEntries = () => {
     setEntries(getGrimoireEntries());
@@ -128,7 +201,7 @@ export function GrimoireLedgerClient() {
   return (
     <div className="w-full space-y-8">
       {/* Title & Archival Context */}
-      <div className="sanctum-panel sanctum-corners p-6 sm:p-8 border border-purple-900/60 relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div className="sanctum-panel sanctum-corners p-6 sm:p-8 border border-purple-900/60 relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6 print:hidden">
         <div className="space-y-2 text-center sm:text-left">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#130728] border border-purple-800/60 text-purple-300 text-[10px] font-mono uppercase tracking-[0.24em]">
             <BookOpen className="w-3 h-3 text-purple-400" />
@@ -153,12 +226,14 @@ export function GrimoireLedgerClient() {
       </div>
 
       {/* Sanctum Progression & Marks Section */}
-      <SanctumMarksSection />
+      <div className="print:hidden">
+        <SanctumMarksSection />
+      </div>
 
       {/* Grimoire Archival Records Filter & Grid */}
       <div className="space-y-6 pt-4">
         {/* Section Heading & Filter Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-[#090314] border border-purple-900/50">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-[#090314] border border-purple-900/50 print:hidden">
           {/* Subtle Stats */}
           <div className="flex items-center gap-4 text-xs font-mono text-purple-300/80">
             <span className="flex items-center gap-1.5">
@@ -285,10 +360,10 @@ export function GrimoireLedgerClient() {
                       </p>
                     </div>
 
-                    <div className="mt-5 pt-3 border-t border-purple-900/40 flex items-center justify-between">
+                    <div className="mt-5 pt-3 border-t border-purple-900/40 flex items-center justify-between print:hidden">
                       <button
                         type="button"
-                        onClick={() => setActiveEntry(d)}
+                        onClick={(e) => handleOpenEntry(e, d)}
                         className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-purple-300 hover:text-white font-bold transition-colors"
                       >
                         <span>Open Entry</span>
@@ -297,7 +372,7 @@ export function GrimoireLedgerClient() {
 
                       <button
                         type="button"
-                        onClick={() => setEntryToDelete(d)}
+                        onClick={(e) => handleOpenDelete(e, d)}
                         className="p-1.5 rounded hover:bg-purple-950/60 text-purple-400/60 hover:text-red-400 transition-colors"
                         aria-label={`Remove ${d.cardName} from grimoire`}
                         title="Remove from Grimoire"
@@ -357,10 +432,10 @@ export function GrimoireLedgerClient() {
                       </p>
                     </div>
 
-                    <div className="mt-5 pt-3 border-t border-purple-900/40 flex items-center justify-between">
+                    <div className="mt-5 pt-3 border-t border-purple-900/40 flex items-center justify-between print:hidden">
                       <button
                         type="button"
-                        onClick={() => setActiveEntry(tc)}
+                        onClick={(e) => handleOpenEntry(e, tc)}
                         className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-purple-300 hover:text-white font-bold transition-colors"
                       >
                         <span>Open Entry</span>
@@ -369,7 +444,7 @@ export function GrimoireLedgerClient() {
 
                       <button
                         type="button"
-                        onClick={() => setEntryToDelete(tc)}
+                        onClick={(e) => handleOpenDelete(e, tc)}
                         className="p-1.5 rounded hover:bg-purple-950/60 text-purple-400/60 hover:text-red-400 transition-colors"
                         aria-label="Remove three-card reading from grimoire"
                         title="Remove from Grimoire"
@@ -419,10 +494,10 @@ export function GrimoireLedgerClient() {
                       </p>
                     </div>
 
-                    <div className="mt-5 pt-3 border-t border-purple-900/40 flex items-center justify-between">
+                    <div className="mt-5 pt-3 border-t border-purple-900/40 flex items-center justify-between print:hidden">
                       <button
                         type="button"
-                        onClick={() => setActiveEntry(w)}
+                        onClick={(e) => handleOpenEntry(e, w)}
                         className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-purple-300 hover:text-white font-bold transition-colors"
                       >
                         <span>Open Entry</span>
@@ -431,7 +506,7 @@ export function GrimoireLedgerClient() {
 
                       <button
                         type="button"
-                        onClick={() => setEntryToDelete(w)}
+                        onClick={(e) => handleOpenDelete(e, w)}
                         className="p-1.5 rounded hover:bg-purple-950/60 text-purple-400/60 hover:text-red-400 transition-colors"
                         aria-label={`Remove ${w.title} from grimoire`}
                         title="Remove from Grimoire"
@@ -449,7 +524,7 @@ export function GrimoireLedgerClient() {
         )}
 
         {/* Destructive Purge Section & Privacy Notice */}
-        <div className="mt-14 pt-8 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-purple-300/70">
+        <div className="mt-14 pt-8 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-purple-300/70 print:hidden">
           <div className="text-center sm:text-left space-y-1">
             <p className="flex items-center gap-1.5 justify-center sm:justify-start">
               <FourPointStar className="w-3 h-3 text-purple-400" />
@@ -463,7 +538,7 @@ export function GrimoireLedgerClient() {
           {totalCount > 0 && (
             <button
               type="button"
-              onClick={() => setShowPurgeModal(true)}
+              onClick={(e) => handleOpenPurge(e)}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-purple-900/60 hover:border-red-600 text-purple-300 hover:text-red-400 text-[11px] uppercase tracking-wider transition-colors shrink-0"
             >
               <Trash2 className="w-3 h-3" />
@@ -484,7 +559,11 @@ export function GrimoireLedgerClient() {
             if (e.target === e.currentTarget) setActiveEntry(null);
           }}
         >
-          <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl sanctum-parchment border border-purple-500/60 p-6 sm:p-10 shadow-2xl space-y-8 relative">
+          <div
+            ref={modalRef}
+            tabIndex={-1}
+            className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl sanctum-parchment border border-purple-500/60 p-6 sm:p-10 shadow-2xl space-y-8 relative focus:outline-none"
+          >
             {/* Ornate Corner Flourishes */}
             <div className="absolute top-2 left-2 pointer-events-none opacity-60">
               <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
@@ -794,7 +873,11 @@ export function GrimoireLedgerClient() {
           role="dialog"
           aria-modal="true"
         >
-          <div className="w-full max-w-md rounded-2xl bg-[#0c0418] border border-red-900/80 p-6 space-y-4 shadow-2xl">
+          <div
+            ref={modalRef}
+            tabIndex={-1}
+            className="w-full max-w-md rounded-2xl bg-[#0c0418] border border-red-900/80 p-6 space-y-4 shadow-2xl focus:outline-none"
+          >
             <div className="flex items-center gap-2 text-red-400 font-mono text-xs uppercase tracking-wider font-bold">
               <AlertTriangle className="w-4 h-4 shrink-0" />
               <span>Confirm Entry Removal</span>
@@ -829,7 +912,11 @@ export function GrimoireLedgerClient() {
           role="dialog"
           aria-modal="true"
         >
-          <div className="w-full max-w-md rounded-2xl bg-[#0c0418] border border-red-900/80 p-6 space-y-4 shadow-2xl">
+          <div
+            ref={modalRef}
+            tabIndex={-1}
+            className="w-full max-w-md rounded-2xl bg-[#0c0418] border border-red-900/80 p-6 space-y-4 shadow-2xl focus:outline-none"
+          >
             <div className="flex items-center gap-2 text-red-400 font-mono text-xs uppercase tracking-wider font-bold">
               <ShieldAlert className="w-4 h-4 shrink-0" />
               <span>Purge Entire Local Ledger?</span>

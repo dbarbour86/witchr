@@ -3,7 +3,14 @@
  * Validates Oracle AI responses strictly before allowing them to reach the UI.
  */
 
-import type { OracleTarotOutput, OracleWorkingOutput, OracleIngredientReason, OracleRitualStep } from "./types";
+import type {
+  OracleTarotOutput,
+  OracleWorkingOutput,
+  OracleIngredientReason,
+  OracleRitualStep,
+  OracleConversationOutput,
+  OracleSuggestedAction,
+} from "./types";
 import { checkWorkingSafety } from "./safety";
 
 export interface ValidationResult<T> {
@@ -188,5 +195,47 @@ export function validateWorkingOutput(
   return {
     valid: true,
     data: candidate,
+  };
+}
+
+/**
+ * Validates Conversational Oracle Output
+ */
+export function validateConversationOutput(input: unknown): ValidationResult<OracleConversationOutput> {
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
+    return { valid: false, error: "Conversation output is not an object" };
+  }
+
+  const record = input as Record<string, unknown>;
+
+  if (!isNonEmptyString(record.reply, 10, 4000)) {
+    return { valid: false, error: "Missing or invalid 'reply' string in conversation response" };
+  }
+
+  const reflectionQuestion = isNonEmptyString(record.reflectionQuestion, 5, 500)
+    ? record.reflectionQuestion.trim()
+    : undefined;
+
+  let suggestedAction: OracleSuggestedAction | null = null;
+  if (record.suggestedAction && typeof record.suggestedAction === "object" && !Array.isArray(record.suggestedAction)) {
+    const act = record.suggestedAction as Record<string, unknown>;
+    if (isNonEmptyString(act.label, 2, 80) && isNonEmptyString(act.href, 2, 200)) {
+      const validTypes: Array<OracleSuggestedAction["type"]> = ["tarot", "spread", "working", "grimoire", "reflection"];
+      const actType = validTypes.includes(act.type as any) ? (act.type as OracleSuggestedAction["type"]) : "reflection";
+      suggestedAction = {
+        label: act.label.trim(),
+        href: act.href.trim(),
+        type: actType,
+      };
+    }
+  }
+
+  return {
+    valid: true,
+    data: {
+      reply: record.reply.trim(),
+      reflectionQuestion,
+      suggestedAction,
+    },
   };
 }

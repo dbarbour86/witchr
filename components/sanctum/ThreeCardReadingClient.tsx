@@ -12,6 +12,7 @@ import {
 import {
   SanctumThreeCardReading,
   saveReadingToGrimoire,
+  isReadingSavedToGrimoire,
   getTodayLocalDateString,
 } from "@/lib/sanctum/storage";
 import { recordSanctumActivity } from "@/lib/sanctum/progression";
@@ -39,8 +40,14 @@ export function ThreeCardReadingClient() {
     "How can I approach this obstacle differently?",
   ];
 
-  // Listen for tester data reset
+  // Listen for tester data reset and Grimoire ledger updates
   useEffect(() => {
+    const syncSavedStatus = () => {
+      if (reading?.id) {
+        setIsSaved(isReadingSavedToGrimoire(reading.id));
+      }
+    };
+
     const handleReset = () => {
       setQuestion("");
       setCards(null);
@@ -54,8 +61,14 @@ export function ThreeCardReadingClient() {
     };
 
     window.addEventListener("sanctum:daily-tarot-reset", handleReset);
-    return () => window.removeEventListener("sanctum:daily-tarot-reset", handleReset);
-  }, []);
+    window.addEventListener("sanctum:grimoire-updated", syncSavedStatus);
+    window.addEventListener("focus", syncSavedStatus);
+    return () => {
+      window.removeEventListener("sanctum:daily-tarot-reset", handleReset);
+      window.removeEventListener("sanctum:grimoire-updated", syncSavedStatus);
+      window.removeEventListener("focus", syncSavedStatus);
+    };
+  }, [reading]);
 
   // Execute sequential ceremonial draw and Oracle synthesis
   const handleDraw = () => {
@@ -256,14 +269,20 @@ export function ThreeCardReadingClient() {
             Name an acute dilemma, tension, or crossroad. The triad separates your ground (<span className="text-purple-300">Situation</span>), your friction point (<span className="text-purple-300">Challenge</span>), and your recommended leverage (<span className="text-purple-300">Guidance</span>).
           </p>
 
-          <input
-            type="text"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            disabled={isDrawing}
-            placeholder="What circumstance or friction requires diagnostic clarity?"
-            className="w-full px-4 py-3 rounded-lg bg-[#080312] border border-purple-900/80 focus:border-purple-400 focus:outline-none text-xs text-bone font-sans transition-colors placeholder:text-bone-dim"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              maxLength={280}
+              value={question}
+              onChange={(e) => setQuestion(e.target.value.slice(0, 280))}
+              disabled={isDrawing}
+              placeholder="What circumstance or friction requires diagnostic clarity?"
+              className="w-full px-4 py-3 pr-16 rounded-lg bg-[#080312] border border-purple-900/80 focus:border-purple-400 focus:outline-none text-xs text-bone font-sans transition-colors placeholder:text-bone-dim"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-purple-400/60 pointer-events-none">
+              {question.length}/280
+            </span>
+          </div>
 
           {/* Suggestion Chips */}
           <div className="flex flex-wrap gap-1.5 items-center pt-1">
@@ -476,7 +495,7 @@ export function ThreeCardReadingClient() {
           </div>
 
           {/* Bottom Actions */}
-          <div className="pt-5 border-t border-purple-900/40 flex flex-wrap items-center justify-between gap-3">
+          <div className="pt-5 border-t border-purple-900/40 flex flex-wrap items-center justify-between gap-3 print:hidden">
             <button
               type="button"
               onClick={handleSaveToGrimoire}

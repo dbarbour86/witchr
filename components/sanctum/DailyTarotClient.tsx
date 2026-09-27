@@ -40,6 +40,20 @@ export function DailyTarotClient() {
       }
     }
 
+    const syncState = () => {
+      const existing = getStoredDailyReading();
+      if (existing) {
+        setReading(existing);
+        setIsSaved(existing.savedToGrimoire);
+        const foundCard = getSanctumTarotCardById(existing.cardId);
+        if (foundCard) {
+          setCard(foundCard);
+        }
+      } else {
+        setIsSaved(false);
+      }
+    };
+
     const handleReset = () => {
       setReading(null);
       setCard(null);
@@ -47,7 +61,13 @@ export function DailyTarotClient() {
     };
 
     window.addEventListener("sanctum:daily-tarot-reset", handleReset);
-    return () => window.removeEventListener("sanctum:daily-tarot-reset", handleReset);
+    window.addEventListener("sanctum:grimoire-updated", syncState);
+    window.addEventListener("focus", syncState);
+    return () => {
+      window.removeEventListener("sanctum:daily-tarot-reset", handleReset);
+      window.removeEventListener("sanctum:grimoire-updated", syncState);
+      window.removeEventListener("focus", syncState);
+    };
   }, []);
 
   // Handle drawing card
@@ -123,7 +143,7 @@ export function DailyTarotClient() {
     <div className="w-full space-y-6">
       {/* Dev Mode Reset Control (Only in non-production) */}
       {process.env.NODE_ENV !== "production" && (
-        <div className="p-3 rounded-lg bg-[#0e071c] border border-dashed border-purple-800/60 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+        <div className="p-3 rounded-lg bg-[#0e071c] border border-dashed border-purple-800/60 flex flex-wrap items-center justify-between gap-3 text-xs font-mono print:hidden">
           <div className="flex items-center gap-2 text-purple-300">
             <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
             <span className="font-semibold uppercase tracking-wider">Tester Dev Bar</span>
@@ -187,13 +207,19 @@ export function DailyTarotClient() {
                   </span>
                 </div>
               ) : (
-                <div className="flex flex-col items-center gap-3 w-[260px] sm:w-[280px]">
+                <button
+                  type="button"
+                  onClick={handleDraw}
+                  disabled={isDrawing || !mounted}
+                  aria-label="Draw your daily tarot card"
+                  className="flex flex-col items-center gap-3 w-[260px] sm:w-[280px] group cursor-pointer disabled:cursor-not-allowed rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-4 focus-visible:ring-offset-[#06020c] transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                >
                   <SanctumCardBack
                     size="large"
                     label="The Oracle Deck"
-                    sublabel={isDrawing ? "Shuffling the Arcana..." : "Face Down // Major Arcana"}
+                    sublabel={isDrawing ? "Shuffling the Arcana..." : "Face Down // Click or Press to Draw"}
                   />
-                </div>
+                </button>
               )}
             </div>
           </div>
@@ -354,7 +380,7 @@ export function DailyTarotClient() {
               </section>
 
               {/* Actions Footer */}
-              <div className="pt-5 border-t border-purple-900/40 flex flex-wrap items-center justify-between gap-3">
+              <div className="pt-5 border-t border-purple-900/40 flex flex-wrap items-center justify-between gap-3 print:hidden">
                 <button
                   type="button"
                   onClick={handleSaveToGrimoire}

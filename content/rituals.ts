@@ -13,7 +13,7 @@ export const RITUALS: Ritual[] = [
     difficulty: "Simple",
     supplies: [
       "A single black candle (or any dark candle)",
-      "Coarse sea salt or kitchen salt",
+      "[Coarse sea salt](/ingredients/salt) or kitchen salt",
       "A scrap of torn paper and a black pen",
       "A fireproof dish or small ceramic bowl",
     ],
@@ -30,7 +30,7 @@ export const RITUALS: Ritual[] = [
       {
         title: "Cast the perimeter",
         detail:
-          "Pour a small circle of coarse salt around the base of the fireproof dish. Salt is an ancient symbol of preservation, permanence, and sealing an edge. As you lay the circle, inhale slowly. Acknowledge that everything outside this boundary belongs to them, not to you.",
+          "Pour a small circle of [coarse salt](/ingredients/salt) around the base of the fireproof dish. Salt is an ancient symbol of preservation, permanence, and sealing an edge. As you lay the circle, inhale slowly. Acknowledge that everything outside this boundary belongs to them, not to you.",
       },
       {
         title: "Sever the feed",
@@ -230,7 +230,7 @@ export const RITUALS: Ritual[] = [
     difficulty: "Simple",
     supplies: [
       "A white or natural beeswax candle",
-      "A bowl of fresh tap water with a pinch of salt and a sprig of rosemary or mint",
+      "A bowl of fresh tap water with a pinch of [salt](/ingredients/salt) and a sprig of [rosemary](/herbs/rosemary) or [mint](/herbs/mint)",
       "A broom or natural whisk brush",
       "Clean paper and ink",
     ],

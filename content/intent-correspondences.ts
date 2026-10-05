@@ -481,7 +481,7 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
       {
         name: "Raw Honey / Sweeteners",
         slug: "honey",
-        url: "/love",
+        url: "/ingredients/honey",
         categoryLabel: "Folk Ingredient",
         role: "Traditional Folk Sweetening & Softening Discord",
         howToUse:

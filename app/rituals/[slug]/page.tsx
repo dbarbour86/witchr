@@ -7,6 +7,7 @@ import { PracticalActionCallout } from "@/components/PracticalActionCallout";
 import { RitualCard } from "@/components/RitualCard";
 import { JsonLd, getArticleJsonLd, getBreadcrumbJsonLd } from "@/components/JsonLd";
 import { CelestialDivider, TarotCornerFlourish, FourPointStar } from "@/components/OrnateFrames";
+import { FormattedProse } from "@/components/CorrespondenceView";
 import { Clock, Feather, ShieldAlert, CheckCircle2, ArrowRight, ArrowLeft } from "lucide-react";
 
 interface RitualPageProps {
@@ -169,7 +170,7 @@ export default async function RitualDetailPage({ params }: RitualPageProps) {
             {ritual.supplies.map((item, idx) => (
               <li key={idx} className="flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-lavender-moon shrink-0 mt-0.5" />
-                <span>{item}</span>
+                <span><FormattedProse text={item} /></span>
               </li>
             ))}
           </ul>
@@ -187,7 +188,7 @@ export default async function RitualDetailPage({ params }: RitualPageProps) {
             {ritual.substitutions.map((sub, idx) => (
               <li key={idx} className="flex items-start gap-2">
                 <span className="text-lavender-dim font-mono text-xs">→</span>
-                <span>{sub}</span>
+                <span><FormattedProse text={sub} /></span>
               </li>
             ))}
           </ul>
@@ -220,7 +221,7 @@ export default async function RitualDetailPage({ params }: RitualPageProps) {
                   {step.title}
                 </h3>
                 <p className="text-base text-bone-muted leading-relaxed font-sans">
-                  {step.detail}
+                  <FormattedProse text={step.detail} />
                 </p>
               </div>
             </div>

@@ -34,7 +34,7 @@ interface CorrespondenceViewProps {
 /**
  * Parses inline markdown links [Label](url) into Next.js Link components.
  */
-function FormattedProse({ text }: { text: string }) {
+export function FormattedProse({ text }: { text: string }) {
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
   const parts: React.ReactNode[] = [];
   let lastIndex = 0;
@@ -75,8 +75,9 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
     : "Protection";
 
   const isHerb = item.category === "herb" || item.routePrefix === "herbs";
-  const parentName = isHerb ? "Herbs" : hubName;
-  const parentHref = isHerb ? "/herbs" : `/${item.relatedHubSlug || "protection"}`;
+  const isIngredient = item.category === "ingredient" || item.routePrefix === "ingredients";
+  const parentName = isHerb ? "Herbs" : isIngredient ? "Ingredients" : hubName;
+  const parentHref = isHerb ? "/herbs" : isIngredient ? "/ingredients" : `/${item.relatedHubSlug || "protection"}`;
   const parentUrl = `https://witchr.com${parentHref}`;
 
   const primaryIntentLower = (item.primaryIntent || "").toLowerCase();
@@ -594,7 +595,11 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
         >
           <div className="flex items-center gap-2 text-lavender-moon text-xs font-mono uppercase tracking-ceremonial font-semibold">
             <ShieldCheck className="w-4 h-4 text-lavender-light" />
-            <h3 id="safety-heading">Practical Safety & Botanical Context</h3>
+            <h3 id="safety-heading">
+              {isHerb
+                ? "Practical Safety & Botanical Context"
+                : "Practical Safety & Working Context"}
+            </h3>
           </div>
           <ul className="space-y-2.5 text-xs sm:text-sm text-bone-muted">
             {item.safetyNotes.map((note, idx) => (
@@ -608,6 +613,46 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
               </li>
             ))}
           </ul>
+        </section>
+      )}
+
+      {/* 10.5. Sanctum Working Builder Contextual CTA */}
+      {item.sanctumCta && (
+        <section
+          aria-label="Sanctum Working Builder"
+          className="tarot-frame p-6 sm:p-8 rounded-2xl relative overflow-hidden bg-surface-elevated/80 border border-border-ornate shadow-card-tarot"
+        >
+          <div className="absolute top-2.5 left-2.5 pointer-events-none opacity-40">
+            <TarotCornerFlourish className="w-4 h-4 text-lavender-moon" />
+          </div>
+          <div className="absolute top-2.5 right-2.5 pointer-events-none opacity-40 rotate-90">
+            <TarotCornerFlourish className="w-4 h-4 text-lavender-moon" />
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 relative z-10">
+            <div className="space-y-2 max-w-xl">
+              <span className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon flex items-center gap-1.5 font-semibold">
+                <Sparkles className="w-3.5 h-3.5 text-lavender-light" />
+                <span>Sanctum Working Synthesis</span>
+              </span>
+              <h3 className="text-xl sm:text-2xl font-display font-semibold text-bone tracking-wide">
+                {item.sanctumCta.headline}
+              </h3>
+              <p className="text-sm sm:text-base text-bone-muted leading-relaxed font-sans">
+                {item.sanctumCta.description}
+              </p>
+            </div>
+
+            <div className="shrink-0">
+              <Link
+                href={item.sanctumCta.href}
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-surface-hover hover:bg-surface-elevated border border-border-ornate hover:border-lavender text-lavender-light text-xs font-mono uppercase tracking-ceremonial font-semibold shadow-glow-purple transition-all min-h-[44px]"
+              >
+                <span>{item.sanctumCta.buttonText}</span>
+                <ArrowRight className="w-3.5 h-3.5 text-lavender-moon" />
+              </Link>
+            </div>
+          </div>
         </section>
       )}
 
@@ -636,6 +681,15 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
                 className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
               >
                 <span>Herb Directory</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            )}
+            {isIngredient && (
+              <Link
+                href="/ingredients"
+                className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
+              >
+                <span>Ingredient Directory</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             )}

@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/sigils",
     "/grimoire",
     "/herbs",
+    "/ingredients",
     "/correspondences",
     "/correspondences/protection",
     "/correspondences/love",

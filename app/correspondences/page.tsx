@@ -33,13 +33,13 @@ export const metadata: Metadata = {
   description:
     "A practical, non-dogmatic guide to correspondences in modern witchcraft. Explore how herbs, candles, minerals, and symbols anchor ritual intention and personal sovereignty.",
   alternates: {
-    canonical: "https://witchr.com/correspondences",
+    canonical: "https://www.witchr.com/correspondences",
   },
   openGraph: {
     title: "Correspondences in Witchcraft: Intentions, Elements & Reference Directory | Witchr",
     description:
       "Explore Witchr's grounded correspondences directory. Learn traditional associations for herbs, candles, minerals, and symbols across protection, love, and cleansing.",
-    url: "https://witchr.com/correspondences",
+    url: "https://www.witchr.com/correspondences",
     type: "website",
   },
   twitter: {
@@ -58,21 +58,21 @@ export default function CorrespondencesHubPage() {
   const symbols = getCorrespondencesByCategory("symbol");
 
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Correspondences", item: "https://witchr.com/correspondences" },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Correspondences", item: "https://www.witchr.com/correspondences" },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
     title: "Correspondences in Witchcraft: Intentions, Elements & Reference Directory | Witchr",
     description:
       "A practical, non-dogmatic guide to correspondences in modern witchcraft. Explore how herbs, candles, minerals, and symbols anchor ritual intention and personal sovereignty.",
-    url: "https://witchr.com/correspondences",
+    url: "https://www.witchr.com/correspondences",
   });
 
   const itemListJsonLd = getItemListJsonLd(
     intentGuides.map((guide) => ({
       name: `${guide.title} Correspondences`,
-      url: `https://witchr.com/correspondences/${guide.slug}`,
+      url: `https://www.witchr.com/correspondences/${guide.slug}`,
       description: guide.oneLiner,
     }))
   );

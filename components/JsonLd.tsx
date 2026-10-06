@@ -18,7 +18,7 @@ export function getWebsiteJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Witchr",
-    url: "https://witchr.com",
+    url: "https://www.witchr.com",
     description: "Witchcraft for modern problems. Practical rituals, tarot spreads, sigils, and reflective tools.",
     inLanguage: "en-US",
   };
@@ -29,8 +29,8 @@ export function getOrganizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Witchr",
-    url: "https://witchr.com",
-    logo: "https://witchr.com/icon.svg",
+    url: "https://www.witchr.com",
+    logo: "https://www.witchr.com/icon.svg",
     slogan: "Witchcraft for modern problems.",
   };
 }
@@ -53,15 +53,15 @@ export function getArticleJsonLd(options: {
     author: {
       "@type": "Organization",
       name: "Witchr",
-      url: "https://witchr.com",
+      url: "https://www.witchr.com",
     },
     publisher: {
       "@type": "Organization",
       name: "Witchr",
-      url: "https://witchr.com",
+      url: "https://www.witchr.com",
       logo: {
         "@type": "ImageObject",
-        url: "https://witchr.com/icon.svg",
+        url: "https://www.witchr.com/icon.svg",
       },
     },
     articleSection: options.category || "Rituals",
@@ -84,7 +84,7 @@ export function getWebPageJsonLd(options: {
     isPartOf: {
       "@type": "WebSite",
       name: "Witchr",
-      url: "https://witchr.com",
+      url: "https://www.witchr.com",
     },
   };
 }

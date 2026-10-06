@@ -31,14 +31,14 @@ export function ProblemHubView({ hub }: ProblemHubViewProps) {
 
 
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: hub.title, item: `https://witchr.com/${hub.slug}` },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: hub.title, item: `https://www.witchr.com/${hub.slug}` },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
     title: `${hub.title} Spells & Rituals | Witchr`,
     description: hub.seoDescription || hub.headline,
-    url: `https://witchr.com/${hub.slug}`,
+    url: `https://www.witchr.com/${hub.slug}`,
   });
 
   return (

@@ -10,12 +10,12 @@ export const metadata: Metadata = {
   description:
     "A clean, grounded beginner reference hub for candle colors, common pantry herbs, lunar timing, and intention crafting. No dogma, just practical foundations.",
   alternates: {
-    canonical: "https://witchr.com/grimoire",
+    canonical: "https://www.witchr.com/grimoire",
   },
   openGraph: {
     title: "Practical Grimoire & Occult Reference Guide | Witchr",
     description: "Pantry herbs, candle colors, lunar timing, and intention crafting. Zero bullshit.",
-    url: "https://witchr.com/grimoire",
+    url: "https://www.witchr.com/grimoire",
     type: "website",
   },
   twitter: {
@@ -27,15 +27,15 @@ export const metadata: Metadata = {
 
 export default function GrimoirePage() {
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Grimoire", item: "https://witchr.com/grimoire" },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Grimoire", item: "https://www.witchr.com/grimoire" },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
     title: "Practical Grimoire & Occult Reference Guide | Witchr",
     description:
       "A clean, grounded beginner reference hub for candle colors, common pantry herbs, lunar timing, and intention crafting.",
-    url: "https://witchr.com/grimoire",
+    url: "https://www.witchr.com/grimoire",
   });
 
   return (

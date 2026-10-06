@@ -34,12 +34,12 @@ export async function generateMetadata({ params }: RitualPageProps): Promise<Met
     title: ritual.title,
     description: ritual.seoDescription || ritual.hook,
     alternates: {
-      canonical: `https://witchr.com/rituals/${ritual.slug}`,
+      canonical: `https://www.witchr.com/rituals/${ritual.slug}`,
     },
     openGraph: {
       title: `${ritual.title} | Witchr`,
       description: ritual.hook,
-      url: `https://witchr.com/rituals/${ritual.slug}`,
+      url: `https://www.witchr.com/rituals/${ritual.slug}`,
       type: "article",
     },
     twitter: {
@@ -79,14 +79,14 @@ export default async function RitualDetailPage({ params }: RitualPageProps) {
   const articleJsonLd = getArticleJsonLd({
     title: ritual.title,
     description: ritual.seoDescription || ritual.hook,
-    url: `https://witchr.com/rituals/${ritual.slug}`,
+    url: `https://www.witchr.com/rituals/${ritual.slug}`,
     category: ritual.category,
   });
 
   const breadcrumbJsonLd = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Rituals", item: "https://witchr.com/rituals" },
-    { name: ritual.title, item: `https://witchr.com/rituals/${ritual.slug}` },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Rituals", item: "https://www.witchr.com/rituals" },
+    { name: ritual.title, item: `https://www.witchr.com/rituals/${ritual.slug}` },
   ]);
 
   return (

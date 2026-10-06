@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   description:
     "Practical love rituals focused on personal boundaries, self-sovereignty, standards, and breaking obsessive emotional loops.",
   alternates: {
-    canonical: "https://witchr.com/love",
+    canonical: "https://www.witchr.com/love",
   },
   openGraph: {
     title: "Love Spells & Rituals | Witchr",
     description:
       "Practical love rituals focused on personal boundaries, self-sovereignty, standards, and breaking obsessive emotional loops.",
-    url: "https://witchr.com/love",
+    url: "https://www.witchr.com/love",
     type: "website",
   },
   twitter: {

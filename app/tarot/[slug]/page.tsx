@@ -32,12 +32,12 @@ export async function generateMetadata({ params }: TarotPageProps): Promise<Meta
     title: `${spread.title} — Diagnostic Tarot Spread`,
     description: spread.seoDescription || spread.purpose,
     alternates: {
-      canonical: `https://witchr.com/tarot/${spread.slug}`,
+      canonical: `https://www.witchr.com/tarot/${spread.slug}`,
     },
     openGraph: {
       title: `${spread.title} — Diagnostic Tarot Spread | Witchr`,
       description: spread.purpose,
-      url: `https://witchr.com/tarot/${spread.slug}`,
+      url: `https://www.witchr.com/tarot/${spread.slug}`,
       type: "website",
     },
     twitter: {
@@ -61,13 +61,13 @@ export default async function TarotDetailPage({ params }: TarotPageProps) {
   const webPageJsonLd = getWebPageJsonLd({
     title: `${spread.title} — Diagnostic Tarot Spread | Witchr`,
     description: spread.seoDescription || spread.purpose,
-    url: `https://witchr.com/tarot/${spread.slug}`,
+    url: `https://www.witchr.com/tarot/${spread.slug}`,
   });
 
   const breadcrumbJsonLd = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Tarot", item: "https://witchr.com/tarot" },
-    { name: spread.title, item: `https://witchr.com/tarot/${spread.slug}` },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Tarot", item: "https://www.witchr.com/tarot" },
+    { name: spread.title, item: `https://www.witchr.com/tarot/${spread.slug}` },
   ]);
 
   return (

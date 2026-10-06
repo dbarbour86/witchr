@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   description:
     "Practical money spells, rituals, and grounding tools for overcoming financial avoidance, budgeting panic, and career stagnation.",
   alternates: {
-    canonical: "https://witchr.com/money",
+    canonical: "https://www.witchr.com/money",
   },
   openGraph: {
     title: "Money Spells & Rituals | Witchr",
     description:
       "Practical money spells, rituals, and grounding tools for overcoming financial avoidance, budgeting panic, and career stagnation.",
-    url: "https://witchr.com/money",
+    url: "https://www.witchr.com/money",
     type: "website",
   },
   twitter: {

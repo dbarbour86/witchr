@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   description:
     "Explore practical protection rituals, symbolic tools, and modern witchcraft practices for boundaries, cleansing, confidence, and peace of mind.",
   alternates: {
-    canonical: "https://witchr.com/protection",
+    canonical: "https://www.witchr.com/protection",
   },
   openGraph: {
     title: "Protection Witchcraft, Rituals & Tools | Witchr",
     description:
       "Explore practical protection rituals, symbolic tools, and modern witchcraft practices for boundaries, cleansing, and peace of mind.",
-    url: "https://witchr.com/protection",
+    url: "https://www.witchr.com/protection",
     type: "website",
   },
   twitter: {

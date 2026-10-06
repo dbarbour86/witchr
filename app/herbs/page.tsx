@@ -30,14 +30,14 @@ export const metadata: Metadata = {
   description:
     "The complete Witchr herb reference directory. Discover classical correspondences, magical properties, folk folklore, and practical witchcraft uses for essential kitchen and ritual herbs.",
   alternates: {
-    canonical: "https://witchr.com/herbs",
+    canonical: "https://www.witchr.com/herbs",
   },
   openGraph: {
     title:
       "Herbs in Witchcraft: Magical Properties, Correspondences & Directory | Witchr",
     description:
       "Explore the complete Witchr botanical directory. In-depth reference entries on magical properties, traditional folklore, and grounded witchcraft uses for essential herbs.",
-    url: "https://witchr.com/herbs",
+    url: "https://www.witchr.com/herbs",
     type: "website",
   },
   twitter: {
@@ -53,8 +53,8 @@ export default function HerbsHubPage() {
   const herbs = getCorrespondencesByCategory("herb");
 
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Herbs", item: "https://witchr.com/herbs" },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Herbs", item: "https://www.witchr.com/herbs" },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
@@ -62,13 +62,13 @@ export default function HerbsHubPage() {
       "Herbs in Witchcraft: Magical Properties, Correspondences & Directory | Witchr",
     description:
       "The complete Witchr herb reference directory. Discover classical correspondences, magical properties, folk folklore, and practical witchcraft uses for essential kitchen and ritual herbs.",
-    url: "https://witchr.com/herbs",
+    url: "https://www.witchr.com/herbs",
   });
 
   const itemListJsonLd = getItemListJsonLd(
     herbs.map((h) => ({
       name: `${h.name} in Witchcraft`,
-      url: `https://witchr.com/herbs/${h.slug}`,
+      url: `https://www.witchr.com/herbs/${h.slug}`,
       description: h.oneLiner,
     }))
   );

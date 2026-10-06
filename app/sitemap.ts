@@ -5,7 +5,7 @@ import { PROBLEM_HUBS } from "@/content/problems";
 import { CORRESPONDENCES } from "@/content/correspondences";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://witchr.com";
+  const baseUrl = "https://www.witchr.com";
 
   // Static core routes
   const staticPaths = [
@@ -41,6 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         (url) =>
           typeof url === "string" &&
           url.startsWith(baseUrl) &&
+          !url.includes("//www.witchr.com//") &&
           !url.includes("//witchr.com//") &&
           url.trim().length > 0
       )

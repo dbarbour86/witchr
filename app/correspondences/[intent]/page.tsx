@@ -58,12 +58,12 @@ export async function generateMetadata({
     title: data.seoTitle,
     description: data.seoDescription,
     alternates: {
-      canonical: `https://witchr.com/correspondences/${data.slug}`,
+      canonical: `https://www.witchr.com/correspondences/${data.slug}`,
     },
     openGraph: {
       title: `${data.seoTitle} | Witchr`,
       description: data.seoDescription,
-      url: `https://witchr.com/correspondences/${data.slug}`,
+      url: `https://www.witchr.com/correspondences/${data.slug}`,
       type: "article",
     },
     twitter: {
@@ -85,18 +85,18 @@ export default async function IntentCorrespondencePage({
   }
 
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Correspondences", item: "https://witchr.com/correspondences" },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Correspondences", item: "https://www.witchr.com/correspondences" },
     {
       name: `${data.title} Correspondences`,
-      item: `https://witchr.com/correspondences/${data.slug}`,
+      item: `https://www.witchr.com/correspondences/${data.slug}`,
     },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
     title: `${data.seoTitle} | Witchr`,
     description: data.seoDescription,
-    url: `https://witchr.com/correspondences/${data.slug}`,
+    url: `https://www.witchr.com/correspondences/${data.slug}`,
   });
 
   const allResources = [
@@ -110,7 +110,7 @@ export default async function IntentCorrespondencePage({
   const itemListJsonLd = getItemListJsonLd(
     allResources.map((res) => ({
       name: `${res.name} (${res.categoryLabel})`,
-      url: `https://witchr.com${res.url}`,
+      url: `https://www.witchr.com${res.url}`,
       description: res.role,
     }))
   );

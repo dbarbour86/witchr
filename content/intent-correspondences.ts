@@ -197,6 +197,28 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
         sensoryAnchor: "Dense, non-decaying crystalline grains",
         badge: "Foundation",
       },
+      {
+        name: "Black Pepper",
+        slug: "black-pepper",
+        url: "/ingredients/black-pepper",
+        categoryLabel: "Ritual Spice / Defense",
+        role: "Active Banishing, Rejection & Fierce Boundaries",
+        howToUse:
+          "Scatter whole peppercorns into boundary sachets, cast across uninvited pathways, or pair with salt to actively drive away intrusive hostility.",
+        sensoryAnchor: "Pungent, biting, hot aromatic peppercorns",
+        badge: "Active Defense",
+      },
+      {
+        name: "Black Tourmaline",
+        slug: "black-tourmaline",
+        url: "/crystals/black-tourmaline",
+        categoryLabel: "Crystal / Mineral Bedrock",
+        role: "Somatic Grounding, Boundary Anchoring & Static Absorption",
+        howToUse:
+          "Place near entryways as an unyielding boundary stone, keep on stressful work desks, or hold during somatic centering to ground nervous system friction.",
+        sensoryAnchor: "Dense, heavy, striated black raw mineral crystal",
+        badge: "Grounding Anchor",
+      },
     ],
     symbols: [
       {

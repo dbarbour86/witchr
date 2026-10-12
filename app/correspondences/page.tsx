@@ -304,8 +304,8 @@ export default function CorrespondencesHubPage() {
               </p>
               <div className="text-[11px] font-mono text-lavender-dim space-y-1 pt-1">
                 <div>· <Link href="/ingredients/salt" className="hover:underline">Coarse Salt</Link> (Perimeter lines)</div>
-                <div>· Natural Spring Water (Reset)</div>
-                <div>· Stone Bowls & Iron Pins</div>
+                <div>· <Link href="/crystals/black-tourmaline" className="hover:underline">Black Tourmaline</Link> (Grounding)</div>
+                <div>· <Link href="/ingredients/black-pepper" className="hover:underline">Black Pepper</Link> (Active defense)</div>
               </div>
             </div>
             <Link

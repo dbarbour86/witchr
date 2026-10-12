@@ -19,7 +19,7 @@ export const RITUALS: Ritual[] = [
     ],
     substitutions: [
       "No black candle? White candle, or simply a bowl of salted tap water.",
-      "No salt? Black pepper, rosemary, or pure cold tap water.",
+      "No salt? [Black pepper](/ingredients/black-pepper), [rosemary](/herbs/rosemary), or pure cold tap water.",
     ],
     steps: [
       {
@@ -446,7 +446,7 @@ export const RITUALS: Ritual[] = [
     difficulty: "Simple",
     supplies: [
       "A small pocket mirror or reflective compact",
-      "A pinch of coarse black pepper or dry rosemary",
+      "A pinch of coarse [black pepper](/ingredients/black-pepper) or dry [rosemary](/herbs/rosemary)",
       "A glass of tap water",
     ],
     substitutions: [

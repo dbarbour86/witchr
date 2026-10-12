@@ -23,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/correspondences/cleansing",
     "/about",
     "/disclaimer",
+    "/sanctum",
   ];
 
   const rawUrls: string[] = [

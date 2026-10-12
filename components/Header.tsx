@@ -41,8 +41,8 @@ export function Header() {
     }
   }, [mobileMenuOpen]);
 
-  // If inside the Sanctum workstation shell, do not render public header
-  if (pathname?.startsWith("/sanctum")) {
+  // If inside the private Sanctum workstation shell subroutes, do not render public header
+  if (pathname?.startsWith("/sanctum/")) {
     return null;
   }
 
@@ -169,8 +169,8 @@ export function Header() {
                     <FourPointStar className="w-3.5 h-3.5 text-lavender-moon" />
                     <span>The Sanctum</span>
                   </span>
-                  <span className="text-[10px] font-mono uppercase tracking-ceremonial px-2 py-0.5 rounded bg-surface border border-border-highlight text-lavender-dim">
-                    Interactive
+                  <span className="text-[10px] font-mono uppercase tracking-ceremonial px-2 py-0.5 rounded bg-surface border border-purple-800/60 text-purple-300 font-mono uppercase">
+                    Coming Soon
                   </span>
                 </Link>
 

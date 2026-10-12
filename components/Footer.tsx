@@ -9,8 +9,8 @@ export function Footer() {
   const pathname = usePathname();
   const currentYear = new Date().getFullYear();
 
-  // If inside the Sanctum workstation shell, do not render marketing footer
-  if (pathname?.startsWith("/sanctum")) {
+  // If inside the private Sanctum workstation shell subroutes, do not render marketing footer
+  if (pathname?.startsWith("/sanctum/")) {
     return null;
   }
 
@@ -105,7 +105,7 @@ export function Footer() {
               <li>
                 <Link href="/sanctum" className="text-lavender-moon hover:text-lavender-light transition-colors flex items-center gap-1.5 font-medium">
                   <span>The Sanctum</span>
-                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-surface border border-border-highlight text-lavender-dim font-mono uppercase">Interactive</span>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-surface border border-purple-800/60 text-purple-300 font-mono uppercase">Coming Soon</span>
                 </Link>
               </li>
               <li>

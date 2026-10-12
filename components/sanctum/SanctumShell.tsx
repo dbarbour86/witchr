@@ -37,7 +37,7 @@ export function SanctumShell({ children }: SanctumShellProps) {
     {
       name: "SANCTUM",
       sub: "Chamber",
-      href: "/sanctum",
+      href: "/sanctum/hub",
       icon: Layers,
       exact: true,
     },
@@ -83,7 +83,7 @@ export function SanctumShell({ children }: SanctumShellProps) {
           {/* Left Brand Unit: Crest + Witchr Sanctum Display Title */}
           <div className="flex items-center gap-3 shrink-0">
             <Link
-              href="/sanctum"
+              href="/sanctum/hub"
               className="flex items-center gap-2.5 sm:gap-3.5 group"
               aria-label="Witchr Sanctum Chamber"
             >

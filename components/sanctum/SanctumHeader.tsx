@@ -22,7 +22,7 @@ export function SanctumHeader({ currentSection, showBackToSanctum = false }: San
         <div className="flex items-center gap-2.5">
           {showBackToSanctum ? (
             <Link
-              href="/sanctum"
+              href="/sanctum/hub"
               className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#130726] border border-purple-800/60 text-purple-300 hover:text-white hover:border-purple-400 hover:shadow-[0_0_12px_rgba(168,85,247,0.3)] transition-all group"
             >
               <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform text-purple-400" />

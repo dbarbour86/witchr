@@ -4,6 +4,7 @@ import { GRIMOIRE_SECTIONS } from "@/content/grimoire";
 import { JsonLd, getBreadcrumbJsonLd, getWebPageJsonLd } from "@/components/JsonLd";
 import { CelestialDivider, FourPointStar, GrimoireStar } from "@/components/OrnateFrames";
 import { ArrowRight, ShieldCheck, Flame } from "lucide-react";
+import { FormattedProse } from "@/components/CorrespondenceView";
 
 export const metadata: Metadata = {
   title: "Practical Grimoire & Occult Reference Guide",
@@ -116,6 +117,26 @@ export default function GrimoirePage() {
               </div>
             )}
 
+            {sec.id === "moon-phases" && (
+              <div className="p-4 sm:p-5 rounded-xl bg-surface border border-border-highlight flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <span className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon font-semibold">
+                    Lunar Craft & Elemental Waters
+                  </span>
+                  <p className="text-sm text-bone-muted font-sans">
+                    Looking to anchor intentions during lunar transits? Read our complete reference guide on preparing and using moon water safely.
+                  </p>
+                </div>
+                <Link
+                  href="/ingredients/moon-water"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-elevated hover:bg-surface-hover text-lavender-light border border-border-ornate hover:border-lavender text-xs font-mono uppercase tracking-ceremonial font-semibold shrink-0 transition-colors min-h-[44px]"
+                >
+                  <span>Moon Water Reference</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {sec.items.map((item, idx) => (
                 <div
@@ -172,7 +193,7 @@ export default function GrimoirePage() {
 
                       {item.notes && (
                         <p className="text-xs text-bone-dim italic pt-1 border-t border-border-subtle/60">
-                          {item.notes}
+                          <FormattedProse text={item.notes} />
                         </p>
                       )}
                     </div>

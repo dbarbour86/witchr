@@ -2376,6 +2376,305 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       "Explore the spiritual meaning of red candles in witchcraft. Learn traditional correspondences for vitality, romantic passion, courage, and breaking executive freeze.",
   },
   {
+    slug: "green",
+    name: "Green Candle",
+    h1: "Green Candle Meaning in Witchcraft: Prosperity, Growth & Uses",
+    heroImage: {
+      src: "/images/green-candle-witchcraft-hero.webp",
+      alt: "Purple and black screenprint illustration of a tall ceremonial green prosperity taper candle burning in an ornate candleholder framed by botanical growth motifs",
+      width: 1600,
+      height: 893,
+    },
+    category: "candle",
+    categoryLabel: "Candle",
+    primaryIntent: "Prosperity & Growth",
+    routePrefix: "candles",
+    oneLiner:
+      "A ceremonial anchor for material stability, steady financial opportunity, and the patient cultivation required to build lasting security.",
+    quickAnswer:
+      "In witchcraft, a green candle symbolizes prosperity, material stability, practical growth, and grounded abundance. Associated with the Earth element and planetary energies of Jupiter and Venus, green candles are burned to focus the mind during financial planning, career transitions, and business development. Rather than generating supernatural wealth, burning a green candle serves as a tactile ritual anchor for discipline, goal-setting, and intentional resource management.",
+    referenceTable: [
+      {
+        label: "Primary Associations",
+        value:
+          "Prosperity, material stability, opportunity, personal growth, abundance, renewal",
+      },
+      {
+        label: "Intentions",
+        value:
+          "Financial clarity, steady income, responsible spending, business development, career opportunities",
+      },
+      {
+        label: "Classical Element",
+        value:
+          "Earth (physical manifestation, roots, fertile soil, material stability, patience)",
+      },
+      {
+        label: "Planetary Associations",
+        value:
+          "Jupiter (expansion, commercial prosperity, opportunity) and Venus (fertility, harmony, growth). *Note: attributions vary across historical lineages.*",
+      },
+      {
+        label: "Core Symbolism",
+        value:
+          "Growth, cultivation, stability, opportunity, long-term progress, organic expansion",
+      },
+      {
+        label: "Common Forms",
+        value:
+          "Green taper candles, 4-inch chime/spell mini-tapers, pillars, tealights, inscribed votives",
+      },
+      {
+        label: "Common Pairings",
+        value:
+          "[Cinnamon](/herbs/cinnamon) (momentum), [Mint](/herbs/mint) (commerce & clarity), [Sweet Basil](/herbs/basil) (harmony), [Raw Honey](/ingredients/honey) (sweetness & retention), [White Candle](/candles/white) (clarity)",
+      },
+    ],
+    correspondences: {
+      uses: [
+        "Financial intention-setting and budgeting audits",
+        "Career advancement and job-search focus",
+        "Business development and client attraction",
+        "Savings goals and debt elimination milestones",
+        "Habit cultivation and long-term discipline",
+      ],
+      element: "Earth",
+      planet: "Jupiter / Venus",
+      colors: ["Forest Green", "Olive", "Pale Sage", "Gold"],
+      intentions: [
+        "Prosperity",
+        "Financial stability",
+        "Career growth",
+        "Business opportunity",
+        "Disciplined savings",
+        "Personal renewal",
+      ],
+      symbolicAssociations: [
+        "Living growth",
+        "Material bedrock",
+        "Fertile opportunity",
+        "Patience",
+        "Compound progress",
+      ],
+    },
+    traditionalLore: [
+      "Candle color symbolism evolved from centuries of folk magic, seasonal folklore, and occult herbalism. In European agrarian traditions, green represented the return of spring, the fertility of crops, and the vital greening of the landscape (viriditas) following winter dormancy. In cunning craft and household magic, green tapers were burned at seasonal quarter days to petition for healthy livestock, successful harvests, and the preservation of domestic food stores.",
+      "During the nineteenth and twentieth centuries, as global economies transitioned from agricultural barter to cash currencies and modern paper money, green candle folklore seamlessly adapted. Practitioners in Hoodoo, American folk magic, and contemporary Wicca began utilizing green candles specifically for cash flow, debt reduction, business patronage, and commercial prosperity. Across traditions, green remains the color of living growth—whether rooted in soil or invested in trade.",
+    ],
+    modernWitchrUse: [
+      "Modern witchcraft approaches green candles with grounded psychological clarity. Lighting a green taper does not bend global financial markets, alter banking algorithms, or deposit unearned currency onto your doorstep. In Witchr's framework, magical efficacy stems from focused human attention, emotional regulation, and decisive real-world action.",
+      "Financial anxiety frequently triggers biological freeze responses: opening unpaid bills, balancing spreadsheets, or negotiating compensation can feel overwhelming. Burning a green candle provides a deliberate sensory demarcation. The warm flame, steady wax melt, and earthy color quiet panic, providing the nervous system with the focus required to look numbers in the eye and make disciplined decisions.",
+    ],
+    detailedSections: [
+      {
+        id: "what-green-candle-symbolizes",
+        title: "What Does a Green Candle Symbolize in Witchcraft?",
+        content: [
+          "A green candle represents far more than physical paper currency. In occult symbolism, green is the vibration of living, organic cultivation. Understanding its core symbolic layers enriches any practical working:",
+          "**Prosperity & Grounded Abundance:** True prosperity is the state of having adequate resources, material stability, and peace of mind. Green candles anchor the intention to generate sufficiency and sustainable living rather than reckless greed.",
+          "**Sustainable Organic Growth:** Like an oak tree or agricultural crop, genuine progress requires time, nourishment, and patience. Green candles symbolize steady, compound expansion rather than speculative shortcuts.",
+          "**Material Stability & Bedrock Reality:** Linked to the Earth element, green represents physical structures—housing, pantry supplies, emergency savings, and reliable trade.",
+          "**Fertility & Opportunity:** In magical philosophy, fertility refers to the capacity to produce tangible results. Burning green awakens alertness to emerging professional openings, client leads, and creative ventures.",
+          "**Personal Responsibility & Agency:** A green candle reminds the practitioner that wealth is built through labor, budgeting, and accountability. It rejects passive magical thinking in favor of sovereign personal agency.",
+        ],
+      },
+      {
+        id: "money-and-prosperity",
+        title: "Green Candles for Money, Abundance & Practical Prosperity",
+        content: [
+          "To work effectively with green candles, practitioners integrate ritual focus with concrete financial behaviors. A candle cannot create money or guarantee financial outcomes, but it serves as an exceptional tool for reinforcing constructive financial habits:",
+          "**Budgeting & Expense Audits:** Burning a green candle while reviewing monthly bank statements transforms a dreaded chore into a focused ceremony of sovereignty and control.",
+          "**Savings Commitments:** Lighting a green candle when transferring funds into an emergency buffer solidifies the habit of self-preservation and future security.",
+          "**Debt Reduction:** Using a green candle during debt payoff milestones reinforces the psychological resolve required to eliminate financial liabilities and celebrate progress.",
+          "**Business & Career Growth:** Entrepreneurs and freelancers light green tapers when drafting project proposals, updating portfolios, or reaching out to prospective clients.",
+          "**Cultivating Financial Awareness:** Regularly lighting a green candle builds mindfulness around consumption habits, distinguishing genuine personal needs from impulsive emotional spending.",
+        ],
+      },
+      {
+        id: "practical-uses",
+        title: "Five Practical Uses for Green Candles in Modern Practice",
+        content: [
+          "Integrated witchcraft connects ritual intention directly to daily life. Here are five practical ways to work with green candles in your personal practice:",
+        ],
+        subsections: [
+          {
+            title: "1. Financial Intention-Setting",
+            content: [
+              "Carve a realistic monetary figure or percentage into the side of a green chime candle using a clean pin. As the candle burns in a heatproof dish, commit your focus to the exact steps needed to reach that benchmark.",
+              "**Concrete Real-World Action:** Immediately open your banking application and set up an automated transfer of five dollars toward that exact savings goal.",
+            ],
+          },
+          {
+            title: "2. Business Growth & Project Reflection",
+            content: [
+              "Place a green candle on your desk beside a sprig of fresh [mint](/herbs/mint) or [sweet basil](/herbs/basil) while drafting quarterly objectives or evaluating product pricing.",
+              "**Concrete Real-World Action:** Send two professional follow-up emails to past clients or prospective collaborators to open new communication channels.",
+            ],
+          },
+          {
+            title: "3. Job-Search Motivation & Interview Prep",
+            content: [
+              "Light a green candle before sitting down to submit job applications or prepare for an interview to quiet imposter syndrome and anchor self-worth.",
+              "**Concrete Real-World Action:** Tailor your resume for one specific job opening and submit the application before extinguishing the candle.",
+            ],
+          },
+          {
+            title: "4. Savings-Goal Ceremonies",
+            content: [
+              "Keep a small green tealight beside a cash savings envelope or investment binder to mark the discipline of paying yourself first.",
+              "**Concrete Real-World Action:** Audit your recurring digital subscriptions and cancel at least one unused service today.",
+            ],
+          },
+          {
+            title: "5. Personal Renewal & Habit-Building",
+            content: [
+              "Burn a green candle at the start of each work week to dedicate your energy to productive, disciplined habits rather than chaotic burnout.",
+              "**Concrete Real-World Action:** Write down your top three non-negotiable tasks for the upcoming week and schedule dedicated time blocks on your calendar.",
+            ],
+          },
+        ],
+      },
+      {
+        id: "candle-color-comparison",
+        title: "Green Candle vs. Other Candle Colors: Choosing the Right Flame",
+        content: [
+          "Choosing the correct candle color depends on the specific energetic mechanism you wish to engage in your ritual work:",
+          "**[White Candle](/candles/white):** The universal baseline of cleansing, truth, and fresh beginnings. While a white candle clears away past static and resets the working area to zero, a green candle actively cultivates new material growth in the cleared space.",
+          "**[Black Candle](/candles/black):** The primary ceremonial tool for boundary defense, severance, and absorbing discord. A black candle cuts away predatory financial drains and toxic entanglements, whereas a green candle builds affirmative wealth and stability once the perimeter is sealed.",
+          "**[Red Candle](/candles/red):** Represents fast-burning solar fire, physical courage, romantic passion, and rapid propulsion. Red provides the quickening burst needed for high-stakes interviews, but green sustains the patient, long-term discipline required to build lasting economic security.",
+        ],
+      },
+      {
+        id: "correspondences-and-pairings",
+        title: "Green Candle Magical Correspondences & Herbal Pairings",
+        content: [
+          "Combining green wax with complementary botanical anchors creates a multi-layered sensory working without requiring exotic supplies:",
+          "**[Cinnamon](/herbs/cinnamon):** Brings solar speed, warmth, and catalytic momentum to patient green earth energy, accelerating sluggish financial negotiations and quickening stagnation.",
+          "**[Peppermint & Spearmint](/herbs/mint):** The classic botanical of commerce and clear thinking. Mint sharpens mental focus during budgeting and attracts pleasant, professional business transactions.",
+          "**[Sweet Basil](/herbs/basil):** Associated with Jupiter and domestic peace, basil pairs with green candles to soothe household money arguments and foster workplace harmony.",
+          "**[Raw Honey](/ingredients/honey):** Symbolizes preservation, sweetness, and sticky attraction, helping retain loyal clients, preserve accumulated resources, and sweeten professional negotiations.",
+        ],
+      },
+      {
+        id: "beginner-working",
+        title: "A Simple Beginner Working: The Ten-Minute Prosperity Audit",
+        content: [
+          "This accessible, practical ritual requires minimal supplies and zero theatrical jargon, helping you transform financial ambivalence into clear execution.",
+          "**Supplies Needed:**\n• One green taper or chime candle\n• A sturdy heatproof candleholder\n• A clean sheet of paper and a pen\n• A quiet surface free from distraction",
+          "**Step-by-Step Instructions:**",
+          "**1. Clarify the Objective:** Identify one realistic, measurable financial outcome needed over the next thirty days (such as earning an extra $200, landing one client, or reducing dining expenses by 15%).",
+          "**2. Inscribe the Target:** Write the exact dollar figure or percentage clearly in the center of your paper.",
+          "**3. Safe Kindling:** Place the candle firmly into its heatproof holder upon the paper. Strike a match, kindle the wick, and take three deep, grounding breaths.",
+          "**4. Obstacle Inventory:** Spend three minutes reflecting on the primary behavioral obstacle that has hindered this goal (such as procrastination, fear of rejection, or unmonitored impulse spending).",
+          "**5. Commit to Action:** Beneath your figure, write one concrete, non-negotiable action you will execute today to move the needle.",
+          "**6. Safe Extinguishing:** Snuff the candle safely with a metal snuffer or heatproof dish (never blow hot wax).",
+          "**7. Immediate Execution:** Immediately complete your written action—submit the invoice, cancel the unused subscription, or list the unused item for sale.",
+        ],
+      },
+    ],
+    pairings: [
+      {
+        name: "Cinnamon",
+        link: "/herbs/cinnamon",
+        purpose:
+          "Adds solar heat, speed, and catalytic momentum to steady green earth energy, quickening sluggish negotiations and stagnant cash flow.",
+      },
+      {
+        name: "Mint",
+        link: "/herbs/mint",
+        purpose:
+          "The classic botanical of clear commerce and mental sharpness, ideal for dressing candle bases during budgeting or contract reviews.",
+      },
+      {
+        name: "Sweet Basil",
+        link: "/herbs/basil",
+        purpose:
+          "Brings Jupiter-aligned domestic harmony and ethical prosperity, soothing household financial tension and calming financial panic.",
+      },
+      {
+        name: "Raw Honey",
+        link: "/ingredients/honey",
+        purpose:
+          "Represents preservation and sticky attraction, traditionally paired with green candles to retain loyal clients and preserve savings.",
+      },
+      {
+        name: "White Candle",
+        link: "/candles/white",
+        purpose:
+          "Provides a clean slate and mental clarity; burn beside a green candle to clear away past financial guilt before setting fresh goals.",
+      },
+    ],
+    tryIt: {
+      title: "The Ten-Minute Prosperity Audit",
+      instruction:
+        "Place a green chime candle in a heatproof holder atop a sheet of paper. Write down one concrete financial goal and one obstacle you must overcome. Light the flame, spend three minutes breathing deeply while focusing on disciplined execution, safely extinguish the candle, and immediately complete one tangible financial task (such as sending an invoice or balancing your budget).",
+    },
+    sanctumCta: {
+      headline: "Crafting a Prosperity Working?",
+      description:
+        "Explore personal correspondences, grounded timing, and spellcraft synthesis in the Sanctum.",
+      buttonText: "Explore the Sanctum — Coming Soon",
+      href: "/sanctum",
+    },
+    faqs: [
+      {
+        question: "What does a green candle mean spiritually?",
+        answer:
+          "Spiritually, a green candle represents the Earth element, fertile cultivation, material sustenance, and the patient alignment of personal effort with natural cycles of growth and prosperity.",
+      },
+      {
+        question: "Are green candles used for money spells?",
+        answer:
+          "Yes. Green candles are the traditional standard for money, prosperity, and career workings. In grounded witchcraft, they serve as focus anchors for budgeting discipline, business development, and financial responsibility.",
+      },
+      {
+        question: "What day should you burn a green candle?",
+        answer:
+          "In traditional planetary correspondences, Thursday (ruled by Jupiter, governor of expansion and wealth) and Friday (ruled by Venus, governor of fertility and value) are the classic days for green candle workings.",
+      },
+      {
+        question: "Can you use a white candle instead of green?",
+        answer:
+          "Yes. In folk witchcraft, a white candle is the universal substitute for any color. If you lack a green candle, burn a white candle while holding a clear, specific intention for prosperity and growth.",
+      },
+      {
+        question: "What herbs pair best with green candles?",
+        answer:
+          "Green candles pair effectively with cinnamon for speed, peppermint or spearmint for clear commerce, sweet basil for ethical prosperity and harmony, and bay leaves for goal manifestation.",
+      },
+      {
+        question: "Can beginners use green candles?",
+        answer:
+          "Absolutely. Green candle workings require no complex initiations or expensive supplies. Honest intention-setting paired with mundane follow-through is the foundation of all grounded witchcraft.",
+      },
+      {
+        question: "What is the difference between green and gold candles?",
+        answer:
+          "Green candles correspond to organic growth, earthy cultivation, steady income, and budgeting. Gold candles correspond to solar vitality, public recognition, executive authority, and sudden luxury.",
+      },
+    ],
+    safetyNotes: [
+      "Never leave a burning candle unattended; extinguish flames before leaving the room or going to sleep.",
+      "Always burn candles in a sturdy, heatproof ceramic, stone, or metal holder placed on a level surface.",
+      "Keep open flames well clear of drafty windows, curtains, loose paper, clothing, and blankets.",
+      "Keep burning candles safely out of the reach of curious pets and small children.",
+      "Dress candles lightly: never coat wicks in heavy essential oils or loose dry herbs, as botanicals act as secondary wicks and can trigger flash fires.",
+      "Use a metal candle snuffer or heatproof dish to extinguish flames rather than blowing, which can splatter hot wax.",
+      "Candles and ritual practices do not replace sound financial management, professional accounting, legal advice, or career labor.",
+    ],
+    relatedHubSlug: "money",
+    relatedRitualSlugs: ["money-candle", "money-reset"],
+    sources: [
+      "Agrippa, Heinrich Cornelius. Three Books of Occult Philosophy (1533).",
+      "Buckland, Raymond. Practical Candleburning Rituals (1970).",
+      "Cunningham, Scott. Cunningham's Encyclopedia of Magical Herbs (1985).",
+      "Huson, Paul. Mastering Witchcraft (1970).",
+    ],
+    seoTitle: "Green Candle Meaning in Witchcraft: Money, Growth & Uses",
+    seoDescription:
+      "Explore green candle meaning in witchcraft, including prosperity, growth, practical money rituals, color correspondences, safety, and everyday uses.",
+  },
+  {
     slug: "pentagram",
     name: "Pentagram",
     h1: "Pentagram in Witchcraft",
@@ -4425,6 +4724,316 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
     seoTitle: "Mint in Witchcraft: Magical Properties, Uses & Meaning",
     seoDescription:
       "Uncover the magical properties, spiritual folklore, and witchcraft uses of peppermint and spearmint. Learn correspondences for money flow, clarity, and vitality.",
+  },
+  {
+    slug: "moon-water",
+    name: "Moon Water",
+    h1: "Moon Water in Witchcraft: Meaning, Uses & How to Make It",
+    heroImage: {
+      src: "/images/moon-water-witchcraft-specimen.webp",
+      alt: "Purple and black screenprint illustration of an antique glass apothecary jar of moon water on a stone altar before a crescent moon",
+      width: 1600,
+      height: 893,
+    },
+    category: "ingredient",
+    categoryLabel: "Ritual Ingredient",
+    primaryIntent: "Cleansing, Intuition & Renewal",
+    routePrefix: "ingredients",
+    oneLiner:
+      "Ordinary water intentionally placed beneath moonlight as a grounded physical anchor for emotional cleansing, personal reflection, and peaceful transitions.",
+    quickAnswer:
+      "In witchcraft, moon water is used as a symbolic anchor for emotional cleansing, intention-setting, altar purification, and reflective meditation. Prepared by resting clean water in a sealed glass vessel under the night sky or on a windowsill, it provides practitioners with an accessible physical medium to mark transitions, refresh sacred tools, and align personal focus with the rhythmic phases of the lunar cycle.",
+    referenceTable: [
+      {
+        label: "Primary Associations",
+        value:
+          "Cleansing, intuition, reflection, emotional renewal, intention-setting, symbolic purification",
+      },
+      {
+        label: "Classical Element",
+        value:
+          "Water (fluidity, reflection, emotional depth, intuitive responsiveness)",
+      },
+      {
+        label: "Planetary Association",
+        value:
+          "Moon (rhythms, tidal cycles, subconscious awareness, transitions)",
+      },
+      {
+        label: "Aligned Intentions",
+        value:
+          "New beginnings, releasing old habits, meditation, personal reflection, peaceful transitions",
+      },
+      {
+        label: "Common Forms",
+        value:
+          "Clean water in sealed glass jars, ritual bowls, fine mist spray bottles, symbolic altar vessels",
+      },
+      {
+        label: "Common Pairings",
+        value:
+          "[White Candle](/candles/white) (clarity & clean slate), [Mugwort](/herbs/mugwort) (lunar intuition), [Rosemary](/herbs/rosemary) (clearing static), [Salt](/ingredients/salt) (grounding & threshold sealing)",
+      },
+      {
+        label: "Core Symbolism",
+        value:
+          "Lunar cycles, reflection, adaptability, emotional clarity, cyclical renewal",
+      },
+    ],
+    correspondences: {
+      uses: [
+        "Symbolic altar tool cleansing & resetting",
+        "Intention-setting & meditation focus",
+        "Reflective journaling & scrying anchors",
+        "Threshold washes & clean-slate rituals",
+        "Marking new beginnings & cyclical transitions",
+      ],
+      element: "Water",
+      planet: "Moon",
+      colors: ["Silver", "White", "Deep Indigo", "Violet"],
+      intentions: [
+        "Cleansing",
+        "Intuition",
+        "Renewal",
+        "Reflection",
+        "New beginnings",
+        "Releasing old habits",
+      ],
+      symbolicAssociations: [
+        "Reflection",
+        "Cyclical change",
+        "Emotional fluidity",
+        "Stillness",
+        "Beginning and ending",
+      ],
+    },
+    traditionalLore: [
+      "While the modern term 'moon water' gained widespread popularity in late twentieth-century craft, gathering water exposed to nocturnal skies has ancient folklore roots. Across British, Celtic, and continental European traditions, morning dew gathered during seasonal transitions—most famously May Morning—was collected in clean linens for symbolic purification and clarity washes.",
+      "In historical cunning-folk traditions and classical Mediterranean hydromancy, standing water served as an accessible natural scrying mirror. Cunning practitioners observed moonlight reflecting across dark bowls of water to quiet conscious distraction and invite intuitive insight, viewing the undisturbed surface as a sacred mirror of celestial calm.",
+    ],
+    modernWitchrUse: [
+      "Modern witchcraft approaches moon water through a grounded psychological lens. Resting clean water on a windowsill does not alter its chemical properties or produce supernatural radiation. Instead, it functions as a tactile somatic anchor, translating an internal intention for renewal into a physical, deliberate ritual act.",
+      "In Witchr's grounded framework, ritual efficacy stems from focused attention, clear boundaries, and consistent real-world action. Pouring water into a dedicated glass vessel, articulating an honest intention, and watching moonlight strike the surface signals clearly to the nervous system that a clean chapter has begun.",
+    ],
+    detailedSections: [
+      {
+        id: "what-is-moon-water",
+        title: "What Is Moon Water? Meaning, Symbolism & Role in Modern Craft",
+        content: [
+          "Moon water is clean water intentionally placed beneath moonlight as part of a contemporary witchcraft practice. It symbolizes reflection, emotional cleansing, renewal, and the natural rhythm of beginnings and endings. In modern craft, it functions as an accessible foundational element requiring no costly supplies or rare ingredients.",
+          "Water represents elemental fluidity, emotional receptivity, and cleansing, while the lunar cycle provides nature's visible clock of waxing, culmination, and waning. Uniting water with lunar timing creates a physical anchor for personal adaptability and cyclical growth.",
+          "Importantly, lunar charging is a symbolic spiritual practice rather than a scientifically demonstrated transformation of water. Moonlight does not alter water's chemical composition. Grounded practitioners honor moon water as poetry made physical—a ritual art form that clarifies mental intention rather than an alternative physical technology.",
+          "Because ritual efficacy relies on mindful awareness, intention matters far more than elaborate supplies. A simple recycled jar filled with tap water on an apartment sill carries identical validity to an expensive crystal vessel on a mountain altar.",
+        ],
+      },
+      {
+        id: "how-to-make-moon-water",
+        title: "How to Make Moon Water: A Clear Beginner-Friendly Method",
+        content: [
+          "Preparing moon water is simple, safe, and easily adapted to any home. An indoor windowsill facing the night sky works perfectly without needing outdoor space.",
+          "**Materials Needed:**\n• One clean glass jar or suitable vessel with a secure lid\n• Clean water (fresh tap, spring, or filtered drinking water)\n• A clean cloth to wipe the exterior\n• Optional written intention on paper",
+          "**Step-by-Step Instructions:**",
+          "**1. Clean the container:** Wash your glass jar thoroughly with warm soapy water and inspect for chips or cracks. Glass is clean, stable, and visually transparent.",
+          "**2. Fill with clean water:** Pour in fresh water, leaving a small air gap at the top so temperature shifts overnight do not stress the seal.",
+          "**3. Close the lid securely:** Fasten the lid tightly to protect the water from household dust, flying insects, and airborne particles.",
+          "**4. Set a specific intention:** Take a slow breath, hold the vessel, and articulate your intention clearly aloud or place a written note beneath the jar.",
+          "**5. Position on a protected windowsill:** Place the sealed jar on a safe, stable sill or sheltered location where moonlight may reach it.",
+          "**6. Leave overnight:** Allow the jar to rest throughout the night hours to absorb the calm stillness of the nocturnal transit.",
+          "**7. Retrieve, label, and use:** Retrieve the jar in the morning, label it with the date and lunar phase, and reserve it strictly for non-ingestible ritual purposes.",
+          "**Direct Moonlight vs. Ambient Exposure:** Direct moonlight is not essential to the practice. Moonlight diffuses through clouds and the ambient nocturnal atmosphere; your intentional framing remains complete even on overcast nights.",
+        ],
+      },
+      {
+        id: "lunar-phases",
+        title: "Moon Phases & Their Symbolic Meaning in Ritual",
+        content: [
+          "Different lunar phases offer distinct symbolic themes, allowing practitioners to align workings with recurring natural checkpoints throughout the month.",
+        ],
+        subsections: [
+          {
+            title: "New Moon: Beginnings, Seeding & Quiet Commitment",
+            content: [
+              "When the moon is dark between the Earth and Sun, the sky represents unwritten potential. New moon water anchors fresh starts, goal seeding, and quiet personal commitments before taking visible action.",
+            ],
+          },
+          {
+            title: "Waxing Moon: Momentum, Growth & Cultivation",
+            content: [
+              "As the crescent expands toward fullness, waxing moon water symbolizes forward momentum, daily consistency, building discipline, and cultivating developing intentions.",
+            ],
+          },
+          {
+            title: "Full Moon: Reflection, Culmination & Clarity",
+            content: [
+              "At peak nocturnal illumination, full moon water is the traditional preparation for celebrating completed projects, reflective scrying, tool cleansing, and taking honest personal inventory.",
+            ],
+          },
+          {
+            title: "Waning Moon: Release, Endings & Simplification",
+            content: [
+              "As light diminishes, waning moon water supports decluttering, letting go of unhelpful habits, and gentle closure. It pairs naturally with [coarse salt](/ingredients/salt) for threshold washes.",
+            ],
+          },
+        ],
+      },
+      {
+        id: "practical-uses",
+        title: "Five Practical Uses for Moon Water in Modern Witchcraft",
+        content: [
+          "Rather than leaving jars forgotten on shelves, integrated witchcraft applies moon water through purposeful, concrete actions. Here are five practical applications for everyday ritual:",
+        ],
+        subsections: [
+          {
+            title: "1. Symbolic Altar Cleansing & Resetting",
+            content: [
+              "Dampen a clean cloth with moon water to wipe altar surfaces, reset tool trays, and clear mental static before ritual work.",
+              "**Real-World Action:** Mindfully clean your computer keyboard and desk surface to reset your physical workspace.",
+            ],
+          },
+          {
+            title: "2. Intention-Setting & Somatic Meditation",
+            content: [
+              "Dab cool droplets onto your wrists or temples before breathwork to anchor somatic awareness in the present moment.",
+              "**Real-World Action:** Set a three-minute timer and state your core personal boundary aloud on each slow exhale.",
+            ],
+          },
+          {
+            title: "3. Reflective Journaling & Hydro-Scrying",
+            content: [
+              "Place a dark ceramic bowl of moon water beside a lit [white candle](/candles/white) and gaze into the reflection for three minutes to quiet racing thoughts.",
+              "**Real-World Action:** Open your journal and write three unfiltered sentences answering what uncomfortable truth you need to address.",
+            ],
+          },
+          {
+            title: "4. New-Beginning Ceremonies",
+            content: [
+              "Combine moon water with a pinch of salt to flick droplets across your doorway, marking a definitive rite of passage into a new life chapter.",
+              "**Real-World Action:** Complete our structured [New Beginning Ritual](/rituals/new-beginning) and physically dispose of three items tied to past regret.",
+            ],
+          },
+          {
+            title: "5. Gentle Symbolic Threshold Cleansing",
+            content: [
+              "Add moon water and white vinegar to a wash bucket to wipe front doorframes and threshold plates, symbolically barring chaotic energy from your home.",
+              "**Real-World Action:** Sweep your entryway walkway outward toward the street, wipe the exterior doorknob with your wash water, and lock the door with satisfaction.",
+            ],
+          },
+        ],
+      },
+      {
+        id: "moon-water-vs-ordinary-water",
+        title: "Moon Water vs. Ordinary Water: A Grounded Perspective",
+        content: [
+          "A common misconception in occult spaces is that moon water is magically superior to plain water. Witchr rejects magical elitism: ordinary clean tap water is equally valid for all grounded ritual practices.",
+          "Water's primary function in craft is symbolic and sensory. Tap water already embodies the ancient elemental virtues of life, cleansing, and dissolution. Moon water does not mutate chemically or possess medical utility; its value lies entirely in the mindful intention and deliberate rhythm invested during preparation.",
+          "If you need to perform an intention or cleansing working immediately, do not wait two weeks for the next full moon: fill a clean glass from your kitchen tap, breathe with intention, and proceed with confidence.",
+        ],
+      },
+      {
+        id: "beginner-working",
+        title: "A Simple Beginner Working: The Three-Minute Lunar Reset",
+        content: [
+          "Here is an accessible, practical ritual that interrupts anxiety spirals and resets mental focus with zero supernatural promises.",
+          "**Supplies Needed:**\n• A small ceramic or glass bowl\n• 2 to 3 tablespoons of prepared moon water\n• A scrap of clean paper and a pen\n• A quiet surface free from distraction",
+          "**The Working Steps:**",
+          "**1. Pour the Vessel:** Pour your moon water slowly into the bowl and observe the ripples settle into complete stillness.",
+          "**2. Clarify Your Intention:** Write one concise sentence on your paper naming what you choose to release today (e.g., *'I release unnecessary urgency'*).",
+          "**3. Three Minutes of Stillness:** Set a timer for three minutes. Rest your hands flat on the table, keep your gaze gently lowered toward the water's surface, and breathe slowly. When your mind wanders, gently return attention to the coolness and stillness of the water.",
+          "**4. Somatic Sealing:** When the timer chimes, dip your fingertips into the water and press them lightly against the inside of your opposite wrist. Speak aloud: *'The cycle is closed; my hands are clean.'*",
+          "**5. The Real-World Action:** Fold your slip of paper and immediately perform one concrete real-world action that aligns with your boundary (such as archiving a stressful email thread or taking a quiet walk).",
+        ],
+      },
+    ],
+    pairings: [
+      {
+        name: "White Candle",
+        link: "/candles/white",
+        purpose:
+          "Symbolizes clear illumination, truth, and fresh beginnings. Lighting a white candle beside still moon water creates the classic altar pairing for clean-slate ceremonies and mental clarity.",
+      },
+      {
+        name: "Mugwort",
+        link: "/herbs/mugwort",
+        purpose:
+          "The quintessential lunar botanical. Placing dried mugwort sprigs around a bowl of moon water sharpens intuitive meditation, dream journaling, and reflective scrying.",
+      },
+      {
+        name: "Rosemary",
+        link: "/herbs/rosemary",
+        purpose:
+          "Brings solar warmth and boundary defense to fluid lunar water. Blending a sprig of rosemary with moon water creates an invigorating wash for clearing workspace stagnation.",
+      },
+      {
+        name: "Coarse Salt",
+        link: "/ingredients/salt",
+        purpose:
+          "Pairs unyielding mineral earth grounding with fluid lunar cleansing. Adding salt to moon water produces the traditional threshold and floor wash for sealing domestic boundaries.",
+      },
+    ],
+    tryIt: {
+      title: "The Three-Minute Reflection Reset",
+      instruction:
+        "Pour two tablespoons of moon water into a small ceramic bowl. Dip your fingertips into the surface, touch your temples, and take three deliberate breaths. Write down one habit or mental burden you intend to release today, and immediately complete one small practical task (such as washing a dish or archiving an old email thread) that mirrors that clean break.",
+    },
+    sanctumCta: {
+      headline: "Working with Lunar Rhythms?",
+      description:
+        "Explore ritual synthesis, personal correspondences, and grounded spellcraft in the Sanctum.",
+      buttonText: "Explore the Sanctum — Coming Soon",
+      href: "/sanctum",
+    },
+    faqs: [
+      {
+        question: "What is moon water used for?",
+        answer:
+          "In witchcraft, moon water is used as a symbolic anchor for altar cleansing, intention-setting, reflective journaling, meditation, and gentle threshold washes to mark personal transitions and refresh sacred spaces.",
+      },
+      {
+        question: "How do you make moon water?",
+        answer:
+          "Fill a clean glass jar with fresh water, seal the lid tightly to prevent contamination, state your intention, and let it sit on a windowsill overnight beneath the night sky before labeling for non-ingestible ritual use.",
+      },
+      {
+        question: "Does moon water have to be made during a full moon?",
+        answer:
+          "No. Moon water can be prepared during any lunar phase: new moons for fresh beginnings, waxing for growth, full for culmination, and waning for release and closure.",
+      },
+      {
+        question: "Can you make moon water through a window?",
+        answer:
+          "Yes. Windows allow ambient nocturnal light to reach the vessel while shielding it from rain, wind, airborne debris, and animal contamination.",
+      },
+      {
+        question: "Can you make moon water on a cloudy night?",
+        answer:
+          "Yes. Ambient moonlight diffuses through overcast skies, and symbolic intention matters far more than an unobstructed line of sight.",
+      },
+      {
+        question: "How long should you keep moon water?",
+        answer:
+          "Store moon water in a sealed glass container in a cool, dark cabinet and discard within two to three weeks. Discard immediately down the drain if cloudiness or odor appears.",
+      },
+    ],
+    safetyNotes: [
+      "Do Not Drink Ritual Water: Standing room-temperature water breeds bacteria and mold. Never drink ritual water or use it in food.",
+      "Keep Containers Securely Sealed: Always use tightly sealed lids to avoid contamination from insects, dust, or outdoor animals.",
+      "Child and Pet Safety: Keep ritual jars safely out of the reach of small children and pets, and avoid placing glassware on precarious ledges.",
+      "Do Not Submerge Unknown Crystals: Many minerals (such as selenite, malachite, and pyrite) dissolve or release toxic chemical salts in water.",
+      "Surface and Electrical Care: Keep water bowls away from laptops, power cords, and water-sensitive wooden furniture.",
+      "Discard Old Water Promptly: Use clean containers and pour unused water down a household drain after two to three weeks.",
+      "No Medical Claims: Moon water is a symbolic spiritual practice; it does not treat illness, diagnose conditions, or replace healthcare.",
+    ],
+    relatedHubSlug: "letting-go",
+    relatedRitualSlugs: ["new-beginning", "leave-me-alone-protection"],
+    sources: [
+      "Hutton, Ronald. The Stations of the Sun: A History of the Ritual Year in Britain (1996).",
+      "Cunningham, Scott. Earth, Air, Fire & Water: More Techniques of Natural Magic (1991).",
+      "Leland, Charles Godfrey. Aradia, or the Gospel of the Witches (1899).",
+      "Black, William George. Folk-Medicine: A Chapter in the History of Culture (1883).",
+    ],
+    seoTitle: "Moon Water in Witchcraft: How to Make It, Uses & Meaning",
+    seoDescription:
+      "Learn how to make moon water safely, what it symbolizes in witchcraft, and how to use it for cleansing, reflection, intention-setting, and simple rituals.",
   },
 ];
 

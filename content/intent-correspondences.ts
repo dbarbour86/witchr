@@ -817,6 +817,17 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
         sensoryAnchor: "Crystalline sodium chloride mineral grains",
         badge: "Essential",
       },
+      {
+        name: "Moon Water",
+        slug: "moon-water",
+        url: "/ingredients/moon-water",
+        categoryLabel: "Elemental Water",
+        role: "Symbolic Renewal & Altar Tool Cleansing",
+        howToUse:
+          "Use as an intentional physical medium for symbolic threshold wiping, altar purification, or reflective reset workings.",
+        sensoryAnchor: "Clear water in a sealed glass vessel charged under nocturnal skies",
+        badge: "Lunar Renewal",
+      },
     ],
     symbols: [
       {

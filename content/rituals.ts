@@ -235,7 +235,7 @@ export const RITUALS: Ritual[] = [
       "Clean paper and ink",
     ],
     substitutions: [
-      "No herbs? A lemon slice, cinnamon stick, or plain salt in water works cleanly.",
+      "No herbs? A lemon slice, cinnamon stick, plain salt, or [moon water](/ingredients/moon-water) works cleanly as an intentional ritual wash.",
     ],
     steps: [
       {
@@ -391,7 +391,7 @@ export const RITUALS: Ritual[] = [
     estimatedTime: "20 minutes",
     difficulty: "Simple",
     supplies: [
-      "A green or honey-colored beeswax candle",
+      "A [green candle](/candles/green) or honey-colored beeswax candle",
       "A toothpick, pin, or blunt needle for carving",
       "A few drops of olive oil or cinnamon oil",
       "A small piece of paper",

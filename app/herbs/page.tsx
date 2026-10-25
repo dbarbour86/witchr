@@ -328,7 +328,7 @@ export default function HerbsHubPage() {
               <ArrowRight className="w-3.5 h-3.5 text-bone-dim group-hover:text-lavender group-hover:translate-x-1 transition-all" />
             </div>
             <p className="text-sm text-bone-muted font-sans leading-relaxed">
-              Combine <strong className="text-bone font-medium">Cinnamon</strong>, <strong className="text-bone font-medium">Mint</strong>, and <strong className="text-bone font-medium">Chamomile</strong> with practical budgeting rituals to accelerate cash flow and shatter financial avoidance.
+              Combine <strong className="text-bone font-medium">Cinnamon</strong>, <strong className="text-bone font-medium">Clove</strong>, <strong className="text-bone font-medium">Mint</strong>, and <strong className="text-bone font-medium">Chamomile</strong> with practical budgeting rituals to accelerate cash flow and shatter financial avoidance.
             </p>
           </Link>
 

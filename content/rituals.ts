@@ -397,7 +397,7 @@ export const RITUALS: Ritual[] = [
       "A small piece of paper",
     ],
     substitutions: [
-      "Any neutral candle. Kitchen olive oil works wonderfully.",
+      "Any neutral candle. Kitchen olive oil works wonderfully. Whole [cloves](/herbs/clove) or ground cinnamon can be placed around the dish as a grounding aromatic anchor.",
     ],
     steps: [
       {
@@ -612,7 +612,7 @@ export const RITUALS: Ritual[] = [
       "A timer",
     ],
     substitutions: [
-      "A simple coin flip or drawing from a cup works reliably.",
+      "A simple coin flip or drawing from a cup works reliably. Holding a tactile stone like [amethyst](/crystals/amethyst) can help steady nervous breathing while weighing options.",
     ],
     steps: [
       {

@@ -161,6 +161,16 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
           "Hang above bedposts or windows to shield unconscious sleep states and preserve psychic sovereignty during deep rest.",
         sensoryAnchor: "Silvery-backed bitter wild foliage",
       },
+      {
+        name: "Clove",
+        slug: "clove",
+        url: "/herbs/clove",
+        categoryLabel: "Herb / Botanical",
+        role: "Warding Discord & Fortifying Personal Resolve",
+        howToUse:
+          "Keep whole dried cloves in an entryway dish or carry in a sachet to reinforce firm boundaries and deter intrusive energy.",
+        sensoryAnchor: "Intense, warming, woody eugenol fragrance",
+      },
     ],
     candles: [
       {

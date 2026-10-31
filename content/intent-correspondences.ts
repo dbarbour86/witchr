@@ -523,7 +523,7 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
       {
         name: "Rose Quartz",
         slug: "rose-quartz",
-        url: "/love",
+        url: "/crystals/rose-quartz",
         categoryLabel: "Mineral Specimen",
         role: "Tactile Anchor for Self-Compassion",
         howToUse:

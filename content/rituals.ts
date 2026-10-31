@@ -182,6 +182,7 @@ export const RITUALS: Ritual[] = [
     ],
     substitutions: [
       "No stone? Your house key, a heavy coin, or a solid ring on your finger works identically.",
+      "Optional herbal sensory anchor: A small slice of dried [Ginger](/herbs/ginger) in your pocket provides a warming tactile touchstone to break mental hesitation before speaking.",
     ],
     steps: [
       {
@@ -559,6 +560,7 @@ export const RITUALS: Ritual[] = [
     ],
     substitutions: [
       "Any flower from your yard or a green leaf from a houseplant.",
+      "Optional tactile anchor: A piece of raw or tumbled [Rose Quartz](/crystals/rose-quartz) placed beside your mirror or atop your journal anchors gentle self-compassion while defining sovereign relationship boundaries.",
     ],
     steps: [
       {

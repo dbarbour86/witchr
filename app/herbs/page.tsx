@@ -343,7 +343,7 @@ export default function HerbsHubPage() {
               <ArrowRight className="w-3.5 h-3.5 text-bone-dim group-hover:text-lavender group-hover:translate-x-1 transition-all" />
             </div>
             <p className="text-sm text-bone-muted font-sans leading-relaxed">
-              Work with <strong className="text-bone font-medium">Thyme</strong> and <strong className="text-bone font-medium">Bay Leaf</strong> before high-stakes meetings to steady nervous tremors and stop apologizing for taking up space.
+              Work with <strong className="text-bone font-medium">Ginger</strong>, <strong className="text-bone font-medium">Thyme</strong>, and <strong className="text-bone font-medium">Bay Leaf</strong> before high-stakes meetings to ignite decisive momentum, steady nervous tremors, and stop apologizing for taking up space.
             </p>
           </Link>
 

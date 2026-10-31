@@ -52,6 +52,16 @@ const FORBIDDEN_HAZARD_PATTERNS: Array<{ regex: RegExp; rule: string }> = [
     regex: /\b(pour\s+salt\s+(?:into|onto|in)\s+(?:soil|earth|dirt|grass|garden|plants?)|salt\s+the\s+(?:earth|ground|soil))\b/i,
     rule: "Never dump salt into living outdoor soil, gardens, or plant beds.",
   },
+  // 10. Direct skin application of irritants, oils, or raw mixtures
+  {
+    regex: /\b((?:rub|apply|anoint|dab|smear|stroke)\s+(?:cinnamon|oil|mixture|salt|blend|paste)\s+(?:on|onto|into|to)\s+(?:skin|face|body|wrists?|temples?|forehead|arms?)|touch\s+your\s+(?:temples?|wrists?)\b)/i,
+    rule: "Do not instruct rubbing cinnamon, oils, or mixtures onto skin, wrists, temples, or body.",
+  },
+  // 11. Staining or damaging valuables, money, documents, or electronics
+  {
+    regex: /\b((?:rub|apply|anoint|dab|smear|drip|seal)\s+(?:oil|honey|wax|cinnamon|mixture)\s+(?:on|onto|into|to)\s+(?:wallet|money|cash|dollar|bill|card|phone|laptop|document|valuables?)|anoint\s+(?:your\s+)?(?:wallet|cash|money|bill|screen|phone|valuables?))\b/i,
+    rule: "Do not instruct applying oils or mixtures to money, wallets, cards, documents, or valuables; use contained dishes instead.",
+  },
 ];
 
 export interface SafetyCheckResult {

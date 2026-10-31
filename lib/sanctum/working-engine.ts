@@ -5,6 +5,8 @@ import {
   SanctumIntentionKey,
 } from "@/content/sanctum-workings";
 
+export type TimingCue = "morning" | "bedtime" | "general";
+
 export interface WorkingEngineInput {
   intention: SanctumIntentionKey | "Something Else";
   customIntention?: string;
@@ -24,6 +26,11 @@ export interface WorkingRitualStep {
   instruction: string;
 }
 
+export interface LeftOutIngredient {
+  name: string;
+  reason: string;
+}
+
 export interface GeneratedWorking {
   id: string;
   title: string;
@@ -38,6 +45,7 @@ export interface GeneratedWorking {
   consider: string;
   carryThisWithYou: string;
   safetyNotes?: string;
+  leftOutIngredients?: LeftOutIngredient[];
   unmappedCustomIngredients?: string[];
 }
 
@@ -50,9 +58,55 @@ export interface WorkingEngineResult {
 }
 
 /**
- * Maps custom intention phrases to nearest relevant primary intent category for correspondence checks.
+ * Detects explicit time-of-day cues from intention or notes.
+ * Accurately prioritizes morning day-start requests even when contextual past
+ * phrasing like "after a poor night's sleep" is present.
  */
-function resolveEffectiveIntention(
+export function detectTimingCue(text?: string): TimingCue {
+  if (!text) return "general";
+  const lower = text.toLowerCase();
+
+  // Operative morning intention cues (starting the day, morning focus, waking)
+  const morningStartPatterns = [
+    /\bstart\s+(to\s+(the|a|my)|of\s+(the|a|my)|to|of|the|my|a)?\s*(day|morning)\b/i,
+    /\b(day start|beginning of the day|morning calm|calm morning|calm start|morning routine|upon waking|waking up|day ahead)\b/i,
+    /\b(morning|daybreak)\b/i,
+  ];
+
+  // Operative bedtime/sleep intention cues (preparing for sleep, bedtime winding down)
+  const bedtimeIntentionPatterns = [
+    /\b(prepare for (sleep|bed)|unwind for (sleep|bed)|before (bed|sleep)|going to (bed|sleep)|fall asleep|bedtime routine|nighttime rest|help me sleep)\b/i,
+  ];
+
+  const hasMorningStart = morningStartPatterns.some((p) => p.test(lower));
+  const hasBedtimeIntention = bedtimeIntentionPatterns.some((p) => p.test(lower));
+
+  // If the practitioner's intention is to start their day (even if referencing past sleep/night like "after a poor night's sleep"),
+  // the operative timing is MORNING.
+  if (hasMorningStart && !hasBedtimeIntention) {
+    return "morning";
+  }
+
+  // If explicitly seeking bedtime or sleep preparation
+  if (hasBedtimeIntention && !hasMorningStart) {
+    return "bedtime";
+  }
+
+  // Secondary standalone checks
+  const generalMorning = /\b(morning|sunrise|dawn)\b/i.test(lower);
+  const generalBedtime = /\b(bedtime|before bed|for sleep)\b/i.test(lower);
+
+  if (generalMorning && !generalBedtime) return "morning";
+  if (generalBedtime && !generalMorning) return "bedtime";
+
+  return "general";
+}
+
+/**
+ * Maps custom intention phrases to nearest relevant primary intent category for correspondence checks.
+ * Explicit timing cues prevent morning intentions from being misrouted to sleep/bedtime categories.
+ */
+export function resolveEffectiveIntention(
   intention: SanctumIntentionKey | "Something Else",
   customIntention?: string
 ): SanctumIntentionKey {
@@ -61,6 +115,19 @@ function resolveEffectiveIntention(
   }
 
   const text = (customIntention || "").toLowerCase();
+  const timing = detectTimingCue(text);
+
+  // If text has morning cues and mentions calm/peace/start, map to Calm
+  if (timing === "morning") {
+    if (text.includes("calm") || text.includes("peace") || text.includes("start") || text.includes("ground") || text.includes("center")) {
+      return "Calm";
+    }
+  }
+
+  if (text.includes("calm") || text.includes("peace") || text.includes("sooth") || text.includes("tranquil") || text.includes("anxious") || text.includes("stress")) {
+    return "Calm";
+  }
+
   if (text.includes("protect") || text.includes("boundary") || text.includes("shield") || text.includes("drain") || text.includes("ward") || text.includes("harass")) {
     return "Protection";
   }
@@ -76,7 +143,10 @@ function resolveEffectiveIntention(
   if (text.includes("money") || text.includes("prosper") || text.includes("debt") || text.includes("wealth") || text.includes("business") || text.includes("financ") || text.includes("career")) {
     return "Prosperity";
   }
-  if (text.includes("sleep") || text.includes("rest") || text.includes("peace") || text.includes("calm") || text.includes("burnout") || text.includes("exhaust") || text.includes("anxious") || text.includes("stress")) {
+  if (text.includes("sleep") || text.includes("bedtime") || text.includes("rest") || text.includes("peace") || text.includes("calm") || text.includes("burnout") || text.includes("exhaust") || text.includes("anxious") || text.includes("stress")) {
+    if (timing === "morning") {
+      return "Clarity";
+    }
     return "Rest";
   }
   if (text.includes("brave") || text.includes("confiden") || text.includes("stature") || text.includes("speak") || text.includes("imposter") || text.includes("doubt") || text.includes("authority")) {
@@ -94,7 +164,34 @@ function resolveEffectiveIntention(
 }
 
 /**
+ * Checks whether a custom ingredient is hazardous or inappropriate for ritual use.
+ */
+function evaluateCustomIngredientSafety(ingredient: string): { isSafe: boolean; reason?: string } {
+  const lower = ingredient.toLowerCase();
+  if (/\b(bleach|ammonia|chemical|cleaner|acid|drain|solvent|chlorine)\b/i.test(lower)) {
+    return {
+      isSafe: false,
+      reason: "Hazardous chemicals are unsafe and inappropriate for ritual practice.",
+    };
+  }
+  if (/\b(blood|cut|skin|razor|blade|knife|weapon|needle)\b/i.test(lower)) {
+    return {
+      isSafe: false,
+      reason: "Bodily harm and sharp cutting instruments violate Witchr safety standards.",
+    };
+  }
+  if (/\b(poison|toxic|lead|mercury|gasoline|kerosene)\b/i.test(lower)) {
+    return {
+      isSafe: false,
+      reason: "Toxic substances present severe health risks and cannot be used.",
+    };
+  }
+  return { isSafe: true };
+}
+
+/**
  * Modular rule-based engine synthesizing a structured Witchr Working.
+ * Guarantees every selected ingredient is accounted for (either integrated or explicitly explained).
  */
 export function synthesizeWorking(input: WorkingEngineInput): WorkingEngineResult {
   const { intention, customIntention, selectedIngredients, customIngredients = [] } = input;
@@ -118,23 +215,44 @@ export function synthesizeWorking(input: WorkingEngineInput): WorkingEngineResul
     };
   }
 
+  const timingCue = detectTimingCue(customIntention);
   const effectiveIntention = resolveEffectiveIntention(intention, customIntention);
   const intentionMeta = SANCTUM_INTENTIONS.find((i) => i.key === effectiveIntention);
 
   // 3. Match ingredients against correspondence catalog
   const matchingCatalogItems: SanctumIngredientCatalogItem[] = [];
+  const selectedCatalogUnmatched: SanctumIngredientCatalogItem[] = [];
+  const leftOutIngredients: LeftOutIngredient[] = [];
 
-  for (const item of SANCTUM_INGREDIENT_CATALOG) {
-    const isSelected = selectedIngredients.some(
-      (sel) => sel.toLowerCase() === item.id.toLowerCase() || sel.toLowerCase() === item.name.toLowerCase()
+  for (const sel of selectedIngredients) {
+    const item = SANCTUM_INGREDIENT_CATALOG.find(
+      (c) => c.id.toLowerCase() === sel.toLowerCase() || c.name.toLowerCase() === sel.toLowerCase()
     );
-    if (isSelected && item.supportedIntents.includes(effectiveIntention)) {
-      matchingCatalogItems.push(item);
+    if (!item) continue;
+
+    // Check if ingredient supports this intent directly or through general supportive correspondence
+    if (item.supportedIntents.includes(effectiveIntention)) {
+      if (!matchingCatalogItems.some((m) => m.id === item.id)) {
+        matchingCatalogItems.push(item);
+      }
+    } else {
+      if (!selectedCatalogUnmatched.some((u) => u.id === item.id)) {
+        selectedCatalogUnmatched.push(item);
+      }
     }
   }
 
-  // 4. Handle no match condition (Never fabricate false correspondences)
-  if (matchingCatalogItems.length === 0) {
+  // If no direct matches but catalog items were selected, see if universal anchors can serve
+  if (matchingCatalogItems.length === 0 && selectedCatalogUnmatched.length > 0) {
+    // Universal pantry items can support with supportive intent role
+    for (const item of selectedCatalogUnmatched) {
+      matchingCatalogItems.push(item);
+    }
+    selectedCatalogUnmatched.length = 0;
+  }
+
+  // Handle no match condition (only if completely zero viable ingredients)
+  if (matchingCatalogItems.length === 0 && customIngredients.length === 0) {
     return {
       success: false,
       errorType: "no_match",
@@ -148,74 +266,135 @@ export function synthesizeWorking(input: WorkingEngineInput): WorkingEngineResul
     };
   }
 
-  // 5. Select 1 to 4 optimal items (do not overload if user checked 10 items)
-  // Prioritize primary anchors: non-candle pantry items first, then candles/liquids
+  // 4. Prioritize balanced selection (up to 4 primary items)
   const sortedItems = [...matchingCatalogItems].sort((a, b) => {
-    // If only one candle, keep it, but prefer a balanced pantry mix
     if (a.category === "candle" && b.category !== "candle") return 1;
     if (b.category === "candle" && a.category !== "candle") return -1;
     return 0;
   });
 
-  // Pick up to 4 meaningful ingredients
   const chosenCatalogItems = sortedItems.slice(0, 4);
-  const youWillNeed = chosenCatalogItems.map((item) => item.name);
+  const excessCatalogItems = sortedItems.slice(4);
 
-  // Add custom ingredients only as optional physical vessels/notes if provided
+  // Record reasons for any excess catalog items left out to keep ritual uncluttered
+  for (const excess of excessCatalogItems) {
+    leftOutIngredients.push({
+      name: excess.name,
+      reason: "Left out to keep the ritual focused on the primary anchors without cluttering the physical space.",
+    });
+  }
+
+  // Record reasons for selected catalog items that were completely incompatible
+  for (const unmatched of selectedCatalogUnmatched) {
+    leftOutIngredients.push({
+      name: unmatched.name,
+      reason: `Left out because its traditional focus does not directly reinforce ${effectiveIntention.toLowerCase()}.`,
+    });
+  }
+
+  // 5. Process Custom Ingredients
+  const integratedCustoms: { name: string; role: string }[] = [];
   const unmappedCustoms: string[] = [];
-  customIngredients.forEach((c) => {
+
+  for (const c of customIngredients) {
     const clean = c.trim();
-    if (clean) unmappedCustoms.push(clean);
-  });
+    if (!clean) continue;
+
+    const safety = evaluateCustomIngredientSafety(clean);
+    if (!safety.isSafe) {
+      leftOutIngredients.push({
+        name: clean,
+        reason: safety.reason || "Left out for practical safety reasons.",
+      });
+      continue;
+    }
+
+    // Safe custom ingredient: integrate into working if there is room, or list in leftOut if workspace full
+    if (chosenCatalogItems.length + integratedCustoms.length < 5) {
+      integratedCustoms.push({
+        name: clean,
+        role: "Serves as a personalized physical emblem grounding your sovereign focus.",
+      });
+      unmappedCustoms.push(clean);
+    } else {
+      leftOutIngredients.push({
+        name: clean,
+        reason: "Left out to maintain simplicity and prevent the working space from becoming overcrowded.",
+      });
+    }
+  }
+
+  const youWillNeed: string[] = [
+    ...chosenCatalogItems.map((item) => item.name),
+    ...integratedCustoms.map((ic) => ic.name),
+  ];
 
   // 6. Build Why These explanations
-  const whyThese: WorkingIngredientReason[] = chosenCatalogItems.map((item) => ({
-    name: item.name,
-    correspondence: item.symbolicMeaning,
-    reason: item.roleDescription[effectiveIntention] || "Anchors the physical foundation of the working.",
-  }));
+  const whyThese: WorkingIngredientReason[] = [
+    ...chosenCatalogItems.map((item) => ({
+      name: item.name,
+      correspondence: item.symbolicMeaning,
+      reason: item.roleDescription[effectiveIntention] || "Anchors the physical foundation of the working.",
+    })),
+    ...integratedCustoms.map((ic) => ({
+      name: ic.name,
+      correspondence: "Personal physical anchor and tactile focal point.",
+      reason: ic.role,
+    })),
+  ];
 
-  // 7. Dynamic working title & description
+  // 7. Dynamic ritual title & description
   const displayTitle = customIntention?.trim()
-    ? `A WORKING FOR ${customIntention.trim().toUpperCase()}`
-    : `A WORKING FOR ${effectiveIntention.toUpperCase()}`;
+    ? `A RITUAL FOR ${customIntention.trim().toUpperCase()}`
+    : `A RITUAL FOR ${effectiveIntention.toUpperCase()}`;
 
   const intentionStatement = customIntention?.trim()
-    ? `An intentional working formulated to address “${customIntention.trim()}” through grounded symbolic practice.`
-    : `An intentional working formulated for ${intentionMeta?.description.toLowerCase() || effectiveIntention.toLowerCase()}.`;
+    ? `An intentional ritual formulated to address “${customIntention.trim()}” through grounded symbolic practice.`
+    : `An intentional ritual formulated for ${intentionMeta?.description.toLowerCase() || effectiveIntention.toLowerCase()}.`;
 
-  // 8. Generate Preparation Steps
+  // 8. Generate Preparation Steps (Distinguishing selected ingredients from household tools)
   const preparation: string[] = [
     "Clear your immediate physical counter or table of unrelated clutter, wrappers, and devices.",
-    `Gather your chosen supplies: ${youWillNeed.join(", ")}.`,
-    "Take three slow breaths, inhaling through the nose and exhaling with a heavy drop of the shoulders.",
+    `Selected ingredients (modest quantities): ${youWillNeed.join(", ")}.`,
+    "Supporting household tools: A shallow dish, small saucer, or coaster to contain materials neatly.",
   ];
-  if (chosenCatalogItems.some((i) => i.isFireHazard)) {
-    preparation.push("Prepare a sturdy, heat-resistant dish or coaster for any candle work.");
+  if (chosenCatalogItems.some((i) => i.id === "bay_leaf")) {
+    preparation.push("Supporting household tools: A pen or pencil for writing your guiding word upon the bay leaf or petition paper.");
   }
+  if (chosenCatalogItems.some((i) => i.id === "water")) {
+    preparation.push("Supporting household tools: A small clean cup or bowl of water.");
+  }
+  if (chosenCatalogItems.some((i) => i.isFireHazard)) {
+    preparation.push("Supporting household tools: A sturdy heat-resistant dish or candleholder.");
+  }
+  preparation.push("Take three slow, measured breaths, inhaling through the nose and exhaling with a heavy drop of the shoulders.");
 
   // 9. Generate Practical Ritual Steps
   const theWorking: WorkingRitualStep[] = [];
   let stepIndex = 1;
 
-  // Step 1: Naming the Intention
+  // Step 1: Naming the Intention (Preserving explicit user timing and phrasing)
+  const statementText = customIntention?.trim()
+    ? customIntention.trim()
+    : `I anchor my focus in ${effectiveIntention.toLowerCase()}.`;
+
   theWorking.push({
     step: stepIndex++,
     title: "Define the Sovereign Boundary",
-    instruction: `State your purpose aloud or write it clearly on a slip of scrap paper: “${
-      customIntention?.trim() ? customIntention.trim() : `I anchor my focus in ${effectiveIntention.toLowerCase()}.`
-    }” Keep the phrasing simple, direct, and free of pleading.`,
+    instruction: `State your purpose aloud or write it clearly on a slip of scrap paper: “${statementText}” Keep the phrasing simple, direct, and free of pleading.`,
   });
 
-  // Step 2+: Handling each ingredient in sequence
+  // Step 2+: Handling each catalog ingredient in sequence
   chosenCatalogItems.forEach((item) => {
     switch (item.id) {
       case "salt":
         theWorking.push({
           step: stepIndex++,
-          title: "Cast the Salt Boundary",
+          title: "Scatter the Salt",
           instruction:
-            "Pour a pinch or small circle of salt around your workspace or petition paper. Feel the mineral weight of permanence. Mentally seal out all distractions outside this ring.",
+            timingCue === "morning"
+              ? "Place a modest pinch of salt into your shallow dish or around the petition paper. Acknowledge its mineral permanence as a traditional symbol of grounded boundaries, setting aside yesterday's residue."
+              : "Place a modest pinch of salt into your shallow dish or around the petition paper. Acknowledge its mineral permanence as a traditional symbol of grounded boundaries and containment.",
         });
         break;
       case "rosemary":
@@ -223,7 +402,7 @@ export function synthesizeWorking(input: WorkingEngineInput): WorkingEngineResul
           step: stepIndex++,
           title: "Awaken the Rosemary",
           instruction:
-            "Crush a few needles between your thumb and forefinger. Inhale the pungent, pine-like aroma deeply. Let the sharp scent dissolve mental fatigue and anchor your alertness.",
+            "Take a sprig or pinch of rosemary and crush a few needles between your thumb and forefinger. Inhale the pungent, pine-like aroma deeply. Let the sharp scent dissolve mental fatigue and anchor your alertness.",
         });
         break;
       case "basil":
@@ -231,15 +410,15 @@ export function synthesizeWorking(input: WorkingEngineInput): WorkingEngineResul
           step: stepIndex++,
           title: "Anchor the Basil",
           instruction:
-            "Bruise a leaf or place dried basil upon your workspace. Acknowledge that steady growth does not rush; ground your nerve in sustainable accumulation.",
+            "Place dried basil or a fresh leaf neatly into your shallow dish. Acknowledge that steady growth does not rush; let it symbolize patience and sustainable effort.",
         });
         break;
       case "cinnamon":
         theWorking.push({
           step: stepIndex++,
-          title: "Stir the Cinnamon Heat",
+          title: "Add the Cinnamon",
           instruction:
-            "Dust a light pinch of cinnamon across your petition or hold a stick between your palms. Acknowledge the kinetic warmth, demanding that your intention move from thought into direct labor.",
+            "Place a light pinch of cinnamon or a small stick into your dish. Acknowledge its sensory warmth as a traditional reminder of momentum, prompting you to translate thought into one practical action.",
         });
         break;
       case "bay_leaf":
@@ -247,7 +426,9 @@ export function synthesizeWorking(input: WorkingEngineInput): WorkingEngineResul
           step: stepIndex++,
           title: "Inscribe the Bay Leaf",
           instruction:
-            "Take the bay leaf and write a single operative word upon it with a pen (such as 'CLARITY', 'SHIELD', or 'RESOLVE'). Place it directly in the center of your working space.",
+            timingCue === "morning"
+              ? "Take the bay leaf and write a single guiding word for the day ahead upon it with a pen (such as 'CALM', 'CLARITY', or 'STEADY'). Place it neatly in the center of your dish."
+              : "Take the bay leaf and write a single operative word upon it with a pen (such as 'CLARITY', 'SHIELD', or 'RESOLVE'). Place it directly in the center of your dish.",
         });
         break;
       case "black_pepper":
@@ -255,15 +436,15 @@ export function synthesizeWorking(input: WorkingEngineInput): WorkingEngineResul
           step: stepIndex++,
           title: "Scatter the Pepper Shield",
           instruction:
-            "Flick three grains of black pepper outward away from your body. Declare that any draining dynamic or hostile noise is denied hospitality in your space.",
+            "Add a few grains of black pepper to your dish. Declare that any draining dynamic or hostile noise is denied hospitality in your space.",
         });
         break;
       case "honey":
         theWorking.push({
           step: stepIndex++,
-          title: "Anoint with Honey",
+          title: "Add the Honey",
           instruction:
-            "Dab a microscopic drop of honey onto the corner of your paper or bowl. Soften any bitter defensiveness and invite quiet harmony into your posture.",
+            "Add a small drop of honey to your dish beside the herbs. Soften any bitter defensiveness and invite quiet harmony into your posture.",
         });
         break;
       case "coffee":
@@ -271,23 +452,23 @@ export function synthesizeWorking(input: WorkingEngineInput): WorkingEngineResul
           step: stepIndex++,
           title: "Command the Coffee Spark",
           instruction:
-            "Scatter a pinch of ground coffee. Let the bitter, roasty aroma serve as a biological wake-up call to snap you out of passive paralysis.",
+            "Add a pinch of ground coffee to the dish. Let the bitter, roasty aroma serve as a wake-up call to snap you out of passive hesitation.",
         });
         break;
       case "olive_oil":
         theWorking.push({
           step: stepIndex++,
-          title: "Seal with Olive Oil",
+          title: "Add the Olive Oil",
           instruction:
-            "Touch one drop of olive oil to your fingertip and mark the edge of your paper or vessel. Let it form a slick barrier that allows chaotic friction to slide harmlessly away.",
+            "Touch one drop of olive oil into your dish or beside the herbs. Let it symbolically represent smoothing over friction and easing practical movement without applying oil to skin, money, or valuables.",
         });
         break;
       case "water":
         theWorking.push({
           step: stepIndex++,
-          title: "Engage the Water Reset",
+          title: "Set the Water",
           instruction:
-            "Place a small bowl or cup of cold water before you. Dip your fingertips in and touch your temples or wrists. Release somatic heat and emotional tension into the cool fluid.",
+            "Place your small cup or bowl of clean water before you. Look into the still water as a quiet symbol of mental reset and clear circulation, keeping your mind steady and unhurried.",
         });
         break;
       case "white_candle":
@@ -301,35 +482,58 @@ export function synthesizeWorking(input: WorkingEngineInput): WorkingEngineResul
     }
   });
 
-  // Final working step: Concluding affirmation
+  // Integrated custom ingredients steps
+  integratedCustoms.forEach((custom) => {
+    theWorking.push({
+      step: stepIndex++,
+      title: `Anchor the ${custom.name}`,
+      instruction: `Place your ${custom.name} firmly within the dish. Touch the object deliberately, transferring your conscious resolve into physical reality.`,
+    });
+  });
+
+  // Final ritual step: Concluding affirmation
   theWorking.push({
     step: stepIndex++,
-    title: "Seal the Working",
+    title: "Seal the Ritual",
     instruction:
-      "Clap your hands once firmly or press both palms flat against the table. Speak with quiet finality: 'The boundary is drawn; the working is set.'",
+      "Take one slow, grounding breath and press your hands flat against the table. Speak with quiet finality: 'The boundary is drawn; the ritual is set.'",
   });
 
   // 10. Closing Instructions
+  const hasFireHazard = chosenCatalogItems.some((i) => i.isFireHazard);
   let closing =
     "Extinguish any candle flame with a snuffer or by gently fanning it out—never leave it unattended. Dispose of used ritual salt into ordinary household trash to protect soil ecosystems (or dissolve it down the drain with running water). Organic herb leaves may be returned to garden compost. Wash your hands thoroughly with cold water to mark the return to ordinary consciousness.";
-  if (!chosenCatalogItems.some((i) => i.isFireHazard)) {
+  if (!hasFireHazard) {
     closing =
-      "Keep any petition paper in a notebook or private drawer until the working concludes. Discard used ritual salt into ordinary household trash to protect soil ecosystems, return organic herb leaves to compost, and wash your hands in cool tap water.";
+      "Keep any petition paper or inscribed bay leaf in a notebook or private drawer until the ritual concludes. Discard used ritual salt into ordinary household trash to protect soil ecosystems, return organic herb leaves to compost, and wash your hands in cool tap water.";
   }
 
-  // 11. Optional Timing Note
+  // 11. Optional Timing Note (Consistent time cues: morning never receives bedtime advice)
   let optionalTiming: string | undefined = undefined;
-  if (effectiveIntention === "Protection" || effectiveIntention === "Cleansing") {
-    optionalTiming = "Optional tradition: Conduct at twilight or during the waning moon, when energy naturally favors release and perimeter severance.";
+  if (timingCue === "morning") {
+    optionalTiming =
+      "Optional tradition: Conduct during the opening hour of your day or upon waking, establishing an unhurried, grounded cadence before external demands arrive.";
+  } else if (timingCue === "bedtime") {
+    optionalTiming =
+      "Optional tradition: Conduct in the quiet hour before sleep to encourage nervous system decompression and clear away the day's residue.";
+  } else if (effectiveIntention === "Protection" || effectiveIntention === "Cleansing") {
+    optionalTiming =
+      "Optional tradition: Conduct at twilight or during the waning moon, when energy naturally favors release and perimeter severance.";
   } else if (effectiveIntention === "Prosperity" || effectiveIntention === "Luck" || effectiveIntention === "Confidence") {
-    optionalTiming = "Optional tradition: Conduct near sunrise or during the waxing moon, when energy symbolically aligns with fresh growth and outward momentum.";
+    optionalTiming =
+      "Optional tradition: Conduct near sunrise or during the waxing moon, when energy symbolically aligns with fresh growth and outward momentum.";
   } else if (effectiveIntention === "Rest" || effectiveIntention === "Love") {
-    optionalTiming = "Optional tradition: Conduct in the quiet hour before sleep or on a Friday evening to encourage nervous system decompression.";
+    optionalTiming =
+      "Optional tradition: Conduct in the quiet evening hour or on a Friday to encourage nervous system decompression.";
   }
 
   // 12. Consider (Reflection Prompt)
-  let consider = "What daily habit or boundary must you adjust in order to let this working do its job?";
-  if (effectiveIntention === "Protection") {
+  let consider = "What daily habit or boundary must you adjust in order to let this ritual do its job?";
+  if (timingCue === "morning") {
+    consider = "What is the single most important tone or boundary you choose to protect throughout the day ahead?";
+  } else if (timingCue === "bedtime") {
+    consider = "What tension or unresolved matter from today can you consciously put down until tomorrow?";
+  } else if (effectiveIntention === "Protection") {
     consider = "Where did you leave a door cracked open for draining people simply out of guilt or habit?";
   } else if (effectiveIntention === "Clarity") {
     consider = "What uncomfortable truth are you avoiding by keeping yourself superficially busy?";
@@ -345,7 +549,13 @@ export function synthesizeWorking(input: WorkingEngineInput): WorkingEngineResul
 
   // 13. Carry This With You (Practical Real-World Action)
   let carryThisWithYou = "Translate this symbolic ritual into one concrete physical action before the sun sets today.";
-  if (effectiveIntention === "Protection") {
+  if (timingCue === "morning") {
+    carryThisWithYou =
+      "Take your first morning sips in deliberate quiet. Hold this calm center before opening your inbox or answering external requests.";
+  } else if (timingCue === "bedtime") {
+    carryThisWithYou =
+      "Turn off phone notifications 30 minutes before sleep and read a physical book in low light.";
+  } else if (effectiveIntention === "Protection") {
     carryThisWithYou = "Mute or archive the draining communication thread right now. Do not wait until tomorrow morning.";
   } else if (effectiveIntention === "Clarity") {
     carryThisWithYou = "Write down the three hardest facts of your situation on an index card and keep it on your desk.";
@@ -354,19 +564,19 @@ export function synthesizeWorking(input: WorkingEngineInput): WorkingEngineResul
   } else if (effectiveIntention === "Focus") {
     carryThisWithYou = "Close all browser tabs except the one document you must complete in your next 30-minute block.";
   } else if (effectiveIntention === "Prosperity") {
-    carryThisWithYou = "Review your last three bank transactions and cancel one recurring subscription you do not use.";
+    carryThisWithYou = "Choose one bill or expense and write down its due date and your next direct step.";
   } else if (effectiveIntention === "Rest") {
-    carryThisWithYou = "Turn off phone notifications 45 minutes before sleep and read a physical book in low light.";
+    carryThisWithYou = "Step away from screens for a 15-minute walk or quiet pause to let your nervous system settle.";
   }
 
-  // 14. Safety Notes
+  // 14. Safety Notes (Relevant only to actual materials and instructions)
   let safetyNotes: string | undefined = undefined;
-  if (chosenCatalogItems.some((i) => i.isFireHazard)) {
+  if (hasFireHazard) {
     safetyNotes =
-      "Fire Safety: Never leave a burning candle unattended. Always use a heat-resistant dish on a level surface. Keep away from drafts, curtains, pets, and children. Witchcraft is an adjunct to practical self-direction, never a substitute for medical, financial, or legal care.";
+      "Fire Safety: Never leave a burning candle unattended. Always place candles on a heat-resistant surface away from drafts, pets, and flammable items. Witchcraft is an adjunct to practical self-direction, never a substitute for professional medical, legal, or financial care.";
   } else {
     safetyNotes =
-      "Practical Safety: Do not ingest essential oils or unvetted herbs. This ritual is symbolic and psychological—never a substitute for professional medical, legal, or psychological care.";
+      "Practical Safety: Do not ingest essential oils, unvetted herbs, or ritual salt. Dispose of salt in household trash rather than outdoor soil. Witchcraft is an adjunct to practical self-direction, never a substitute for professional medical, legal, or psychological care.";
   }
 
   const generated: GeneratedWorking = {
@@ -383,6 +593,7 @@ export function synthesizeWorking(input: WorkingEngineInput): WorkingEngineResul
     consider,
     carryThisWithYou,
     safetyNotes,
+    leftOutIngredients: leftOutIngredients.length > 0 ? leftOutIngredients : undefined,
     unmappedCustomIngredients: unmappedCustoms.length > 0 ? unmappedCustoms : undefined,
   };
 

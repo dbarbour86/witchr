@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
             meta: {
               source: "written-tradition",
               fallback: true,
-              fallbackReason: "Rate limit exceeded. Returned to written tradition.",
+              fallbackReason: "Rate limit exceeded. Using rule-based synthesis.",
             },
             data: getTarotFallback(payload as OracleTarotInput),
           },
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
             meta: {
               source: "written-tradition",
               fallback: true,
-              fallbackReason: "Rate limit exceeded. Returned to written tradition.",
+              fallbackReason: "Rate limit exceeded. Using rule-based formulation.",
             },
             data: getWorkingFallback(payload as OracleWorkingInput),
           },
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
             meta: {
               source: "written-tradition",
               fallback: true,
-              fallbackReason: "Rate limit exceeded. Returned to written tradition.",
+              fallbackReason: "Rate limit exceeded. Using rule-based synthesis.",
             },
             data: getConversationFallback(payload as OracleConversationInput),
           },
@@ -175,12 +175,20 @@ export async function POST(req: NextRequest) {
     }
 
     if (type === "working") {
-      if (!payload || !payload.intention || !Array.isArray(payload.approvedIngredients)) {
+      const intention =
+        (typeof payload?.intention === "string" && payload.intention.trim().length > 0 ? payload.intention.trim() : null) ||
+        (typeof payload?.effectiveIntention === "string" && payload.effectiveIntention.trim().length > 0 ? payload.effectiveIntention.trim() : null) ||
+        (typeof payload?.customIntention === "string" && payload.customIntention.trim().length > 0 ? payload.customIntention.trim() : null);
+
+      if (!payload || !intention || !Array.isArray(payload.approvedIngredients)) {
         return NextResponse.json(
           { error: "Missing required intention or approved ingredients." },
           { status: 400 }
         );
       }
+
+      payload.intention = intention;
+      payload.effectiveIntention = payload.effectiveIntention || intention;
 
       const result = await generateWorkingOracleResponse(payload as OracleWorkingInput);
       return NextResponse.json(result, {

@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 
 export default function DailyTarotPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
-      {/* Sanctum Sub-Header with Back Link */}
+    <div className="w-full max-w-5xl mx-auto px-2 sm:px-4 py-2 sm:py-4">
+      {/* Sanctum Sub-Header with Prominent Back Link */}
       <SanctumHeader currentSection="Daily Tarot" showBackToSanctum={true} />
 
       {/* Functional Interactive Daily Tarot Experience */}

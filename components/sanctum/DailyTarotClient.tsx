@@ -242,6 +242,9 @@ export function DailyTarotClient() {
                   <span>{isDrawing ? "INVOKING ARCANA..." : "DRAW TODAY'S CARD"}</span>
                   <FourPointStar className={`w-3.5 h-3.5 ${isDrawing ? "animate-spin" : ""}`} />
                 </button>
+                <div className="text-[10px] font-mono uppercase tracking-widest text-purple-400/80 text-center pt-1">
+                  Preview deck: 4 cards
+                </div>
               </div>
             ) : (
               <div className="w-full space-y-2">

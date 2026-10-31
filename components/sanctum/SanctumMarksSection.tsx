@@ -206,7 +206,7 @@ export function SanctumMarksSection() {
             {curStreak} <span className="text-xs font-normal text-bone-dim">{curStreak === 1 ? "Day" : "Days"}</span>
           </div>
           <div className="text-[11px] text-bone-dim font-serif italic">
-            {curStreak > 0 ? "Consecutive chamber presence." : "Begin with today's draw or working."}
+            {curStreak > 0 ? "Consecutive chamber presence." : "Begin with today's draw or ritual."}
           </div>
         </div>
 
@@ -228,13 +228,13 @@ export function SanctumMarksSection() {
         <div className="p-4 rounded-xl bg-[#0c051a] border border-purple-900/50 space-y-1">
           <div className="text-[10px] font-mono uppercase tracking-widest text-purple-300 flex items-center gap-1.5">
             <Sparkles className="w-3 h-3 text-purple-400" />
-            <span>Total Inquests</span>
+            <span>Completed Activities</span>
           </div>
           <div className="text-2xl font-mono font-bold text-bone">
-            {totalActs} <span className="text-xs font-normal text-bone-dim">Completions</span>
+            {totalActs} <span className="text-xs font-normal text-bone-dim">Completed</span>
           </div>
           <div className="text-[10px] text-bone-dim font-mono">
-            {progress.totalDailyTarot} Daily · {progress.totalThreeCardReadings} Triad · {progress.totalWorkings} Workings
+            {progress.totalDailyTarot} Daily · {progress.totalThreeCardReadings} Triad · {progress.totalWorkings} Rituals · {progress.totalSavedEntries || 0} Saved
           </div>
         </div>
       </div>

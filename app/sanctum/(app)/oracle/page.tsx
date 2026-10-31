@@ -29,9 +29,9 @@ function OracleChatLoading() {
 
 export default function SanctumOraclePage() {
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-6 py-2 sm:py-6">
-      {/* Sanctum Sub-Header with Back link to Chamber */}
-      <SanctumHeader currentSection="The Oracle" showBackToSanctum={true} />
+    <div className="w-full max-w-5xl mx-auto px-2 sm:px-4 py-2 sm:py-4">
+      {/* Sanctum Sub-Header with Prominent Back Link */}
+      <SanctumHeader currentSection="Ask the Oracle" showBackToSanctum={true} />
 
       {/* Conversational Oracle Chamber Client wrapped in Suspense for useSearchParams */}
       <Suspense fallback={<OracleChatLoading />}>

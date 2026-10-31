@@ -56,6 +56,11 @@ export interface OracleApprovedIngredient {
   correspondenceRole: string;
 }
 
+export interface OracleLeftOutIngredient {
+  name: string;
+  reason: string;
+}
+
 export interface OracleWorkingInput {
   intention: string;
   customIntention?: string;
@@ -63,6 +68,8 @@ export interface OracleWorkingInput {
   approvedIngredients: OracleApprovedIngredient[];
   fireHazardIncluded: boolean;
   unmappedCustomIngredients?: string[];
+  timingCue?: "morning" | "bedtime" | "general";
+  leftOutIngredients?: OracleLeftOutIngredient[];
 }
 
 export interface OracleIngredientReason {
@@ -88,6 +95,7 @@ export interface OracleWorkingOutput {
   reflectionPrompt: string;
   practicalTakeaway: string;
   safetyNotes: string | null;
+  leftOutIngredients?: OracleLeftOutIngredient[];
 }
 
 export interface OracleResponseMeta {

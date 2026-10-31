@@ -46,10 +46,10 @@ Card III: Guidance (The Conscious Pivot)
 - Primary Keywords: ${guidance.keywords.join(", ")}
 - Contextual Grounding: ${guidance.contextualMeaning}
 
-REQUIREMENTS:
-1. "pattern": A cohesive interpretation (120-220 words) connecting all three cards in sequence. Directly reference Situation, Challenge, and Guidance cards by name. If a user question is present, explicitly acknowledge it. Highlight the specific friction between Challenge and Guidance. Do not make supernatural prophecies.
-2. "consider": Exactly ONE piercing, thoughtful psychological question (20-45 words) challenging unexamined assumptions.
-3. "carry": Exactly ONE concrete, reasonable physical or mental action (25-50 words) the user can realistically practice today.
+STRICT REQUIREMENTS:
+1. "pattern": A cohesive, insightful interpretation (120-220 words) connecting the three cards in a unified diagnostic narrative rather than reciting three isolated definitions. Directly ground the reading in the user's question (if provided). Explain how the Situation sets the stage, why the Challenge is causing friction, and how the Guidance provides the specific conscious pivot. Avoid canned wording, generic filler, or repetitive fortune-teller cliches. Variation must come from the user's specific context.
+2. "consider": Exactly ONE piercing, thoughtful psychological question (20-45 words) challenging unexamined assumptions, directly tying the friction of ${challenge.cardName} to the remedy of ${guidance.cardName}.
+3. "carry": Exactly ONE concrete, specific, and realistic physical or mental action (25-50 words) the user can practice today, directly inspired by ${guidance.cardName}. Avoid generic advice like "take a deep breath" or "drink water".
 
 Return ONLY a JSON object with this exact shape:
 {
@@ -63,7 +63,7 @@ Return ONLY a JSON object with this exact shape:
  * Builds user prompt for Create a Working formulation.
  */
 export function buildWorkingPrompt(input: OracleWorkingInput): string {
-  const { intention, customIntention, effectiveIntention, approvedIngredients, fireHazardIncluded } = input;
+  const { intention, customIntention, effectiveIntention, approvedIngredients, fireHazardIncluded, timingCue, leftOutIngredients } = input;
 
   const intentionDetails = customIntention && customIntention.trim().length > 0
     ? `Core Focus: ${intention} (Specific Inquiry: "${customIntention.trim()}", Root Correspondence: ${effectiveIntention})`
@@ -73,27 +73,47 @@ export function buildWorkingPrompt(input: OracleWorkingInput): string {
     .map((item) => `- ${item.name} (${item.category}): ${item.symbolicMeaning} Role in ${effectiveIntention}: ${item.correspondenceRole}`)
     .join("\n");
 
+  const alreadyLeftOutSection = leftOutIngredients && leftOutIngredients.length > 0
+    ? `\nITEMS ALREADY EXCLUDED FOR SAFETY OR SIMPLICITY:\n${leftOutIngredients.map((lo) => `- ${lo.name}: ${lo.reason}`).join("\n")}`
+    : "";
+
   return `Formulate a grounded, personalized Witchr Working (ritual formulation) based on the practitioner's intention and available items.
 
 ${intentionDetails}
 
-APPROVED INGREDIENTS (You must ONLY use items from this list):
+TIMING & CONTEXT CONSTRAINT:
+${timingCue === "morning"
+  ? "CRITICAL RULE: The practitioner specified a MORNING / DAY-START intention (e.g. 'A calm start to the day'). You must NEVER give sleep, bedtime, or night-time instructions. All timing advice, preparation, ritual steps, reflection prompts, and practical takeaways MUST be appropriate for beginning the day in calm, grounded clarity. Morning timing must not require sunrise or dawn (e.g. suggest conducting during the opening hour of your day or upon waking)."
+  : timingCue === "bedtime"
+  ? "The practitioner specified an EVENING / BEDTIME intention. All timing, steps, and takeaways should support unburdening tension and winding down for restful sleep."
+  : "Ground the timing, reflection, and takeaway in practical daily practice."}
+
+APPROVED INGREDIENTS (Every item listed here MUST have a meaningful role in the working and appear in the ritual steps):
 ${ingredientList}
+${alreadyLeftOutSection}
 
 FIRE SAFETY CONSTRAINT:
-${fireHazardIncluded ? "Candle / heat source included. Explicitly enforce: never leave flames unattended and place on heat-safe surfaces." : "No candles or open flames. Emphasize quiet tactile and sensory anchoring without fire."}
+${fireHazardIncluded ? "Candle / heat source included. Explicitly enforce: never leave flames unattended and place on heat-safe surfaces." : "No candles or open flames. Emphasize quiet tactile and sensory anchoring without fire. Do NOT include candle safety warnings when no flame is present."}
 
 ABSOLUTE SAFETY & TRADITION RULES:
-- ONLY use the approved ingredients listed above. Do NOT invent new herbs, crystals, or materials not in the list.
+- Frame all correspondences strictly as TRADITION and SYMBOLISM (e.g. 'Cinnamon traditionally represents warmth and momentum. Here, it serves as a reminder to take one practical step.'). Never claim or imply magical ingredients create guaranteed physical, psychological, or financial results.
+- Use plain, grounded language. Avoid jargon like 'financial nerve', 'resource cultivation', 'debt severance', or 'injecting urgency into financial cycles'. Speak simply and tie explanations directly to the user's intent.
+- Use the word 'ritual' consistently (NEVER 'working') in title, descriptions, steps, and closing.
+- ONLY use the approved ingredients listed above. Do NOT invent or include new herbs, spices, candles, or materials not in the list.
+- The title, ingredientReasons, and ritualSteps must ONLY reference the approved ingredients. Never mention unapproved materials or herbs in the title or steps.
+- Make all physical instructions safe and practical: DO NOT instruct users to rub cinnamon, oil mixtures, or herbs onto skin, face, wallets, money, financial documents, electronics, or valuables. Prefer contained arrangements using a small shallow dish or saucer. Do NOT introduce burning loose ingredients, skin application, or ingestion as actions.
+- In 'preparationSteps', clearly list every required supporting household tool (such as a small shallow dish to contain materials, a pen/pencil for writing on paper or bay leaf, a small cup for water, or a heat-safe dish for a candle) with modest quantities before the ritual steps begin. Keep selected ingredients and additional household tools clearly distinguished.
+- Every approved ingredient must have a meaningful role in the ritualSteps. If any item cannot be practically used, list it in leftOutIngredients with an honest, brief explanation (e.g. do not invent universal claims like 'Salt does not reinforce prosperity').
 - Do NOT prescribe drinking, ingesting, swallowing, eating, or brewing any ingredient as a tea or edible item.
 - Do NOT instruct dumping salt or brine into living soil, plants, or outdoor dirt.
 - Do NOT prescribe bodily harm, cutting skin, blood, or mixing household cleaning chemicals.
 - Do NOT claim to diagnose, cure, or substitute for professional medical, legal, or financial care.
+- Make 'practicalTakeaway' one specific, manageable everyday action tied to the intention (e.g. for prosperity: 'Choose one bill or expense and write down its due date and your next direct step'). Do not promise outcomes.
 
 OUTPUT SCHEMA (Return ONLY valid JSON):
 {
   "title": "A short poetic evocative title in ALL CAPS or Title Case (e.g., 'PERIMETER SEAL OF ROSEMARY & SALT')",
-  "intentionDescription": "A concise 2-3 sentence statement clarifying what this working is designed to cultivate or resolve.",
+  "intentionDescription": "A concise 2-3 sentence statement clarifying what this working is designed to cultivate or resolve, honoring the user's original intention.",
   "ingredientReasons": [
     {
       "name": "Exact Name from approved list",
@@ -115,18 +135,19 @@ OUTPUT SCHEMA (Return ONLY valid JSON):
       "step": 2,
       "title": "Short title",
       "instruction": "Concrete physical instruction"
-    },
-    {
-      "step": 3,
-      "title": "Short title",
-      "instruction": "Concrete physical instruction"
     }
   ],
   "closing": "A simple grounded closing action or phrase releasing fixation.",
-  "optionalTiming": "e.g. Dawn, dusk, or when beginning work (or null)",
+  "optionalTiming": "e.g. Sunrise, dawn, or evening (or null)",
   "reflectionPrompt": "One reflective journaling or inquiry question.",
   "practicalTakeaway": "One everyday real-world action to align mundane behavior with this intention.",
-  "safetyNotes": "Specific safety reminders regarding fire, surface protection, or disposal."
+  "safetyNotes": "Specific safety reminders regarding fire, surface protection, or disposal.",
+  "leftOutIngredients": [
+    {
+      "name": "Item name if any was omitted",
+      "reason": "Clear explanation why it was left out"
+    }
+  ]
 }`;
 }
 
@@ -161,17 +182,19 @@ Current Practitioner Message:
 "${input.message.trim()}"
 
 STRICT GUIDELINES:
-1. "reply": A concise, perceptive, grounded response (75-160 words).
-   - Address the practitioner's specific situation or dilemma directly in the very first sentence. NEVER use generic canned openings like "I hear what you bring into the chamber" or "Confusion often disguises an uncomfortable truth".
-   - Contextual Continuity: If the practitioner provides a short follow-up or uses pronouns/fragments (e.g., "The money is what scares me", "Why did they do that?"), interpret it within the context of the recent dialogue exchange above.
-   - Reframing: If the user asks a predictive "Will X happen?" or "What does my future hold?" or "Will I get rich?" question, gently and clearly reframe from fortune-telling to their personal agency and sovereignty today.
-   - If they ask about rituals, herbs, or correspondences, draw on grounded tradition (e.g. rosemary for mental clarity, black candle for protective boundaries, salt for grounding).
-   - Avoid fake mysticism, theatrical claims, omniscience, or guarantees.
-2. "reflectionQuestion": Exactly ONE brief, piercing, constructive question (15-35 words) that invites honest self-inquiry into their specific situation, OR null if the exchange is concluding.
+1. "reply": A conversational, concise, perceptive, and grounded response (40-110 words).
+   - Address the practitioner's situation directly in the very first sentence. NEVER use generic canned openings (e.g. "I hear what you bring into the chamber", "Confusion often disguises an uncomfortable truth", "I understand your fear").
+   - Use recent dialogue context naturally without repeating or summarizing the practitioner's problem back at length.
+   - ONE SMALL ACTION (2-5 MINUTES): When the practitioner asks for one small action, next step, or what they can do right now ("one small action", "what can I do", "where do I start"), give exactly ONE specific, manageable action doable in 2 to 5 minutes (such as: opening a single statement, writing one balance down on paper in black ink, or setting a 3-minute timer to clear a single surface). Strictly avoid expanding it into an overwhelming multi-step project like creating an entire budget or overhauling finances.
+   - NO ABUNDANCE PROMISES: Strictly avoid promises about attracting abundance, manifestation guarantees, magical windfalls, or celestial outcomes. Ground all financial and practical advice in mundane reality, agency, and tactile imagery.
+   - Preserve Witchr's atmosphere through warmth, sensory details (candlelight, ink, paper, physical space), and psychological clarity without melodrama or purple prose.
+2. "reflectionQuestion": OPTIONAL.
+   - Return null when the practitioner asks for a direct answer, advice, a specific action, or next step. Do NOT append a reflection question automatically when an action or direct answer was requested.
+   - Only provide a brief, piercing question (12-28 words) when the practitioner is exploring an open philosophical or emotional dilemma where inquiry adds genuine depth.
 3. "suggestedAction": If a specific Witchr Sanctum tool is genuinely relevant right now, suggest ONE action object. Options:
+   - For formulation/ritual action with physical cabinet items: { "label": "Create a Ritual", "href": "/sanctum/working", "type": "working" }
    - For daily reflection/grounding: { "label": "Draw Today's Card", "href": "/sanctum/tarot", "type": "tarot" }
    - For acute friction, decision-making, or complex circumstances: { "label": "Lay a Three-Card Spread", "href": "/sanctum/tarot/three-card", "type": "spread" }
-   - For formulation/ritual action with physical cabinet items: { "label": "Create a Working", "href": "/sanctum/working", "type": "working" }
    - For reviewing past readings/streaks: { "label": "Open My Grimoire", "href": "/sanctum/grimoire", "type": "grimoire" }
    - Otherwise, provide null. Do NOT force an action on every message.
 

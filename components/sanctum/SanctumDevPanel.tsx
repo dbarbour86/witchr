@@ -15,6 +15,7 @@ import {
 import { Wrench, ChevronDown, ChevronUp, Calendar, RefreshCw, Zap, Sparkles, Wand2, Compass } from "lucide-react";
 
 export function SanctumDevPanel() {
+  const [isVisible, setIsVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [progress, setProgress] = useState<SanctumProgress>(INITIAL_SANCTUM_PROGRESS);
@@ -37,6 +38,14 @@ export function SanctumDevPanel() {
 
   useEffect(() => {
     setMounted(true);
+    // Hidden by default, can be toggled via Ctrl+Shift+D or explicit action
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "d") {
+        e.preventDefault();
+        setIsVisible((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
     syncState();
 
     const handleUpdate = () => syncState();
@@ -45,6 +54,7 @@ export function SanctumDevPanel() {
     window.addEventListener("storage", handleUpdate);
 
     return () => {
+      window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("sanctum:progress-updated", handleUpdate);
       window.removeEventListener("sanctum:date-simulated", handleUpdate);
       window.removeEventListener("storage", handleUpdate);
@@ -127,7 +137,7 @@ export function SanctumDevPanel() {
     showNotice("Progression state completely reset.");
   };
 
-  if (!mounted) return null;
+  if (!mounted || !isVisible) return null;
 
   return (
     <aside

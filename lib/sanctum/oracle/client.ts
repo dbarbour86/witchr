@@ -282,23 +282,69 @@ export async function generateWorkingOracleResponse(
 
   try {
     const prompt = buildWorkingPrompt(input);
-    const rawResponseText = await executeProviderCall(providerConfig, prompt);
+    let rawResponseText = await executeProviderCall(providerConfig, prompt);
 
-    const cleanJson = rawResponseText.replace(/^```json\s*/i, "").replace(/^```\s*/, "").replace(/\s*```$/, "").trim();
-    const parsed = JSON.parse(cleanJson);
+    let cleanJson = rawResponseText.replace(/^```json\s*/i, "").replace(/^```\s*/, "").replace(/\s*```$/, "").trim();
+    let parsed: unknown = null;
+    try {
+      parsed = JSON.parse(cleanJson);
+    } catch {
+      parsed = null;
+    }
 
-    // Validate runtime schema and safety
-    const validation = validateWorkingOutput(parsed, approvedNames);
+    // Validate runtime schema, ingredient step roles, and timing
+    let validation = parsed
+      ? validateWorkingOutput(parsed, approvedNames, { timingCue: input.timingCue })
+      : { valid: false, error: "AI returned unparseable JSON" };
+
+    // If initial validation fails (e.g. missing ingredient or step role), retry ONCE with explicit correction instructions
+    if (!validation.valid) {
+      if (process.env.NODE_ENV !== "production") {
+        console.warn(`[Oracle Working] Initial generation failed validation: ${validation.error}. Retrying once with targeted correction prompt.`);
+      }
+
+      const retryCorrectionPrompt = `${prompt}
+
+CRITICAL CORRECTION REQUIRED:
+Your previous response failed validation with the following error:
+"${validation.error}"
+
+RETRY REQUIREMENTS:
+1. Every single approved ingredient (${approvedNames.join(", ")}) MUST either:
+   - Appear in 'ingredientReasons' AND have a direct, meaningful physical instruction in 'ritualSteps'. Merely listing an item in ingredientReasons without giving it an active role in ritualSteps is forbidden.
+   - OR appear in 'leftOutIngredients' with an honest, factual explanation of why it was omitted.
+2. Return ONLY a valid JSON object matching the required schema.`;
+
+      try {
+        const retryText = await executeProviderCall(providerConfig, retryCorrectionPrompt);
+        const retryClean = retryText.replace(/^```json\s*/i, "").replace(/^```\s*/, "").replace(/\s*```$/, "").trim();
+        const retryParsed = JSON.parse(retryClean);
+        const retryValidation = validateWorkingOutput(retryParsed, approvedNames, { timingCue: input.timingCue });
+        if (retryValidation.valid && retryValidation.data) {
+          validation = retryValidation;
+        } else {
+          if (process.env.NODE_ENV !== "production") {
+            console.warn(`[Oracle Working] Retry failed validation: ${retryValidation.error}. Falling back to rule-based synthesis.`);
+          }
+        }
+      } catch (retryError) {
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("[Oracle Working] Retry provider execution failed:", retryError);
+        }
+      }
+    }
+
+    // If validation still fails after retry, fall back to the validated rule-based engine
     if (!validation.valid || !validation.data) {
       if (process.env.NODE_ENV !== "production") {
-        console.warn("[Oracle Working] Output validation failed:", validation.error);
+        console.warn("[Oracle Working] Output validation failed after retry:", validation.error);
       }
       return {
         success: true,
         meta: {
           source: "written-tradition",
           fallback: true,
-          fallbackReason: `Validation failed: ${validation.error}`,
+          fallbackReason: `Validation failed after retry: ${validation.error}`,
           provider: providerConfig.provider,
           latencyMs: Date.now() - startTime,
         },
@@ -318,7 +364,10 @@ export async function generateWorkingOracleResponse(
         provider: providerConfig.provider,
         latencyMs: Date.now() - startTime,
       },
-      data: validation.data,
+      data: {
+        ...validation.data,
+        leftOutIngredients: validation.data.leftOutIngredients || input.leftOutIngredients,
+      },
     };
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : "Unknown error";

@@ -21,9 +21,11 @@ export interface SanctumProgress {
   totalDailyTarot: number;
   totalThreeCardReadings: number;
   totalWorkings: number;
+  totalSavedEntries: number; // Entries saved to Grimoire
   unlockedBadges: string[]; // Badge IDs
   claimedRewards: string[]; // Milestone IDs
   processedActivityIds: string[]; // Deduplication IDs
+  processedSaveIds: string[]; // Saved grimoire entries deduplication
 }
 
 export type SanctumActivityType = "daily" | "three-card" | "working";
@@ -67,8 +69,8 @@ export const SANCTUM_BADGES: SanctumBadge[] = [
   },
   {
     id: "first-working",
-    name: "FIRST WORKING",
-    requirement: "Create your first valid Working.",
+    name: "FIRST RITUAL",
+    requirement: "Create your first valid Ritual.",
     description: "You made use of what was already at hand.",
     sigilType: "first-working",
     category: "working",
@@ -92,15 +94,15 @@ export const SANCTUM_BADGES: SanctumBadge[] = [
   {
     id: "grimoire-keeper",
     name: "GRIMOIRE KEEPER",
-    requirement: "Complete 10 total meaningful activities.",
-    description: "Ten workings and readings have marked your path.",
+    requirement: "Save 10 entries to your Grimoire.",
+    description: "Ten rituals or readings preserved in your private ledger.",
     sigilType: "grimoire-keeper",
     category: "discipline",
   },
   {
     id: "pathworker",
     name: "PATHWORKER",
-    requirement: "Create 5 valid Workings.",
+    requirement: "Complete 5 valid Rituals.",
     description: "Five intentions carried into practice.",
     sigilType: "pathworker",
     category: "working",
@@ -112,15 +114,15 @@ export const SANCTUM_REWARD_MILESTONES: SanctumRewardMilestone[] = [
     id: "reward-7-day-streak",
     title: "7-DAY STREAK",
     streakRequirement: 7,
-    rewardCopy: "REWARD RESERVED — 1 FREE WORKING",
-    description: "Milestone scaffolding: 1 complimentary formulated working reserved with account rollout.",
+    rewardCopy: "SEVEN DAYS OF PRACTICE",
+    description: "Milestone reached: Seven consecutive days inside the Sanctum.",
   },
   {
     id: "reward-30-day-streak",
     title: "30-DAY STREAK",
     streakRequirement: 30,
-    rewardCopy: "COMING WITH ACCOUNTS — 5 SANCTUM CREDITS",
-    description: "Milestone scaffolding: 5 Sanctum oracle credits allocated upon account sync.",
+    rewardCopy: "THIRTY DAYS OF PRACTICE",
+    description: "Milestone reached: Thirty consecutive days inside the Sanctum.",
   },
 ];
 
@@ -133,36 +135,41 @@ export const INITIAL_SANCTUM_PROGRESS: SanctumProgress = {
   totalDailyTarot: 0,
   totalThreeCardReadings: 0,
   totalWorkings: 0,
+  totalSavedEntries: 0,
   unlockedBadges: [],
   claimedRewards: [],
   processedActivityIds: [],
+  processedSaveIds: [],
 };
 
 /**
- * Calculates calendar day difference between two YYYY-MM-DD date strings.
- * Uses UTC midnight to eliminate daylight-saving shifts and time-of-day offsets.
+ * Calculates calendar day difference between two browser-local YYYY-MM-DD date strings.
+ * Uses integer day math so daylight-saving transitions (23-hour or 25-hour days)
+ * never distort the calendar day difference.
  */
 export function getCalendarDayDifference(fromLocalDateStr: string, toLocalDateStr: string): number {
   const [y1, m1, d1] = fromLocalDateStr.split("-").map(Number);
   const [y2, m2, d2] = toLocalDateStr.split("-").map(Number);
-  const utc1 = Date.UTC(y1, m1 - 1, d1);
-  const utc2 = Date.UTC(y2, m2 - 1, d2);
-  return Math.round((utc2 - utc1) / (1000 * 60 * 60 * 24));
+  // Using fixed 24h day units between integer calendar dates eliminates DST offsets
+  const day1 = Date.UTC(y1, m1 - 1, d1);
+  const day2 = Date.UTC(y2, m2 - 1, d2);
+  return Math.round((day2 - day1) / (1000 * 60 * 60 * 24));
 }
 
 /**
- * Returns current effective local date string in YYYY-MM-DD format.
+ * Returns the user's browser-local date string in YYYY-MM-DD format.
  * In development, respects simulated date override if set.
+ * Supports optional dateInput for non-invasive date/boundary testing.
  */
-export function getEffectiveLocalDateString(): string {
-  if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
+export function getEffectiveLocalDateString(dateInput?: Date): string {
+  if (!dateInput && process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
     const devSimulated = localStorage.getItem(SANCTUM_DEV_SIMULATED_DATE_KEY);
     if (devSimulated && /^\d{4}-\d{2}-\d{2}$/.test(devSimulated)) {
       return devSimulated;
     }
   }
 
-  const now = new Date();
+  const now = dateInput || new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
@@ -172,6 +179,7 @@ export function getEffectiveLocalDateString(): string {
 /**
  * Retrieves Sanctum progression from localStorage.
  * Hydration-safe: returns initial empty progress on server or on parse failure.
+ * Reconciles lapsed streaks and migrates grimoire entry counts gracefully.
  */
 export function getSanctumProgress(): SanctumProgress {
   if (typeof window === "undefined") {
@@ -185,18 +193,51 @@ export function getSanctumProgress(): SanctumProgress {
     const parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== "object") return { ...INITIAL_SANCTUM_PROGRESS };
 
+    // Inspect existing tracking before changing it; preserve saved entries and existing progress
+    let totalSavedEntries = typeof parsed.totalSavedEntries === "number" ? parsed.totalSavedEntries : 0;
+    const processedSaveIds = Array.isArray(parsed.processedSaveIds) ? parsed.processedSaveIds : [];
+
+    // Backward-compatibility: if totalSavedEntries was unset, inspect existing grimoire readings
+    if (typeof parsed.totalSavedEntries !== "number") {
+      try {
+        const rawGrimoire = localStorage.getItem("witchr_sanctum_grimoire_readings");
+        if (rawGrimoire) {
+          const list = JSON.parse(rawGrimoire);
+          if (Array.isArray(list)) {
+            totalSavedEntries = list.length;
+          }
+        }
+      } catch {
+        // Safe fallback
+      }
+    }
+
+    // Award daily streak progress at most once per calendar day, using a consistent day boundary.
+    // If the practitioner missed one or more days, the active streak lapses to 0 until next completion.
+    let currentStreak = typeof parsed.currentStreak === "number" ? parsed.currentStreak : 0;
+    const lastActiveDate = typeof parsed.lastActiveDate === "string" ? parsed.lastActiveDate : null;
+    if (lastActiveDate) {
+      const today = getEffectiveLocalDateString();
+      const diff = getCalendarDayDifference(lastActiveDate, today);
+      if (diff > 1) {
+        currentStreak = 0;
+      }
+    }
+
     return {
-      currentStreak: typeof parsed.currentStreak === "number" ? parsed.currentStreak : 0,
+      currentStreak,
       longestStreak: typeof parsed.longestStreak === "number" ? parsed.longestStreak : 0,
-      lastActiveDate: typeof parsed.lastActiveDate === "string" ? parsed.lastActiveDate : null,
+      lastActiveDate,
       activeDates: Array.isArray(parsed.activeDates) ? parsed.activeDates : [],
       totalActivities: typeof parsed.totalActivities === "number" ? parsed.totalActivities : 0,
       totalDailyTarot: typeof parsed.totalDailyTarot === "number" ? parsed.totalDailyTarot : 0,
       totalThreeCardReadings: typeof parsed.totalThreeCardReadings === "number" ? parsed.totalThreeCardReadings : 0,
       totalWorkings: typeof parsed.totalWorkings === "number" ? parsed.totalWorkings : 0,
+      totalSavedEntries,
       unlockedBadges: Array.isArray(parsed.unlockedBadges) ? parsed.unlockedBadges : [],
       claimedRewards: Array.isArray(parsed.claimedRewards) ? parsed.claimedRewards : [],
       processedActivityIds: Array.isArray(parsed.processedActivityIds) ? parsed.processedActivityIds : [],
+      processedSaveIds,
     };
   } catch (error) {
     console.error("Failed to read Sanctum progress from localStorage", error);
@@ -219,7 +260,40 @@ export function saveSanctumProgress(progress: SanctumProgress): void {
 }
 
 /**
+ * Records a saved Grimoire entry toward progression and Grimoire Keeper badge.
+ * Deduplicated by readingId so duplicate clicks do not inflate the count.
+ */
+export function recordGrimoireSave(readingId: string): void {
+  if (typeof window === "undefined") return;
+
+  const current = getSanctumProgress();
+  if (current.processedSaveIds.includes(readingId)) return;
+
+  const nextTotalSaved = current.totalSavedEntries + 1;
+  const nextProcessed = [...current.processedSaveIds, readingId];
+
+  const candidate: SanctumProgress = {
+    ...current,
+    totalSavedEntries: nextTotalSaved,
+    processedSaveIds: nextProcessed,
+  };
+
+  const updatedBadges = evaluateBadges(candidate);
+  const newlyUnlockedIds = updatedBadges.filter((id) => !current.unlockedBadges.includes(id));
+  const newlyUnlocked = SANCTUM_BADGES.filter((b) => newlyUnlockedIds.includes(b.id));
+
+  candidate.unlockedBadges = updatedBadges;
+  saveSanctumProgress(candidate);
+
+  for (const badge of newlyUnlocked) {
+    window.dispatchEvent(new CustomEvent("sanctum:badge-unlocked", { detail: badge }));
+  }
+}
+
+/**
  * Evaluates which badges should be unlocked based on current progress totals.
+ * Grimoire Keeper counts saved grimoire entries.
+ * Activity-based marks count completed readings and workings.
  */
 export function evaluateBadges(progress: SanctumProgress): string[] {
   const unlocked = new Set<string>(progress.unlockedBadges);
@@ -240,7 +314,7 @@ export function evaluateBadges(progress: SanctumProgress): string[] {
   if (totalTarot >= 10) {
     unlocked.add("seeker");
   }
-  if (progress.totalActivities >= 10) {
+  if (progress.totalSavedEntries >= 10) {
     unlocked.add("grimoire-keeper");
   }
   if (progress.totalWorkings >= 5) {
@@ -359,9 +433,11 @@ export function recordSanctumActivity(params: {
     totalDailyTarot: nextTotalDailyTarot,
     totalThreeCardReadings: nextTotalThreeCard,
     totalWorkings: nextTotalWorkings,
+    totalSavedEntries: current.totalSavedEntries,
     unlockedBadges: current.unlockedBadges,
     claimedRewards: current.claimedRewards,
     processedActivityIds: [...current.processedActivityIds, params.id],
+    processedSaveIds: current.processedSaveIds,
   };
 
   // Evaluate badges

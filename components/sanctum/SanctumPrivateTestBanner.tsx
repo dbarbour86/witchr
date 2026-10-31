@@ -101,24 +101,24 @@ export function SanctumPrivateTestBanner() {
       {/* Subtle, Ceremonial Private Test Banner */}
       <aside
         aria-label="Private Sanctum Test Notice"
-        className="mb-8 p-3.5 sm:p-4 rounded-xl bg-surface/80 border border-lavender/30 shadow-glow-subtle flex flex-col sm:flex-row items-center justify-between gap-3 text-xs"
+        className="mb-3 px-3 py-1.5 rounded-lg bg-[#0e071c] border border-purple-800/50 flex items-center justify-between gap-3 text-xs"
       >
-        <div className="flex items-center gap-3 text-center sm:text-left">
-          <span className="shrink-0 px-2.5 py-1 rounded bg-lavender/10 border border-lavender/40 text-[10px] font-mono uppercase tracking-ceremonial text-lavender-light font-semibold">
-            PRIVATE SANCTUM TEST
+        <div className="flex items-center gap-2.5 min-w-0">
+          <span className="shrink-0 px-2 py-0.5 rounded bg-purple-900/40 border border-purple-600/40 text-[9px] font-mono uppercase tracking-wider text-purple-200 font-semibold">
+            PRIVATE TEST
           </span>
-          <p className="text-bone-muted font-sans text-xs leading-relaxed">
-            You’re using an early private version of Witchr Sanctum. Some features and wording may change as we learn what works best.
+          <p className="text-purple-300/80 font-sans text-[11px] truncate">
+            Early private version of Witchr Sanctum. Features may evolve with testing.
           </p>
         </div>
 
         <button
           type="button"
           onClick={() => setModalOpen(true)}
-          className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-elevated hover:bg-surface border border-border-highlight hover:border-lavender-light/50 text-lavender-moon hover:text-lavender-light text-[11px] font-mono uppercase tracking-wide transition-all shadow-sm focus-visible:ring-1 focus-visible:ring-lavender-light outline-none"
+          className="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#170a2c] hover:bg-purple-950 border border-purple-700/60 hover:border-purple-400 text-purple-300 hover:text-white text-[10px] font-mono uppercase tracking-wide transition-colors"
         >
-          <MessageSquare className="w-3.5 h-3.5 text-lavender-moon" />
-          <span>Tell Us What Felt Off</span>
+          <MessageSquare className="w-3 h-3 text-purple-400" />
+          <span>Feedback</span>
         </button>
       </aside>
 

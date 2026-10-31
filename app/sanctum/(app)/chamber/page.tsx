@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 export default function SanctumPage() {
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-8 py-2 sm:py-6">
-      {/* Sanctum Section Sub-Header */}
+    <div className="w-full px-2 sm:px-4 lg:px-6 py-2 sm:py-3">
+      {/* Sanctum Section Sub-Header (compact breadcrumb) */}
       <SanctumHeader currentSection="The Oracle Chamber" />
 
       {/* The Oracle Chamber Entrance Experience */}

@@ -257,8 +257,11 @@ export function OracleChatClient() {
               The Oracle’s Counsel
             </h1>
             <p className="text-xs sm:text-sm text-bone-muted font-sans max-w-xl leading-relaxed">
-              Speak with the Oracle for grounded self-inquiry, correspondence analysis, and ritual guidance.
-              The Oracle offers psychological reflection, not supernatural prophecy or guaranteed outcomes.
+              Consult the Oracle to ask questions, explore circumstances, and unpack dilemmas through psychological reflection.
+              To turn an intention and available physical ingredients directly into ritual steps, use{" "}
+              <Link href="/sanctum/working" className="text-purple-300 underline underline-offset-2 hover:text-white">
+                Create a Ritual
+              </Link>.
             </p>
           </div>
         </div>
@@ -315,58 +318,73 @@ export function OracleChatClient() {
                 <div
                   className={`max-w-2xl p-4 sm:p-5 rounded-xl border text-sm sm:text-base leading-relaxed ${
                     isUser
-                      ? "bg-[#140628] border-purple-700/60 text-purple-100 shadow-[0_0_15px_rgba(147,51,234,0.15)] rounded-tr-none"
-                      : "bg-[#090314]/90 border-purple-900/60 text-bone-dim shadow-[0_0_20px_rgba(88,28,135,0.2)] rounded-tl-none space-y-3.5"
+                      ? "bg-[#140628] border-purple-700/60 text-purple-100 shadow-[0_0_15px_rgba(147,51,234,0.15)] rounded-tr-none font-sans"
+                      : "bg-[#090314]/95 border-purple-900/60 text-bone shadow-[0_0_20px_rgba(88,28,135,0.2)] rounded-tl-none font-sans space-y-3.5"
                   }`}
                 >
-                  <p className="font-serif whitespace-pre-wrap">{entry.content}</p>
+                  <p className={`font-sans leading-relaxed whitespace-pre-wrap ${isUser ? "text-purple-100" : "text-bone"}`}>
+                    {entry.content}
+                  </p>
 
                   {/* Reflection Question Highlight Box */}
                   {!isUser && entry.reflectionQuestion && (
-                    <div className="p-3 rounded-lg bg-[#110522] border-l-2 border-purple-400 border-t border-r border-b border-purple-900/40 text-xs sm:text-sm text-purple-200 font-sans italic space-y-1">
-                      <span className="text-[10px] font-mono tracking-widest uppercase text-purple-300/80 not-italic block">
-                        Reflection Inquest:
+                    <div className="p-3.5 rounded-lg bg-[#110522] border-l-2 border-purple-400 border-t border-r border-b border-purple-900/50 text-xs sm:text-sm text-bone font-sans space-y-1">
+                      <span className="text-[10px] font-mono tracking-widest uppercase text-purple-300 font-semibold block">
+                        Reflection Inquest
                       </span>
-                      <span>“{entry.reflectionQuestion}”</span>
+                      <span className="leading-relaxed text-purple-100 block">“{entry.reflectionQuestion}”</span>
                     </div>
                   )}
 
                   {/* Suggested Sanctum Action Link */}
-                  {!isUser && entry.suggestedAction && (
-                    <div className="pt-2 flex items-center justify-between gap-3 border-t border-purple-900/40">
-                      <Link
-                        href={entry.suggestedAction.href}
-                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-purple-950/70 hover:bg-purple-900/90 border border-purple-500/60 text-purple-200 hover:text-white text-xs font-mono uppercase tracking-wider transition-all shadow-sm group"
-                      >
-                        {entry.suggestedAction.type === "tarot" && <Sparkles className="w-3.5 h-3.5 text-purple-400" />}
-                        {entry.suggestedAction.type === "spread" && <Compass className="w-3.5 h-3.5 text-purple-400" />}
-                        {entry.suggestedAction.type === "working" && <Wand2 className="w-3.5 h-3.5 text-purple-400" />}
-                        {entry.suggestedAction.type === "grimoire" && <BookOpen className="w-3.5 h-3.5 text-purple-400" />}
-                        <span>{entry.suggestedAction.label}</span>
-                        <ArrowRight className="w-3 h-3 text-purple-400 group-hover:translate-x-1 transition-transform" />
-                      </Link>
+                  {!isUser && entry.suggestedAction && (() => {
+                    let actionHref = entry.suggestedAction.href;
+                    if (entry.suggestedAction.type === "working" || actionHref.startsWith("/sanctum/working")) {
+                      const relevantUserMsg = [...messages.slice(0, messages.findIndex((m) => m.id === entry.id) + 1)]
+                        .reverse()
+                        .find((m) => m.role === "user")?.content;
+                      if (relevantUserMsg && relevantUserMsg.trim().length > 0) {
+                        const cleanIntention = relevantUserMsg.trim();
+                        actionHref = `/sanctum/working?intention=${encodeURIComponent(cleanIntention)}`;
+                      }
+                    }
 
-                      {/* Copy Action */}
-                      <button
-                        type="button"
-                        onClick={() => handleCopyMessage(entry)}
-                        className="text-purple-400/60 hover:text-purple-300 text-[11px] font-mono flex items-center gap-1 transition-colors"
-                        title="Copy reflection to clipboard"
-                      >
-                        {copiedId === entry.id ? (
-                          <>
-                            <Check className="w-3 h-3 text-purple-300" />
-                            <span>Copied</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3 h-3" />
-                            <span className="hidden sm:inline">Copy</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  )}
+                    return (
+                      <div className="pt-2 flex items-center justify-between gap-3 border-t border-purple-900/40">
+                        <Link
+                          href={actionHref}
+                          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-purple-950/70 hover:bg-purple-900/90 border border-purple-500/60 text-purple-200 hover:text-white text-xs font-mono uppercase tracking-wider transition-all shadow-sm group"
+                        >
+                          {entry.suggestedAction.type === "tarot" && <Sparkles className="w-3.5 h-3.5 text-purple-400" />}
+                          {entry.suggestedAction.type === "spread" && <Compass className="w-3.5 h-3.5 text-purple-400" />}
+                          {entry.suggestedAction.type === "working" && <Wand2 className="w-3.5 h-3.5 text-purple-400" />}
+                          {entry.suggestedAction.type === "grimoire" && <BookOpen className="w-3.5 h-3.5 text-purple-400" />}
+                          <span>{entry.suggestedAction.label}</span>
+                          <ArrowRight className="w-3 h-3 text-purple-400 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+
+                        {/* Copy Action */}
+                        <button
+                          type="button"
+                          onClick={() => handleCopyMessage(entry)}
+                          className="text-purple-400/60 hover:text-purple-300 text-[11px] font-mono flex items-center gap-1 transition-colors"
+                          title="Copy reflection to clipboard"
+                        >
+                          {copiedId === entry.id ? (
+                            <>
+                              <Check className="w-3 h-3 text-purple-300" />
+                              <span>Copied</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3 h-3" />
+                              <span className="hidden sm:inline">Copy</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
             );
@@ -403,7 +421,7 @@ export function OracleChatClient() {
                 type="button"
                 onClick={() => handleSendMessage(chip)}
                 disabled={isLoading}
-                className="px-2.5 py-1 rounded-md bg-[#100624] hover:bg-purple-950/80 border border-purple-900/60 hover:border-purple-500/70 text-purple-200 text-xs font-serif transition-colors disabled:opacity-50"
+                className="px-2.5 py-1 rounded-md bg-[#100624] hover:bg-purple-950/80 border border-purple-900/60 hover:border-purple-500/70 text-purple-200 text-xs font-sans transition-colors disabled:opacity-50"
               >
                 “{chip}”
               </button>
@@ -423,7 +441,7 @@ export function OracleChatClient() {
               onKeyDown={handleKeyDown}
               disabled={isLoading}
               placeholder="Speak to the Oracle... (e.g. 'I feel pulled between two paths', 'What corresponds with courage?')"
-              className="w-full bg-transparent text-sm sm:text-base text-bone placeholder-purple-300/40 resize-none outline-none font-serif leading-relaxed"
+              className="w-full bg-transparent text-sm sm:text-base text-bone placeholder-purple-300/40 resize-none outline-none font-sans leading-relaxed"
               aria-label="Message to the Oracle"
             />
 

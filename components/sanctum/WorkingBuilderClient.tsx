@@ -2,13 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   SANCTUM_INTENTIONS,
   SANCTUM_INGREDIENT_CATALOG,
   SanctumIntentionKey,
+  getSanctumIngredientImage,
 } from "@/content/sanctum-workings";
 import {
   synthesizeWorking,
+  detectTimingCue,
   GeneratedWorking,
   WorkingEngineResult,
 } from "@/lib/sanctum/working-engine";
@@ -22,165 +25,156 @@ import { recordSanctumActivity } from "@/lib/sanctum/progression";
 import { recordSanctumTestEvent } from "@/lib/sanctum/test-events";
 import {
   FourPointStar,
-  CelestialDivider,
-  GrimoireStar,
   TarotCornerFlourish,
 } from "@/components/OrnateFrames";
 import {
-  SanctumCrest,
-  MoonPhaseStrip,
-} from "@/components/sanctum/SanctumSymbols";
-import {
-  Wand2,
   Plus,
   X,
   Check,
   BookOpen,
-  RefreshCw,
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
   ShieldAlert,
   Printer,
   Sparkles,
-  Lock,
   Flame,
   Droplets,
   Feather,
   Edit2,
+  Moon,
+  Sun,
+  Shield,
+  Sprout,
+  Bed,
 } from "lucide-react";
 
+type WizardStep = 1 | 2 | 3;
+
 export function WorkingBuilderClient() {
+  const searchParams = useSearchParams();
+
+  // Wizard state: 1: Intention, 2: Ingredients, 3: Your Ritual
+  const [currentStep, setCurrentStep] = useState<WizardStep>(1);
+
+  // Intention state
   const [selectedIntention, setSelectedIntention] = useState<SanctumIntentionKey | "Something Else" | null>(null);
   const [customIntention, setCustomIntention] = useState("");
-  const [situationNote, setSituationNote] = useState("");
-  const [selectedIngredients, setSelectedIngredients] = useState<string[]>(["Salt", "Rosemary"]);
+  const [isEditingCustom, setIsEditingCustom] = useState(false);
+
+  // Ingredients state
+  const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
   const [customIngredients, setCustomIngredients] = useState<string[]>([]);
   const [customInputText, setCustomInputText] = useState("");
   const [showCustomInput, setShowCustomInput] = useState(false);
+  const [situationNote, setSituationNote] = useState("");
 
+  // Synthesis & Result state
   const [workingResult, setWorkingResult] = useState<WorkingEngineResult | null>(null);
   const [isSaved, setIsSaved] = useState(false);
   const [isSynthesizing, setIsSynthesizing] = useState(false);
   const [workingSource, setWorkingSource] = useState<"oracle-ai" | "written-tradition">("written-tradition");
   const [fallbackNotice, setFallbackNotice] = useState<string | null>(null);
+  const [fallbackDiagnostic, setFallbackDiagnostic] = useState<string | null>(null);
 
-  // Listen for tester data reset and Grimoire ledger updates
+  // Consume intention passed from Oracle chat or deep link (?intention=... or ?q=...)
   useEffect(() => {
-    const syncSavedStatus = () => {
-      if (workingResult?.working?.id) {
-        setIsSaved(isReadingSavedToGrimoire(workingResult.working.id));
+    const rawIntention = searchParams.get("intention") || searchParams.get("q");
+    if (rawIntention && rawIntention.trim().length > 0) {
+      const trimmed = rawIntention.trim();
+      const match = SANCTUM_INTENTIONS.find(
+        (i) => i.key.toLowerCase() === trimmed.toLowerCase() || i.label.toLowerCase() === trimmed.toLowerCase()
+      );
+      if (match) {
+        setSelectedIntention(match.key);
+      } else {
+        setSelectedIntention("Something Else");
+        setCustomIntention(trimmed);
+        setIsEditingCustom(false);
       }
-    };
+    }
+  }, [searchParams]);
 
-    const handleReset = () => {
-      setSelectedIntention(null);
-      setCustomIntention("");
-      setSituationNote("");
-      setSelectedIngredients(["Salt", "Rosemary"]);
-      setCustomIngredients([]);
-      setWorkingResult(null);
-      setIsSaved(false);
-      setIsSynthesizing(false);
-      setWorkingSource("written-tradition");
-      setFallbackNotice(null);
-    };
-
-    window.addEventListener("sanctum:daily-tarot-reset", handleReset);
-    window.addEventListener("sanctum:grimoire-updated", syncSavedStatus);
-    window.addEventListener("focus", syncSavedStatus);
-    return () => {
-      window.removeEventListener("sanctum:daily-tarot-reset", handleReset);
-      window.removeEventListener("sanctum:grimoire-updated", syncSavedStatus);
-      window.removeEventListener("focus", syncSavedStatus);
-    };
+  // Keep saved state in sync
+  useEffect(() => {
+    if (workingResult?.working?.id) {
+      setIsSaved(isReadingSavedToGrimoire(workingResult.working.id));
+    }
   }, [workingResult]);
 
-  // Toggle standard ingredient selection
-  const toggleIngredient = (name: string) => {
+  // Ingredient toggle handlers
+  const handleToggleIngredient = (name: string) => {
     setSelectedIngredients((prev) =>
       prev.includes(name) ? prev.filter((i) => i !== name) : [...prev, name]
     );
   };
 
-  // Add custom household ingredient
   const handleAddCustomIngredient = () => {
-    const clean = customInputText.trim().slice(0, 50);
-    if (!clean) return;
-
-    if (!customIngredients.some((i) => i.toLowerCase() === clean.toLowerCase())) {
-      setCustomIngredients((prev) => [...prev, clean]);
+    const trimmed = customInputText.trim();
+    if (!trimmed) return;
+    const exists = customIngredients.some((i) => i.toLowerCase() === trimmed.toLowerCase()) ||
+                   selectedIngredients.some((i) => i.toLowerCase() === trimmed.toLowerCase());
+    if (!exists) {
+      setCustomIngredients((prev) => [...prev, trimmed]);
+      setSelectedIngredients((prev) => [...prev, trimmed]);
     }
     setCustomInputText("");
     setShowCustomInput(false);
   };
 
-  // Remove custom household ingredient
-  const handleRemoveCustomIngredient = (item: string) => {
-    setCustomIngredients((prev) => prev.filter((i) => i !== item));
+  const handleRemoveCustomIngredient = (name: string) => {
+    setCustomIngredients((prev) => prev.filter((i) => i !== name));
+    setSelectedIngredients((prev) => prev.filter((i) => i !== name));
   };
 
-  // Clear workstation
-  const handleClear = () => {
-    setSelectedIntention(null);
-    setCustomIntention("");
-    setSituationNote("");
-    setSelectedIngredients([]);
-    setCustomIngredients([]);
-    setWorkingResult(null);
-    setIsSaved(false);
-    setIsSynthesizing(false);
-    setWorkingSource("written-tradition");
-    setFallbackNotice(null);
-  };
-
-  // Trigger Working Synthesis
+  // Perform Ritual Synthesis
   const handleSynthesize = async () => {
-    if (!selectedIntention || isSynthesizing) return;
+    if (isSynthesizing) return;
+    const finalCustomText = customIntention.trim();
 
-    recordSanctumTestEvent("working_started");
-
-    // Combine custom intention with optional situation note
-    const finalCustomText = [customIntention.trim(), situationNote.trim()].filter(Boolean).join(". ");
-
-    // 1. Run deterministic engine first to validate intention, ingredients, correspondences, and safety
+    // 1. Run deterministic foundation synthesis & validation first
     const deterministicResult = synthesizeWorking({
-      intention: selectedIntention,
+      intention: selectedIntention || "Something Else",
       customIntention: selectedIntention === "Something Else" || finalCustomText ? finalCustomText : undefined,
       selectedIngredients,
       customIngredients,
     });
 
-    // If deterministic validation failed (e.g. no ingredients, incongruence, empty intention):
     if (!deterministicResult.success || !deterministicResult.working) {
       setWorkingResult(deterministicResult);
       setIsSaved(false);
       setWorkingSource("written-tradition");
       setFallbackNotice(null);
+      setCurrentStep(3); // Show error state in result view
       return;
     }
 
-    // 2. Foundation is valid. Now call Oracle AI service to formulate the personalized working
+    // 2. Transition to Step 3 and synthesize
     setIsSynthesizing(true);
-    setWorkingResult(null);
+    setCurrentStep(3);
     setIsSaved(false);
     setFallbackNotice(null);
+    setFallbackDiagnostic(null);
 
     const baseWorking = deterministicResult.working;
     let finalWorking: GeneratedWorking = baseWorking;
     let source: "oracle-ai" | "written-tradition" = "written-tradition";
     let notice: string | null = null;
+    let diagnostic: string | null = null;
 
     try {
+      const effectiveIntentionToSend = selectedIntention || baseWorking.effectiveIntention || finalCustomText || "Calm";
       const res = await fetch("/api/sanctum/oracle", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type: "working",
           payload: {
-            intention: selectedIntention,
+            intention: effectiveIntentionToSend,
             customIntention: finalCustomText || undefined,
-            effectiveIntention: baseWorking.effectiveIntention,
+            effectiveIntention: baseWorking.effectiveIntention || effectiveIntentionToSend,
+            timingCue: detectTimingCue(finalCustomText || undefined),
+            leftOutIngredients: baseWorking.leftOutIngredients,
             approvedIngredients: baseWorking.whyThese.map((wt) => {
               const catalogMatch = SANCTUM_INGREDIENT_CATALOG.find(
                 (c) => c.name.toLowerCase() === wt.name.toLowerCase()
@@ -206,12 +200,22 @@ export function WorkingBuilderClient() {
           const aiData = json.data;
           source = json.meta?.source || "oracle-ai";
           if (json.meta?.fallback) {
-            notice = "The Oracle returned to the written tradition for this working.";
+            notice = "The Oracle couldn’t respond. Here’s a ritual created from Witchr’s reference rules.";
+            diagnostic = json.meta?.fallbackReason || "Rule-based fallback";
+          }
+
+          let rawTitle = aiData.title || baseWorking.title;
+          if (/^A WORKING FOR/i.test(rawTitle)) {
+            rawTitle = rawTitle.replace(/^A WORKING FOR/i, "A RITUAL FOR");
+          } else if (/^SOVEREIGN WORKING FOR/i.test(rawTitle)) {
+            rawTitle = rawTitle.replace(/^SOVEREIGN WORKING FOR/i, "SOVEREIGN RITUAL FOR");
+          } else if (/^WORKING FOR/i.test(rawTitle)) {
+            rawTitle = rawTitle.replace(/^WORKING FOR/i, "RITUAL FOR");
           }
 
           finalWorking = {
             id: baseWorking.id,
-            title: aiData.title || baseWorking.title,
+            title: rawTitle,
             effectiveIntention: baseWorking.effectiveIntention,
             intentionDescription: aiData.intentionDescription || baseWorking.intentionDescription,
             youWillNeed: baseWorking.youWillNeed,
@@ -229,18 +233,24 @@ export function WorkingBuilderClient() {
             consider: aiData.reflectionPrompt || baseWorking.consider,
             carryThisWithYou: aiData.practicalTakeaway || baseWorking.carryThisWithYou,
             safetyNotes: aiData.safetyNotes || baseWorking.safetyNotes,
+            leftOutIngredients: aiData.leftOutIngredients || baseWorking.leftOutIngredients,
             unmappedCustomIngredients: baseWorking.unmappedCustomIngredients,
           };
         }
       } else {
-        notice = "The Oracle returned to the written tradition for this working.";
+        source = "written-tradition";
+        notice = "The Oracle couldn’t respond. Here’s a ritual created from Witchr’s reference rules.";
+        diagnostic = `Server returned status ${res.status}: ${res.statusText || "Bad Request"}`;
       }
     } catch (err) {
-      notice = "The Oracle returned to the written tradition for this working.";
+      source = "written-tradition";
+      notice = "The Oracle couldn’t respond. Here’s a ritual created from Witchr’s reference rules.";
+      diagnostic = err instanceof Error ? err.message : "Network/connection error";
     }
 
     setWorkingSource(source);
     setFallbackNotice(notice);
+    setFallbackDiagnostic(diagnostic);
     setWorkingResult({
       success: true,
       working: finalWorking,
@@ -255,7 +265,7 @@ export function WorkingBuilderClient() {
     });
   };
 
-  // Save generated working to Grimoire ledger
+  // Save generated ritual to Grimoire ledger
   const handleSaveToGrimoire = () => {
     if (!workingResult?.working) return;
     const w = workingResult.working;
@@ -281,6 +291,7 @@ export function WorkingBuilderClient() {
       practicalTakeaway: w.carryThisWithYou,
       safetyNotes: w.safetyNotes,
       savedToGrimoire: true,
+      leftOutIngredients: w.leftOutIngredients,
     };
 
     saveReadingToGrimoire(record);
@@ -288,618 +299,773 @@ export function WorkingBuilderClient() {
     setIsSaved(true);
   };
 
-  // Print or export card
-  const handlePrintCard = () => {
+  const handlePrint = () => {
     if (typeof window !== "undefined") {
       window.print();
     }
   };
 
+  // Helper icons for intent suggestions
+  const getIntentIcon = (intentKey: string) => {
+    switch (intentKey) {
+      case "Rest":
+      case "Calm":
+        return <Moon className="w-4 h-4" />;
+      case "Confidence":
+        return <Sun className="w-4 h-4" />;
+      case "Clarity":
+        return <Sparkles className="w-4 h-4" />;
+      case "Protection":
+        return <Shield className="w-4 h-4" />;
+      case "Focus":
+        return <Sprout className="w-4 h-4" />;
+      default:
+        return <FourPointStar className="w-4 h-4" />;
+    }
+  };
+
+  const activeIntentionLabel =
+    selectedIntention === "Something Else"
+      ? (customIntention.trim() || "Custom Intention")
+      : selectedIntention || "None selected";
+
   return (
-    <div className="w-full space-y-6">
-      {/* Occult Split Workstation Layout matching the reference */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* =========================================================================
-            LEFT COLUMN: THE ORACLE WORKSTATION CONSOLE
-           ========================================================================= */}
-        <section
-          className="lg:col-span-6 xl:col-span-5 sanctum-panel sanctum-corners p-5 sm:p-7 border border-purple-900/60 space-y-6 print:hidden"
-          aria-labelledby="oracle-workstation-heading"
-        >
-          {/* Header Bar */}
-          <div className="flex items-center justify-between border-b border-purple-900/40 pb-3">
-            <div className="flex items-center gap-2.5">
-              <Sparkles className="w-4 h-4 text-purple-400" />
-              <div>
-                <h2
-                  id="oracle-workstation-heading"
-                  className="font-serif text-lg font-bold uppercase tracking-[0.16em] text-transparent bg-clip-text bg-gradient-to-r from-bone to-purple-200"
-                >
-                  The Oracle
-                </h2>
-                <span className="text-[9px] font-mono tracking-widest text-purple-300/70 uppercase block">
-                  A CONVERSATION. A RITUAL. A WAY FORWARD.
-                </span>
-              </div>
+    <div className="w-full">
+      {/* =========================================================================
+          FOCUSED 3-STEP RITUAL BUILDER WORKSTATION
+          Matches the "Create a Ritual" mockup design:
+          - Ornate celestial outer frame with corner filigree
+          - Header: Moon phase ribbon + "CREATE A RITUAL" + subtitle
+          - 3-Step indicator: 1 INTENTION -> 2 INGREDIENTS -> 3 YOUR RITUAL
+          ========================================================================= */}
+      <section
+        aria-label="Create a Ritual Workstation"
+        className="relative w-full rounded-2xl sanctum-celestial-frame p-5 sm:p-8 lg:p-10 shadow-[0_0_80px_rgba(76,29,149,0.35)] overflow-hidden sanctum-grain"
+      >
+        {/* Ornate Corner Flourishes */}
+        <div className="absolute top-3 left-3 opacity-60 pointer-events-none">
+          <TarotCornerFlourish className="w-4 h-4 text-purple-400" />
+        </div>
+        <div className="absolute top-3 right-3 opacity-60 pointer-events-none rotate-90">
+          <TarotCornerFlourish className="w-4 h-4 text-purple-400" />
+        </div>
+        <div className="absolute bottom-3 left-3 opacity-60 pointer-events-none -rotate-90">
+          <TarotCornerFlourish className="w-4 h-4 text-purple-400" />
+        </div>
+        <div className="absolute bottom-3 right-3 opacity-60 pointer-events-none rotate-180">
+          <TarotCornerFlourish className="w-4 h-4 text-purple-400" />
+        </div>
+
+        {/* Outer Filigree Inset Line */}
+        <div className="absolute inset-3 rounded-[1rem] border border-purple-700/25 pointer-events-none" />
+
+        <div className="relative z-10 max-w-3xl mx-auto space-y-6 sm:space-y-8">
+          
+          {/* Header & Celestial Moon Phase Ribbon */}
+          <div className="text-center space-y-2">
+            {/* Celestial Moon Phase Ribbon */}
+            <div className="flex items-center justify-center gap-2 text-purple-300/70 py-1">
+              <span className="text-[9px]">· · ·</span>
+              <span className="text-xs">☽</span>
+              <span className="text-sm">)</span>
+              <span className="text-base text-purple-200">◯</span>
+              <span className="text-sm">(</span>
+              <span className="text-xs">☾</span>
+              <span className="text-[9px]">· · ·</span>
             </div>
 
+            <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200 uppercase drop-shadow-[0_0_16px_rgba(192,132,252,0.4)]">
+              CREATE A RITUAL
+            </h1>
+            <p className="font-serif text-xs sm:text-sm text-purple-200/90 tracking-wide">
+              A simple ritual for what you need, using what you have.
+            </p>
+          </div>
+
+          {/* 3-Step Flow Indicator */}
+          <div className="flex items-center justify-center max-w-md mx-auto pt-1 pb-4">
+            {/* Step 1: Intention */}
             <button
               type="button"
-              onClick={handleClear}
-              className="text-[10px] font-mono uppercase tracking-widest text-purple-400 hover:text-white px-2 py-1 rounded bg-[#130726] border border-purple-900/50 hover:border-purple-600 transition-colors"
+              onClick={() => setCurrentStep(1)}
+              className="flex flex-col items-center gap-1.5 focus:outline-none cursor-pointer group"
             >
-              Clear
+              <div
+                className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-mono font-bold transition-all ${
+                  currentStep === 1
+                    ? "bg-purple-900 border-2 border-purple-400 text-white shadow-[0_0_15px_rgba(168,85,247,0.7)]"
+                    : currentStep > 1
+                    ? "bg-purple-950/80 border border-purple-600 text-purple-300"
+                    : "bg-[#110526] border border-purple-900/60 text-purple-400/60"
+                }`}
+              >
+                1
+              </div>
+              <span
+                className={`text-[9.5px] font-mono uppercase tracking-[0.18em] transition-colors ${
+                  currentStep === 1 ? "text-purple-200 font-bold" : "text-purple-400/70 group-hover:text-purple-300"
+                }`}
+              >
+                INTENTION
+              </span>
+            </button>
+
+            {/* Connecting Line 1-2 */}
+            <div className={`flex-1 h-0.5 mx-3 transition-colors ${currentStep >= 2 ? "bg-purple-600" : "bg-purple-900/40"}`} />
+
+            {/* Step 2: Ingredients */}
+            <button
+              type="button"
+              onClick={() => {
+                if (selectedIntention || customIntention.trim()) {
+                  setCurrentStep(2);
+                }
+              }}
+              disabled={!selectedIntention && !customIntention.trim()}
+              className="flex flex-col items-center gap-1.5 focus:outline-none disabled:cursor-not-allowed cursor-pointer group"
+            >
+              <div
+                className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-mono font-bold transition-all ${
+                  currentStep === 2
+                    ? "bg-purple-900 border-2 border-purple-400 text-white shadow-[0_0_15px_rgba(168,85,247,0.7)]"
+                    : currentStep > 2
+                    ? "bg-purple-950/80 border border-purple-600 text-purple-300"
+                    : "bg-[#110526] border border-purple-900/60 text-purple-400/60"
+                }`}
+              >
+                2
+              </div>
+              <span
+                className={`text-[9.5px] font-mono uppercase tracking-[0.18em] transition-colors ${
+                  currentStep === 2 ? "text-purple-200 font-bold" : "text-purple-400/70 group-hover:text-purple-300"
+                }`}
+              >
+                INGREDIENTS
+              </span>
+            </button>
+
+            {/* Connecting Line 2-3 */}
+            <div className={`flex-1 h-0.5 mx-3 transition-colors ${currentStep === 3 ? "bg-purple-600" : "bg-purple-900/40"}`} />
+
+            {/* Step 3: Your Ritual */}
+            <button
+              type="button"
+              onClick={() => {
+                if (workingResult?.working) {
+                  setCurrentStep(3);
+                }
+              }}
+              disabled={!workingResult?.working && !isSynthesizing}
+              className="flex flex-col items-center gap-1.5 focus:outline-none disabled:cursor-not-allowed cursor-pointer group"
+            >
+              <div
+                className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-mono font-bold transition-all ${
+                  currentStep === 3
+                    ? "bg-purple-900 border-2 border-purple-400 text-white shadow-[0_0_15px_rgba(168,85,247,0.7)]"
+                    : "bg-[#110526] border border-purple-900/60 text-purple-400/60"
+                }`}
+              >
+                3
+              </div>
+              <span
+                className={`text-[9.5px] font-mono uppercase tracking-[0.18em] transition-colors ${
+                  currentStep === 3 ? "text-purple-200 font-bold" : "text-purple-400/70 group-hover:text-purple-300"
+                }`}
+              >
+                YOUR RITUAL
+              </span>
             </button>
           </div>
 
-          {/* Interactive Occult Conversation Stream */}
-          <div className="space-y-4 font-sans text-xs">
-            {/* Oracle Message 1: Intention prompt */}
-            <div className="flex items-start gap-3">
-              <div className="shrink-0 pt-0.5">
-                <SanctumCrest className="w-7 h-7 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]" />
+          {/* ===================================================================
+              STEP 1: INTENTION FLOW (What would you like help with?)
+              =================================================================== */}
+          {currentStep === 1 && (
+            <div className="space-y-6 animate-in fade-in duration-200">
+              <div className="space-y-3">
+                <span className="font-mono text-xs uppercase tracking-[0.2em] text-purple-200 font-semibold block">
+                  WHAT WOULD YOU LIKE HELP WITH?
+                </span>
+
+                {/* Grid of supported intentions with clear selected states */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                  {SANCTUM_INTENTIONS.map((intent) => {
+                    const isSelected = selectedIntention === intent.key;
+                    return (
+                      <button
+                        key={intent.key}
+                        type="button"
+                        onClick={() => {
+                          setSelectedIntention(intent.key);
+                          if (!customIntention.trim()) {
+                            setCustomIntention(intent.description);
+                          }
+                        }}
+                        className={`p-3 rounded-xl border flex items-center justify-between text-left transition-all duration-200 cursor-pointer ${
+                          isSelected
+                            ? "bg-gradient-to-r from-purple-900/80 to-[#2c0e5b] border-purple-400 text-white shadow-[0_0_18px_rgba(168,85,247,0.4)]"
+                            : "bg-[#0d041e] border-purple-900/60 text-purple-200 hover:border-purple-600 hover:bg-[#16062f]"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div className={`p-1.5 rounded-lg ${isSelected ? "text-purple-200 bg-purple-950" : "text-purple-400 bg-[#16072e]"}`}>
+                            {getIntentIcon(intent.key)}
+                          </div>
+                          <span className="font-serif text-sm font-semibold tracking-wide">
+                            {intent.label}
+                          </span>
+                        </div>
+                        {isSelected && <Check className="w-4 h-4 text-purple-300 shrink-0" />}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="flex-1 p-3.5 rounded-xl rounded-tl-sm bg-[#110722] border border-purple-900/40 space-y-1.5 shadow-subtle">
-                <p className="font-serif text-sm font-semibold text-purple-100">
-                  What are you trying to call in?
+
+              {/* Editable Field for User's Own Words */}
+              <div className="space-y-2 pt-2">
+                <label
+                  htmlFor="ritual-intention-input"
+                  className="font-mono text-xs uppercase tracking-[0.2em] text-purple-200 font-semibold block"
+                >
+                  DESCRIBE YOUR INTENTION
+                </label>
+                <div className="rounded-xl border-2 border-purple-800/80 bg-[#0d041e] focus-within:border-purple-400 focus-within:ring-2 focus-within:ring-purple-400/30 p-3 shadow-inner">
+                  <textarea
+                    id="ritual-intention-input"
+                    rows={3}
+                    value={customIntention}
+                    onChange={(e) => setCustomIntention(e.target.value)}
+                    placeholder="E.g., A calm start to the day after a restless night..."
+                    className="w-full bg-transparent text-sm text-bone placeholder-purple-300/40 outline-none font-serif resize-none leading-relaxed"
+                  />
+                </div>
+                <p className="text-[11px] font-mono text-purple-300/60">
+                  Choose a suggestion above or write your own specific intention.
                 </p>
-                <p className="text-bone-muted leading-relaxed">
-                  Be as honest or as simple as you like. Intention is a thread — I&apos;ll help you weave it.
-                </p>
+              </div>
+
+              {/* Primary Next Action */}
+              <div className="pt-4 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep(2)}
+                  disabled={!selectedIntention && !customIntention.trim()}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 border border-purple-300/60 text-white text-xs sm:text-sm font-serif font-bold tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(168,85,247,0.55)] active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <span>NEXT: INGREDIENTS</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
+          )}
 
-            {/* User Intention Choice */}
-            {selectedIntention ? (
-              <div className="flex items-start justify-end gap-2 pl-8">
-                <div className="p-3 rounded-xl rounded-tr-sm bg-gradient-to-r from-[#581c87] to-[#7e22ce] border border-purple-400/60 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] space-y-1 max-w-sm">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="font-serif text-xs font-bold uppercase tracking-wider text-purple-100">
-                      {selectedIntention === "Something Else"
-                        ? customIntention || "Custom Intention"
-                        : SANCTUM_INTENTIONS.find((i) => i.key === selectedIntention)?.label}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedIntention(null)}
-                      className="text-purple-300 hover:text-white"
-                      title="Change Intention"
-                    >
-                      <Edit2 className="w-3 h-3" />
-                    </button>
-                  </div>
-                  <p className="text-[11px] text-purple-100/90 font-serif italic">
-                    {selectedIntention === "Something Else"
-                      ? customIntention || "Custom intention defined"
-                      : SANCTUM_INTENTIONS.find((i) => i.key === selectedIntention)?.description}
+          {/* ===================================================================
+              STEP 2: INGREDIENTS FLOW (Available items + custom entries)
+              =================================================================== */}
+          {currentStep === 2 && (
+            <div className="space-y-6 animate-in fade-in duration-200">
+              {/* Intention Summary with Edit Link */}
+              <div className="p-3.5 rounded-xl bg-[#0e0520] border border-purple-800/60 flex items-center justify-between gap-3 text-xs">
+                <div className="min-w-0">
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-purple-400 block font-semibold">
+                    YOUR INTENTION
+                  </span>
+                  <p className="font-serif text-sm text-bone truncate mt-0.5">
+                    &ldquo;{customIntention.trim() || selectedIntention || "General intention"}&rdquo;
                   </p>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep(1)}
+                  className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#17082e] hover:bg-purple-900 border border-purple-700/60 text-purple-200 text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer"
+                >
+                  <Edit2 className="w-3 h-3 text-purple-400" />
+                  <span>Edit</span>
+                </button>
               </div>
-            ) : (
-              /* Intention Picker Drawer */
-              <div className="pl-10 space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-purple-300/80 block">
-                  Select your primary intention:
+
+              {/* Available Ingredients */}
+              <div className="space-y-3">
+                <span className="font-mono text-xs uppercase tracking-[0.2em] text-purple-200 font-semibold block">
+                  AVAILABLE PANTRY &amp; HERBAL INGREDIENTS
                 </span>
-                <div className="grid grid-cols-2 gap-2">
-                  {SANCTUM_INTENTIONS.map((item) => (
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {SANCTUM_INGREDIENT_CATALOG.map((item) => {
+                    const isSelected = selectedIngredients.includes(item.name);
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => handleToggleIngredient(item.name)}
+                        className={`p-2.5 rounded-xl border flex items-center justify-between text-left transition-all duration-200 cursor-pointer ${
+                          isSelected
+                            ? "bg-gradient-to-r from-purple-900/80 to-[#2b0c58] border-purple-400 text-white shadow-[0_0_12px_rgba(168,85,247,0.35)]"
+                            : "bg-[#0d041e] border-purple-900/60 text-purple-200 hover:border-purple-600 hover:bg-[#15062c]"
+                        }`}
+                      >
+                        <span className="font-serif text-xs sm:text-sm font-semibold truncate pr-1">
+                          {item.name}
+                        </span>
+                        {isSelected && <Check className="w-3.5 h-3.5 text-purple-300 shrink-0" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Custom Ingredients */}
+              <div className="space-y-2 pt-1">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-purple-200 font-semibold">
+                    CUSTOM INGREDIENTS
+                  </span>
+                  {!showCustomInput && (
                     <button
-                      key={item.key}
                       type="button"
-                      onClick={() => setSelectedIntention(item.key)}
-                      className="p-2.5 rounded-lg bg-[#0e071a] border border-purple-900/60 hover:border-purple-400 hover:bg-[#1a0c33] text-left text-bone transition-all group"
+                      onClick={() => setShowCustomInput(true)}
+                      className="inline-flex items-center gap-1 text-[11px] font-mono uppercase text-purple-300 hover:text-white transition-colors cursor-pointer"
                     >
-                      <span className="font-serif text-xs font-semibold text-purple-200 group-hover:text-white block">
-                        {item.label}
-                      </span>
-                      <span className="text-[9px] text-bone-dim line-clamp-1 font-sans">
-                        {item.description.split(",")[0]}
-                      </span>
+                      <Plus className="w-3 h-3 text-purple-400" />
+                      <span>Add Ingredient</span>
                     </button>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => setSelectedIntention("Something Else")}
-                    className="p-2.5 rounded-lg bg-[#0e071a] border border-purple-900/60 hover:border-purple-400 hover:bg-[#1a0c33] text-left text-bone transition-all group col-span-2 sm:col-span-1"
-                  >
-                    <span className="font-serif text-xs font-semibold text-purple-300 group-hover:text-white block">
-                      ✦ Something Else
-                    </span>
-                    <span className="text-[9px] text-bone-dim font-sans">Specify custom friction</span>
-                  </button>
+                  )}
                 </div>
 
-                {selectedIntention === "Something Else" && (
-                  <div className="pt-2 relative">
+                {showCustomInput && (
+                  <div className="flex items-center gap-2 p-1.5 rounded-xl border border-purple-700/80 bg-[#0d041e]">
                     <input
                       type="text"
-                      maxLength={280}
-                      value={customIntention}
-                      onChange={(e) => setCustomIntention(e.target.value.slice(0, 280))}
-                      placeholder="e.g. Cleansing bad energy after leaving a toxic job..."
-                      className="w-full px-3 py-2 pr-16 rounded-lg bg-[#0a0414] border border-purple-700 text-xs text-bone focus:outline-none focus:border-purple-400"
+                      value={customInputText}
+                      onChange={(e) => setCustomInputText(e.target.value)}
+                      placeholder="E.g., Mint, Cinnamon stick, Obsidian..."
+                      className="w-full bg-transparent px-2 text-xs sm:text-sm text-bone placeholder-purple-300/40 outline-none font-serif"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleAddCustomIngredient();
+                        }
+                      }}
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-purple-400/60 pointer-events-none">
-                      {customIntention.length}/280
-                    </span>
+                    <button
+                      type="button"
+                      onClick={handleAddCustomIngredient}
+                      className="shrink-0 px-3 py-1 rounded-lg bg-purple-700 hover:bg-purple-600 text-white text-xs font-mono uppercase tracking-wider"
+                    >
+                      Add
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowCustomInput(false)}
+                      className="p-1 text-purple-400 hover:text-purple-200"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+
+                {customIngredients.length > 0 && (
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {customIngredients.map((item) => (
+                      <span
+                        key={item}
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-950/80 border border-purple-500/80 text-purple-200 text-xs font-serif shadow-sm"
+                      >
+                        <span>{item}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveCustomIngredient(item)}
+                          className="hover:text-white"
+                          aria-label={`Remove ${item}`}
+                        >
+                          <X className="w-3 h-3 text-purple-400" />
+                        </button>
+                      </span>
+                    ))}
                   </div>
                 )}
               </div>
-            )}
 
-            {/* Oracle Message 2: Pantry instruction */}
-            <div className="flex items-start gap-3 pt-2">
-              <div className="shrink-0 pt-0.5">
-                <SanctumCrest className="w-7 h-7 drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]" />
+              {/* Optional Situation Details */}
+              <div className="space-y-1.5 pt-1">
+                <label
+                  htmlFor="situation-note-input"
+                  className="font-mono text-xs uppercase tracking-[0.2em] text-purple-200/90 font-semibold block"
+                >
+                  ADDITIONAL SITUATION CONTEXT (OPTIONAL)
+                </label>
+                <input
+                  id="situation-note-input"
+                  type="text"
+                  value={situationNote}
+                  onChange={(e) => setSituationNote(e.target.value)}
+                  placeholder="E.g., Doing this before an important morning interview..."
+                  className="w-full p-2.5 rounded-xl border border-purple-900/60 bg-[#0d041e] text-xs sm:text-sm text-bone placeholder-purple-300/40 outline-none font-serif focus:border-purple-500"
+                />
               </div>
-              <div className="flex-1 p-3.5 rounded-xl rounded-tl-sm bg-[#110722] border border-purple-900/40 space-y-1.5 shadow-subtle">
-                <p className="font-serif text-sm font-semibold text-purple-100">
-                  Good. Clarity opens doors.
-                </p>
-                <p className="text-bone-muted leading-relaxed">
-                  What ingredients do you have available? Select any that resonate — or tell me what&apos;s on hand.
-                </p>
-              </div>
-            </div>
-          </div>
 
-          {/* YOUR PANTRY SECTION (matching reference layout and pill styling) */}
-          <div className="space-y-3 pt-2 border-t border-purple-900/40">
-            <div className="flex items-center justify-between text-xs font-mono uppercase tracking-widest text-purple-300">
-              <span className="font-bold flex items-center gap-1.5">
-                <span>Your Pantry</span>
-              </span>
-              <span className="text-[10px] text-purple-400/70">Select all that apply</span>
-            </div>
-
-            {/* 12 Core Household Pantry Pills Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {SANCTUM_INGREDIENT_CATALOG.map((item) => {
-                const isSelected = selectedIngredients.includes(item.name);
-                return (
-                  <button
-                    key={item.name}
-                    type="button"
-                    onClick={() => toggleIngredient(item.name)}
-                    className={`px-3 py-2 rounded-lg text-xs font-mono tracking-wide flex items-center justify-between gap-1.5 transition-all text-left ${
-                      isSelected
-                        ? "sanctum-pill-active"
-                        : "sanctum-pill"
-                    }`}
-                    aria-pressed={isSelected}
-                  >
-                    <span className="font-medium truncate">{item.name}</span>
-                    <span className="text-[10px] opacity-75 shrink-0">
-                      {isSelected ? "✓" : "＋"}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Custom Pantry Items Adder */}
-            <div className="pt-1 space-y-2">
-              {customIngredients.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {customIngredients.map((item) => (
-                    <span
-                      key={item}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#170a2c] border border-purple-600/60 text-[11px] font-mono text-purple-200"
-                    >
-                      <span>{item}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveCustomIngredient(item)}
-                        className="hover:text-red-400 text-purple-400 p-0.5 rounded transition-colors ml-1 focus:outline-none focus:ring-1 focus:ring-purple-400 cursor-pointer"
-                        aria-label={`Remove ${item}`}
-                      >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {showCustomInput ? (
-                <div className="flex items-center gap-2 pt-1">
-                  <input
-                    type="text"
-                    maxLength={50}
-                    value={customInputText}
-                    onChange={(e) => setCustomInputText(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleAddCustomIngredient()}
-                    placeholder="e.g. Iron nail, pen & paper, chalk..."
-                    className="flex-1 px-3 py-2 rounded-lg bg-[#0a0414] border border-purple-700 text-xs font-sans text-bone focus:outline-none focus:border-purple-400"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleAddCustomIngredient}
-                    className="px-3 py-2 rounded-lg bg-purple-900 hover:bg-purple-800 text-white text-xs font-mono uppercase tracking-wider"
-                  >
-                    Add
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowCustomInput(false)}
-                    className="p-2 text-bone-dim hover:text-white"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              ) : (
+              {/* Action Buttons: Back & Create Ritual */}
+              <div className="pt-4 flex items-center justify-between gap-3">
                 <button
                   type="button"
-                  onClick={() => setShowCustomInput(true)}
-                  className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-purple-300/80 hover:text-purple-200 transition-colors pt-1"
+                  onClick={() => setCurrentStep(1)}
+                  className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#120626] hover:bg-[#1f0b3e] border border-purple-800 text-purple-300 hover:text-white text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer"
                 >
-                  <Plus className="w-3 h-3 text-purple-400" />
-                  <span>Add something else from your cupboard</span>
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>Back to Intention</span>
                 </button>
-              )}
-            </div>
-          </div>
 
-          {/* Situation Context Note Box */}
-          <div className="space-y-1.5 pt-2 relative">
-            <textarea
-              rows={2}
-              maxLength={280}
-              value={situationNote}
-              onChange={(e) => setSituationNote(e.target.value.slice(0, 280))}
-              placeholder="Add a note about your situation, a specific question, or any other details..."
-              className="w-full px-3.5 py-2.5 pb-6 rounded-lg bg-[#090312] border border-purple-900/60 focus:border-purple-400 text-xs font-sans text-bone placeholder-bone-dim/60 focus:outline-none leading-relaxed resize-none"
-            />
-            <span className="absolute right-3 bottom-2 text-[10px] font-mono text-purple-400/60 pointer-events-none">
-              {situationNote.length}/280
-            </span>
-          </div>
-
-          {/* Validation Alert */}
-          {workingResult && !workingResult.success && (
-            <div className="p-4 rounded-xl bg-[#1c0828] border border-red-900/80 space-y-2 text-xs">
-              <div className="flex items-center gap-2 text-red-300 font-mono font-bold uppercase tracking-wider">
-                <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
-                <span>Working Incongruence</span>
-              </div>
-              <p className="text-red-200 font-sans leading-relaxed">
-                {workingResult.errorMessage}
-              </p>
-              {workingResult.suggestions && workingResult.suggestions.length > 0 && (
-                <ul className="text-bone-muted space-y-1 list-disc list-inside pt-1">
-                  {workingResult.suggestions.map((s, idx) => (
-                    <li key={idx}>{s}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-
-          {/* Big Electric Purple Action Button */}
-          <div className="pt-2">
-            <button
-              type="button"
-              onClick={handleSynthesize}
-              disabled={
-                !selectedIntention ||
-                (selectedIngredients.length === 0 && customIngredients.length === 0) ||
-                isSynthesizing
-              }
-              className="w-full py-3.5 px-6 rounded-xl sanctum-btn-electric font-mono text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              {isSynthesizing ? (
-                <>
-                  <Sparkles className="w-4 h-4 animate-spin text-purple-200" />
-                  <span>CONSULTING THE ORACLE...</span>
-                </>
-              ) : (
-                <>
-                  <span>CONSULT THE ORACLE</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          </div>
-
-          {/* Micro Telemetry & Privacy Badges at bottom of Left Panel */}
-          <div className="pt-3 border-t border-purple-900/40 grid grid-cols-1 sm:grid-cols-2 gap-3 text-[10px] font-mono text-purple-300/80">
-            <div className="flex items-start gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-purple-400 shrink-0 mt-0.5" />
-              <div>
-                <span className="font-bold uppercase tracking-wider block text-purple-200">1 Free Working</span>
-                <span className="text-bone-dim text-[9px]">New users receive complimentary ritual synthesis.</span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-2">
-              <Lock className="w-3.5 h-3.5 text-purple-400 shrink-0 mt-0.5" />
-              <div>
-                <span className="font-bold uppercase tracking-wider block text-purple-200">Private & Ephemeral</span>
-                <span className="text-bone-dim text-[9px]">Your consultations are stored locally in your browser.</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================================================
-            RIGHT COLUMN: GOTHIC RITUAL PARCHMENT DOCUMENT
-           ========================================================================= */}
-        <section
-          className="lg:col-span-6 xl:col-span-7 sanctum-parchment rounded-xl p-6 sm:p-9 border border-purple-500/40 relative shadow-2xl min-h-[550px] flex flex-col justify-between print:w-full print:border-none print:shadow-none print:p-0"
-          aria-labelledby="ritual-parchment-heading"
-        >
-          {/* Ornate Corner Flourishes */}
-          <div className="absolute top-2 left-2 pointer-events-none opacity-60">
-            <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
-          </div>
-          <div className="absolute top-2 right-2 pointer-events-none opacity-60 rotate-90">
-            <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
-          </div>
-          <div className="absolute bottom-2 left-2 pointer-events-none opacity-60 -rotate-90">
-            <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
-          </div>
-          <div className="absolute bottom-2 right-2 pointer-events-none opacity-60 rotate-180">
-            <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
-          </div>
-
-          {/* DORMANT STATE: Waiting for synthesis */}
-          {!workingResult?.working && (
-            <div className="my-auto text-center space-y-6 py-12 px-4 relative z-10">
-              <div className="w-20 h-20 mx-auto rounded-full bg-[#130728] border border-purple-600/50 flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.35)]">
-                <SanctumCrest className="w-14 h-14" />
-              </div>
-
-              <div className="space-y-2 max-w-md mx-auto">
-                <div className="text-[10px] font-mono uppercase tracking-[0.24em] text-purple-300">
-                  Ritual Chamber // Standby
-                </div>
-                <h3
-                  id="ritual-parchment-heading"
-                  className="font-serif text-2xl sm:text-3xl font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200"
+                <button
+                  type="button"
+                  onClick={handleSynthesize}
+                  disabled={selectedIngredients.length === 0 && customIngredients.length === 0}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 border border-purple-300/60 text-white text-xs sm:text-sm font-serif font-bold tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(168,85,247,0.55)] active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  The Grimoire Parchment
-                </h3>
-                <p className="text-xs sm:text-sm text-bone-muted font-sans leading-relaxed">
-                  Select your core intention and pantry materials on the left console, then consult the Oracle. Your customized working, correspondences, and sequential ritual steps will crystallize here.
-                </p>
-              </div>
-
-              <div className="flex justify-center pt-2">
-                <MoonPhaseStrip />
+                  <Sparkles className="w-4 h-4" />
+                  <span>CREATE RITUAL</span>
+                </button>
               </div>
             </div>
           )}
 
-          {/* ACTIVE SYNTHESIZED WORKING STATE */}
-          {workingResult?.working && (
-            <article className="space-y-8 relative z-10">
-              {/* Parchment Title Header */}
-              <header className="border-b border-purple-900/40 pb-6 space-y-3">
-                <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300">
-                  <span>A WORKING FOR</span>
-                  <div className="flex items-center gap-2">
-                    {workingSource === "oracle-ai" ? (
-                      <span className="px-2 py-0.5 rounded bg-purple-900/50 border border-purple-400/50 text-[9px] text-purple-200 font-bold">
-                        ✦ Oracle Formulated
-                      </span>
-                    ) : (
-                      <span className="px-2 py-0.5 rounded bg-purple-950/60 border border-purple-800 text-[9px] text-bone-dim">
-                        Written Tradition
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-                  <div className="space-y-1 flex-1">
-                    <h2
-                      id="ritual-parchment-heading"
-                      className="font-serif text-2xl sm:text-4xl font-bold uppercase tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200 drop-shadow-[0_0_12px_rgba(192,132,252,0.3)] leading-tight"
-                    >
-                      {workingResult.working.title}
-                    </h2>
-                    <p className="text-xs sm:text-sm font-serif italic text-purple-200/90 leading-relaxed">
-                      “{workingResult.working.intentionDescription}”
+          {/* ===================================================================
+              STEP 3: YOUR RITUAL FLOW (Synthesized ritual as main content)
+              =================================================================== */}
+          {currentStep === 3 && (
+            <div className="space-y-6 animate-in fade-in duration-200">
+              
+              {/* Loading State */}
+              {isSynthesizing && (
+                <div className="p-10 rounded-xl bg-[#0c031a] border border-purple-800/80 text-center space-y-4">
+                  <Sparkles className="w-8 h-8 text-purple-400 animate-spin mx-auto" />
+                  <div className="space-y-1">
+                    <h3 className="font-serif text-lg font-bold text-bone">Synthesizing Your Ritual</h3>
+                    <p className="text-xs font-mono text-purple-300/80 uppercase tracking-widest">
+                      Consulting correspondences &amp; grounding in your intention...
                     </p>
                   </div>
-
-                  {/* Top Right Atmospheric Crest Thumbnail */}
-                  <div className="hidden sm:block shrink-0 p-2 rounded-xl bg-[#090312] border border-purple-800/60 text-center">
-                    <SanctumCrest className="w-10 h-10 mx-auto" />
-                    <span className="text-[8px] font-mono tracking-widest text-purple-300 block uppercase mt-1">
-                      SANCTUM
-                    </span>
-                  </div>
-                </div>
-
-                <div className="pt-1">
-                  <MoonPhaseStrip />
-                </div>
-              </header>
-
-              {/* INTENTION */}
-              <section className="space-y-1.5" aria-labelledby="parchment-intention">
-                <h4 id="parchment-intention" className="text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300 font-bold">
-                  Intention
-                </h4>
-                <p className="text-xs text-bone font-sans leading-relaxed bg-[#0b0517] p-3 rounded-lg border border-purple-900/40">
-                  {workingResult.working.intentionDescription}
-                </p>
-              </section>
-
-              {/* INGREDIENTS */}
-              <section className="space-y-2" aria-labelledby="parchment-ingredients">
-                <h4 id="parchment-ingredients" className="text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300 font-bold">
-                  Ingredients
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {workingResult.working.youWillNeed.map((item, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1 rounded-md bg-[#130728] border border-purple-700/60 text-xs font-mono text-purple-100 flex items-center gap-1.5"
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-                      <span>{item}</span>
-                    </span>
-                  ))}
-                  {workingResult.working.unmappedCustomIngredients?.map((item, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1 rounded-md bg-[#0e061c] border border-purple-900/60 text-xs font-mono text-bone-muted italic"
-                    >
-                      + {item}
-                    </span>
-                  ))}
-                </div>
-              </section>
-
-              {/* CORRESPONDENCES (Why each ingredient was chosen) */}
-              <section className="space-y-2.5" aria-labelledby="parchment-correspondences">
-                <h4 id="parchment-correspondences" className="text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300 font-bold">
-                  Correspondences
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {workingResult.working.whyThese.map((wt, idx) => (
-                    <div
-                      key={idx}
-                      className="p-3 rounded-lg bg-[#0c051a] border border-purple-900/50 space-y-1 text-xs"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-serif font-bold text-purple-200">{wt.name}</span>
-                        <span className="text-[9px] font-mono uppercase tracking-wider text-purple-400/80">
-                          {wt.correspondence.split(",")[0]}
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-bone-muted font-sans leading-relaxed">
-                        {wt.reason}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* PREPARATION */}
-              <section className="space-y-2" aria-labelledby="parchment-prep">
-                <h4 id="parchment-prep" className="text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300 font-bold">
-                  Preparation
-                </h4>
-                <ol className="space-y-1.5 text-xs text-bone-muted font-sans">
-                  {workingResult.working.preparation.map((prep, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="font-mono text-purple-400 font-semibold">{idx + 1}.</span>
-                      <span>{prep}</span>
-                    </li>
-                  ))}
-                </ol>
-              </section>
-
-              {/* RITUAL STEPS */}
-              <section className="space-y-3" aria-labelledby="parchment-ritual-steps">
-                <h4 id="parchment-ritual-steps" className="text-[10px] font-mono uppercase tracking-[0.22em] text-purple-300 font-bold">
-                  Working Mechanics
-                </h4>
-                <div className="space-y-2.5">
-                  {workingResult.working.theWorking.map((step) => (
-                    <div
-                      key={step.step}
-                      className="p-3.5 rounded-lg bg-[#0e061c] border border-purple-900/50 space-y-1 text-xs"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-purple-950 border border-purple-500 text-purple-200 font-mono text-[10px] font-bold flex items-center justify-center shrink-0">
-                          {step.step}
-                        </span>
-                        <h5 className="font-serif font-bold text-purple-100 uppercase tracking-wide">
-                          {step.title}
-                        </h5>
-                      </div>
-                      <p className="text-bone-muted font-sans leading-relaxed pl-7">
-                        {step.instruction}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* CLOSING & REFLECTION */}
-              <section className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <div className="p-3.5 rounded-lg bg-[#0b0416] border border-purple-900/40 space-y-1 text-xs">
-                  <span className="text-[9px] font-mono uppercase tracking-widest text-purple-400 font-bold block">
-                    Closing Spoken Boundary
-                  </span>
-                  <p className="text-bone-muted font-sans italic leading-relaxed">
-                    {workingResult.working.closing}
-                  </p>
-                </div>
-
-                <div className="p-3.5 rounded-lg bg-[#0b0416] border border-purple-900/40 space-y-1 text-xs">
-                  <span className="text-[9px] font-mono uppercase tracking-widest text-purple-400 font-bold block">
-                    Practical Psychological Action
-                  </span>
-                  <p className="text-bone-muted font-sans leading-relaxed">
-                    {workingResult.working.carryThisWithYou}
-                  </p>
-                </div>
-              </section>
-
-              {/* SAFETY NOTES */}
-              {workingResult.working.safetyNotes && (
-                <div className="p-3 rounded-lg bg-[#14061e] border border-purple-900/60 flex items-start gap-2.5 text-xs text-purple-200/90 font-sans">
-                  <ShieldAlert className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
-                  <p>{workingResult.working.safetyNotes}</p>
                 </div>
               )}
 
-              {/* BOTTOM ACTIONS BAR (Save to Grimoire / Printable Card) */}
-              <div className="pt-6 border-t border-purple-900/40 flex flex-wrap items-center justify-between gap-3 print:hidden">
-                <button
-                  type="button"
-                  onClick={handleSaveToGrimoire}
-                  disabled={isSaved}
-                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-mono text-xs uppercase tracking-wider font-bold transition-all ${
-                    isSaved
-                      ? "bg-purple-950/80 text-purple-300 border border-purple-600/50 cursor-default"
-                      : "sanctum-btn-electric"
-                  }`}
-                >
-                  {isSaved ? (
-                    <>
-                      <Check className="w-3.5 h-3.5" />
-                      <span>Saved to Grimoire</span>
-                    </>
-                  ) : (
-                    <>
-                      <BookOpen className="w-3.5 h-3.5" />
-                      <span>Save to Grimoire</span>
-                    </>
-                  )}
-                </button>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={handlePrintCard}
-                    className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-[#120722] hover:bg-[#1c0c36] border border-purple-900/60 text-purple-300 hover:text-white text-xs font-mono uppercase tracking-wider transition-colors"
-                  >
-                    <Printer className="w-3.5 h-3.5 text-purple-400" />
-                    <span>Printable Card</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setWorkingResult(null);
-                      setIsSaved(false);
-                    }}
-                    className="p-2.5 rounded-lg bg-[#120722] hover:bg-[#1c0c36] border border-purple-900/60 text-purple-400 hover:text-white transition-colors"
-                    title="Formulate Another Working"
-                  >
-                    <RefreshCw className="w-3.5 h-3.5" />
-                  </button>
+              {/* Validation / Incongruence Error State */}
+              {workingResult && !workingResult.success && (
+                <div className="p-6 rounded-xl bg-[#160515] border border-rose-800/80 space-y-4 text-center">
+                  <AlertTriangle className="w-8 h-8 text-rose-400 mx-auto" />
+                  <div className="space-y-1">
+                    <h3 className="font-serif text-lg font-bold text-rose-200">Unable to Formulate Ritual</h3>
+                    <p className="text-sm font-serif text-rose-200/90 leading-relaxed">
+                      {workingResult.errorMessage}
+                    </p>
+                  </div>
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setCurrentStep(2)}
+                      className="px-5 py-2 rounded-lg bg-rose-950 border border-rose-600 text-rose-200 text-xs font-mono uppercase tracking-wider"
+                    >
+                      Adjust Ingredients
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </article>
+              )}
+
+              {/* Rendered Ritual Result */}
+              {workingResult?.working && !isSynthesizing && (() => {
+                const w = workingResult.working;
+                return (
+                  <article className="space-y-6">
+                    {/* Fallback Notice if active */}
+                    {fallbackNotice && (
+                      <div className="p-3.5 rounded-lg bg-[#15092a] border border-amber-800/60 text-amber-200/90 text-xs font-mono space-y-1.5">
+                        <div className="flex items-center gap-2">
+                          <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+                          <span className="font-sans text-xs text-amber-100">{fallbackNotice}</span>
+                        </div>
+                        {fallbackDiagnostic && process.env.NODE_ENV !== "production" && (
+                          <div className="pl-6 text-[10px] text-amber-400/70 font-mono">
+                            Diagnostic: {fallbackDiagnostic}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Ritual Title & Intention */}
+                    <div className="p-6 rounded-xl bg-[#0e041e] border border-purple-800/70 shadow-inner space-y-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-purple-900/50 pb-3">
+                        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-purple-300 font-semibold">
+                          CONSECRATED RITUAL
+                        </span>
+                        <span className="text-[10px] font-mono text-purple-400/80">
+                          {workingSource === "oracle-ai" ? "Live Oracle Guidance" : "Traditional Formulation"}
+                        </span>
+                      </div>
+
+                      <h2 className="font-serif text-xl sm:text-2xl font-bold text-bone">
+                        {w.title.replace(/^A WORKING FOR/i, "A RITUAL FOR").replace(/^SOVEREIGN WORKING FOR/i, "SOVEREIGN RITUAL FOR")}
+                      </h2>
+                      <p className="font-serif text-sm text-purple-200/90 leading-relaxed">
+                        {w.intentionDescription}
+                      </p>
+                    </div>
+
+                    {/* Ingredients & Why These with Visual Witchr Thumbnails */}
+                    <div className="p-6 rounded-xl bg-[#0e041e] border border-purple-800/70 space-y-4">
+                      <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-purple-200 font-semibold">
+                        WHY THESE INGREDIENTS
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        {w.whyThese.map((wt) => {
+                          const asset = getSanctumIngredientImage(wt.name);
+                          return (
+                            <div
+                              key={wt.name}
+                              className="p-3.5 rounded-xl bg-[#15072e] border border-purple-900/60 flex items-start gap-3 sm:gap-4 shadow-sm"
+                            >
+                              {asset ? (
+                                <img
+                                  src={asset.image}
+                                  alt={asset.altText}
+                                  className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg border border-purple-700/60 shadow-md shrink-0 bg-[#0d031c]"
+                                  loading="lazy"
+                                />
+                              ) : (
+                                <div
+                                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg bg-[#110524] border border-purple-800/70 flex items-center justify-center shrink-0 shadow-inner"
+                                  aria-hidden="true"
+                                >
+                                  <Sprout className="w-7 h-7 text-purple-300/70" />
+                                </div>
+                              )}
+                              <div className="space-y-1 min-w-0">
+                                <span className="font-serif text-sm sm:text-base font-bold text-bone block truncate">
+                                  {wt.name}
+                                </span>
+                                <p className="text-xs font-sans text-bone-muted sm:text-bone leading-relaxed">
+                                  {wt.reason}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Excluded Ingredients with Clear Honest Reasons */}
+                      {w.leftOutIngredients && w.leftOutIngredients.length > 0 && (
+                        <div className="pt-2 border-t border-purple-900/40 space-y-2">
+                          <span className="font-mono text-[11px] uppercase tracking-wider text-purple-300/80 block font-semibold">
+                            LEFT OUT OF THIS RITUAL
+                          </span>
+                          <div className="space-y-1.5">
+                            {w.leftOutIngredients.map((item) => (
+                              <div key={item.name} className="text-xs font-sans text-purple-300/90 flex items-start gap-2">
+                                <span className="font-semibold text-bone">{item.name}:</span>
+                                <span>{item.reason}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* What You'll Need & Before You Begin */}
+                    {(() => {
+                      const isToolLine = (line: string) =>
+                        /^(supporting household tools|additional household tools|tools needed|have a |prepare a )/i.test(line.trim());
+
+                      const extractedTools = w.preparation
+                        .filter(isToolLine)
+                        .map((line) => line.replace(/^(supporting household tools:?|additional household tools:?|tools needed:?)\s*/i, "").trim());
+
+                      const defaultTools: string[] = [];
+                      defaultTools.push("A shallow dish, small saucer, or clean coaster (to keep materials contained)");
+                      if (w.youWillNeed.some((i) => /bay/i.test(i))) {
+                        defaultTools.push("A pen or pencil for writing on the bay leaf or petition paper");
+                      }
+                      if (w.youWillNeed.some((i) => /water/i.test(i))) {
+                        defaultTools.push("A small clean cup or bowl for water");
+                      }
+                      if (w.youWillNeed.some((i) => /candle/i.test(i))) {
+                        defaultTools.push("A sturdy heat-resistant candleholder or dish");
+                      }
+
+                      const toolsList = extractedTools.length > 0 ? extractedTools : defaultTools;
+
+                      const beforeYouBeginSteps = w.preparation.filter(
+                        (line) => !isToolLine(line) && !line.toLowerCase().startsWith("selected ingredients") && !line.toLowerCase().startsWith("gather your")
+                      );
+
+                      if (beforeYouBeginSteps.length === 0) {
+                        beforeYouBeginSteps.push(
+                          "Clear your immediate counter or table of digital devices, clutter, and wrappers.",
+                          "Take three slow, measured breaths to center your attention before beginning."
+                        );
+                      }
+
+                      return (
+                        <div className="p-6 rounded-xl bg-[#0e041e] border border-purple-800/70 space-y-4">
+                          <div className="space-y-3">
+                            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-purple-200 font-semibold">
+                              WHAT YOU&apos;LL NEED
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs font-sans">
+                              <div className="p-3.5 rounded-lg bg-[#14072b] border border-purple-900/60 space-y-2">
+                                <span className="font-mono text-[10px] uppercase tracking-wider text-purple-300 font-bold block">
+                                  Selected Ingredients (Modest Quantities)
+                                </span>
+                                <ul className="space-y-1.5 text-bone leading-relaxed">
+                                  {w.youWillNeed.map((item) => (
+                                    <li key={item} className="flex items-center gap-2">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0" />
+                                      <span className="font-medium">{item}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              <div className="p-3.5 rounded-lg bg-[#14072b] border border-purple-900/60 space-y-2">
+                                <span className="font-mono text-[10px] uppercase tracking-wider text-purple-300 font-bold block">
+                                  Supporting Household Tools
+                                </span>
+                                <ul className="space-y-1.5 text-bone leading-relaxed">
+                                  {toolsList.map((tool, idx) => (
+                                    <li key={idx} className="flex items-start gap-2">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0 mt-1.5" />
+                                      <span>{tool}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Before You Begin */}
+                          {beforeYouBeginSteps.length > 0 && (
+                            <div className="pt-3 border-t border-purple-900/40 space-y-2">
+                              <h4 className="font-mono text-[11px] uppercase tracking-wider text-purple-200 font-semibold">
+                                BEFORE YOU BEGIN
+                              </h4>
+                              <ol className="space-y-1.5 text-xs sm:text-sm font-sans text-bone-muted sm:text-bone leading-relaxed">
+                                {beforeYouBeginSteps.map((prep, idx) => (
+                                  <li key={idx} className="flex items-start gap-2.5">
+                                    <span className="font-mono text-purple-400 font-bold shrink-0">{idx + 1}.</span>
+                                    <span>{prep}</span>
+                                  </li>
+                                ))}
+                              </ol>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
+
+                    {/* Ritual Steps */}
+                    <div className="p-6 rounded-xl bg-[#0e041e] border border-purple-800/70 space-y-4">
+                      <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-purple-200 font-semibold">
+                        STEPS
+                      </h3>
+                      <ol className="space-y-4">
+                        {w.theWorking.map((step, idx) => (
+                          <li key={idx} className="flex items-start gap-3 text-sm leading-relaxed">
+                            <span className="shrink-0 w-6 h-6 rounded-full bg-purple-950 border border-purple-700 flex items-center justify-center font-mono text-xs text-purple-300 mt-0.5">
+                              {step.step || idx + 1}
+                            </span>
+                            <div className="pt-0.5 space-y-1 min-w-0">
+                              <h4 className="font-serif font-bold text-purple-100">{step.title}</h4>
+                              <p className="text-bone-muted sm:text-bone font-sans text-xs sm:text-sm leading-relaxed">
+                                {step.instruction}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+
+                    {/* Closing & Carry Into Your Day */}
+                    <div className="p-6 rounded-xl bg-[#0e041e] border border-purple-800/70 space-y-4">
+                      {w.closing && (
+                        <div className="space-y-1">
+                          <h4 className="font-mono text-[10px] uppercase tracking-wider text-purple-300 font-semibold">
+                            CLOSING THE RITUAL
+                          </h4>
+                          <p className="font-sans text-xs sm:text-sm text-bone-muted sm:text-bone leading-relaxed">
+                            {w.closing}
+                          </p>
+                        </div>
+                      )}
+
+                      {w.carryThisWithYou && (
+                        <div className="pt-2 border-t border-purple-900/40 space-y-1">
+                          <h4 className="font-mono text-[10px] uppercase tracking-wider text-purple-300 font-semibold">
+                            CARRY IT INTO YOUR DAY
+                          </h4>
+                          <p className="font-sans text-xs sm:text-sm text-purple-200 leading-relaxed italic">
+                            &ldquo;{w.carryThisWithYou}&rdquo;
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Safety Guidance */}
+                      {w.safetyNotes && (
+                        <div className="pt-2 border-t border-purple-900/40 p-3 rounded-lg bg-[#180820] border border-amber-900/60 flex items-start gap-2.5 text-xs text-amber-200/90 font-sans">
+                          <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                          <span>{w.safetyNotes}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Action Buttons: Save to Grimoire, Print, Edit Ritual */}
+                    <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setCurrentStep(2)}
+                        className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#120626] hover:bg-[#1f0b3e] border border-purple-800 text-purple-300 hover:text-white text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                        <span>Edit Ingredients / Intention</span>
+                      </button>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={handlePrint}
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#120626] hover:bg-[#1f0b3e] border border-purple-800/80 text-purple-300 hover:text-white text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer"
+                        >
+                          <Printer className="w-3.5 h-3.5" />
+                          <span>Print</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={handleSaveToGrimoire}
+                          disabled={isSaved}
+                          className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-serif text-xs sm:text-sm font-bold tracking-wider uppercase transition-all cursor-pointer ${
+                            isSaved
+                              ? "bg-purple-950 border border-purple-500/60 text-purple-300 opacity-90 cursor-default"
+                              : "bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 border border-purple-300/60 text-white shadow-[0_0_16px_rgba(168,85,247,0.5)] active:scale-[0.98]"
+                          }`}
+                        >
+                          {isSaved ? (
+                            <>
+                              <Check className="w-4 h-4 text-emerald-400" />
+                              <span>Saved to Grimoire</span>
+                            </>
+                          ) : (
+                            <>
+                              <BookOpen className="w-4 h-4" />
+                              <span>Save to Grimoire</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })()}
+            </div>
           )}
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
   );
 }

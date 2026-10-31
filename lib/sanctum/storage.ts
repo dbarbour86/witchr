@@ -1,4 +1,4 @@
-import { getEffectiveLocalDateString } from "./progression";
+import { getEffectiveLocalDateString, recordGrimoireSave } from "./progression";
 
 export interface SanctumDailyReading {
   id: string;
@@ -70,6 +70,7 @@ export interface SanctumWorkingRecord {
   reflectionPrompt: string;
   practicalTakeaway: string;
   safetyNotes?: string;
+  leftOutIngredients?: { name: string; reason: string }[];
   savedToGrimoire: boolean;
 }
 
@@ -193,6 +194,9 @@ export function saveReadingToGrimoire(reading: SanctumGrimoireReading): boolean 
           saveDailyReading({ ...currentDaily, savedToGrimoire: true });
         }
       }
+
+      // Count saved grimoire entries toward Grimoire Keeper mark
+      recordGrimoireSave(reading.id);
 
       window.dispatchEvent(new CustomEvent("sanctum:grimoire-updated", { detail: { action: "save", id: reading.id } }));
       return true;

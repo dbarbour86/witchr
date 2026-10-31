@@ -12,6 +12,7 @@ import type {
   OracleSuggestedAction,
 } from "./types";
 import { checkWorkingSafety } from "./safety";
+import { SANCTUM_INGREDIENT_CATALOG } from "@/content/sanctum-workings";
 
 export interface ValidationResult<T> {
   valid: boolean;
@@ -62,12 +63,57 @@ export function validateTarotOutput(input: unknown): ValidationResult<OracleTaro
 }
 
 /**
+ * Checks whether an ingredient is actively referenced in ritual steps.
+ * Matches full name or distinctive words to ensure active physical inclusion.
+ */
+function isIngredientInSteps(ingredientName: string, steps: OracleRitualStep[]): boolean {
+  const normName = ingredientName.trim().toLowerCase();
+  const stepTexts = steps.map((s) => `${s.title} ${s.instruction}`.toLowerCase());
+
+  // Direct phrase match
+  if (stepTexts.some((text) => text.includes(normName))) {
+    return true;
+  }
+
+  // Significant token match (e.g. "White Candle" -> "candle", "Black Pepper" -> "pepper")
+  const stopWords = new Set(["and", "the", "for", "with", "item", "white", "black", "fresh", "dried", "pinch"]);
+  const tokens = normName
+    .split(/[\s_-]+/)
+    .map((t) => t.trim())
+    .filter((t) => t.length > 2 && !stopWords.has(t));
+
+  if (tokens.length > 0) {
+    if (stepTexts.some((text) => tokens.some((token) => text.includes(token)))) {
+      return true;
+    }
+  }
+
+  // Domain associations for specific catalog items
+  if (normName.includes("candle") && stepTexts.some((t) => t.includes("candle") || t.includes("flame") || t.includes("wick"))) {
+    return true;
+  }
+  if (normName.includes("bay") && stepTexts.some((t) => t.includes("bay"))) {
+    return true;
+  }
+  if (normName.includes("salt") && stepTexts.some((t) => t.includes("salt") || t.includes("brine"))) {
+    return true;
+  }
+  if (normName.includes("pepper") && stepTexts.some((t) => t.includes("pepper"))) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
  * Validates Create a Working AI Output
- * Enforces schema integrity, approved ingredients constraint, and physical safety rules.
+ * Enforces schema integrity, approved ingredients constraint, ingredient accounting,
+ * morning/bedtime timing consistency, and physical safety rules.
  */
 export function validateWorkingOutput(
   input: unknown,
-  approvedIngredientNames: string[]
+  approvedIngredientNames: string[],
+  options?: { timingCue?: "morning" | "bedtime" | "general" }
 ): ValidationResult<OracleWorkingOutput> {
   if (!input || typeof input !== "object" || Array.isArray(input)) {
     return { valid: false, error: "Working output is not an object" };
@@ -89,6 +135,22 @@ export function validateWorkingOutput(
   }
 
   const normalizedApproved = approvedIngredientNames.map((n) => n.trim().toLowerCase());
+
+  // Verify title does not hallucinate unapproved ingredients from the catalog
+  const lowerTitle = String(record.title).toLowerCase();
+  for (const catalogItem of SANCTUM_INGREDIENT_CATALOG) {
+    const itemLower = catalogItem.name.toLowerCase();
+    const isApproved = normalizedApproved.some(
+      (a) => a === itemLower || a.includes(itemLower) || itemLower.includes(a)
+    );
+    if (!isApproved && lowerTitle.includes(itemLower)) {
+      return {
+        valid: false,
+        error: `Title mentions ingredient '${catalogItem.name}' which was not selected by the user.`,
+      };
+    }
+  }
+
   const validatedReasons: OracleIngredientReason[] = [];
 
   for (const item of record.ingredientReasons) {
@@ -173,17 +235,107 @@ export function validateWorkingOutput(
     ? record.safetyNotes.trim()
     : null;
 
+  // Left out ingredients
+  let validatedLeftOut: { name: string; reason: string }[] | undefined = undefined;
+  if (Array.isArray(record.leftOutIngredients)) {
+    validatedLeftOut = [];
+    for (const item of record.leftOutIngredients) {
+      if (item && typeof item === "object") {
+        const lo = item as Record<string, unknown>;
+        if (typeof lo.name === "string" && typeof lo.reason === "string" && lo.name.trim() && lo.reason.trim()) {
+          validatedLeftOut.push({
+            name: lo.name.trim(),
+            reason: lo.reason.trim(),
+          });
+        }
+      }
+    }
+  }
+
+  // 1. Confirm every ingredient listed in ingredientReasons has an active physical role in ritualSteps
+  for (const reason of validatedReasons) {
+    if (!isIngredientInSteps(reason.name, validatedRitual)) {
+      return {
+        valid: false,
+        error: `Ingredient '${reason.name}' is listed in ingredientReasons but not given an active role in ritualSteps. Mentioning it in the explanation alone is insufficient.`,
+      };
+    }
+  }
+
+  // 2. Confirm every approved ingredient is accounted for (either active in steps or in leftOutIngredients)
+  for (const approved of approvedIngredientNames) {
+    const normApproved = approved.trim().toLowerCase();
+    const inReasons = validatedReasons.some((r) => {
+      const normR = r.name.trim().toLowerCase();
+      return normR.includes(normApproved) || normApproved.includes(normR);
+    });
+    const inLeftOut = (validatedLeftOut || []).some((lo) => {
+      const normL = lo.name.trim().toLowerCase();
+      return normL.includes(normApproved) || normApproved.includes(normL);
+    });
+
+    if (!inReasons && !inLeftOut) {
+      return {
+        valid: false,
+        error: `Missing ingredient: '${approved}' was omitted without an active role in ritualSteps or an explanation in leftOutIngredients.`,
+      };
+    }
+  }
+
+  // Runtime Timing Consistency Check:
+  // Enforce that AI responses honor timing cues (morning cannot have bedtime/sleep advice, and vice versa).
+  const timingCue = options?.timingCue || "general";
+  const allInstructionText = [
+    record.title,
+    record.intentionDescription,
+    ...validatedPrep,
+    ...validatedRitual.map((s) => `${s.title} ${s.instruction}`),
+    record.closing,
+    optionalTiming || "",
+    record.reflectionPrompt,
+    record.practicalTakeaway,
+  ].join(" ");
+
+  if (timingCue === "morning") {
+    // Check for inappropriate bedtime/sleep advice in morning workings
+    const bedtimePattern = /\b(before (going to )?(bed|sleep)|bedtime routine|wind down for sleep|fall asleep|sleep well|good night|nighttime rest|tonight before sleep)\b/i;
+    if (bedtimePattern.test(allInstructionText)) {
+      return {
+        valid: false,
+        error: "Runtime validation failed: AI response violated morning timing cue by including bedtime or sleep instructions.",
+      };
+    }
+  } else if (timingCue === "bedtime") {
+    // Check for inappropriate morning waking advice in bedtime workings
+    const wakingPattern = /\b(upon waking|start (of|to) your day|morning routine|as your day begins|waking up in the morning)\b/i;
+    if (wakingPattern.test(allInstructionText)) {
+      return {
+        valid: false,
+        error: "Runtime validation failed: AI response violated bedtime timing cue by including morning waking instructions.",
+      };
+    }
+  }
+
+  // Ensure morning optionalTiming does not mandate sunrise or dawn
+  let sanitizedTiming = optionalTiming;
+  if (timingCue === "morning" && sanitizedTiming) {
+    if (/\b(must be (done )?at (sunrise|dawn)|strictly at dawn|require(s)? sunrise)\b/i.test(sanitizedTiming)) {
+      sanitizedTiming = "Optional tradition: Conduct during the opening hour of your day or upon waking, establishing an unhurried, grounded cadence before daily demands arrive.";
+    }
+  }
+
   const candidate: OracleWorkingOutput = {
-    title: record.title.trim(),
-    intentionDescription: record.intentionDescription.trim(),
+    title: (record.title as string).trim(),
+    intentionDescription: (record.intentionDescription as string).trim(),
     ingredientReasons: validatedReasons,
     preparationSteps: validatedPrep,
     ritualSteps: validatedRitual,
-    closing: record.closing.trim(),
-    optionalTiming,
-    reflectionPrompt: record.reflectionPrompt.trim(),
-    practicalTakeaway: record.practicalTakeaway.trim(),
+    closing: (record.closing as string).trim(),
+    optionalTiming: sanitizedTiming,
+    reflectionPrompt: (record.reflectionPrompt as string).trim(),
+    practicalTakeaway: (record.practicalTakeaway as string).trim(),
     safetyNotes,
+    leftOutIngredients: validatedLeftOut && validatedLeftOut.length > 0 ? validatedLeftOut : undefined,
   };
 
   // Run comprehensive physical safety checks

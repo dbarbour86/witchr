@@ -13,6 +13,7 @@ import {
 } from "@/lib/sanctum/storage";
 import { recordSanctumTestEvent } from "@/lib/sanctum/test-events";
 import { SanctumTarotCard, getSanctumTarotCardById } from "@/content/sanctum-tarot";
+import { getSanctumIngredientImage } from "@/content/sanctum-workings";
 import { SanctumCardFace } from "@/components/sanctum/SanctumCardFace";
 import {
   FourPointStar,
@@ -35,12 +36,15 @@ import {
   ShieldAlert,
   Printer,
   Calendar,
+  ChevronDown,
+  Sprout,
 } from "lucide-react";
 
 export function GrimoireLedgerClient() {
   const [mounted, setMounted] = useState(false);
   const [entries, setEntries] = useState<SanctumGrimoireReading[]>([]);
   const [filter, setFilter] = useState<"ALL" | "TAROT" | "WORKINGS">("ALL");
+  const [marksExpanded, setMarksExpanded] = useState(false);
 
   // Modal / Detail state
   const [activeEntry, setActiveEntry] = useState<SanctumGrimoireReading | null>(null);
@@ -199,39 +203,34 @@ export function GrimoireLedgerClient() {
   }
 
   return (
-    <div className="w-full space-y-8">
-      {/* Title & Archival Context */}
-      <div className="sanctum-panel sanctum-corners p-6 sm:p-8 border border-purple-900/60 relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6 print:hidden">
-        <div className="space-y-2 text-center sm:text-left">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#130728] border border-purple-800/60 text-purple-300 text-[10px] font-mono uppercase tracking-[0.24em]">
+    <div className="w-full space-y-6">
+      {/* Compact Title & Archival Introduction */}
+      <div className="sanctum-panel sanctum-corners p-5 sm:p-6 border border-purple-900/60 relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-4 print:hidden">
+        <div className="space-y-1.5 text-center sm:text-left">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-[#130728] border border-purple-800/60 text-purple-300 text-[10px] font-mono uppercase tracking-[0.24em]">
             <BookOpen className="w-3 h-3 text-purple-400" />
             <span>Private Sanctum Archive</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200 tracking-wide uppercase">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200 tracking-wide uppercase">
             My Grimoire Ledger
           </h1>
 
           <p className="text-xs sm:text-sm text-bone-muted font-sans leading-relaxed max-w-xl">
-            Your private occult archive within the Sanctum. Saved daily tarot reflections, three-card diagnostic spreads, and synthesized workings are preserved here for longitudinal study.
+            Your private occult archive within the Sanctum. Saved daily tarot reflections, three-card diagnostic spreads, and synthesized rituals are preserved here for longitudinal study.
           </p>
         </div>
 
-        <div className="hidden sm:flex flex-col items-center justify-center p-3.5 rounded-xl bg-[#0b0416] border border-purple-900/60 text-center shrink-0">
-          <SanctumCrest className="w-12 h-12 mb-1" />
-          <span className="text-[9px] font-mono tracking-widest text-purple-300 uppercase">
+        <div className="hidden sm:flex flex-col items-center justify-center p-3 rounded-xl bg-[#0b0416] border border-purple-900/60 text-center shrink-0">
+          <SanctumCrest className="w-10 h-10 mb-1" />
+          <span className="text-[8px] font-mono tracking-widest text-purple-300 uppercase">
             VAULT ACTIVE
           </span>
         </div>
       </div>
 
-      {/* Sanctum Progression & Marks Section */}
-      <div className="print:hidden">
-        <SanctumMarksSection />
-      </div>
-
-      {/* Grimoire Archival Records Filter & Grid */}
-      <div className="space-y-6 pt-4">
+      {/* Grimoire Archival Records Filter & Grid (Immediately Below Compact Intro) */}
+      <div className="space-y-6">
         {/* Section Heading & Filter Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-[#090314] border border-purple-900/50 print:hidden">
           {/* Subtle Stats */}
@@ -248,7 +247,7 @@ export function GrimoireLedgerClient() {
             <span className="text-purple-700">·</span>
             <span className="flex items-center gap-1.5">
               <span className="text-purple-200 font-bold">{workingsCount}</span>
-              <span>Workings</span>
+              <span>Rituals</span>
             </span>
           </div>
 
@@ -271,7 +270,7 @@ export function GrimoireLedgerClient() {
                 >
                   {tab === "ALL" && `All (${totalCount})`}
                   {tab === "TAROT" && `Tarot (${tarotCount})`}
-                  {tab === "WORKINGS" && `Workings (${workingsCount})`}
+                  {tab === "WORKINGS" && `Rituals (${workingsCount})`}
                 </button>
               );
             })}
@@ -291,8 +290,8 @@ export function GrimoireLedgerClient() {
               </h3>
               <p className="text-xs sm:text-sm text-bone-muted font-sans leading-relaxed">
                 {totalCount === 0
-                  ? "Saved daily tarot readings, diagnostic spreads, and customized workings will be recorded here once you perform active inquests in the Sanctum."
-                  : `You currently have no saved ${filter.toLowerCase()} records. Select another category or perform a new working.`}
+                  ? "Saved daily tarot readings, diagnostic spreads, and customized rituals will be recorded here once you perform active inquests in the Sanctum."
+                  : `You currently have no saved ${filter === "WORKINGS" ? "ritual" : filter.toLowerCase()} records. Select another category or perform a new ritual.`}
               </p>
             </div>
 
@@ -317,7 +316,7 @@ export function GrimoireLedgerClient() {
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#140826] hover:bg-[#1f0d38] text-purple-200 border border-purple-800 text-xs font-mono uppercase tracking-wider"
               >
                 <Wand2 className="w-3.5 h-3.5 text-purple-400" />
-                <span>Create a Working</span>
+                <span>Create a Ritual</span>
               </Link>
             </div>
           </div>
@@ -467,7 +466,7 @@ export function GrimoireLedgerClient() {
                       <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-purple-300">
                         <span className="flex items-center gap-1.5 font-bold">
                           <Wand2 className="w-3 h-3 text-purple-400" />
-                          <span>Working</span>
+                          <span>Ritual</span>
                         </span>
                         <span className="text-purple-400/80">{w.localDate}</span>
                       </div>
@@ -546,6 +545,39 @@ export function GrimoireLedgerClient() {
             </button>
           )}
         </div>
+
+        {/* Collapsed by default: Sacred Marks & Practice Streaks */}
+        <div className="mt-8 pt-6 border-t border-purple-900/40 print:hidden">
+          <button
+            type="button"
+            onClick={() => setMarksExpanded(!marksExpanded)}
+            className="w-full p-4 rounded-xl bg-[#090314] hover:bg-[#110624] border border-purple-900/60 hover:border-purple-500/60 text-left flex items-center justify-between transition-all group"
+            aria-expanded={marksExpanded}
+            aria-controls="sanctum-marks-collapsible"
+          >
+            <div className="flex items-center gap-3">
+              <SanctumCrest className="w-6 h-6 text-purple-400 group-hover:text-purple-300 shrink-0" />
+              <div>
+                <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-purple-200 group-hover:text-white">
+                  Sacred Marks &amp; Practice Streaks
+                </h3>
+                <p className="text-[11px] text-bone-dim font-sans">
+                  Track your spiritual consistency, milestone rewards, and unlocked Sacred Marks.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-mono text-purple-300 group-hover:text-purple-200 shrink-0">
+              <span>{marksExpanded ? "Collapse Marks" : "View Marks & Streaks"}</span>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${marksExpanded ? "rotate-180" : ""}`} />
+            </div>
+          </button>
+
+          {marksExpanded && (
+            <div id="sanctum-marks-collapsible" className="pt-4 animate-in fade-in duration-200">
+              <SanctumMarksSection />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* MODAL: Full Entry Detail View (Occult Folio Parchment) */}
@@ -572,11 +604,11 @@ export function GrimoireLedgerClient() {
               <TarotCornerFlourish className="w-5 h-5 text-purple-400" />
             </div>
 
-            {/* Close Button */}
+            {/* Accessible Close Button */}
             <button
               type="button"
               onClick={() => setActiveEntry(null)}
-              className="absolute top-4 right-4 p-2 rounded-lg text-purple-300 hover:text-white hover:bg-purple-950/60 border border-transparent hover:border-purple-800 transition-colors"
+              className="absolute top-4 right-4 p-2 rounded-lg text-purple-300 hover:text-white hover:bg-purple-950/60 border border-transparent hover:border-purple-800 transition-colors z-20 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer"
               aria-label="Close entry modal"
             >
               <X className="w-5 h-5" />
@@ -748,7 +780,7 @@ export function GrimoireLedgerClient() {
                 <div className="space-y-6">
                   <header className="border-b border-purple-900/40 pb-5 space-y-2">
                     <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-purple-300">
-                      <span>SYNTHESIZED WORKING</span>
+                      <span>SYNTHESIZED RITUAL</span>
                       <span>RECORD DATE: {w.localDate}</span>
                     </div>
 
@@ -764,56 +796,146 @@ export function GrimoireLedgerClient() {
                     </p>
                   </header>
 
-                  <div className="space-y-2">
-                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
-                      Tools & Ingredients
-                    </h4>
-                    <div className="flex flex-wrap gap-1.5">
-                      {w.usedIngredients.map((item, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2.5 py-1 rounded bg-[#130728] border border-purple-700/60 text-xs font-mono text-purple-100"
-                        >
-                          ✓ {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                  {/* What You'll Need (Distinguishing ingredients and tools) */}
+                  {(() => {
+                    const isToolLine = (line: string) =>
+                      /^(supporting household tools|additional household tools|tools needed|have a |prepare a )/i.test(line.trim());
 
-                  <div className="space-y-2">
-                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
-                      Symbolic Correspondences
-                    </h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {w.ingredientReasons.map((wt, idx) => (
-                        <div
-                          key={idx}
-                          className="p-3 rounded-lg bg-[#0c051a] border border-purple-900/50 space-y-1 text-xs"
-                        >
-                          <span className="font-serif font-bold text-purple-200 block">{wt.name}</span>
-                          <p className="text-[11px] text-bone-muted font-sans">{wt.reason}</p>
+                    const extractedTools = (w.preparationSteps || [])
+                      .filter(isToolLine)
+                      .map((line) => line.replace(/^(supporting household tools:?|additional household tools:?|tools needed:?)\s*/i, "").trim());
+
+                    const defaultTools: string[] = [];
+                    defaultTools.push("A shallow dish, small saucer, or clean coaster (to keep materials contained)");
+                    if (w.usedIngredients.some((i) => /bay/i.test(i))) {
+                      defaultTools.push("A pen or pencil for writing on the bay leaf or paper");
+                    }
+                    if (w.usedIngredients.some((i) => /water/i.test(i))) {
+                      defaultTools.push("A small cup or clean bowl for water");
+                    }
+                    if (w.usedIngredients.some((i) => /candle/i.test(i))) {
+                      defaultTools.push("A sturdy heat-resistant candleholder or dish");
+                    }
+
+                    const toolsList = extractedTools.length > 0 ? extractedTools : defaultTools;
+
+                    const beforeSteps = (w.preparationSteps || []).filter(
+                      (line) => !isToolLine(line) && !line.toLowerCase().startsWith("selected ingredients") && !line.toLowerCase().startsWith("gather your")
+                    );
+
+                    return (
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                            What You&apos;ll Need
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-sans">
+                            <div className="p-3 rounded-lg bg-[#0c051a] border border-purple-900/50 space-y-1.5">
+                              <span className="font-mono text-[10px] uppercase tracking-wider text-purple-300 font-bold block">
+                                Selected Ingredients
+                              </span>
+                              <ul className="space-y-1 text-bone">
+                                {w.usedIngredients.map((item, idx) => (
+                                  <li key={idx} className="flex items-center gap-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0" />
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="p-3 rounded-lg bg-[#0c051a] border border-purple-900/50 space-y-1.5">
+                              <span className="font-mono text-[10px] uppercase tracking-wider text-purple-300 font-bold block">
+                                Supporting Household Tools
+                              </span>
+                              <ul className="space-y-1 text-bone">
+                                {toolsList.map((tool, idx) => (
+                                  <li key={idx} className="flex items-start gap-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0 mt-1" />
+                                    <span>{tool}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
                         </div>
-                      ))}
+
+                        {beforeSteps.length > 0 && (
+                          <div className="space-y-2">
+                            <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                              Before You Begin
+                            </h4>
+                            <ol className="space-y-1 text-xs text-bone-muted font-sans">
+                              {beforeSteps.map((prep, idx) => (
+                                <li key={idx} className="flex items-start gap-2">
+                                  <span className="font-mono text-purple-400 font-semibold">{idx + 1}.</span>
+                                  <span>{prep}</span>
+                                </li>
+                              ))}
+                            </ol>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+
+                  {w.leftOutIngredients && w.leftOutIngredients.length > 0 && (
+                    <div className="space-y-2 p-3 rounded-lg bg-[#0e071c] border border-purple-900/50 text-xs">
+                      <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                        Left Out of This Ritual
+                      </h4>
+                      <ul className="space-y-1 text-xs text-bone-muted font-sans">
+                        {w.leftOutIngredients.map((item, idx) => (
+                          <li key={idx} className="flex flex-col sm:flex-row sm:items-baseline gap-1">
+                            <span className="font-semibold text-purple-200 font-mono text-[11px]">{item.name}:</span>
+                            <span>{item.reason}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Why These Ingredients with Visual Thumbnails */}
+                  <div className="space-y-2">
+                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                      Why These Ingredients
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {w.ingredientReasons.map((wt, idx) => {
+                        const asset = getSanctumIngredientImage(wt.name);
+                        return (
+                          <div
+                            key={idx}
+                            className="p-3 rounded-xl bg-[#0c051a] border border-purple-900/50 flex items-start gap-3 text-xs"
+                          >
+                            {asset ? (
+                              <img
+                                src={asset.image}
+                                alt={asset.altText}
+                                className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-lg border border-purple-700/60 shadow-md shrink-0 bg-[#0d031c]"
+                                loading="lazy"
+                              />
+                            ) : (
+                              <div
+                                className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-[#110524] border border-purple-800/70 flex items-center justify-center shrink-0 shadow-inner"
+                                aria-hidden="true"
+                              >
+                                <Sprout className="w-6 h-6 text-purple-300/70" />
+                              </div>
+                            )}
+                            <div className="space-y-1 min-w-0">
+                              <span className="font-serif font-bold text-purple-200 block truncate">{wt.name}</span>
+                              <p className="text-xs text-bone-muted sm:text-bone font-sans leading-relaxed">{wt.reason}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
-                      Preparation
-                    </h4>
-                    <ol className="space-y-1 text-xs text-bone-muted font-sans">
-                      {w.preparationSteps.map((prep, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <span className="font-mono text-purple-400 font-semibold">{idx + 1}.</span>
-                          <span>{prep}</span>
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-
-                  <div className="space-y-2">
-                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
-                      Working Mechanics
+                      Steps
                     </h4>
                     <div className="space-y-2">
                       {w.ritualSteps.map((step) => (
@@ -827,18 +949,45 @@ export function GrimoireLedgerClient() {
                             </span>
                             <span className="font-serif font-bold text-purple-100">{step.title}</span>
                           </div>
-                          <p className="text-bone-muted font-sans pl-6">{step.instruction}</p>
+                          <p className="text-bone-muted sm:text-bone font-sans pl-6 leading-relaxed">{step.instruction}</p>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-lg bg-[#0b0416] border border-purple-900/40 text-xs space-y-1">
-                    <span className="text-[9px] font-mono uppercase tracking-widest text-purple-400 font-bold block">
-                      Closing
-                    </span>
-                    <p className="text-bone-muted font-sans italic">{w.closing}</p>
-                  </div>
+                  {w.closing && (
+                    <div className="p-3 rounded-lg bg-[#0b0416] border border-purple-900/40 text-xs space-y-1">
+                      <span className="text-[9px] font-mono uppercase tracking-widest text-purple-400 font-bold block">
+                        Closing
+                      </span>
+                      <p className="text-bone-muted sm:text-bone font-sans italic leading-relaxed">{w.closing}</p>
+                    </div>
+                  )}
+
+                  {w.practicalTakeaway && (
+                    <div className="p-3 rounded-lg bg-[#0b0416] border border-purple-900/40 text-xs space-y-1">
+                      <span className="text-[9px] font-mono uppercase tracking-widest text-purple-300 font-bold block">
+                        Carry It Into Your Day
+                      </span>
+                      <p className="text-purple-200 font-sans italic leading-relaxed">&ldquo;{w.practicalTakeaway}&rdquo;</p>
+                    </div>
+                  )}
+
+                  {w.reflectionPrompt && (
+                    <div className="p-3 rounded-lg bg-[#0b0416] border border-purple-900/40 text-xs space-y-1">
+                      <span className="text-[9px] font-mono uppercase tracking-widest text-purple-300 font-bold block">
+                        Consider
+                      </span>
+                      <p className="text-purple-200 font-sans italic leading-relaxed">&ldquo;{w.reflectionPrompt}&rdquo;</p>
+                    </div>
+                  )}
+
+                  {w.safetyNotes && (
+                    <div className="p-3 rounded-lg bg-[#180820] border border-amber-900/60 flex items-start gap-2.5 text-xs text-amber-200/90 font-sans">
+                      <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                      <span>{w.safetyNotes}</span>
+                    </div>
+                  )}
                 </div>
               );
             })()}
@@ -922,7 +1071,7 @@ export function GrimoireLedgerClient() {
               <span>Purge Entire Local Ledger?</span>
             </div>
             <p className="text-xs text-bone-muted font-sans leading-relaxed">
-              This will permanently erase all saved daily tarot draws, three-card readings, and synthesized workings stored in this browser. Sacred Marks earned will also be reset.
+              This will permanently erase all saved daily tarot draws, three-card readings, and synthesized rituals stored in this browser. Sacred Marks earned will also be reset.
             </p>
             <div className="pt-2 flex items-center justify-end gap-3">
               <button

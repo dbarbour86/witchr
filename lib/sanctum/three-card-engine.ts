@@ -128,8 +128,8 @@ export interface OracleSynthesisResult {
 
 /**
  * Deterministic synthesis engine combining Situation, Challenge, and Guidance cards.
- * Bridges the three cards into a cohesive narrative and acknowledges the user's question if provided.
- * Reusable and designed to be replaced or augmented with AI in future phases.
+ * Bridges the three cards into a cohesive narrative grounded in each card's spread position,
+ * directly acknowledging the user's inquiry, and avoiding canned repetitive formulas.
  */
 export function generateOracleSynthesis(
   situation: SanctumTarotCard,
@@ -138,21 +138,32 @@ export function generateOracleSynthesis(
   question?: string
 ): OracleSynthesisResult {
   const cleanQuestion = question?.trim();
-  const inquiryLead = cleanQuestion
-    ? `In looking at your inquiry regarding “${cleanQuestion}”, the cards outline a clear diagnostic trajectory.`
-    : `The cards present a clear diagnostic trajectory across your current circumstance.`;
 
-  // Dynamic synthesis narrative based on card interplay
-  const patternParagraph = `${inquiryLead} At the base, ${situation.name} (${situation.numeral}) establishes your present ground truth: you are navigating ${situation.shortKeywords[0].toLowerCase()} and ${situation.shortKeywords[1].toLowerCase()}. However, the central friction is exposed by ${challenge.name} (${challenge.numeral}), where ${challenge.shortKeywords[0].toLowerCase()} risks hardening into an obstacle or unexamined pattern. Moving forward does not mean brute-forcing the friction, but pivoting through the counsel of ${guidance.name} (${guidance.numeral})—choosing ${guidance.shortKeywords[0].toLowerCase()} to restore clean sovereignty and intentional momentum.`;
+  // Position-specific contextual meanings
+  const situationMeaning = getCardPositionMeaning(situation, "situation");
+  const challengeMeaning = getCardPositionMeaning(challenge, "challenge");
+  const guidanceMeaning = getCardPositionMeaning(guidance, "guidance");
 
-  // Contextual reflective question synthesized from Challenge + Guidance
-  const considerPrompt = `How does the perspective in ${guidance.name} directly dissolve the friction you are encountering in ${challenge.name}?`;
+  // Dynamic contextual opening connecting spread
+  const opening = cleanQuestion
+    ? `Looking directly into your inquiry regarding “${cleanQuestion}”, the cards outline a clear diagnostic trajectory across your situation.`
+    : `The triad reveals a clear progression connecting your immediate ground truth to conscious resolution.`;
 
-  // Cohesive practical takeaway combining Guidance + Situation
-  const carryTakeaway = `Anchor your day in the posture of ${guidance.name}: ${guidance.practicalTakeaway}`;
+  // Connected narrative weaving Situation -> Challenge -> Guidance
+  const narrative = `${opening} At the foundation, ${situation.name} (${situation.numeral}) establishes your present ground reality: ${situationMeaning} Yet this dynamic encounters acute resistance in ${challenge.name} (${challenge.numeral}), where ${challengeMeaning.toLowerCase().replace(/^[a-z]/, (c) => c.toLowerCase())} Rather than reacting impulsively or attempting to force an outcome, the conscious pivot lies in ${guidance.name} (${guidance.numeral}): ${guidanceMeaning}`;
+
+  // Piercing psychological reflection tailored to the cards
+  const considerPrompt = cleanQuestion
+    ? `Regarding “${cleanQuestion}”, how does adopting the stance of ${guidance.name} dissolve the specific friction highlighted by ${challenge.name}?`
+    : `Where is the tension in ${challenge.name} inviting you to step into the conscious maturity of ${guidance.name}?`;
+
+  // Concrete, non-generic practical takeaway
+  const carryTakeaway = cleanQuestion
+    ? `In direct response to “${cleanQuestion}”, align your actions with ${guidance.name}: ${guidance.practicalTakeaway}`
+    : `Carry the counsel of ${guidance.name} into your day: ${guidance.practicalTakeaway}`;
 
   return {
-    pattern: patternParagraph,
+    pattern: narrative,
     consider: considerPrompt,
     carryWithYou: carryTakeaway,
   };

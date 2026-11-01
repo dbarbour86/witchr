@@ -107,6 +107,46 @@ const POSITION_INTERPRETATIONS: Record<string, Record<SpreadPositionKey, string>
     guidance:
       "Subdue the roaring lion with gentle mastery. Meet hostility or inner doubt with steady breathing, calm dignity, and unshakable patience. Fortitude that refuses to panic always outlasts aggression.",
   },
+  card_09_hermit: {
+    situation:
+      "The Hermit marks a phase of necessary interiority and deliberate stepping back. The matter at hand cannot be resolved through collective consensus; it requires private examination and personal alignment.",
+    challenge:
+      "The risk is falling into defensive isolation or withdrawing out of bitterness rather than discernment. Alternatively, you may be terrified of quiet solitude because of the uncomfortable truths it surfaces.",
+    guidance:
+      "Carry your own lantern. Measure your next decision against your private internal standards rather than external approval. Dim the room, close the door, and proceed by the light of your own quiet integrity.",
+  },
+  card_10_wheel_of_fortune: {
+    situation:
+      "The Wheel of Fortune indicates that events have entered a phase of unavoidable cyclical shift. External conditions are in motion, altering the landscape and opening unexpected pathways.",
+    challenge:
+      "The friction lies in resisting the turn of the cycle or attempting to micromanage forces outside your control. Panicking during a dip or growing arrogant during a high will only destabilize your focus.",
+    guidance:
+      "Anchor yourself at the hub of the wheel. Adapt with fluid composure to unfolding developments, focusing on how you respond rather than fighting the turning tide.",
+  },
+  card_11_justice: {
+    situation:
+      "Justice highlights a circumstance governed by strict cause and effect, legal or ethical accountability, and objective balance. The truth of the matter is emerging without distortion.",
+    challenge:
+      "The difficulty is avoiding rationalization or making excuses for subtle imbalances. You may be seeking an easy compromise where absolute honesty and ethical clarity are demanded.",
+    guidance:
+      "Weigh all elements with cool, impartial discernment. Fulfill your commitments, acknowledge reality without self-deception, and make choices that preserve your fundamental integrity.",
+  },
+  card_12_hanged_man: {
+    situation:
+      "The Hanged Man marks a period of necessary suspension and liminal pause. Outward progress has temporarily slowed to allow a fundamental realignment of your perspective.",
+    challenge:
+      "The obstacle is struggling against unavoidable delays or slipping into resentful martyrdom. Forcing aggressive action right now will only tangle the threads further.",
+    guidance:
+      "Surrender the impulse to force an immediate outcome. Invert your viewpoint and view this pause as fertile gestation. Insight will arise naturally once you stop fighting the quiet.",
+  },
+  card_13_death: {
+    situation:
+      "Death indicates that a definite cycle, role, or dynamic has reached its natural conclusion. What is present is the quiet transition phase where old forms are giving way to make room for what comes next.",
+    challenge:
+      "The resistance lies in clinging to dead momentum out of comfort or fear of the unknown. Attempting to keep an expired pattern on artificial life support drains the vitality needed for new growth.",
+    guidance:
+      "Allow the severance to be clean. Acknowledge what has run its course with dignity and release your grip without drama or self-recrimination. Clearing the ground is itself the creative act.",
+  },
   card_14_temperance: {
     situation:
       "Temperance marks a dynamic requiring careful blending and continuous calibration. Different pressures, obligations, or emotions are in play, requiring steady hands to maintain equilibrium rather than sudden rupture.",
@@ -114,6 +154,30 @@ const POSITION_INTERPRETATIONS: Record<string, Record<SpreadPositionKey, string>
       "The friction of Temperance is the temptation toward all-or-nothing extremes or restless impatience. You may be trying to force a swift outcome when what is actually needed is the stamina to let elements distill in their own time.",
     guidance:
       "Practice conscious moderation and gradual adjustment. Do not swing between reactive poles; blend opposing considerations patiently. Small, steady corrections will yield far greater leverage than a dramatic overreaction.",
+  },
+  card_15_devil: {
+    situation:
+      "The Devil reveals where unconscious attachment, compulsive habit, or material anxiety has constrained your freedom. A dynamic appears unyielding, but the limitations are largely self-maintained.",
+    challenge:
+      "The danger is denying shadow motivations or convincing yourself that you have no viable choice. Ceding your sovereignty to fear, addictive comforts, or codependency keeps the collar locked.",
+    guidance:
+      "Recognize that the chains around your neck are loose. Acknowledge hidden desires and fears with radical self-honesty, and take one decisive step to withdraw energy from the draining trap.",
+  },
+  card_16_tower: {
+    situation:
+      "The Tower marks a moment where sudden truth, unexpected rupture, or lightning revelation fractures an obsolete structure. What was unstable cannot be sustained.",
+    challenge:
+      "The friction is frantic denial or trying to hold up collapsing battlements. Clinging to shattered assumptions creates panic where clean acceptance would bring relief.",
+    guidance:
+      "Step clear of the falling stones. Do not rush to rebuild the old facade; let the false foundation clear away. The collapse liberates your trapped vitality so you can build on solid rock.",
+  },
+  card_17_star: {
+    situation:
+      "The Star brings serene clarity, quiet hope, and restorative light after a tempest. The turbulent passage is behind you, opening space for pure inspiration and healing.",
+    challenge:
+      "The risk is cynicism or guarded despair that refuses to let hope take root. You may be anticipating disaster when what is genuinely arriving is quiet renewal.",
+    guidance:
+      "Allow yourself to replenish without defensive armor. Pour into what sustains you, trust the long-term arc of your vision, and move forward with unclouded, gentle faith.",
   },
   card_18_moon: {
     situation:
@@ -123,21 +187,29 @@ const POSITION_INTERPRETATIONS: Record<string, Record<SpreadPositionKey, string>
     guidance:
       "Navigate by instinct, not paranoia. Slow down and refuse to draw hasty conclusions while the fog is thick. Distinguish between what you actually know for certain and what your anxiety is projecting into the dark.",
   },
-  card_09_hermit: {
+  card_19_sun: {
     situation:
-      "The Hermit marks a phase of necessary interiority and deliberate stepping back. The matter at hand cannot be resolved through collective consensus; it requires private examination and personal alignment.",
+      "The Sun illuminates your circumstance with radiant clarity, warmth, and unmistakable vitality. What was concealed or doubtful is now exposed to open, generous light.",
     challenge:
-      "The risk is falling into defensive isolation or withdrawing out of bitterness rather than discernment. Alternatively, you may be terrified of quiet solitude because of the uncomfortable truths it surfaces.",
+      "The friction is second-guessing straightforward success or waiting for a hidden trap. Overcomplicating a genuinely favorable moment robs you of well-earned joy and momentum.",
     guidance:
-      "Carry your own lantern. Measure your next decision against your private internal standards rather than external approval. Dim the room, close the door, and proceed by the light of your own quiet integrity.",
+      "Step fully into the warmth. Express gratitude, communicate with open transparency, and channel your abundant energy directly into constructive, joyful action.",
   },
-  card_13_death: {
+  card_20_judgement: {
     situation:
-      "Death indicates that a definite cycle, role, or dynamic has reached its natural conclusion. What is present is the quiet transition phase where old forms are giving way to make room for what comes next.",
+      "Judgement signals a profound awakening and a definitive reckoning with the past. An old version of your life has concluded, calling you to rise into a higher echelon of responsibility.",
     challenge:
-      "The resistance lies in clinging to dead momentum out of comfort or fear of the unknown. Attempting to keep an expired pattern on artificial life support drains the vitality needed for new growth.",
+      "The obstacle is lingering guilt or listening to expired self-criticism. Second-guessing your worthiness or hesitating at the threshold keeps you trapped in the tomb of outgrown roles.",
     guidance:
-      "Allow the severance to be clean. Acknowledge what has run its course with dignity and release your grip without drama or self-recrimination. Clearing the ground is itself the creative act.",
+      "Answer the call without backward regret. Grant yourself and others full absolution for past stumbling, integrate the earned wisdom, and step forward into your authentic calling.",
+  },
+  card_21_world: {
+    situation:
+      "The World marks the triumphant completion of a major chapter and the integration of diverse lessons into harmonious mastery. You stand at the threshold of wholeness.",
+    challenge:
+      "The friction is faltering at the finish line or leaving loose ends untied out of fear of what comes next. Postponing final closure delays the onset of the next great spiral.",
+    guidance:
+      "Celebrate the milestone with gratitude and dignity. Recognize the sovereignty and competence you have gained, tie off remaining threads, and honor the completion of this cycle.",
   },
 };
 

@@ -30,9 +30,21 @@ export function GoogleSignInButton({
     setLoading(true);
 
     try {
-      // Build origin-relative redirect URL so both localhost and Vercel preview hosts work correctly
       const origin = typeof window !== "undefined" ? window.location.origin : "";
-      const callbackUrl = `${origin}/auth/callback?redirect=${encodeURIComponent(safeRedirect)}`;
+      
+      // Preserve intended return destination in a short-lived cookie and localStorage.
+      // Keeping the outgoing redirectTo clean (without query string) ensures exact string
+      // matching against the Supabase redirect allowlist on both localhost and Vercel preview,
+      // avoiding glob/wildcard mismatches that cause fallback to Site URL.
+      if (typeof document !== "undefined") {
+        const isSecure = typeof window !== "undefined" && window.location.protocol === "https:";
+        document.cookie = `sanctum_oauth_redirect=${encodeURIComponent(safeRedirect)}; path=/; max-age=600; SameSite=Lax${isSecure ? "; Secure" : ""}`;
+        try {
+          localStorage.setItem("witchr_sanctum_oauth_redirect", safeRedirect);
+        } catch {}
+      }
+
+      const callbackUrl = `${origin}/auth/callback`;
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
@@ -97,4 +109,3 @@ export function GoogleSignInButton({
     </button>
   );
 }
-

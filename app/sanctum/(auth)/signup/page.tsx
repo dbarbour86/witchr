@@ -84,7 +84,11 @@ function SignupForm() {
 
     setLoading(true);
     try {
-      const callbackUrl = `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(safeRedirect)}`;
+      if (typeof document !== "undefined") {
+        const isSecure = typeof window !== "undefined" && window.location.protocol === "https:";
+        document.cookie = `sanctum_oauth_redirect=${encodeURIComponent(safeRedirect)}; path=/; max-age=86400; SameSite=Lax${isSecure ? "; Secure" : ""}`;
+      }
+      const callbackUrl = `${window.location.origin}/auth/callback`;
 
       const { data, error } = await supabase.auth.signUp({
         email: email.trim(),

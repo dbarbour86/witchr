@@ -24,6 +24,13 @@ export function isSafeSanctumRedirect(target: string | null | undefined): boolea
 export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
+  // 0. Safety catch: If an auth code is delivered to root / or /sanctum (e.g. fallback from OAuth provider), forward to /auth/callback
+  if ((pathname === "/" || pathname === "/sanctum") && request.nextUrl.searchParams.has("code")) {
+    const callbackUrl = request.nextUrl.clone();
+    callbackUrl.pathname = "/auth/callback";
+    return NextResponse.redirect(callbackUrl);
+  }
+
   // 1. Initialize downstream response passing incoming request headers
   let response = NextResponse.next({
     request: {

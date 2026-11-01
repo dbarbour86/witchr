@@ -9,12 +9,19 @@ export async function GET(request: Request) {
   const code = searchParams.get("code");
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
-  const next = searchParams.get("next") || searchParams.get("redirect") || "/sanctum/chamber";
+
+  const cookieStore = await cookies();
+  const cookieRedirect = cookieStore.get("sanctum_oauth_redirect")?.value;
+  const rawNext =
+    searchParams.get("next") ||
+    searchParams.get("redirect") ||
+    cookieRedirect ||
+    "/sanctum/chamber";
 
   // Validate internal redirect
   const safeNext =
-    next.startsWith("/sanctum") && !next.startsWith("//") && !next.includes(":")
-      ? next
+    rawNext.startsWith("/sanctum") && !rawNext.startsWith("//") && !rawNext.includes(":")
+      ? rawNext
       : "/sanctum/chamber";
 
   // In proxy/serverless environments like Vercel preview, respect x-forwarded-host
@@ -32,21 +39,29 @@ export async function GET(request: Request) {
     errParams.set("error", authError);
     if (errorDescription) errParams.set("error_description", errorDescription);
     errParams.set("redirect", safeNext);
-    return NextResponse.redirect(`${baseUrl}/sanctum/login?${errParams.toString()}`);
+    const errResponse = NextResponse.redirect(`${baseUrl}/sanctum/login?${errParams.toString()}`);
+    errResponse.cookies.set("sanctum_oauth_redirect", "", { path: "/", maxAge: 0 });
+    return errResponse;
   }
 
   const { url, publishableKey, isConfigured } = getSupabaseEnv();
   if (!isConfigured || !url || !publishableKey) {
-    return NextResponse.redirect(`${baseUrl}/sanctum/login?error=setup_required`);
+    const setupErrResponse = NextResponse.redirect(`${baseUrl}/sanctum/login?error=setup_required`);
+    setupErrResponse.cookies.set("sanctum_oauth_redirect", "", { path: "/", maxAge: 0 });
+    return setupErrResponse;
   }
 
   // Pre-initialize redirect response so we can write cookies directly onto it with full original options
   const redirectResponse = NextResponse.redirect(targetRedirect);
-  const cookieStore = await cookies();
+
+  // Clear one-time oauth redirect cookie upon consumption
+  redirectResponse.cookies.set("sanctum_oauth_redirect", "", { path: "/", maxAge: 0 });
 
   // Forward existing cookies (e.g. guest session cookie) to preserve them
   cookieStore.getAll().forEach((c) => {
-    redirectResponse.cookies.set(c.name, c.value);
+    if (c.name !== "sanctum_oauth_redirect") {
+      redirectResponse.cookies.set(c.name, c.value);
+    }
   });
 
   const supabase = createServerClient(url, publishableKey, {
@@ -78,7 +93,9 @@ export async function GET(request: Request) {
     errParams.set("error", "code_exchange_failed");
     if (error.message) errParams.set("error_description", error.message);
     errParams.set("redirect", safeNext);
-    return NextResponse.redirect(`${baseUrl}/sanctum/login?${errParams.toString()}`);
+    const errRes = NextResponse.redirect(`${baseUrl}/sanctum/login?${errParams.toString()}`);
+    errRes.cookies.set("sanctum_oauth_redirect", "", { path: "/", maxAge: 0 });
+    return errRes;
   } else if (token_hash && type) {
     const { error } = await supabase.auth.verifyOtp({ token_hash, type });
     if (!error) {
@@ -89,12 +106,16 @@ export async function GET(request: Request) {
     errParams.set("error", "otp_verification_failed");
     if (error.message) errParams.set("error_description", error.message);
     errParams.set("redirect", safeNext);
-    return NextResponse.redirect(`${baseUrl}/sanctum/login?${errParams.toString()}`);
+    const errRes = NextResponse.redirect(`${baseUrl}/sanctum/login?${errParams.toString()}`);
+    errRes.cookies.set("sanctum_oauth_redirect", "", { path: "/", maxAge: 0 });
+    return errRes;
   }
 
   // Fallback to login with error
   const fallbackParams = new URLSearchParams();
   fallbackParams.set("error", "auth_callback_failed");
   fallbackParams.set("redirect", safeNext);
-  return NextResponse.redirect(`${baseUrl}/sanctum/login?${fallbackParams.toString()}`);
+  const fallbackRes = NextResponse.redirect(`${baseUrl}/sanctum/login?${fallbackParams.toString()}`);
+  fallbackRes.cookies.set("sanctum_oauth_redirect", "", { path: "/", maxAge: 0 });
+  return fallbackRes;
 }

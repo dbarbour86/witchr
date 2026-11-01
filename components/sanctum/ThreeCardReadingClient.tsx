@@ -20,7 +20,7 @@ import { recordSanctumTestEvent } from "@/lib/sanctum/test-events";
 import { SanctumCardBack } from "@/components/sanctum/SanctumCardBack";
 import { SanctumCardFace } from "@/components/sanctum/SanctumCardFace";
 import { FourPointStar, CelestialDivider, GrimoireStar, TarotCornerFlourish } from "@/components/OrnateFrames";
-import { SanctumCrest, MoonPhaseStrip } from "@/components/sanctum/SanctumSymbols";
+import { MoonPhaseStrip } from "@/components/sanctum/SanctumSymbols";
 import { Compass, BookOpen, Check, RefreshCw, ArrowRight, Printer, Sparkles, Eye } from "lucide-react";
 
 export function ThreeCardReadingClient() {

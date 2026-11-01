@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   SanctumGrimoireReading,
   SanctumDailyReading,
@@ -21,7 +22,7 @@ import {
   GrimoireStar,
   TarotCornerFlourish,
 } from "@/components/OrnateFrames";
-import { SanctumCrest, MoonPhaseStrip } from "@/components/sanctum/SanctumSymbols";
+import { MoonPhaseStrip } from "@/components/sanctum/SanctumSymbols";
 import { SanctumMarksSection } from "@/components/sanctum/SanctumMarksSection";
 import { SanctumLegacyImportBanner } from "@/components/sanctum/SanctumLegacyImportBanner";
 import {
@@ -274,7 +275,15 @@ export function GrimoireLedgerClient() {
         </div>
 
         <div className="hidden sm:flex flex-col items-center justify-center p-3 rounded-xl bg-[#0b0416] border border-purple-900/60 text-center shrink-0">
-          <SanctumCrest className="w-10 h-10 mb-1" />
+          <div className="relative w-10 h-10 mb-1 flex items-center justify-center">
+            <Image
+              src="/images/icon.png"
+              alt="Sanctum Vault"
+              width={40}
+              height={40}
+              className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(168,85,247,0.45)]"
+            />
+          </div>
           <span className="text-[8px] font-mono tracking-widest text-purple-300 uppercase">
             VAULT ACTIVE
           </span>
@@ -611,7 +620,15 @@ export function GrimoireLedgerClient() {
             aria-controls="sanctum-marks-collapsible"
           >
             <div className="flex items-center gap-3">
-              <SanctumCrest className="w-6 h-6 text-purple-400 group-hover:text-purple-300 shrink-0" />
+              <div className="relative w-6 h-6 shrink-0 flex items-center justify-center">
+                <Image
+                  src="/images/icon.png"
+                  alt="Sacred Marks"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6 object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]"
+                />
+              </div>
               <div>
                 <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-purple-200 group-hover:text-white">
                   Sacred Marks &amp; Practice Streaks

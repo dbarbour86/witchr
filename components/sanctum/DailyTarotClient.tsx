@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   SanctumTarotCard,
   getRandomSanctumTarotCard,
@@ -21,7 +22,7 @@ import { recordSanctumTestEvent } from "@/lib/sanctum/test-events";
 import { SanctumCardBack } from "@/components/sanctum/SanctumCardBack";
 import { SanctumCardFace } from "@/components/sanctum/SanctumCardFace";
 import { FourPointStar, CelestialDivider, GrimoireStar, TarotCornerFlourish } from "@/components/OrnateFrames";
-import { SanctumCrest, MoonPhaseStrip } from "@/components/sanctum/SanctumSymbols";
+import { MoonPhaseStrip } from "@/components/sanctum/SanctumSymbols";
 import { Sparkles, BookOpen, Check, RefreshCw, Compass, ArrowRight, ArrowLeft, Printer } from "lucide-react";
 
 export function DailyTarotClient() {
@@ -292,7 +293,13 @@ export function DailyTarotClient() {
           {!reading && (
             <div className="my-auto text-center space-y-6 py-12 px-4 relative z-10">
               <div className="w-20 h-20 mx-auto rounded-full bg-[#130728] border border-purple-600/50 flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.35)]">
-                <SanctumCrest className="w-14 h-14" />
+                <Image
+                  src="/images/icon.png"
+                  alt="Sanctum Altar Icon"
+                  width={56}
+                  height={56}
+                  className="w-14 h-14 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.5)]"
+                />
               </div>
 
               <div className="space-y-2 max-w-md mx-auto">

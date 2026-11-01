@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { SanctumCrest } from "@/components/sanctum/SanctumSymbols";
 import { SanctumStreakBadge } from "@/components/sanctum/SanctumStreakBadge";
 import { SanctumDrawerStreakCard } from "@/components/sanctum/SanctumDrawerStreakCard";
 import { useSanctumAuth } from "@/lib/supabase/auth-context";
@@ -206,8 +205,16 @@ export function SanctumShell({ children }: SanctumShellProps) {
           >
             <div>
               <div className="flex items-center justify-between pb-4 border-b border-purple-900/50">
-                <div className="flex items-center gap-2">
-                  <SanctumCrest className="w-6 h-6 text-purple-300" />
+                <div className="flex items-center gap-2.5">
+                  <div className="relative shrink-0">
+                    <Image
+                      src="/images/icon.png"
+                      alt="Witchr Sanctum"
+                      width={24}
+                      height={24}
+                      className="w-6 h-6 object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]"
+                    />
+                  </div>
                   <span className="text-xs font-mono uppercase tracking-[0.22em] text-purple-200 font-semibold">
                     Sanctum Navigation
                   </span>

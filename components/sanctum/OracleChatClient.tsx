@@ -55,12 +55,44 @@ const INITIAL_ORACLE_MESSAGE: ChatEntry = {
   reflectionQuestion: "What is the single most honest sentence that describes where your energy is focused today?",
 };
 
+/**
+ * Trims dialogue history to at most maxMessages while strictly preserving complete
+ * question/answer pairs. Orphaned answers (where the user question was sliced away)
+ * are pruned so the conversation history always remains coherent.
+ */
+export function trimDialoguePreservingPairs(
+  history: ChatEntry[],
+  maxMessages: number = MAX_HISTORY_MESSAGES
+): ChatEntry[] {
+  if (history.length <= maxMessages) {
+    return history;
+  }
+
+  let sliced = history.slice(-maxMessages);
+
+  // If the first message in the slice is an orphaned Oracle response (not the initial greeting),
+  // drop it so the conversation begins with a complete User question.
+  while (
+    sliced.length > 0 &&
+    sliced[0].role === "oracle" &&
+    sliced[0].id !== "initial-oracle-greeting"
+  ) {
+    sliced = sliced.slice(1);
+  }
+
+  if (sliced.length === 0 && history.length > 0) {
+    return [history[history.length - 1]];
+  }
+
+  return sliced;
+}
+
 export function OracleChatClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q");
 
-  const { user, canAskGuestQuestion, refreshAuth } = useSanctumAuth();
+  const { user, isLoading: authLoading, canAskGuestQuestion, refreshAuth } = useSanctumAuth();
   const chatStorageKey = getAccountScopedKey(SANCTUM_BASE_KEYS.ORACLE_CHAT, user?.id);
 
   const [messages, setMessages] = useState<ChatEntry[]>([INITIAL_ORACLE_MESSAGE]);
@@ -72,30 +104,58 @@ export function OracleChatClient() {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const hasConsumedPendingRef = useRef(false);
+  const initializedRef = useRef(false);
+  const lastUserIdRef = useRef<string | null | undefined>(undefined);
+  const pendingProcessedRef = useRef<string | null>(null);
 
-  // Load chat history from localStorage safely and process pending entrance handoff
+  // Unified Chat Initialization & Entrance Handoff
   useEffect(() => {
+    // 1. Wait until authentication state has definitively resolved
+    if (authLoading) return;
+
     setMounted(true);
 
-    if (hasConsumedPendingRef.current) return;
-    hasConsumedPendingRef.current = true;
+    const currentUserId = user?.id || null;
+    const currentStorageKey = getAccountScopedKey(SANCTUM_BASE_KEYS.ORACLE_CHAT, currentUserId);
 
-    let loadedMessages = [INITIAL_ORACLE_MESSAGE];
+    // 2. Handle subsequent account switch (e.g. login or logout while on this page)
+    if (initializedRef.current && lastUserIdRef.current !== currentUserId) {
+      lastUserIdRef.current = currentUserId;
+      try {
+        const stored = localStorage.getItem(currentStorageKey);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setMessages(parsed);
+            return;
+          }
+        }
+      } catch {}
+      setMessages([INITIAL_ORACLE_MESSAGE]);
+      return;
+    }
+
+    lastUserIdRef.current = currentUserId;
+
+    // Only run entrance handoff / initial load once
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+
+    // 3. Load existing history from account-scoped storage
+    let loadedMessages: ChatEntry[] = [INITIAL_ORACLE_MESSAGE];
     try {
-      const stored = localStorage.getItem(chatStorageKey);
+      const stored = localStorage.getItem(currentStorageKey);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
           loadedMessages = parsed;
-          setMessages(parsed);
         }
       }
     } catch {
       // Fallback to initial greeting
     }
 
-    // 1. Consume pending inquiry from sessionStorage (entrance handoff)
+    // 4. Consume pending inquiry from sessionStorage or URL query parameter
     let pendingInquiry: string | null = null;
     try {
       pendingInquiry = sessionStorage.getItem(ORACLE_PENDING_INQUIRY_KEY);
@@ -106,49 +166,42 @@ export function OracleChatClient() {
       // Storage quota or private mode fallback
     }
 
-    // 2. Legacy URL query parameter support (?q=...)
     if (!pendingInquiry && initialQuery && initialQuery.trim().length > 0) {
       pendingInquiry = initialQuery.trim();
     }
 
-    // Clean address bar immediately if a query parameter was present
+    // Clean address bar immediately if a query parameter was present to prevent reload re-triggering
     if (initialQuery) {
       router.replace("/sanctum/oracle");
     }
 
-    // 3. Dispatch pending inquiry exactly once
+    // 5. If there is a pending inquiry from the chamber, dispatch it exactly once
     if (pendingInquiry && pendingInquiry.trim().length > 0) {
       const query = pendingInquiry.trim().slice(0, MAX_MESSAGE_LENGTH);
-      const lastMessage = loadedMessages[loadedMessages.length - 1];
-      if (!lastMessage || lastMessage.content !== query) {
-        handleSendMessage(query, loadedMessages);
+
+      // Duplicate prevention: check whether this question is already the last user question in history
+      const lastEntry = loadedMessages[loadedMessages.length - 1];
+      const secondLastEntry = loadedMessages[loadedMessages.length - 2];
+      const isDuplicate =
+        (lastEntry?.role === "user" && lastEntry.content === query) ||
+        (secondLastEntry?.role === "user" && secondLastEntry.content === query);
+
+      if (!isDuplicate && pendingProcessedRef.current !== query) {
+        pendingProcessedRef.current = query;
+        handleSendMessage(query, loadedMessages, currentStorageKey);
+        return;
       }
     }
-  }, [initialQuery, router]);
 
-  // Re-synchronize dialogue when authenticated account changes or signs out
-  useEffect(() => {
-    if (!mounted) return;
-    try {
-      const stored = localStorage.getItem(chatStorageKey);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setMessages(parsed);
-          return;
-        }
-      }
-      setMessages([INITIAL_ORACLE_MESSAGE]);
-    } catch {
-      setMessages([INITIAL_ORACLE_MESSAGE]);
-    }
-  }, [user?.id, chatStorageKey, mounted]);
+    // No pending inquiry (or duplicate prevented) -> display loaded messages
+    setMessages(loadedMessages);
+  }, [authLoading, user?.id, initialQuery, router]);
 
-  // Save to localStorage whenever messages change (bounded to 10)
+  // Save to localStorage whenever messages change (bounded and pair-trimmed)
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !initializedRef.current) return;
     try {
-      const bounded = messages.slice(-MAX_HISTORY_MESSAGES);
+      const bounded = trimDialoguePreservingPairs(messages, MAX_HISTORY_MESSAGES);
       localStorage.setItem(chatStorageKey, JSON.stringify(bounded));
     } catch {
       // Storage quota or private mode fallback
@@ -160,9 +213,15 @@ export function OracleChatClient() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading, guestLimitReached]);
 
-  const handleSendMessage = async (textToSend?: string, baseMessages?: ChatEntry[]) => {
+  const handleSendMessage = async (
+    textToSend?: string,
+    baseMessages?: ChatEntry[],
+    storageKeyOverride?: string
+  ) => {
     const content = (textToSend || inputText).trim();
     if (!content || isLoading) return;
+
+    const targetStorageKey = storageKeyOverride || chatStorageKey;
 
     const userMessageId = `user-${Date.now()}`;
     const userMessage: ChatEntry = {
@@ -174,9 +233,19 @@ export function OracleChatClient() {
 
     recordSanctumTestEvent("oracle_consulted", content);
 
+    // Build the updated history array with the user message immediately appended
     const activeMessages = baseMessages || messages;
-    const nextMessages = [...activeMessages, userMessage].slice(-MAX_HISTORY_MESSAGES);
+    const nextMessages = trimDialoguePreservingPairs(
+      [...activeMessages, userMessage],
+      MAX_HISTORY_MESSAGES
+    );
+
+    // Display the user's question immediately and persist synchronously
     setMessages(nextMessages);
+    try {
+      localStorage.setItem(targetStorageKey, JSON.stringify(nextMessages));
+    } catch {}
+
     setInputText("");
     setIsLoading(true);
 
@@ -199,6 +268,18 @@ export function OracleChatClient() {
       });
 
       if (res.status === 403) {
+        // Guest limit reached: preserve the submitted text in inputText
+        setInputText(content);
+
+        // Remove the unanswered userMessage from chat view so an orphaned question does not linger
+        setMessages((prev) => {
+          const reverted = prev.filter((m) => m.id !== userMessageId);
+          try {
+            localStorage.setItem(targetStorageKey, JSON.stringify(reverted));
+          } catch {}
+          return reverted;
+        });
+
         setGuestLimitReached(true);
         refreshAuth();
         return;
@@ -221,9 +302,23 @@ export function OracleChatClient() {
         timestamp: new Date().toISOString(),
       };
 
-      setMessages((prev) => [...prev, oracleMessage].slice(-MAX_HISTORY_MESSAGES));
+      setMessages((prev) => {
+        // Enforce pair integrity: ensure userMessage is present in prev directly before oracleMessage
+        const hasUserMessage = prev.some(
+          (m) => m.id === userMessageId || (m.role === "user" && m.content === content)
+        );
+        const base = hasUserMessage ? prev : [...prev, userMessage];
+        const updated = trimDialoguePreservingPairs([...base, oracleMessage], MAX_HISTORY_MESSAGES);
+        try {
+          localStorage.setItem(targetStorageKey, JSON.stringify(updated));
+        } catch {}
+        return updated;
+      });
+
       refreshAuth();
-    } catch {
+    } catch (err) {
+      console.error("[Oracle Chat] Consultation error:", err);
+
       // Deterministic client fallback if network fails
       const fallbackEntry: ChatEntry = {
         id: `oracle-fallback-${Date.now()}`,
@@ -238,7 +333,18 @@ export function OracleChatClient() {
         },
         timestamp: new Date().toISOString(),
       };
-      setMessages((prev) => [...prev, fallbackEntry].slice(-MAX_HISTORY_MESSAGES));
+
+      setMessages((prev) => {
+        const hasUserMessage = prev.some(
+          (m) => m.id === userMessageId || (m.role === "user" && m.content === content)
+        );
+        const base = hasUserMessage ? prev : [...prev, userMessage];
+        const updated = trimDialoguePreservingPairs([...base, fallbackEntry], MAX_HISTORY_MESSAGES);
+        try {
+          localStorage.setItem(targetStorageKey, JSON.stringify(updated));
+        } catch {}
+        return updated;
+      });
     } finally {
       setIsLoading(false);
       setTimeout(() => inputRef.current?.focus(), 100);

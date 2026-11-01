@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import type { EmailOtpType } from "@supabase/supabase-js";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { createServerClient } from "@supabase/ssr";
+import { getSupabaseEnv } from "@/lib/supabase/config";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -20,37 +21,53 @@ export async function GET(request: Request) {
   const forwardedHost = request.headers.get("x-forwarded-host");
   const isLocal = process.env.NODE_ENV === "development";
   const baseUrl = isLocal ? origin : forwardedHost ? `https://${forwardedHost}` : origin;
+  const targetRedirect = `${baseUrl}${safeNext}`;
+
+  const { url, publishableKey, isConfigured } = getSupabaseEnv();
+  if (!isConfigured || !url || !publishableKey) {
+    return NextResponse.redirect(`${baseUrl}/sanctum/login?error=setup_required`);
+  }
+
+  // Pre-initialize redirect response so we can write cookies directly onto it with full original options
+  const redirectResponse = NextResponse.redirect(targetRedirect);
+  const cookieStore = await cookies();
+
+  // Forward existing cookies (e.g. guest session cookie) to preserve them
+  cookieStore.getAll().forEach((c) => {
+    redirectResponse.cookies.set(c.name, c.value);
+  });
+
+  const supabase = createServerClient(url, publishableKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value, options }) => {
+          // Update cookieStore for downstream server context
+          try {
+            cookieStore.set(name, value, options);
+          } catch {}
+          // Set directly on the redirect response PRESERVING ALL ORIGINAL OPTIONS
+          // (including expiry, maxAge, security attributes, httpOnly, sameSite, path, domain)
+          redirectResponse.cookies.set(name, value, options);
+        });
+      },
+    },
+  });
 
   if (code) {
-    const supabase = await getSupabaseServerClient();
-    if (supabase) {
-      const { error } = await supabase.auth.exchangeCodeForSession(code);
-      if (!error) {
-        const redirectResponse = NextResponse.redirect(`${baseUrl}${safeNext}`);
-        // Ensure session cookies are attached to the redirect response
-        const cookieStore = await cookies();
-        cookieStore.getAll().forEach((c) => {
-          redirectResponse.cookies.set(c.name, c.value);
-        });
-        return redirectResponse;
-      }
-      console.error("[Auth Callback Error]", error);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (!error) {
+      return redirectResponse;
     }
+    console.error("[Auth Callback Error]", error);
   } else if (token_hash && type) {
-    const supabase = await getSupabaseServerClient();
-    if (supabase) {
-      const { error } = await supabase.auth.verifyOtp({ token_hash, type });
-      if (!error) {
-        const redirectResponse = NextResponse.redirect(`${baseUrl}${safeNext}`);
-        // Ensure session cookies are attached to the redirect response
-        const cookieStore = await cookies();
-        cookieStore.getAll().forEach((c) => {
-          redirectResponse.cookies.set(c.name, c.value);
-        });
-        return redirectResponse;
-      }
-      console.error("[Auth Callback OTP Error]", error);
+    const { error } = await supabase.auth.verifyOtp({ token_hash, type });
+    if (!error) {
+      return redirectResponse;
     }
+    console.error("[Auth Callback OTP Error]", error);
   }
 
   // Fallback to login with error

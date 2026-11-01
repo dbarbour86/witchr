@@ -46,6 +46,7 @@ import {
   Search,
   SlidersHorizontal,
   RotateCcw,
+  Sprout,
 } from "lucide-react";
 
 type GrimoireCategory = "ALL" | "DAILY" | "THREE_CARD" | "RITUALS";
@@ -1420,7 +1421,7 @@ export function GrimoireLedgerClient() {
                       Daily Inquiry
                     </span>
                     <p className="font-serif text-sm text-purple-100 italic leading-relaxed">
-                      &ldquo;{d.interpretation?.reflectionPrompt || "What friction today is asking for your stillness?"}&rdquo;
+                      &ldquo;{d.interpretation?.reflectionPrompt || cardData?.reflectionPrompt || "What friction today is asking for your stillness?"}&rdquo;
                     </p>
                   </div>
 
@@ -1429,9 +1430,20 @@ export function GrimoireLedgerClient() {
                       Grounded Action
                     </span>
                     <p className="text-xs text-bone-muted font-sans leading-relaxed">
-                      {d.interpretation?.practicalTakeaway || "Notice without judgment. Anchor your focus in direct physical sensation."}
+                      {d.interpretation?.practicalTakeaway || cardData?.practicalTakeaway || "Notice without judgment. Anchor your focus in direct physical sensation."}
                     </p>
                   </div>
+
+                  {(d as any).userNote && (
+                    <div className="p-4 rounded-xl bg-[#090314] border border-purple-900/50 space-y-1">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-purple-400 font-bold block">
+                        Personal Reflection Note
+                      </span>
+                      <p className="text-xs text-bone font-sans leading-relaxed">
+                        {(d as any).userNote}
+                      </p>
+                    </div>
+                  )}
                 </div>
               );
             })()}
@@ -1515,6 +1527,17 @@ export function GrimoireLedgerClient() {
                       </p>
                     </div>
                   )}
+
+                  {(tc as any).userNote && (
+                    <div className="p-4 rounded-xl bg-[#090314] border border-purple-900/50 space-y-1">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-purple-400 font-bold block">
+                        Personal Reflection Note
+                      </span>
+                      <p className="text-xs text-bone font-sans leading-relaxed">
+                        {(tc as any).userNote}
+                      </p>
+                    </div>
+                  )}
                 </div>
               );
             })()}
@@ -1522,6 +1545,33 @@ export function GrimoireLedgerClient() {
             {/* RITUAL WORKING ENTRY DETAIL */}
             {activeEntry.type === "working" && (() => {
               const w = activeEntry as SanctumWorkingRecord;
+
+              // Distinguish household tools and preparation steps
+              const isToolLine = (line: string) =>
+                /^(supporting household tools|additional household tools|tools needed|have a |prepare a )/i.test(line.trim());
+
+              const extractedTools = (w.preparationSteps || [])
+                .filter(isToolLine)
+                .map((line) => line.replace(/^(supporting household tools:?|additional household tools:?|tools needed:?)\s*/i, "").trim());
+
+              const defaultTools: string[] = [];
+              defaultTools.push("A shallow dish, small saucer, or clean coaster (to keep materials contained)");
+              if ((w.usedIngredients || []).some((i) => /bay/i.test(i))) {
+                defaultTools.push("A pen or pencil for writing on the bay leaf or paper");
+              }
+              if ((w.usedIngredients || []).some((i) => /water/i.test(i))) {
+                defaultTools.push("A small cup or clean bowl for water");
+              }
+              if ((w.usedIngredients || []).some((i) => /candle/i.test(i))) {
+                defaultTools.push("A sturdy heat-resistant candleholder or dish");
+              }
+
+              const toolsList = extractedTools.length > 0 ? extractedTools : defaultTools;
+
+              const beforeSteps = (w.preparationSteps || []).filter(
+                (line) => !isToolLine(line) && !line.toLowerCase().startsWith("selected ingredients") && !line.toLowerCase().startsWith("gather your")
+              );
+
               return (
                 <div className="space-y-6">
                   <header className="border-b border-purple-900/40 pb-5 space-y-2">
@@ -1552,30 +1602,106 @@ export function GrimoireLedgerClient() {
                     </p>
                   </div>
 
+                  {/* What You'll Need (Distinguishing ingredients and tools) */}
+                  <div className="space-y-2">
+                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                      What You&apos;ll Need
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-sans">
+                      <div className="p-3.5 rounded-xl bg-[#0c051a] border border-purple-900/50 space-y-2">
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-purple-300 font-bold block">
+                          Selected Ingredients
+                        </span>
+                        <ul className="space-y-1.5 text-bone">
+                          {(w.usedIngredients || []).map((item, idx) => (
+                            <li key={idx} className="flex items-center gap-2">
+                              <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0" />
+                              <span className="capitalize">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="p-3.5 rounded-xl bg-[#0c051a] border border-purple-900/50 space-y-2">
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-purple-300 font-bold block">
+                          Supporting Household Tools
+                        </span>
+                        <ul className="space-y-1.5 text-bone">
+                          {toolsList.map((tool, idx) => (
+                            <li key={idx} className="flex items-start gap-2">
+                              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0 mt-1" />
+                              <span>{tool}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Before You Begin */}
+                  {beforeSteps.length > 0 && (
+                    <div className="space-y-2">
+                      <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                        Before You Begin
+                      </h4>
+                      <ol className="space-y-1.5 text-xs text-bone-muted font-sans bg-[#0c0418] p-3.5 rounded-xl border border-purple-900/40">
+                        {beforeSteps.map((prep, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <span className="font-mono text-purple-400 font-semibold">{idx + 1}.</span>
+                            <span>{prep}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  )}
+
+                  {/* Left Out of This Ritual */}
+                  {w.leftOutIngredients && w.leftOutIngredients.length > 0 && (
+                    <div className="space-y-2 p-3.5 rounded-xl bg-[#0e071c] border border-purple-900/50 text-xs">
+                      <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
+                        Left Out of This Ritual
+                      </h4>
+                      <ul className="space-y-1.5 text-xs text-bone-muted font-sans">
+                        {w.leftOutIngredients.map((item, idx) => (
+                          <li key={idx} className="flex flex-col sm:flex-row sm:items-baseline gap-1">
+                            <span className="font-semibold text-purple-200 font-mono text-[11px] capitalize">{item.name}:</span>
+                            <span>{item.reason}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Ingredient Correspondences */}
                   <div className="space-y-2">
                     <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
                       Ingredient Correspondences
                     </h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {(w.ingredientReasons || []).map((wt) => {
                         const ingImg = getSanctumIngredientImage(wt.name);
                         return (
                           <div
                             key={wt.name}
-                            className="p-3 rounded-lg bg-[#0e061c] border border-purple-900/50 flex items-start gap-3"
+                            className="p-3.5 rounded-xl bg-[#0c051a] border border-purple-900/50 flex items-start gap-3 text-xs"
                           >
-                            {ingImg && (
-                              <div className="w-10 h-10 rounded border border-purple-800/80 overflow-hidden shrink-0 bg-black/40">
-                                <Image
-                                  src={ingImg.image}
-                                  alt={ingImg.altText}
-                                  width={40}
-                                  height={40}
-                                  className="w-full h-full object-cover"
-                                />
+                            {ingImg ? (
+                              <Image
+                                src={ingImg.image}
+                                alt={ingImg.altText}
+                                width={56}
+                                height={56}
+                                className="w-14 h-14 object-cover rounded-lg border border-purple-700/60 shadow-md shrink-0 bg-[#0d031c]"
+                              />
+                            ) : (
+                              <div
+                                className="w-14 h-14 rounded-lg bg-[#110524] border border-purple-800/70 flex items-center justify-center shrink-0 shadow-inner"
+                                aria-hidden="true"
+                              >
+                                <Sprout className="w-6 h-6 text-purple-300/70" />
                               </div>
                             )}
-                            <div className="min-w-0 flex-1 space-y-0.5">
+                            <div className="space-y-1 min-w-0 flex-1">
                               <div className="flex items-center justify-between text-xs">
                                 <span className="font-serif font-bold text-purple-100 capitalize">{wt.name}</span>
                                 <span className="text-[9px] font-mono text-purple-400">{wt.correspondence}</span>
@@ -1588,6 +1714,7 @@ export function GrimoireLedgerClient() {
                     </div>
                   </div>
 
+                  {/* Steps */}
                   <div className="space-y-2">
                     <h4 className="text-[10px] font-mono uppercase tracking-widest text-purple-300 font-bold">
                       Steps
@@ -1610,6 +1737,7 @@ export function GrimoireLedgerClient() {
                     </div>
                   </div>
 
+                  {/* Closing */}
                   {w.closing && (
                     <div className="p-3 rounded-lg bg-[#0b0416] border border-purple-900/40 text-xs space-y-1">
                       <span className="text-[9px] font-mono uppercase tracking-widest text-purple-400 font-bold block">
@@ -1619,6 +1747,17 @@ export function GrimoireLedgerClient() {
                     </div>
                   )}
 
+                  {/* Optional Timing */}
+                  {w.optionalTiming && (
+                    <div className="p-3 rounded-lg bg-[#0b0416] border border-purple-900/40 text-xs space-y-1">
+                      <span className="text-[9px] font-mono uppercase tracking-widest text-purple-400 font-bold block">
+                        Timing &amp; Alignment
+                      </span>
+                      <p className="text-bone-muted sm:text-bone font-sans italic leading-relaxed">{w.optionalTiming}</p>
+                    </div>
+                  )}
+
+                  {/* Carry It Into Your Day */}
                   {w.practicalTakeaway && (
                     <div className="p-3 rounded-lg bg-[#0b0416] border border-purple-900/40 text-xs space-y-1">
                       <span className="text-[9px] font-mono uppercase tracking-widest text-purple-300 font-bold block">
@@ -1628,6 +1767,7 @@ export function GrimoireLedgerClient() {
                     </div>
                   )}
 
+                  {/* Consider */}
                   {w.reflectionPrompt && (
                     <div className="p-3 rounded-lg bg-[#0b0416] border border-purple-900/40 text-xs space-y-1">
                       <span className="text-[9px] font-mono uppercase tracking-widest text-purple-300 font-bold block">
@@ -1637,10 +1777,23 @@ export function GrimoireLedgerClient() {
                     </div>
                   )}
 
+                  {/* Safety Notes */}
                   {w.safetyNotes && (
                     <div className="p-3 rounded-lg bg-[#180820] border border-amber-900/60 flex items-start gap-2.5 text-xs text-amber-200/90 font-sans">
                       <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                       <span>{w.safetyNotes}</span>
+                    </div>
+                  )}
+
+                  {/* Personal Note */}
+                  {(w as any).userNote && (
+                    <div className="p-4 rounded-xl bg-[#090314] border border-purple-900/50 space-y-1">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-purple-400 font-bold block">
+                        Personal Reflection Note
+                      </span>
+                      <p className="text-xs text-bone font-sans leading-relaxed">
+                        {(w as any).userNote}
+                      </p>
                     </div>
                   )}
                 </div>

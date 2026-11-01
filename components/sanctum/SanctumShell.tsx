@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SanctumCrest } from "@/components/sanctum/SanctumSymbols";
 import { SanctumStreakBadge } from "@/components/sanctum/SanctumStreakBadge";
+import { SanctumDrawerStreakCard } from "@/components/sanctum/SanctumDrawerStreakCard";
 import {
   Sparkles,
   BookOpen,
@@ -202,22 +203,9 @@ export function SanctumShell({ children }: SanctumShellProps) {
                 </button>
               </div>
 
-              {/* Daily Streak Highlight inside Menu */}
-              <div className="mt-3.5 p-3 rounded-xl bg-[#110522] border border-purple-800/60 flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-purple-950 border border-purple-700/60 flex items-center justify-center">
-                    <Flame className="w-4 h-4 text-amber-400" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-purple-200">
-                      Sanctum Practice Streak
-                    </span>
-                    <span className="text-[10px] font-mono text-purple-400/80">
-                      Consecutive days active
-                    </span>
-                  </div>
-                </div>
-                <SanctumStreakBadge />
+              {/* Streak Section inside Navigation Drawer matching approved mockup */}
+              <div className="mt-3.5">
+                <SanctumDrawerStreakCard />
               </div>
 
               {/* Navigation Links */}

@@ -3,16 +3,19 @@
 import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Flame, Lock, Mail, ArrowRight, AlertCircle, CheckCircle2, Eye, EyeOff } from "lucide-react";
+import { Flame, Lock, Mail, ArrowRight, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { FourPointStar } from "@/components/OrnateFrames";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import { useSanctumAuth } from "@/lib/supabase/auth-context";
+import { GoogleSignInButton } from "@/components/sanctum/GoogleSignInButton";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const rawRedirect = searchParams.get("redirect");
   const reason = searchParams.get("reason");
+  const queryError = searchParams.get("error");
+  const queryErrorDescription = searchParams.get("error_description");
 
   const safeRedirect =
     rawRedirect && rawRedirect.startsWith("/sanctum") && !rawRedirect.startsWith("//") && !rawRedirect.includes(":")
@@ -26,6 +29,25 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Set initial error from query parameter if present (e.g. cancelled Google OAuth)
+  React.useEffect(() => {
+    if (queryError) {
+      if (queryError === "access_denied") {
+        setErrorMessage("Google sign-in was cancelled.");
+      } else if (queryError === "setup_required") {
+        setErrorMessage("Supabase is awaiting credentials. Please complete the setup checklist.");
+      } else if (
+        queryError === "code_exchange_failed" ||
+        queryError === "otp_verification_failed" ||
+        queryError === "auth_callback_failed"
+      ) {
+        setErrorMessage(queryErrorDescription || "Authentication verification failed or link has expired. Please try again.");
+      } else {
+        setErrorMessage(queryErrorDescription || `Sign-in notice: ${queryError}`);
+      }
+    }
+  }, [queryError, queryErrorDescription]);
 
   // If already logged in, redirect to destination via full navigation to clear any stale prefetch cache
   React.useEffect(() => {
@@ -134,6 +156,22 @@ function LoginForm() {
           </div>
         )}
 
+        {/* Google OAuth Sign-In */}
+        <div className="mb-5 space-y-4">
+          <GoogleSignInButton
+            safeRedirect={safeRedirect}
+            disabled={!isConfigured || loading}
+            onError={(msg) => setErrorMessage(msg)}
+          />
+
+          <div className="relative flex items-center justify-center my-4">
+            <div className="w-full border-t border-purple-900/60" />
+            <span className="absolute bg-[#0c031c] px-3 text-[10px] font-mono tracking-widest text-purple-400/70 uppercase">
+              or continue with email
+            </span>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
             <label className="block text-[11px] font-mono uppercase tracking-wider text-purple-300">
@@ -223,4 +261,3 @@ export default function LoginPage() {
     </Suspense>
   );
 }
-

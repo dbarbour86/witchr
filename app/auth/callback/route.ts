@@ -23,6 +23,18 @@ export async function GET(request: Request) {
   const baseUrl = isLocal ? origin : forwardedHost ? `https://${forwardedHost}` : origin;
   const targetRedirect = `${baseUrl}${safeNext}`;
 
+  // Check for OAuth cancellation or provider errors (e.g. access_denied)
+  const authError = searchParams.get("error");
+  const errorDescription = searchParams.get("error_description");
+  if (authError) {
+    console.error("[Auth Callback OAuth Error]", authError, errorDescription);
+    const errParams = new URLSearchParams();
+    errParams.set("error", authError);
+    if (errorDescription) errParams.set("error_description", errorDescription);
+    errParams.set("redirect", safeNext);
+    return NextResponse.redirect(`${baseUrl}/sanctum/login?${errParams.toString()}`);
+  }
+
   const { url, publishableKey, isConfigured } = getSupabaseEnv();
   if (!isConfigured || !url || !publishableKey) {
     return NextResponse.redirect(`${baseUrl}/sanctum/login?error=setup_required`);
@@ -61,16 +73,28 @@ export async function GET(request: Request) {
     if (!error) {
       return redirectResponse;
     }
-    console.error("[Auth Callback Error]", error);
+    console.error("[Auth Callback Code Exchange Error]", error);
+    const errParams = new URLSearchParams();
+    errParams.set("error", "code_exchange_failed");
+    if (error.message) errParams.set("error_description", error.message);
+    errParams.set("redirect", safeNext);
+    return NextResponse.redirect(`${baseUrl}/sanctum/login?${errParams.toString()}`);
   } else if (token_hash && type) {
     const { error } = await supabase.auth.verifyOtp({ token_hash, type });
     if (!error) {
       return redirectResponse;
     }
     console.error("[Auth Callback OTP Error]", error);
+    const errParams = new URLSearchParams();
+    errParams.set("error", "otp_verification_failed");
+    if (error.message) errParams.set("error_description", error.message);
+    errParams.set("redirect", safeNext);
+    return NextResponse.redirect(`${baseUrl}/sanctum/login?${errParams.toString()}`);
   }
 
   // Fallback to login with error
-  return NextResponse.redirect(`${baseUrl}/sanctum/login?error=auth_callback_failed`);
+  const fallbackParams = new URLSearchParams();
+  fallbackParams.set("error", "auth_callback_failed");
+  fallbackParams.set("redirect", safeNext);
+  return NextResponse.redirect(`${baseUrl}/sanctum/login?${fallbackParams.toString()}`);
 }
-

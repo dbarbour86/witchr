@@ -59,6 +59,54 @@ const POSITION_INTERPRETATIONS: Record<string, Record<SpreadPositionKey, string>
     guidance:
       "Step back from debate and observe. Protect a pocket of silence before committing to a stance. Listen to what your body and quiet intuition report when you stop looking for external consensus.",
   },
+  card_03_empress: {
+    situation:
+      "The Empress indicates that the ground beneath you is fertile and receptive. What you are engaging with has the capacity for genuine, organic expansion, provided it receives patient cultivation and sensory presence.",
+    challenge:
+      "The friction here is demanding hurried results or attempting to force an inorganic pace. You risk depleting your own reserves by over-giving or treating a delicate creative gestation like a mechanical emergency.",
+    guidance:
+      "Nourish the roots before demanding fruit. Protect your physical vitality and allow the process to unfold in its own rhythm. Tend the conditions of growth with generosity and quiet confidence.",
+  },
+  card_04_emperor: {
+    situation:
+      "The Emperor establishes a need for structural clarity, firm perimeters, and sober governance. The circumstance requires an authoritative hand to establish order where ambiguity has created instability.",
+    challenge:
+      "The danger is confusing rigid control with genuine authority. You may be attempting to micromanage unpredictable elements out of unexpressed anxiety, or conversely, neglecting to enforce necessary boundaries.",
+    guidance:
+      "Build the scaffold. Define non-negotiable boundaries, establish clear operational standards, and take sovereign responsibility for directing what is under your direct jurisdiction.",
+  },
+  card_05_hierophant: {
+    situation:
+      "The Hierophant marks a situation governed by foundational principles, lineage wisdom, or structured frameworks. The solution calls for aligning with proven traditions rather than improvising from scratch.",
+    challenge:
+      "The friction of The Hierophant lies in rigid dogmatism or blind conformity. You may be clinging to obsolete rules out of fear of nonconformity, or rejecting sound counsel purely out of reflexive defiance.",
+    guidance:
+      "Anchor your decision in enduring principles. Consult credible mentorship or time-tested frameworks, while filtering the advice through your own authentic ethical discernment.",
+  },
+  card_06_lovers: {
+    situation:
+      "The Lovers marks an essential crossroads where personal values and authentic desire must align. You stand before a choice that cannot be resolved through compromise or superficial appeasement.",
+    challenge:
+      "The friction lies in moral ambivalence or trying to remain in two contradictory postures simultaneously. Straddling the fence preserves an illusion of safety while slowly bleeding away conviction.",
+    guidance:
+      "Choose from wholeness. Commit fully to the path that reflects your core integrity rather than external validation. Wholehearted allegiance to one direction unlocks clarity.",
+  },
+  card_07_chariot: {
+    situation:
+      "The Chariot shows that dynamic momentum has gathered, but competing drives or conflicting demands threaten to pull the reins in opposite directions. Forward passage requires concentrated mastery.",
+    challenge:
+      "The hazard is losing your center under acceleration or letting internal doubts steer the course. Fragmented effort or reactive aggression will overturn your progress.",
+    guidance:
+      "Harness opposing forces toward a single focal point. Grip your central intention firmly, ignore peripheral disruptions, and drive steadily through the friction with unwavering discipline.",
+  },
+  card_08_strength: {
+    situation:
+      "Strength marks a circumstance where raw emotional intensity or formidable resistance is present. True progress will not come through brute force, but through grounded composure and enduring resolve.",
+    challenge:
+      "The obstacle is falling into reactive anger or collapsing under sustained pressure. Lashing out or retreating into wounded silence only gives volatility the upper hand.",
+    guidance:
+      "Subdue the roaring lion with gentle mastery. Meet hostility or inner doubt with steady breathing, calm dignity, and unshakable patience. Fortitude that refuses to panic always outlasts aggression.",
+  },
   card_14_temperance: {
     situation:
       "Temperance marks a dynamic requiring careful blending and continuous calibration. Different pressures, obligations, or emotions are in play, requiring steady hands to maintain equilibrium rather than sudden rupture.",

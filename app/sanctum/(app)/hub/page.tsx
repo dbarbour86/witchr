@@ -7,6 +7,7 @@ import {
 } from "@/components/OrnateFrames";
 import { MoonPhaseStrip } from "@/components/sanctum/SanctumSymbols";
 import { SanctumCardBackground, type SanctumCardVariant } from "@/components/sanctum/SanctumCardBackground";
+import { getSanctumDeckPreviewLabel } from "@/content/sanctum-tarot";
 import { Compass, Sparkles, BookOpen, Wand2, ArrowRight, ShieldCheck, ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -43,7 +44,7 @@ export default function SanctumHubPage() {
       description: "Draw one card for diagnostic reflection and psychological clarity.",
       details:
         "Identify unconscious blind spots, clarify the dominant atmospheric current of your day, and ground your attention with an actionable takeaway.",
-      status: "Preview deck: 4 cards",
+      status: getSanctumDeckPreviewLabel(),
       badgeColor: "text-purple-300 border-purple-800/80 bg-purple-950/40",
       cta: "Open Card Altar",
       variant: "daily-tarot",
@@ -58,7 +59,7 @@ export default function SanctumHubPage() {
       description: "Explore pressing friction through Situation, Challenge, and Guidance.",
       details:
         "Deconstruct acute circumstances into three diagnostic angles with optional Oracle AI synthesis grounded in classical occult correspondence.",
-      status: "Preview deck: 4 cards",
+      status: getSanctumDeckPreviewLabel(),
       badgeColor: "text-purple-300 border-purple-800/80 bg-purple-950/40",
       cta: "Lay the Spread",
       variant: "three-card",

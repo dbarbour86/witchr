@@ -2,7 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { SanctumTarotCard, getRandomSanctumTarotCard, getSanctumTarotCardById } from "@/content/sanctum-tarot";
+import {
+  SanctumTarotCard,
+  getRandomSanctumTarotCard,
+  getSanctumTarotCardById,
+  getSanctumDeckPreviewLabel,
+} from "@/content/sanctum-tarot";
 import {
   SanctumDailyReading,
   getStoredDailyReading,
@@ -243,7 +248,7 @@ export function DailyTarotClient() {
                   <FourPointStar className={`w-3.5 h-3.5 ${isDrawing ? "animate-spin" : ""}`} />
                 </button>
                 <div className="text-[10px] font-mono uppercase tracking-widest text-purple-400/80 text-center pt-1">
-                  Preview deck: 4 cards
+                  {getSanctumDeckPreviewLabel()}
                 </div>
               </div>
             ) : (

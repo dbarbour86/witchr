@@ -144,14 +144,14 @@ export function SanctumCardFace({ card, size = "large", className = "" }: Sanctu
   if (card.image?.src && !imageError) {
     return (
       <div
-        className={`group relative ${widthClass} aspect-[2/3] shrink-0 rounded-xl overflow-hidden border border-border-ornate shadow-card-tarot hover:border-lavender-moon/80 hover:shadow-glow-purple transition-all duration-300 select-none bg-surface ${className}`}
+        className={`group relative ${widthClass} aspect-[2/3] shrink-0 rounded-xl overflow-hidden border border-border-ornate shadow-card-tarot hover:border-lavender-moon/80 hover:shadow-glow-purple transition-all duration-300 select-none bg-black/90 ${className}`}
       >
         <Image
           src={card.image.src}
           alt={card.image.alt || `${card.name} Tarot Card`}
           fill
           sizes={isLarge ? "280px" : "220px"}
-          className="object-cover"
+          className="object-contain"
           priority
           onError={() => setImageError(true)}
         />

@@ -14,13 +14,27 @@ export interface SanctumTarotCard {
   image: {
     src?: string;
     alt: string;
-    motif: "fool" | "magician" | "high-priestess" | "temperance" | "moon" | "hermit" | "death";
+    motif:
+      | "fool"
+      | "magician"
+      | "high-priestess"
+      | "empress"
+      | "emperor"
+      | "hierophant"
+      | "lovers"
+      | "chariot"
+      | "strength"
+      | "hermit"
+      | "temperance"
+      | "moon"
+      | "death";
   };
 }
 
 /**
- * Standardized Sanctum MVP 5-Card Tarot Deck.
+ * Sanctum Major Arcana Deck.
  * Canonical card artwork lives in /images/sanctum/tarot/
+ * Both original PNGs and optimized WebP files are preserved.
  */
 export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
   {
@@ -50,7 +64,7 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
     practicalTakeaway:
       "Take one low-stakes, imperfect step today on a task you have been over-analyzing. Do not polish it before you begin; simply cross the threshold.",
     image: {
-      src: "/images/sanctum/tarot/the-fool.png",
+      src: "/images/sanctum/tarot/the-fool.webp",
       alt: "The Fool — Occult ceremonial tarot motif of the threshold and wandering star",
       motif: "fool",
     },
@@ -82,7 +96,7 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
     practicalTakeaway:
       "Clear your immediate physical workspace of three unnecessary distractions and complete one concentrated 25-minute block of focused effort before nightfall.",
     image: {
-      src: "/images/sanctum/tarot/the-magician.png",
+      src: "/images/sanctum/tarot/the-magician.webp",
       alt: "The Magician — Occult ceremonial tarot motif of focused elemental mastery",
       motif: "magician",
     },
@@ -114,9 +128,233 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
     practicalTakeaway:
       "Spend ten uninterrupted minutes in silence today without your phone, notebook, or media. Give your thoughts room to settle before making your next decision.",
     image: {
-      src: "/images/sanctum/tarot/the-high-priestess.png",
+      src: "/images/sanctum/tarot/the-high-priestess.webp",
       alt: "The High Priestess — Occult ceremonial tarot motif of the veiled moon and instinct",
       motif: "high-priestess",
+    },
+  },
+  {
+    id: "card_03_empress",
+    slug: "the-empress",
+    number: 3,
+    numeral: "III",
+    name: "The Empress",
+    shortKeywords: ["Generative Abundance", "Living Vitality", "Patient Nourishment"],
+    traditionalThemes: [
+      "Fertile conditions for organic creation",
+      "Sensory presence and bodily attunement",
+      "Allowing growth to ripen naturally",
+      "Sovereign grace and generosity",
+    ],
+    reversedThemes: [
+      "Creative depletion or over-giving",
+      "Forcing unnatural haste on delicate work",
+      "Neglecting physical and emotional sustenance",
+    ],
+    traditionalMeaning:
+      "Crowned with twelve stars and seated among golden wheat and lush roses, The Empress embodies fertile, generative power. She governs the living world of sensory experience, creativity, and organic cycles—reminding us that nothing genuine is produced through force alone, but through patient tending of healthy ground.",
+    reflectiveInterpretation:
+      "The Empress invites you to assess what soil you are cultivating for your current endeavors. When we operate out of chronic scarcity or mechanical pressure, our creative and practical capacity contracts. This card reminds you that sustainable results require real nourishment: rest, sensory beauty, and the patience to allow roots to establish before demanding fruit.",
+    reflectionPrompt:
+      "Where have you been forcing mechanical haste on a process that requires natural gestation and steady nourishment?",
+    practicalTakeaway:
+      "Prepare a deliberate, unhurried meal or spend fifteen mindful minutes outside. Focus entirely on sensory replenishment without multitasking.",
+    image: {
+      src: "/images/sanctum/tarot/the-empress-of-stars-and-roses.webp",
+      alt: "The Empress of Stars and Roses — Occult ceremonial tarot card of generative abundance and sovereign grace",
+      motif: "empress",
+    },
+  },
+  {
+    id: "card_04_emperor",
+    slug: "the-emperor",
+    number: 4,
+    numeral: "IV",
+    name: "The Emperor",
+    shortKeywords: ["Stable Architecture", "Sovereign Boundaries", "Constructive Order"],
+    traditionalThemes: [
+      "Foundational stability and clear governance",
+      "Constructing durable protective frameworks",
+      "Authoritative responsibility without cruelty",
+      "Direct stewardship of chaotic environments",
+    ],
+    reversedThemes: [
+      "Rigid authoritarian control masking anxiety",
+      "Refusal to adapt failing systems",
+      "Chaos born from absent leadership and porous boundaries",
+    ],
+    traditionalMeaning:
+      "Seated upon a stone throne carved with ram heads, holding an orb and scepter, The Emperor represents structural authority, discipline, and constructive order. He provides the secure perimeter and solid foundations within which life and creative effort can endure.",
+    reflectiveInterpretation:
+      "The Emperor suggests that your circumstance calls for clear architecture, definitive boundaries, and sovereign self-discipline. When emotional turbulence or ambient ambiguity threatens to derail your progress, this card invites you to establish a firm perimeter. Durable freedom is not the absence of structure; it is built on deliberate, well-maintained scaffolding.",
+    reflectionPrompt:
+      "What boundary or daily standard have you left undefined, allowing distraction or unnecessary friction to breach your focus?",
+    practicalTakeaway:
+      "Define one non-negotiable boundary today: formalize a firm schedule block, decline a boundary-pushing request, or organize an operational system that has lapsed into disarray.",
+    image: {
+      src: "/images/sanctum/tarot/celestial-emperor.webp",
+      alt: "Celestial Emperor — Occult ceremonial tarot card of sovereign boundaries, stone throne, and foundational authority",
+      motif: "emperor",
+    },
+  },
+  {
+    id: "card_05_hierophant",
+    slug: "the-hierophant",
+    number: 5,
+    numeral: "V",
+    name: "The Hierophant",
+    shortKeywords: ["Sacred Tradition", "Lineage Counsel", "Established Frameworks"],
+    traditionalThemes: [
+      "Inherited wisdom and spiritual lineage",
+      "Mentorship and structured study",
+      "Aligning with time-tested principles",
+      "The bridge between esoteric mystery and ethical practice",
+    ],
+    reversedThemes: [
+      "Dogmatism or unthinking orthodoxy",
+      "Blind obedience to corrupt authority",
+      "Rebelling for the sake of disruption without purpose",
+    ],
+    traditionalMeaning:
+      "Seated between sacred pillars and holding the triple cross, The Hierophant raises his right hand in blessing. He represents the initiatory lineage, structured knowledge, and time-tested ethical traditions that ground fleeting individual insight into enduring communal practice.",
+    reflectiveInterpretation:
+      "The Hierophant invites you to consider what time-tested principles, mentors, or foundational frameworks are available to counsel you. You do not need to reinvent the wheel in isolation. When confronting unfamiliar ethical or structural decisions, looking to established tradition or consulting experienced guidance can provide the anchor required to navigate complexity without losing your footing.",
+    reflectionPrompt:
+      "What trusted framework, mentor, or ancestral principle could guide your current decision if you put aside the impulse to struggle alone?",
+    practicalTakeaway:
+      "Consult one credible source of established knowledge today—revisit a trusted mentor's advice, review foundational guidelines, or formalize an ethical standard for your current project.",
+    image: {
+      src: "/images/sanctum/tarot/the-hierophant.webp",
+      alt: "The Hierophant — Occult ceremonial tarot card of sacred lineage, time-tested wisdom, and spiritual counsel",
+      motif: "hierophant",
+    },
+  },
+  {
+    id: "card_06_lovers",
+    slug: "the-lovers",
+    number: 6,
+    numeral: "VI",
+    name: "The Lovers",
+    shortKeywords: ["Conscious Alignment", "Sacred Choice", "Reciprocal Resonance"],
+    traditionalThemes: [
+      "The crossroads of moral and personal choice",
+      "Deep mutual recognition and resonance",
+      "Harmonizing disparate desires with core values",
+      "Wholehearted commitment without reservation",
+    ],
+    reversedThemes: [
+      "Internal division or moral ambivalence",
+      "Compromising fundamental integrity for fleeting approval",
+      "Relational projection obscuring self-honesty",
+    ],
+    traditionalMeaning:
+      "Standing under the outstretched wings of an angel beneath the radiant sun, two souls unite at the sacred crossroads. The Lovers represents more than romantic union; it is the archetype of conscious choice—the moment where values, desires, and identity must align to forge a committed path forward.",
+    reflectiveInterpretation:
+      "The Lovers points toward a critical crossroads where fence-sitting has become corrosive. This card asks you to examine what your true allegiance is. When we attempt to appease contradictory desires or keep incompatible options open simultaneously, we fracture our power. Alignment requires an honest, wholehearted choice that reflects your deepest values.",
+    reflectionPrompt:
+      "What decision are you attempting to straddle, and which path genuinely mirrors your authentic integrity?",
+    practicalTakeaway:
+      "Write down the two conflicting priorities or impulses competing for your energy. Explicitly choose one to honor today with 100% commitment, and set the other aside without apology.",
+    image: {
+      src: "/images/sanctum/tarot/the-lovers.webp",
+      alt: "The Lovers — Occult ceremonial tarot card of sacred alignment, mutual resonance, and conscious choice",
+      motif: "lovers",
+    },
+  },
+  {
+    id: "card_07_chariot",
+    slug: "the-chariot",
+    number: 7,
+    numeral: "VII",
+    name: "The Chariot",
+    shortKeywords: ["Triumphant Focus", "Harnessed Momentum", "Unwavering Will"],
+    traditionalThemes: [
+      "Steering divergent forces toward a single objective",
+      "Overcoming external resistance through inner resolve",
+      "Disciplined momentum through chaotic terrain",
+      "Mastery of opposing impulses",
+    ],
+    reversedThemes: [
+      "Loss of control or recklessness under pressure",
+      "Aggression compensating for lack of direction",
+      "Feeling dragged by conflicting obligations",
+    ],
+    traditionalMeaning:
+      "Armored with starry epaulets and standing firm in a stone chariot pulled by black and white sphinxes, the charioteer holds no physical reins—steering purely through concentration of will. The Chariot represents victorious momentum achieved through the deliberate harmonization of opposing drives.",
+    reflectiveInterpretation:
+      "The Chariot indicates that you are in a phase requiring resolute focus and unwavering forward momentum. Contradictory pressures or competing demands may be pulling in opposite directions, but you cannot afford to hesitate. By harnessing both shadow and light, doubt and conviction, toward your primary aim, you turn friction into propulsion.",
+    reflectionPrompt:
+      "What divergent distraction is threatening to pull your chariot off course, and what single objective deserves your undiverted momentum?",
+    practicalTakeaway:
+      "Identify your single most consequential priority for the next 48 hours. Channel all available drive into advancing it, ruthlessly ignoring secondary detours.",
+    image: {
+      src: "/images/sanctum/tarot/the-chariot.webp",
+      alt: "The Chariot — Occult ceremonial tarot card of harnessed momentum, triumph, and unwavering focus",
+      motif: "chariot",
+    },
+  },
+  {
+    id: "card_08_strength",
+    slug: "strength",
+    number: 8,
+    numeral: "VIII",
+    name: "Strength",
+    shortKeywords: ["Gentle Mastery", "Internal Fortitude", "Compassionate Resolve"],
+    traditionalThemes: [
+      "Subduing raw volatility through quiet presence",
+      "Courage under enduring adversity",
+      "Befriending visceral instincts rather than repressing them",
+      "Patience that outlasts brute aggression",
+    ],
+    reversedThemes: [
+      "Self-doubt or collapsing under sustained strain",
+      "Lashing out with reactive fury",
+      "Repressing raw emotions until they erupt destructively",
+    ],
+    traditionalMeaning:
+      "A serene figure with the infinity lemniscate above her brow gently calms a roaring lion with steady, tender hands. Strength represents true spiritual fortitude: the quiet, indestructible power of composure that tames primordial impulse not with iron bars, but with compassion and unflinching courage.",
+    reflectiveInterpretation:
+      "Strength reminds you that raw force and loud reactivity are signs of underlying panic, not authority. When confronting intimidating obstacles or fierce internal doubts, your most potent weapon is gentle, unwavering composure. You do not need to wage war against your anxieties or external hostility; hold your center with patient dignity.",
+    reflectionPrompt:
+      "Where are you expending frantic energy trying to force an outcome, when calm, patient endurance would disarm the tension completely?",
+    practicalTakeaway:
+      "When provoked or stressed today, pause for three deliberate breaths before responding. Speak in a quiet, measured cadence, meeting friction with steady grace.",
+    image: {
+      src: "/images/sanctum/tarot/strength.webp",
+      alt: "Strength — Occult ceremonial tarot card of gentle fortitude, the lion, and eternal grace",
+      motif: "strength",
+    },
+  },
+  {
+    id: "card_09_hermit",
+    slug: "the-hermit",
+    number: 9,
+    numeral: "IX",
+    name: "The Hermit",
+    shortKeywords: ["Introspection", "Solitude", "Inner Guidance"],
+    traditionalThemes: [
+      "Deliberate retreat from social consensus",
+      "Searching with your own lantern",
+      "Deep personal integrity and self-counsel",
+      "The quiet fortitude of the solitary path",
+    ],
+    reversedThemes: [
+      "Defensive isolation out of pride",
+      "Withdrawing out of bitterness rather than discernment",
+      "Refusing necessary help",
+    ],
+    traditionalMeaning:
+      "Standing atop a snow-covered mountain holding a lantern containing a six-pointed star, the Hermit retreats from the noise of the collective to find authentic illumination. The lantern lights only one step at a time, teaching that personal clarity must be walked into, not borrowed.",
+    reflectiveInterpretation:
+      "The Hermit can invite you to step away from the chorus of external opinions and consult your own moral lantern. When we consume too much ambient commentary, we begin confusing other people's anxieties with our own priorities. This card may point toward a need to dim the room, close the door, and measure your next move against your private standards rather than public expectations.",
+    reflectionPrompt:
+      "Whose expectations are currently crowding your internal space, and what would your decision look like if you did not need their approval?",
+    practicalTakeaway:
+      "Decline or postpone one non-essential social or digital obligation today to protect a clean pocket of solitary quiet.",
+    image: {
+      src: "/images/sanctum/tarot/the-hermit.webp",
+      alt: "The Hermit — Occult ceremonial tarot motif of the solitary beacon and mountain lantern",
+      motif: "hermit",
     },
   },
   {
@@ -146,7 +384,7 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
     practicalTakeaway:
       "Identify one situation where you are swinging between extremes. Rather than forcing a drastic resolution today, make one small, steady adjustment that restores breathing room.",
     image: {
-      src: "/images/sanctum/tarot/temperance.png",
+      src: "/images/sanctum/tarot/temperance.webp",
       alt: "Temperance — Occult ceremonial tarot card of alchemy, balance, and measured integration",
       motif: "temperance",
     },
@@ -178,7 +416,7 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
     practicalTakeaway:
       "Do not make permanent commitments or confrontational declarations under emotional fog today. Write down your swirling assumptions, sleep on them, and review them in clear morning light.",
     image: {
-      src: "/images/sanctum/tarot/the-moon.png",
+      src: "/images/sanctum/tarot/the-moon.webp",
       alt: "The Moon — Occult ceremonial tarot card of nocturnal instinct, illusion, and subconscious currents",
       motif: "moon",
     },
@@ -189,37 +427,6 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
  * Archived cards preserved for backward-compatibility with previously stored local test readings.
  */
 export const ARCHIVED_SANCTUM_CARDS: SanctumTarotCard[] = [
-  {
-    id: "card_09_hermit",
-    slug: "the-hermit",
-    number: 9,
-    numeral: "IX",
-    name: "The Hermit",
-    shortKeywords: ["Introspection", "Solitude", "Inner Guidance"],
-    traditionalThemes: [
-      "Deliberate retreat from social consensus",
-      "Searching with your own lantern",
-      "Deep personal integrity and self-counsel",
-      "The quiet fortitude of the solitary path",
-    ],
-    reversedThemes: [
-      "Defensive isolation out of pride",
-      "Withdrawing out of bitterness rather than discernment",
-      "Refusing necessary help",
-    ],
-    traditionalMeaning:
-      "Standing atop a snow-covered mountain holding a lantern containing a six-pointed star, the Hermit retreats from the noise of the collective to find authentic illumination. The lantern lights only one step at a time, teaching that personal clarity must be walked into, not borrowed.",
-    reflectiveInterpretation:
-      "The Hermit can invite you to step away from the chorus of external opinions and consult your own moral lantern. When we consume too much ambient commentary, we begin confusing other people's anxieties with our own priorities. This card may point toward a need to dim the room, close the door, and measure your next move against your private standards rather than public expectations.",
-    reflectionPrompt:
-      "Whose expectations are currently crowding your internal space, and what would your decision look like if you did not need their approval?",
-    practicalTakeaway:
-      "Decline or postpone one non-essential social or digital obligation today to protect a clean pocket of solitary quiet.",
-    image: {
-      alt: "The Hermit — Occult ceremonial tarot motif of the solitary beacon and mountain lantern",
-      motif: "hermit",
-    },
-  },
   {
     id: "card_13_death",
     slug: "death",
@@ -257,6 +464,13 @@ export const ALL_SANCTUM_TAROT_CARDS: SanctumTarotCard[] = [
   ...SANCTUM_TAROT_DECK,
   ...ARCHIVED_SANCTUM_CARDS,
 ];
+
+/**
+ * Derives the standard preview deck status text based on active deck size.
+ */
+export function getSanctumDeckPreviewLabel(): string {
+  return `Preview deck: ${SANCTUM_TAROT_DECK.length} cards`;
+}
 
 export function getRandomSanctumTarotCard(): SanctumTarotCard {
   const index = Math.floor(Math.random() * SANCTUM_TAROT_DECK.length);

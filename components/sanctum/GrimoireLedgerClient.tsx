@@ -351,6 +351,7 @@ export function GrimoireLedgerClient() {
             <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/sanctum/tarot"
+                prefetch={false}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg sanctum-btn-electric text-xs font-mono uppercase tracking-wider font-bold"
               >
                 <Sparkles className="w-3.5 h-3.5" />
@@ -358,6 +359,7 @@ export function GrimoireLedgerClient() {
               </Link>
               <Link
                 href="/sanctum/tarot/three-card"
+                prefetch={false}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#140826] hover:bg-[#1f0d38] text-purple-200 border border-purple-800 text-xs font-mono uppercase tracking-wider"
               >
                 <Compass className="w-3.5 h-3.5 text-purple-400" />

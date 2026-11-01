@@ -23,18 +23,20 @@ export function isSafeSanctumRedirect(target: string | null | undefined): boolea
 
 export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+
+  // 1. Initialize downstream response passing incoming request headers
   let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   });
 
-  // Ensure all Sanctum routes carry noindex, nofollow headers to prevent search indexing
+  // 2. Ensure all Sanctum routes carry noindex, nofollow headers to prevent search indexing
   if (pathname.startsWith("/sanctum")) {
     response.headers.set("X-Robots-Tag", "noindex, nofollow");
   }
 
-  // Ensure anonymous guest session cookie exists
+  // 3. Ensure anonymous guest session cookie exists
   let guestCookie = request.cookies.get(GUEST_SESSION_COOKIE)?.value;
   if (!guestCookie || !/^[a-zA-Z0-9_-]{20,64}$/.test(guestCookie)) {
     guestCookie = (typeof crypto !== "undefined" && crypto.randomUUID)
@@ -49,35 +51,62 @@ export async function middleware(request: NextRequest) {
     });
   }
 
+  // 4. Verify Supabase session configuration
+  const { url, publishableKey, isConfigured } = getSupabaseEnv();
+
   // Check if route requires member authentication
   const isProtected = PROTECTED_PREFIXES.some((prefix) =>
     pathname === prefix || pathname.startsWith(`${prefix}/`)
   );
 
-  if (!isProtected) {
+  // If Supabase is not configured yet, redirect protected routes with explanation
+  if (!isConfigured || !url || !publishableKey) {
+    if (isProtected) {
+      const loginUrl = request.nextUrl.clone();
+      loginUrl.pathname = "/sanctum/login";
+      loginUrl.search = `?redirect=${encodeURIComponent(pathname + search)}&reason=setup_required`;
+      const redirectResponse = NextResponse.redirect(loginUrl);
+      redirectResponse.headers.set("X-Robots-Tag", "noindex, nofollow");
+      return redirectResponse;
+    }
     return response;
   }
 
-  // Verify Supabase session
-  const { url, publishableKey, isConfigured } = getSupabaseEnv();
-
-  // If Supabase is not configured yet, redirect with explanation
-  if (!isConfigured || !url || !publishableKey) {
-    const loginUrl = new URL("/sanctum/login", request.url);
-    loginUrl.searchParams.set("redirect", `${pathname}${search}`);
-    loginUrl.searchParams.set("reason", "setup_required");
-    return NextResponse.redirect(loginUrl);
-  }
-
+  // 5. Official @supabase/ssr Next.js 15 Middleware Pattern
+  // Synchronizes cookies between request headers and response, keeping tokens fresh
   const supabase = createServerClient(url, publishableKey, {
     cookies: {
       getAll() {
         return request.cookies.getAll();
       },
       setAll(cookiesToSet) {
+        // Update request cookies so downstream server components receive fresh tokens
         cookiesToSet.forEach(({ name, value }) => {
           request.cookies.set(name, value);
         });
+
+        // Recreate response passing the updated request object
+        response = NextResponse.next({
+          request,
+        });
+
+        // Preserve noindex header
+        if (pathname.startsWith("/sanctum")) {
+          response.headers.set("X-Robots-Tag", "noindex, nofollow");
+        }
+
+        // Preserve guest session cookie
+        if (guestCookie) {
+          response.cookies.set(GUEST_SESSION_COOKIE, guestCookie, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            path: "/",
+            maxAge: 60 * 60 * 24 * 365,
+          });
+        }
+
+        // Set cookies on response so browser receives refreshed cookies
         cookiesToSet.forEach(({ name, value, options }) => {
           response.cookies.set(name, value, options);
         });
@@ -85,14 +114,33 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Call getUser() to refresh expired tokens and validate session
+  // Running this across Sanctum routes prevents token expiration drift
+  let user = null;
+  try {
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser();
+    user = authUser;
+  } catch {
+    user = null;
+  }
 
-  if (!user) {
-    const loginUrl = new URL("/sanctum/login", request.url);
-    loginUrl.searchParams.set("redirect", `${pathname}${search}`);
-    return NextResponse.redirect(loginUrl);
+  // If protected route and user is not authenticated, redirect to login
+  if (isProtected && !user) {
+    const loginUrl = request.nextUrl.clone();
+    loginUrl.pathname = "/sanctum/login";
+    loginUrl.search = `?redirect=${encodeURIComponent(pathname + search)}`;
+
+    const redirectResponse = NextResponse.redirect(loginUrl);
+    redirectResponse.headers.set("X-Robots-Tag", "noindex, nofollow");
+
+    // Forward all cookies (including guest cookie and any updated/cleared session cookies)
+    response.cookies.getAll().forEach((c) => {
+      redirectResponse.cookies.set(c.name, c.value);
+    });
+
+    return redirectResponse;
   }
 
   return response;

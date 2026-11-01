@@ -236,6 +236,7 @@ export function SanctumShell({ children }: SanctumShellProps) {
                     <div key={item.name} className="space-y-1">
                       <Link
                         href={item.href}
+                        prefetch={false}
                         onClick={() => setMenuOpen(false)}
                         className={`group w-full p-3 rounded-xl flex items-center justify-between border transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 ${
                           active
@@ -275,6 +276,7 @@ export function SanctumShell({ children }: SanctumShellProps) {
                               <Link
                                 key={sub.href}
                                 href={sub.href}
+                                prefetch={false}
                                 onClick={() => setMenuOpen(false)}
                                 className={`block px-2.5 py-1 rounded text-xs font-mono tracking-wider uppercase transition-colors ${
                                   isSubActive

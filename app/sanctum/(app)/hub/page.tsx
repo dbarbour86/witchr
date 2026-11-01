@@ -148,6 +148,7 @@ export default function SanctumHubPage() {
             <Link
               key={station.title}
               href={station.href}
+              prefetch={false}
               className="sanctum-panel sanctum-corners group p-6 sm:p-7 flex flex-col justify-between hover:border-purple-500/70 hover:shadow-[0_0_25px_rgba(168,85,247,0.25)] transition-all duration-300 block relative overflow-hidden"
             >
               {/* Subtle Witchr Occult Background Illustration Motif */}

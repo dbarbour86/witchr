@@ -500,6 +500,7 @@ export function OracleChatClient() {
                       <div className="pt-2 flex items-center justify-between gap-3 border-t border-purple-900/40">
                         <Link
                           href={actionHref}
+                          prefetch={false}
                           className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-purple-950/70 hover:bg-purple-900/90 border border-purple-500/60 text-purple-200 hover:text-white text-xs font-mono uppercase tracking-wider transition-all shadow-sm group"
                         >
                           {entry.suggestedAction.type === "tarot" && <Sparkles className="w-3.5 h-3.5 text-purple-400" />}

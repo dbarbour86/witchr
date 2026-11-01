@@ -426,6 +426,7 @@ export function DailyTarotClient() {
 
                   <Link
                     href="/sanctum/tarot/three-card"
+                    prefetch={false}
                     className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#120722] hover:bg-[#1c0c36] border border-purple-900/60 text-purple-300 hover:text-white text-xs font-mono uppercase tracking-wider transition-colors"
                   >
                     <span>3-Card Spread</span>

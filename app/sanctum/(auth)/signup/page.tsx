@@ -88,7 +88,7 @@ function SignupForm() {
       // If auto-confirmed session
       if (data.session) {
         await refreshAuth();
-        router.replace(safeRedirect);
+        window.location.href = safeRedirect;
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "An unexpected error occurred during signup.";

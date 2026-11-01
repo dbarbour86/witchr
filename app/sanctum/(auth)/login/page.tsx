@@ -27,12 +27,12 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // If already logged in, redirect to destination
+  // If already logged in, redirect to destination via full navigation to clear any stale prefetch cache
   React.useEffect(() => {
     if (user) {
-      router.replace(safeRedirect);
+      window.location.href = safeRedirect;
     }
-  }, [user, safeRedirect, router]);
+  }, [user, safeRedirect]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,7 +64,9 @@ function LoginForm() {
 
       if (data.session) {
         await refreshAuth();
-        router.replace(safeRedirect);
+        // Full navigation purges Next.js in-memory prefetch cache and ensures
+        // the newly written session cookies are immediately sent to middleware/SSR
+        window.location.href = safeRedirect;
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "An unexpected error occurred during login.";

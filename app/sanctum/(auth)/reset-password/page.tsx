@@ -50,7 +50,7 @@ function ResetPasswordForm() {
       setSuccess(true);
       setLoading(false);
       setTimeout(() => {
-        router.replace("/sanctum/chamber");
+        window.location.href = "/sanctum/chamber";
       }, 2000);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to update password.";

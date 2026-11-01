@@ -286,6 +286,7 @@ export function OracleEntranceClient() {
               {/* SHORTCUT 2: Draw Daily Tarot (Daily ritual, parchment card) */}
               <Link
                 href="/sanctum/tarot"
+                prefetch={false}
                 className="group relative w-full flex items-center justify-between p-3.5 rounded-xl sanctum-parchment-card transition-all duration-300 hover:scale-[1.01]"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
@@ -319,6 +320,7 @@ export function OracleEntranceClient() {
               {/* SHORTCUT 3: Create a Ritual (Create magic, parchment card) */}
               <Link
                 href="/sanctum/working"
+                prefetch={false}
                 className="group relative w-full flex items-center justify-between p-3.5 rounded-xl sanctum-parchment-card transition-all duration-300 hover:scale-[1.01]"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
@@ -352,6 +354,7 @@ export function OracleEntranceClient() {
               {/* SHORTCUT 4: Open My Grimoire (Your library, parchment card) */}
               <Link
                 href="/sanctum/grimoire"
+                prefetch={false}
                 className="group relative w-full flex items-center justify-between p-3.5 rounded-xl sanctum-parchment-card transition-all duration-300 hover:scale-[1.01]"
               >
                 <div className="flex items-center gap-3.5 min-w-0">

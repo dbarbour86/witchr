@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
@@ -12,18 +13,29 @@ export async function GET(request: Request) {
       ? next
       : "/sanctum/chamber";
 
+  // In proxy/serverless environments like Vercel preview, respect x-forwarded-host
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const isLocal = process.env.NODE_ENV === "development";
+  const baseUrl = isLocal ? origin : forwardedHost ? `https://${forwardedHost}` : origin;
+
   if (code) {
     const supabase = await getSupabaseServerClient();
     if (supabase) {
       const { error } = await supabase.auth.exchangeCodeForSession(code);
       if (!error) {
-        return NextResponse.redirect(`${origin}${safeNext}`);
+        const redirectResponse = NextResponse.redirect(`${baseUrl}${safeNext}`);
+        // Ensure session cookies are attached to the redirect response
+        const cookieStore = await cookies();
+        cookieStore.getAll().forEach((c) => {
+          redirectResponse.cookies.set(c.name, c.value);
+        });
+        return redirectResponse;
       }
       console.error("[Auth Callback Error]", error);
     }
   }
 
   // Fallback to login with error
-  return NextResponse.redirect(`${origin}/sanctum/login?error=auth_callback_failed`);
+  return NextResponse.redirect(`${baseUrl}/sanctum/login?error=auth_callback_failed`);
 }
 

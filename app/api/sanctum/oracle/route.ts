@@ -15,10 +15,19 @@ import {
   OracleWorkingInput,
   OracleConversationInput,
 } from "@/lib/sanctum/oracle/types";
+import {
+  checkGuestAccess,
+  reserveGuestPreview,
+  releaseGuestPreview,
+  completeGuestPreview,
+} from "@/lib/sanctum/guest-access";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
+  let guestSessionId: string | null = null;
+  let reservationToken: string | null = null;
+
   try {
     // 1. Resolve client IP for rate limiting
     const forwarded = req.headers.get("x-forwarded-for");
@@ -36,7 +45,78 @@ export async function POST(req: NextRequest) {
 
     const { type, payload } = body;
 
-    // 2. Handle rate limiting gracefully
+    // 2. Check access privileges
+    const access = await checkGuestAccess();
+
+    // Three-card and ritual creation require active member authentication
+    if ((type === "three-card" || type === "working") && !access.isMember) {
+      return NextResponse.json(
+        {
+          error: "This practice requires an active Sanctum membership. Please log in or create an account to access.",
+          code: "AUTHENTICATION_REQUIRED",
+        },
+        { status: 401 }
+      );
+    }
+
+    // Guest conversation allowance check and atomic database reservation
+    if (type === "conversation" && !access.isMember) {
+      guestSessionId = access.guestSessionId;
+
+      if (!access.canAskQuestion) {
+        if (access.reason === "storage_unavailable") {
+          return NextResponse.json(
+            {
+              error: "Sanctum consultation storage is momentarily initializing. Please try again in a few moments.",
+              code: "STORAGE_UNAVAILABLE",
+            },
+            { status: 503 }
+          );
+        }
+
+        return NextResponse.json(
+          {
+            error: "You have used your 1 free preview question. Create an account to continue your conversation in the Sanctum.",
+            code: "GUEST_LIMIT_REACHED",
+          },
+          { status: 403 }
+        );
+      }
+
+      // Reserve atomically in database
+      const reservation = await reserveGuestPreview(access.guestSessionId);
+      if (!reservation.allowed) {
+        if (reservation.code === "CONCURRENT_REQUEST_BLOCKED") {
+          return NextResponse.json(
+            {
+              error: reservation.error || "A preview question is currently in flight. Please wait a moment.",
+              code: "CONCURRENT_REQUEST_BLOCKED",
+            },
+            { status: 429 }
+          );
+        }
+        if (reservation.code === "STORAGE_UNAVAILABLE") {
+          return NextResponse.json(
+            {
+              error: "Sanctum consultation storage is momentarily initializing. Please try again in a few moments.",
+              code: "STORAGE_UNAVAILABLE",
+            },
+            { status: 503 }
+          );
+        }
+        return NextResponse.json(
+          {
+            error: reservation.error || "Guest preview limit reached. Create an account to continue.",
+            code: reservation.code,
+          },
+          { status: 403 }
+        );
+      }
+
+      reservationToken = reservation.reservationToken || null;
+    }
+
+    // 3. Handle rate limiting gracefully
     if (!rateLimit.allowed) {
       if (type === "three-card" && payload) {
         return NextResponse.json(
@@ -79,25 +159,30 @@ export async function POST(req: NextRequest) {
           }
         );
       } else if (type === "conversation" && payload && typeof payload.message === "string") {
-        return NextResponse.json(
-          {
-            success: true,
-            meta: {
-              source: "written-tradition",
-              fallback: true,
-              fallbackReason: "Rate limit exceeded. Using rule-based synthesis.",
-            },
-            data: getConversationFallback(payload as OracleConversationInput),
+        const fallbackResult = {
+          success: true,
+          meta: {
+            source: "written-tradition",
+            fallback: true,
+            fallbackReason: "Rate limit exceeded. Using rule-based synthesis.",
           },
-          {
-            status: 200,
-            headers: {
-              "X-RateLimit-Limit": String(rateLimit.limit),
-              "X-RateLimit-Remaining": "0",
-              "X-RateLimit-Reset": String(rateLimit.resetSeconds),
-            },
-          }
-        );
+          data: getConversationFallback(payload as OracleConversationInput),
+        };
+
+        // Complete guest preview on successful fallback delivery
+        if (!access.isMember && guestSessionId && reservationToken) {
+          await completeGuestPreview(guestSessionId, reservationToken);
+          reservationToken = null;
+        }
+
+        return NextResponse.json(fallbackResult, {
+          status: 200,
+          headers: {
+            "X-RateLimit-Limit": String(rateLimit.limit),
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": String(rateLimit.resetSeconds),
+          },
+        });
       }
 
       return NextResponse.json(
@@ -111,7 +196,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 3. Validate user input bounds
+    // 4. Validate user input bounds
     if (typeof payload?.question === "string" && payload.question.length > 1000) {
       return NextResponse.json(
         { error: "Question exceeds maximum allowed limit of 1000 characters." },
@@ -133,7 +218,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 4. Route by type
+    // 5. Route by type
     if (type === "conversation") {
       if (!payload || typeof payload.message !== "string" || payload.message.trim().length === 0) {
         return NextResponse.json(
@@ -143,10 +228,17 @@ export async function POST(req: NextRequest) {
       }
 
       if (process.env.NODE_ENV !== "production") {
-        console.log(`[Sanctum Oracle] incoming conversation request: "${payload.message.trim().slice(0, 120)}"`);
+        console.log(`[Sanctum Oracle] incoming conversation request: "${payload.message.trim().slice(0, 120)}" (member=${access.isMember})`);
       }
 
       const result = await generateConversationOracleResponse(payload as OracleConversationInput);
+
+      // Complete reservation atomically in database only upon successful generation
+      if (!access.isMember && guestSessionId && reservationToken) {
+        await completeGuestPreview(guestSessionId, reservationToken);
+        reservationToken = null;
+      }
+
       return NextResponse.json(result, {
         headers: {
           "Cache-Control": "no-store",
@@ -210,5 +302,12 @@ export async function POST(req: NextRequest) {
       { error: "An unexpected error occurred while communicating with the Oracle." },
       { status: 500 }
     );
+  } finally {
+    // If generation aborted or threw before completeGuestPreview was called, release reservation
+    if (reservationToken && guestSessionId) {
+      await releaseGuestPreview(guestSessionId, reservationToken).catch((err) => {
+        console.error("[Guest Preview Release Error]", err);
+      });
+    }
   }
 }

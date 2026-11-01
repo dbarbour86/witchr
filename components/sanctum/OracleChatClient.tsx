@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { OracleFigure } from "@/components/sanctum/OracleFigure";
-import { FourPointStar, TarotCornerFlourish } from "@/components/OrnateFrames";
+import { FourPointStar } from "@/components/OrnateFrames";
 import {
   Sparkles,
   Send,
@@ -17,11 +17,14 @@ import {
   ArrowRight,
   Shield,
   Layers,
-  Info,
+  Flame,
 } from "lucide-react";
 import type { OracleChatMessage, OracleSuggestedAction, OracleConversationOutput } from "@/lib/sanctum/oracle/types";
 import { ORACLE_PENDING_INQUIRY_KEY } from "@/lib/sanctum/oracle/types";
 import { recordSanctumTestEvent } from "@/lib/sanctum/test-events";
+import { useSanctumAuth } from "@/lib/supabase/auth-context";
+import { SanctumAuthInvitationCard } from "@/components/sanctum/SanctumAuthInvitationCard";
+import { getAccountScopedKey, SANCTUM_BASE_KEYS } from "@/lib/sanctum/account-storage";
 
 const ORACLE_CHAT_STORAGE_KEY = "witchr_sanctum_oracle_chat";
 const MAX_MESSAGE_LENGTH = 280;
@@ -57,11 +60,15 @@ export function OracleChatClient() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q");
 
+  const { user, canAskGuestQuestion, refreshAuth } = useSanctumAuth();
+  const chatStorageKey = getAccountScopedKey(SANCTUM_BASE_KEYS.ORACLE_CHAT, user?.id);
+
   const [messages, setMessages] = useState<ChatEntry[]>([INITIAL_ORACLE_MESSAGE]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [guestLimitReached, setGuestLimitReached] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -76,7 +83,7 @@ export function OracleChatClient() {
 
     let loadedMessages = [INITIAL_ORACLE_MESSAGE];
     try {
-      const stored = localStorage.getItem(ORACLE_CHAT_STORAGE_KEY);
+      const stored = localStorage.getItem(chatStorageKey);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -119,21 +126,39 @@ export function OracleChatClient() {
     }
   }, [initialQuery, router]);
 
+  // Re-synchronize dialogue when authenticated account changes or signs out
+  useEffect(() => {
+    if (!mounted) return;
+    try {
+      const stored = localStorage.getItem(chatStorageKey);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setMessages(parsed);
+          return;
+        }
+      }
+      setMessages([INITIAL_ORACLE_MESSAGE]);
+    } catch {
+      setMessages([INITIAL_ORACLE_MESSAGE]);
+    }
+  }, [user?.id, chatStorageKey, mounted]);
+
   // Save to localStorage whenever messages change (bounded to 10)
   useEffect(() => {
     if (!mounted) return;
     try {
       const bounded = messages.slice(-MAX_HISTORY_MESSAGES);
-      localStorage.setItem(ORACLE_CHAT_STORAGE_KEY, JSON.stringify(bounded));
+      localStorage.setItem(chatStorageKey, JSON.stringify(bounded));
     } catch {
       // Storage quota or private mode fallback
     }
-  }, [messages, mounted]);
+  }, [messages, chatStorageKey, mounted]);
 
   // Scroll to bottom on new message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
+  }, [messages, isLoading, guestLimitReached]);
 
   const handleSendMessage = async (textToSend?: string, baseMessages?: ChatEntry[]) => {
     const content = (textToSend || inputText).trim();
@@ -173,6 +198,12 @@ export function OracleChatClient() {
         }),
       });
 
+      if (res.status === 403) {
+        setGuestLimitReached(true);
+        refreshAuth();
+        return;
+      }
+
       if (!res.ok) {
         throw new Error(`Oracle server response: ${res.status}`);
       }
@@ -191,6 +222,7 @@ export function OracleChatClient() {
       };
 
       setMessages((prev) => [...prev, oracleMessage].slice(-MAX_HISTORY_MESSAGES));
+      refreshAuth();
     } catch {
       // Deterministic client fallback if network fails
       const fallbackEntry: ChatEntry = {
@@ -214,9 +246,10 @@ export function OracleChatClient() {
   };
 
   const handleClearConversation = () => {
-    localStorage.removeItem(ORACLE_CHAT_STORAGE_KEY);
+    localStorage.removeItem(chatStorageKey);
     setMessages([INITIAL_ORACLE_MESSAGE]);
     setInputText("");
+    setGuestLimitReached(false);
   };
 
   const handleCopyMessage = async (entry: ChatEntry) => {
@@ -241,6 +274,14 @@ export function OracleChatClient() {
       handleSendMessage();
     }
   };
+
+  // Determine if guest user has consumed their 1 preview question
+  const isGuest = !user;
+  const userMessagesCount = messages.filter((m) => m.role === "user").length;
+  const shouldShowGuestInvitation =
+    isGuest &&
+    !isLoading &&
+    (guestLimitReached || !canAskGuestQuestion || userMessagesCount >= 1);
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6 py-2 sm:py-4">
@@ -407,70 +448,89 @@ export function OracleChatClient() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Starter Suggestion Chips */}
-        <div className="pt-3 border-t border-purple-900/35 space-y-2">
-          <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-purple-300/60">
-            <span>Inquiry Starters</span>
-            <span className="hidden sm:inline">Tap to consult</span>
-          </div>
+        {/* Guest Preview Invitation Card OR Follow-up Composer */}
+        {shouldShowGuestInvitation ? (
+          <SanctumAuthInvitationCard redirectPath="/sanctum/oracle" className="mt-2" />
+        ) : (
+          <>
+            {/* Starter Suggestion Chips */}
+            <div className="pt-3 border-t border-purple-900/35 space-y-2">
+              <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-purple-300/60">
+                <span>Inquiry Starters</span>
+                <span className="hidden sm:inline">Tap to consult</span>
+              </div>
 
-          <div className="flex flex-wrap gap-2">
-            {STARTER_CHIPS.map((chip) => (
-              <button
-                key={chip}
-                type="button"
-                onClick={() => handleSendMessage(chip)}
-                disabled={isLoading}
-                className="px-2.5 py-1 rounded-md bg-[#100624] hover:bg-purple-950/80 border border-purple-900/60 hover:border-purple-500/70 text-purple-200 text-xs font-sans transition-colors disabled:opacity-50"
-              >
-                “{chip}”
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Input Bar & Controls */}
-        <div className="space-y-2 pt-2">
-          <div className="relative rounded-xl border border-purple-800/70 bg-[#0d041e] focus-within:border-purple-400 focus-within:ring-1 focus-within:ring-purple-400 transition-all p-2 sm:p-3">
-            <textarea
-              ref={inputRef}
-              rows={2}
-              maxLength={MAX_MESSAGE_LENGTH}
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              onKeyDown={handleKeyDown}
-              disabled={isLoading}
-              placeholder="Speak to the Oracle... (e.g. 'I feel pulled between two paths', 'What corresponds with courage?')"
-              className="w-full bg-transparent text-sm sm:text-base text-bone placeholder-purple-300/40 resize-none outline-none font-sans leading-relaxed"
-              aria-label="Message to the Oracle"
-            />
-
-            <div className="flex items-center justify-between gap-3 pt-2 border-t border-purple-900/30">
-              <span className="text-[10px] font-mono text-purple-400/60">
-                {inputText.length}/{MAX_MESSAGE_LENGTH}
-              </span>
-
-              <button
-                type="button"
-                onClick={() => handleSendMessage()}
-                disabled={!inputText.trim() || isLoading}
-                className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-purple-700 hover:bg-purple-600 disabled:bg-purple-950/60 border border-purple-400/60 disabled:border-purple-900/40 text-white disabled:text-purple-400/40 text-xs font-mono uppercase tracking-wider font-semibold transition-all shadow-[0_0_12px_rgba(168,85,247,0.3)] disabled:shadow-none"
-              >
-                <span>Consult</span>
-                <Send className="w-3.5 h-3.5" />
-              </button>
+              <div className="flex flex-wrap gap-2">
+                {STARTER_CHIPS.map((chip) => (
+                  <button
+                    key={chip}
+                    type="button"
+                    onClick={() => handleSendMessage(chip)}
+                    disabled={isLoading}
+                    className="px-2.5 py-1 rounded-md bg-[#100624] hover:bg-purple-950/80 border border-purple-900/60 hover:border-purple-500/70 text-purple-200 text-xs font-sans transition-colors disabled:opacity-50"
+                  >
+                    “{chip}”
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Privacy Footnote */}
-          <div className="flex items-center justify-between text-[10px] font-mono text-purple-400/60 px-1">
-            <span className="flex items-center gap-1.5">
-              <Shield className="w-3 h-3 text-purple-400" />
-              <span>Anonymous browser session. Last 10 messages kept locally.</span>
-            </span>
-            <span className="hidden sm:inline">Press Enter to send</span>
-          </div>
-        </div>
+            {/* Input Bar & Controls */}
+            <div className="space-y-2 pt-2">
+              {/* Disclosure for Guests */}
+              {isGuest && (
+                <div className="flex items-center gap-1.5 px-1 text-[11px] font-mono text-purple-300/80 uppercase tracking-widest">
+                  <Flame className="w-3 h-3 text-purple-400" />
+                  <span>Ask one question before joining.</span>
+                </div>
+              )}
+
+              <div className="relative rounded-xl border border-purple-800/70 bg-[#0d041e] focus-within:border-purple-400 focus-within:ring-1 focus-within:ring-purple-400 transition-all p-2 sm:p-3">
+                <textarea
+                  ref={inputRef}
+                  rows={2}
+                  maxLength={MAX_MESSAGE_LENGTH}
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  disabled={isLoading}
+                  placeholder="Speak to the Oracle... (e.g. 'I feel pulled between two paths', 'What corresponds with courage?')"
+                  className="w-full bg-transparent text-sm sm:text-base text-bone placeholder-purple-300/40 resize-none outline-none font-sans leading-relaxed"
+                  aria-label="Message to the Oracle"
+                />
+
+                <div className="flex items-center justify-between gap-3 pt-2 border-t border-purple-900/30">
+                  <span className="text-[10px] font-mono text-purple-400/60">
+                    {inputText.length}/{MAX_MESSAGE_LENGTH}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={() => handleSendMessage()}
+                    disabled={!inputText.trim() || isLoading}
+                    className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-purple-700 hover:bg-purple-600 disabled:bg-purple-950/60 border border-purple-400/60 disabled:border-purple-900/40 text-white disabled:text-purple-400/40 text-xs font-mono uppercase tracking-wider font-semibold transition-all shadow-[0_0_12px_rgba(168,85,247,0.3)] disabled:shadow-none"
+                  >
+                    <span>Consult</span>
+                    <Send className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Privacy Footnote */}
+              <div className="flex items-center justify-between text-[10px] font-mono text-purple-400/60 px-1">
+                <span className="flex items-center gap-1.5">
+                  <Shield className="w-3 h-3 text-purple-400" />
+                  <span>
+                    {user
+                      ? "Account-scoped session. Last 10 messages kept locally in this browser."
+                      : "Anonymous guest session. Last 10 messages kept locally in this browser."}
+                  </span>
+                </span>
+                <span className="hidden sm:inline">Press Enter to send</span>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

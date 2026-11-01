@@ -23,6 +23,7 @@ import {
 } from "@/components/OrnateFrames";
 import { SanctumCrest, MoonPhaseStrip } from "@/components/sanctum/SanctumSymbols";
 import { SanctumMarksSection } from "@/components/sanctum/SanctumMarksSection";
+import { SanctumLegacyImportBanner } from "@/components/sanctum/SanctumLegacyImportBanner";
 import {
   BookOpen,
   Sparkles,
@@ -45,6 +46,7 @@ export function GrimoireLedgerClient() {
   const [entries, setEntries] = useState<SanctumGrimoireReading[]>([]);
   const [filter, setFilter] = useState<"ALL" | "TAROT" | "WORKINGS">("ALL");
   const [marksExpanded, setMarksExpanded] = useState(false);
+  const [ledgerError, setLedgerError] = useState<string | null>(null);
 
   // Modal / Detail state
   const [activeEntry, setActiveEntry] = useState<SanctumGrimoireReading | null>(null);
@@ -59,12 +61,25 @@ export function GrimoireLedgerClient() {
 
   // Hydration-safe initial load and storage update listeners
   useEffect(() => {
-    setMounted(true);
-    setEntries(getGrimoireEntries());
-    recordSanctumTestEvent("grimoire_opened");
+    try {
+      const records = getGrimoireEntries();
+      setEntries(records);
+      setLedgerError(null);
+      recordSanctumTestEvent("grimoire_opened");
+    } catch (err) {
+      console.error("Grimoire retrieval error:", err);
+      setLedgerError("Unable to access local browser archive. Your stored records remain safe.");
+    } finally {
+      setMounted(true);
+    }
 
     const handleUpdate = () => {
-      setEntries(getGrimoireEntries());
+      try {
+        setEntries(getGrimoireEntries());
+        setLedgerError(null);
+      } catch (err) {
+        console.error("Grimoire update error:", err);
+      }
     };
 
     window.addEventListener("sanctum:grimoire-updated", handleUpdate);
@@ -202,8 +217,45 @@ export function GrimoireLedgerClient() {
     );
   }
 
+  if (ledgerError) {
+    return (
+      <div className="sanctum-panel sanctum-corners p-8 sm:p-12 text-center border border-purple-900/60 space-y-4 max-w-lg mx-auto my-12 shadow-[0_0_40px_rgba(147,51,234,0.2)]">
+        <div className="w-12 h-12 mx-auto rounded-xl bg-purple-950/80 border border-purple-600/60 flex items-center justify-center text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+          <BookOpen className="w-6 h-6" />
+        </div>
+        <h2 className="font-serif text-xl font-bold text-bone">Unable to Access Archive</h2>
+        <p className="text-xs font-mono text-purple-300/80 leading-relaxed">{ledgerError}</p>
+        <div className="pt-2 flex justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              try {
+                setEntries(getGrimoireEntries());
+                setLedgerError(null);
+              } catch (e) {
+                setLedgerError("Unable to access local browser archive. Please check permissions or refresh.");
+              }
+            }}
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-800 to-indigo-800 hover:from-purple-700 hover:to-indigo-700 border border-purple-400/60 text-white text-xs font-mono uppercase tracking-wider transition-all shadow-[0_0_12px_rgba(168,85,247,0.3)] cursor-pointer"
+          >
+            Retry Access
+          </button>
+          <Link
+            href="/sanctum/chamber"
+            className="px-4 py-2 rounded-lg bg-[#140728] hover:bg-[#1f0c3d] border border-purple-800 text-purple-300 text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer"
+          >
+            Back to Sanctum
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full space-y-6">
+      {/* Explicit Legacy Browser Practice Import Banner */}
+      <SanctumLegacyImportBanner />
+
       {/* Compact Title & Archival Introduction */}
       <div className="sanctum-panel sanctum-corners p-5 sm:p-6 border border-purple-900/60 relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-4 print:hidden">
         <div className="space-y-1.5 text-center sm:text-left">
@@ -328,6 +380,7 @@ export function GrimoireLedgerClient() {
             {filteredEntries.map((entry) => {
               if (entry.type === "daily") {
                 const d = entry as SanctumDailyReading;
+                const cardData = getSanctumTarotCardById(d.cardId);
                 return (
                   <article
                     key={d.id}
@@ -343,11 +396,11 @@ export function GrimoireLedgerClient() {
                       </div>
 
                       <h3 className="font-serif text-lg font-bold text-bone group-hover:text-purple-200 transition-colors uppercase tracking-wide">
-                        {d.cardName} — {d.cardNumeral}
+                        {d.cardName || cardData?.name} — {d.cardNumeral || cardData?.numeral}
                       </h3>
 
                       <div className="flex flex-wrap gap-1 text-[9px] font-mono text-purple-300/80">
-                        {d.shortKeywords.map((kw, i) => (
+                        {(d.shortKeywords || cardData?.shortKeywords || []).map((kw, i) => (
                           <span key={i} className="px-2 py-0.5 rounded bg-[#130728] border border-purple-900/60">
                             {kw}
                           </span>
@@ -355,7 +408,7 @@ export function GrimoireLedgerClient() {
                       </div>
 
                       <p className="text-xs text-bone-muted font-sans line-clamp-3 leading-relaxed pt-1">
-                        {d.interpretation.whatThisMayReflectToday}
+                        {d.interpretation?.whatThisMayReflectToday || cardData?.reflectiveInterpretation || ""}
                       </p>
                     </div>
 
@@ -481,7 +534,7 @@ export function GrimoireLedgerClient() {
                       </div>
 
                       <div className="flex flex-wrap gap-1 text-[9px] font-mono text-purple-300/80">
-                        {w.usedIngredients.map((item, i) => (
+                        {(w.usedIngredients || []).map((item, i) => (
                           <span key={i} className="px-2 py-0.5 rounded bg-[#130728] border border-purple-900/60">
                             ✓ {item}
                           </span>
@@ -631,11 +684,11 @@ export function GrimoireLedgerClient() {
                       id="modal-entry-title"
                       className="font-serif text-2xl sm:text-3xl font-bold uppercase tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-200"
                     >
-                      {d.cardName} — {d.cardNumeral}
+                      {d.cardName || cardData?.name} — {d.cardNumeral || cardData?.numeral}
                     </h2>
 
                     <div className="flex flex-wrap gap-1.5 pt-1">
-                      {d.shortKeywords.map((kw, i) => (
+                      {(d.shortKeywords || cardData?.shortKeywords || []).map((kw, i) => (
                         <span key={i} className="px-2.5 py-0.5 rounded-full bg-[#130728] border border-purple-700/60 text-[10px] font-mono uppercase tracking-wider text-purple-200">
                           {kw}
                         </span>
@@ -656,7 +709,7 @@ export function GrimoireLedgerClient() {
                           Traditional Archetype
                         </h4>
                         <p className="text-bone-muted font-sans leading-relaxed bg-[#0a0414] p-3 rounded-lg border border-purple-900/40">
-                          {d.interpretation.theCard}
+                          {d.interpretation?.theCard || cardData?.traditionalMeaning || ""}
                         </p>
                       </div>
 
@@ -665,7 +718,7 @@ export function GrimoireLedgerClient() {
                           Reflective Guidance
                         </h4>
                         <p className="text-bone font-sans leading-relaxed bg-[#0c051a] p-3 rounded-lg border border-purple-900/40">
-                          {d.interpretation.whatThisMayReflectToday}
+                          {d.interpretation?.whatThisMayReflectToday || cardData?.reflectiveInterpretation || ""}
                         </p>
                       </div>
                     </div>
@@ -676,7 +729,7 @@ export function GrimoireLedgerClient() {
                       Daily Inquiry
                     </span>
                     <p className="font-serif text-sm text-purple-100 italic leading-relaxed">
-                      “{d.interpretation.reflectionPrompt}”
+                      “{d.interpretation?.reflectionPrompt || cardData?.reflectionPrompt || ""}”
                     </p>
                   </div>
 
@@ -685,7 +738,7 @@ export function GrimoireLedgerClient() {
                       Practical Psychological Takeaway
                     </h4>
                     <p className="text-xs text-bone-muted font-sans leading-relaxed bg-[#0a0414] p-3 rounded-lg border border-purple-900/40">
-                      {d.interpretation.practicalTakeaway}
+                      {d.interpretation?.practicalTakeaway || cardData?.practicalTakeaway || ""}
                     </p>
                   </div>
                 </div>
@@ -720,7 +773,7 @@ export function GrimoireLedgerClient() {
 
                   {/* 3 Positions Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    {Object.values(tc.positions).map((pos) => (
+                    {(tc.positions ? Object.values(tc.positions) : []).map((pos) => (
                       <div
                         key={pos.positionKey}
                         className="p-3.5 rounded-lg bg-[#0b0416] border border-purple-900/50 space-y-1.5 text-xs"
@@ -901,7 +954,7 @@ export function GrimoireLedgerClient() {
                       Why These Ingredients
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {w.ingredientReasons.map((wt, idx) => {
+                      {(w.ingredientReasons || []).map((wt, idx) => {
                         const asset = getSanctumIngredientImage(wt.name);
                         return (
                           <div
@@ -938,7 +991,7 @@ export function GrimoireLedgerClient() {
                       Steps
                     </h4>
                     <div className="space-y-2">
-                      {w.ritualSteps.map((step) => (
+                      {(w.ritualSteps || []).map((step) => (
                         <div
                           key={step.step}
                           className="p-3 rounded-lg bg-[#0e061c] border border-purple-900/50 space-y-1 text-xs"

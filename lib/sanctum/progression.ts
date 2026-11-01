@@ -12,6 +12,8 @@
  * - Deleting or purging Grimoire entries never decreases progression history.
  */
 
+import { getAccountScopedKey } from "./account-storage";
+
 export interface SanctumProgress {
   currentStreak: number;
   longestStreak: number;
@@ -181,13 +183,14 @@ export function getEffectiveLocalDateString(dateInput?: Date): string {
  * Hydration-safe: returns initial empty progress on server or on parse failure.
  * Reconciles lapsed streaks and migrates grimoire entry counts gracefully.
  */
-export function getSanctumProgress(): SanctumProgress {
+export function getSanctumProgress(userId?: string | null): SanctumProgress {
   if (typeof window === "undefined") {
     return INITIAL_SANCTUM_PROGRESS;
   }
 
   try {
-    const raw = localStorage.getItem(SANCTUM_PROGRESS_KEY);
+    const key = getAccountScopedKey(SANCTUM_PROGRESS_KEY, userId);
+    const raw = localStorage.getItem(key);
     if (!raw) return { ...INITIAL_SANCTUM_PROGRESS };
 
     const parsed = JSON.parse(raw);
@@ -200,7 +203,8 @@ export function getSanctumProgress(): SanctumProgress {
     // Backward-compatibility: if totalSavedEntries was unset, inspect existing grimoire readings
     if (typeof parsed.totalSavedEntries !== "number") {
       try {
-        const rawGrimoire = localStorage.getItem("witchr_sanctum_grimoire_readings");
+        const grimoireKey = getAccountScopedKey("witchr_sanctum_grimoire_readings", userId);
+        const rawGrimoire = localStorage.getItem(grimoireKey);
         if (rawGrimoire) {
           const list = JSON.parse(rawGrimoire);
           if (Array.isArray(list)) {
@@ -248,11 +252,12 @@ export function getSanctumProgress(): SanctumProgress {
 /**
  * Saves progression state to localStorage and dispatches a change event.
  */
-export function saveSanctumProgress(progress: SanctumProgress): void {
+export function saveSanctumProgress(progress: SanctumProgress, userId?: string | null): void {
   if (typeof window === "undefined") return;
 
   try {
-    localStorage.setItem(SANCTUM_PROGRESS_KEY, JSON.stringify(progress));
+    const key = getAccountScopedKey(SANCTUM_PROGRESS_KEY, userId);
+    localStorage.setItem(key, JSON.stringify(progress));
     window.dispatchEvent(new CustomEvent("sanctum:progress-updated", { detail: progress }));
   } catch (error) {
     console.error("Failed to save Sanctum progress to localStorage", error);
@@ -263,10 +268,10 @@ export function saveSanctumProgress(progress: SanctumProgress): void {
  * Records a saved Grimoire entry toward progression and Grimoire Keeper badge.
  * Deduplicated by readingId so duplicate clicks do not inflate the count.
  */
-export function recordGrimoireSave(readingId: string): void {
+export function recordGrimoireSave(readingId: string, userId?: string | null): void {
   if (typeof window === "undefined") return;
 
-  const current = getSanctumProgress();
+  const current = getSanctumProgress(userId);
   if (current.processedSaveIds.includes(readingId)) return;
 
   const nextTotalSaved = current.totalSavedEntries + 1;
@@ -283,7 +288,7 @@ export function recordGrimoireSave(readingId: string): void {
   const newlyUnlocked = SANCTUM_BADGES.filter((b) => newlyUnlockedIds.includes(b.id));
 
   candidate.unlockedBadges = updatedBadges;
-  saveSanctumProgress(candidate);
+  saveSanctumProgress(candidate, userId);
 
   for (const badge of newlyUnlocked) {
     window.dispatchEvent(new CustomEvent("sanctum:badge-unlocked", { detail: badge }));
@@ -357,6 +362,7 @@ export function recordSanctumActivity(params: {
   id: string;
   customDate?: string;
   title?: string;
+  userId?: string | null;
 }): RecordActivityResult {
   if (typeof window === "undefined") {
     return {
@@ -367,7 +373,7 @@ export function recordSanctumActivity(params: {
     };
   }
 
-  const current = getSanctumProgress();
+  const current = getSanctumProgress(params.userId);
   const activityDate = params.customDate || getEffectiveLocalDateString();
 
   // Deduplication check
@@ -453,7 +459,7 @@ export function recordSanctumActivity(params: {
   candidateProgress.claimedRewards = updatedRewardIds;
 
   // Persist updated progress
-  saveSanctumProgress(candidateProgress);
+  saveSanctumProgress(candidateProgress, params.userId);
 
   // Dispatch toast event for each newly unlocked badge
   for (const badge of newlyUnlockedBadges) {

@@ -18,7 +18,7 @@ interface OracleFigureProps {
  * while remaining fully prepared to accept a final generated illustration asset later.
  */
 export function OracleFigure({
-  src,
+  src = "/images/sanctum/oracle.webp",
   alt = "The Oracle of Witchr",
   className = "",
   size = "md",
@@ -61,7 +61,7 @@ export function OracleFigure({
             src={src}
             alt={alt}
             fill
-            className="object-cover object-center filter contrast-125"
+            className="object-cover object-[center_35%]"
             sizes="(max-width: 640px) 160px, 280px"
           />
         </div>

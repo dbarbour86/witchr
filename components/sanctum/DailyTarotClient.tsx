@@ -55,6 +55,8 @@ export function DailyTarotClient() {
           setCard(foundCard);
         }
       } else {
+        setReading(null);
+        setCard(null);
         setIsSaved(false);
       }
     };

@@ -10,8 +10,9 @@ import {
   OracleAltarScene,
 } from "@/components/sanctum/SanctumTriptychAssets";
 import { TarotCornerFlourish, FourPointStar } from "@/components/OrnateFrames";
-import { Send, MessageSquare } from "lucide-react";
+import { Send, MessageSquare, Flame } from "lucide-react";
 import { ORACLE_PENDING_INQUIRY_KEY } from "@/lib/sanctum/oracle/types";
+import { useSanctumAuth } from "@/lib/supabase/auth-context";
 
 const STARTER_PROMPTS = [
   "I FEEL STUCK",
@@ -21,28 +22,52 @@ const STARTER_PROMPTS = [
 
 export function OracleEntranceClient() {
   const router = useRouter();
+  const { user } = useSanctumAuth();
   const [inquiryText, setInquiryText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [inquiryError, setInquiryError] = useState<string | null>(null);
 
-  const handleSubmitInquiry = (e: React.FormEvent) => {
+  const handleSubmitInquiry = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const query = inquiryText.trim();
-    if (query) {
+    const formData = new FormData(e.currentTarget);
+    const rawVal = (formData.get("q") as string) || inquiryText || "";
+    const query = rawVal.trim();
+    if (!query) {
+      setInquiryError("Please speak a question, intention, or topic before consulting the Oracle.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setInquiryError(null);
+
+    try {
       try {
         sessionStorage.setItem(ORACLE_PENDING_INQUIRY_KEY, query);
-      } catch {
-        // Fallback for private modes or storage quota
+      } catch (storageErr) {
+        console.warn("sessionStorage handoff unavailable, falling back to query param", storageErr);
       }
+      router.push(`/sanctum/oracle?q=${encodeURIComponent(query)}`);
+    } catch (err) {
+      console.error("Navigation to Oracle failed:", err);
+      setIsSubmitting(false);
+      setInquiryError("Unable to reach the Oracle right now. Your question is preserved below—please try again.");
     }
-    router.push("/sanctum/oracle");
   };
 
   const handleChipClick = (prompt: string) => {
+    setInquiryError(null);
     try {
-      sessionStorage.setItem(ORACLE_PENDING_INQUIRY_KEY, prompt);
-    } catch {
-      // Fallback for private modes or storage quota
+      try {
+        sessionStorage.setItem(ORACLE_PENDING_INQUIRY_KEY, prompt);
+      } catch {
+        // Fallback for private modes or storage quota
+      }
+      router.push(`/sanctum/oracle?q=${encodeURIComponent(prompt)}`);
+    } catch (err) {
+      console.error("Navigation to Oracle failed from chip:", err);
+      setInquiryText(prompt);
+      setInquiryError("Unable to reach the Oracle right now. Your selected topic is placed below—please click Talk to the Oracle.");
     }
-    router.push("/sanctum/oracle");
   };
 
   return (
@@ -107,11 +132,11 @@ export function OracleEntranceClient() {
             <div className="relative my-2 sm:my-3 rounded-xl overflow-hidden border border-purple-600/50 bg-[#070210] shadow-[0_0_35px_rgba(147,51,234,0.35)] flex items-center justify-center">
               <div className="relative w-full aspect-[3/2] flex items-center justify-center">
                 <Image
-                  src="/images/sanctum/oracle-chamber-altar.webp"
+                  src="/images/sanctum/oracle.webp"
                   alt="The Hooded Oracle seated at the Candlelit Tarot Altar with full spread and atmosphere"
                   fill
                   priority
-                  className="object-contain object-center filter contrast-105"
+                  className="object-contain object-center"
                   sizes="(max-width: 1024px) 100vw, 750px"
                   onError={(e) => {
                     const target = e.currentTarget;
@@ -126,14 +151,30 @@ export function OracleEntranceClient() {
             </div>
 
             {/* Question Inquest Form: Comfortable typing textarea + submit button below */}
-            <form onSubmit={handleSubmitInquiry} className="mt-2 space-y-3">
+            <form onSubmit={handleSubmitInquiry} action="/sanctum/oracle" method="GET" className="mt-2 space-y-3">
+              {inquiryError && (
+                <div className="p-2.5 rounded-lg bg-purple-950/90 border border-amber-500/60 text-amber-200 text-xs font-mono leading-relaxed flex items-center gap-2 shadow-[0_0_15px_rgba(245,158,11,0.2)]" role="alert">
+                  <span className="text-amber-400 font-bold shrink-0">✦</span>
+                  <span>{inquiryError}</span>
+                </div>
+              )}
+              {!user && (
+                <div className="flex items-center gap-1.5 px-1 text-[11px] font-mono text-purple-300/80 uppercase tracking-widest">
+                  <Flame className="w-3 h-3 text-purple-400" />
+                  <span>Ask one question before joining.</span>
+                </div>
+              )}
               <div className="relative rounded-xl border-2 border-purple-500/80 bg-[#0d041e] focus-within:border-purple-300 focus-within:ring-2 focus-within:ring-purple-400/40 transition-all shadow-[0_0_30px_rgba(147,51,234,0.3)] p-2.5">
                 <div className="flex items-start gap-2.5">
                   <MessageSquare className="w-4 h-4 text-purple-400 shrink-0 mt-1" />
                   <textarea
+                    name="q"
                     rows={2}
                     value={inquiryText}
-                    onChange={(e) => setInquiryText(e.target.value)}
+                    onChange={(e) => {
+                      setInquiryText(e.target.value);
+                      if (inquiryError) setInquiryError(null);
+                    }}
                     placeholder="Speak your question, intention, or what's on your mind..."
                     aria-label="Speak your question to the Oracle"
                     className="w-full bg-transparent text-xs sm:text-sm text-bone placeholder-purple-300/50 outline-none font-serif resize-none leading-relaxed min-h-[48px]"
@@ -144,10 +185,11 @@ export function OracleEntranceClient() {
                 <div className="mt-2 pt-2 border-t border-purple-900/50 flex justify-end">
                   <button
                     type="submit"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg bg-gradient-to-r from-purple-700 via-purple-600 to-indigo-700 hover:from-purple-600 hover:to-indigo-600 border border-purple-300/50 text-white text-[11px] xs:text-xs sm:text-sm font-serif font-bold tracking-wider uppercase transition-all shadow-[0_0_18px_rgba(168,85,247,0.45)] active:scale-[0.98] cursor-pointer whitespace-nowrap"
+                    disabled={isSubmitting}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg bg-gradient-to-r from-purple-700 via-purple-600 to-indigo-700 hover:from-purple-600 hover:to-indigo-600 border border-purple-300/50 text-white text-[11px] xs:text-xs sm:text-sm font-serif font-bold tracking-wider uppercase transition-all shadow-[0_0_18px_rgba(168,85,247,0.45)] active:scale-[0.98] cursor-pointer whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    <span>TALK TO THE ORACLE</span>
-                    <Send className="w-3.5 h-3.5" />
+                    <span>{isSubmitting ? "CONNECTING TO ORACLE..." : "TALK TO THE ORACLE"}</span>
+                    <Send className={`w-3.5 h-3.5 ${isSubmitting ? "animate-pulse" : ""}`} />
                   </button>
                 </div>
               </div>

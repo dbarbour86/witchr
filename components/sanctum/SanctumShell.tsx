@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { SanctumCrest } from "@/components/sanctum/SanctumSymbols";
 import { SanctumStreakBadge } from "@/components/sanctum/SanctumStreakBadge";
 import { SanctumDrawerStreakCard } from "@/components/sanctum/SanctumDrawerStreakCard";
+import { useSanctumAuth } from "@/lib/supabase/auth-context";
 import {
   Sparkles,
   BookOpen,
@@ -26,6 +28,7 @@ interface SanctumShellProps {
 
 export function SanctumShell({ children }: SanctumShellProps) {
   const pathname = usePathname();
+  const { user, signOut } = useSanctumAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const menuDrawerRef = useRef<HTMLDivElement>(null);
@@ -130,7 +133,14 @@ export function SanctumShell({ children }: SanctumShellProps) {
             aria-label="Witchr Sanctum Home"
           >
             <div className="relative group-hover:scale-105 transition-transform duration-300 shrink-0">
-              <SanctumCrest className="w-7 h-7 sm:w-10 sm:h-10 drop-shadow-[0_0_10px_rgba(168,85,247,0.4)]" />
+              <Image
+                src="/images/icon.png"
+                alt="Witchr Sanctum"
+                width={40}
+                height={40}
+                priority
+                className="w-7 h-7 sm:w-10 sm:h-10 object-contain drop-shadow-[0_0_10px_rgba(168,85,247,0.4)]"
+              />
             </div>
             <div className="flex flex-col min-w-0">
               <span className="font-serif text-sm sm:text-xl md:text-2xl font-bold tracking-[0.08em] sm:tracking-[0.16em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-bone via-lavender-light to-purple-300 drop-shadow-[0_0_12px_rgba(192,132,252,0.35)] truncate">
@@ -139,9 +149,18 @@ export function SanctumShell({ children }: SanctumShellProps) {
             </div>
           </Link>
 
-          {/* Right: Compact Streak Indicator + Menu Button */}
+          {/* Right: Member Streak or Guest Log In + Menu Button */}
           <div className="flex items-center gap-1.5 sm:gap-4 shrink-0">
-            <SanctumStreakBadge />
+            {user ? (
+              <SanctumStreakBadge />
+            ) : (
+              <Link
+                href={`/sanctum/login?redirect=${encodeURIComponent(pathname)}`}
+                className="inline-flex items-center justify-center px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-[#130726] hover:bg-[#1f0c3d] border border-purple-700/60 hover:border-purple-400 text-purple-200 hover:text-white transition-all duration-200 shadow-[0_0_15px_rgba(168,85,247,0.2)] focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 text-[11px] sm:text-xs font-mono uppercase tracking-[0.14em] sm:tracking-[0.18em] font-semibold cursor-pointer shrink-0"
+              >
+                Log In
+              </Link>
+            )}
 
             <button
               ref={menuButtonRef}
@@ -275,8 +294,44 @@ export function SanctumShell({ children }: SanctumShellProps) {
               </nav>
             </div>
 
-            {/* Drawer Footer: Exit to Public Site */}
-            <div className="pt-4 border-t border-purple-900/50 space-y-2">
+            {/* Drawer Footer: Auth Actions + Exit to Public Site */}
+            <div className="pt-4 border-t border-purple-900/50 space-y-3">
+              {user ? (
+                <div className="space-y-2">
+                  <div className="px-2 py-1 rounded bg-[#130728] border border-purple-900/60 text-[10px] font-mono text-purple-300/80 truncate">
+                    ✦ {user.email || "Member"}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      signOut();
+                    }}
+                    className="w-full p-2.5 rounded-xl bg-[#130726] hover:bg-purple-950/60 border border-purple-900/60 hover:border-purple-600 text-purple-300 hover:text-purple-100 flex items-center justify-center gap-2 text-xs font-mono uppercase tracking-widest transition-colors cursor-pointer"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-2">
+                  <Link
+                    href={`/sanctum/login?redirect=${encodeURIComponent(pathname)}`}
+                    onClick={() => setMenuOpen(false)}
+                    className="p-2 rounded-xl bg-[#130726] hover:bg-[#1f0c3d] border border-purple-700/60 hover:border-purple-400 text-purple-200 hover:text-white text-center text-xs font-mono uppercase tracking-wider font-semibold transition-all cursor-pointer"
+                  >
+                    Log In
+                  </Link>
+                  <Link
+                    href={`/sanctum/signup?redirect=${encodeURIComponent(pathname)}`}
+                    onClick={() => setMenuOpen(false)}
+                    className="p-2 rounded-xl bg-purple-900/60 hover:bg-purple-800/80 border border-purple-500/60 hover:border-purple-300 text-white text-center text-xs font-mono uppercase tracking-wider font-bold transition-all cursor-pointer"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
+
               <Link
                 href="/"
                 onClick={() => setMenuOpen(false)}

@@ -1,4 +1,5 @@
 import { getEffectiveLocalDateString, recordGrimoireSave } from "./progression";
+import { getAccountScopedKey } from "./account-storage";
 
 export interface SanctumDailyReading {
   id: string;
@@ -96,13 +97,14 @@ export function getTodayLocalDateString(): string {
  * Retrieves the stored daily reading from localStorage if it matches today's local date.
  * Returns null if no draw exists for today or if running during server rendering.
  */
-export function getStoredDailyReading(): SanctumDailyReading | null {
+export function getStoredDailyReading(userId?: string | null): SanctumDailyReading | null {
   if (typeof window === "undefined") {
     return null;
   }
 
   try {
-    const raw = localStorage.getItem(SANCTUM_STORAGE_KEYS.DAILY_DRAW);
+    const key = getAccountScopedKey(SANCTUM_STORAGE_KEYS.DAILY_DRAW, userId);
+    const raw = localStorage.getItem(key);
     if (!raw) return null;
 
     const data: SanctumDailyReading = JSON.parse(raw);
@@ -111,7 +113,7 @@ export function getStoredDailyReading(): SanctumDailyReading | null {
     // Verify the draw belongs to today's calendar date
     if (data.localDate === today) {
       // Check if it is also saved in the Grimoire ledger
-      const isSaved = isReadingSavedToGrimoire(data.id);
+      const isSaved = isReadingSavedToGrimoire(data.id, userId);
       return {
         ...data,
         savedToGrimoire: isSaved || data.savedToGrimoire,
@@ -128,11 +130,12 @@ export function getStoredDailyReading(): SanctumDailyReading | null {
 /**
  * Persists today's daily reading record into localStorage.
  */
-export function saveDailyReading(reading: SanctumDailyReading): void {
+export function saveDailyReading(reading: SanctumDailyReading, userId?: string | null): void {
   if (typeof window === "undefined") return;
 
   try {
-    localStorage.setItem(SANCTUM_STORAGE_KEYS.DAILY_DRAW, JSON.stringify(reading));
+    const key = getAccountScopedKey(SANCTUM_STORAGE_KEYS.DAILY_DRAW, userId);
+    localStorage.setItem(key, JSON.stringify(reading));
   } catch (error) {
     console.error("Failed to save Sanctum daily draw to localStorage", error);
   }
@@ -141,11 +144,12 @@ export function saveDailyReading(reading: SanctumDailyReading): void {
 /**
  * Checks if a specific reading is recorded in the Grimoire archival ledger.
  */
-export function isReadingSavedToGrimoire(readingId: string): boolean {
+export function isReadingSavedToGrimoire(readingId: string, userId?: string | null): boolean {
   if (typeof window === "undefined") return false;
 
   try {
-    const raw = localStorage.getItem(SANCTUM_STORAGE_KEYS.GRIMOIRE_READINGS);
+    const key = getAccountScopedKey(SANCTUM_STORAGE_KEYS.GRIMOIRE_READINGS, userId);
+    const raw = localStorage.getItem(key);
     if (!raw) return false;
 
     const list: SanctumGrimoireReading[] = JSON.parse(raw);
@@ -161,11 +165,12 @@ export function isReadingSavedToGrimoire(readingId: string): boolean {
  * Prevents duplicate saves and updates the daily record's flag if applicable.
  * Returns true if saved, or false if already present.
  */
-export function saveReadingToGrimoire(reading: SanctumGrimoireReading): boolean {
+export function saveReadingToGrimoire(reading: SanctumGrimoireReading, userId?: string | null): boolean {
   if (typeof window === "undefined") return false;
 
   try {
-    const raw = localStorage.getItem(SANCTUM_STORAGE_KEYS.GRIMOIRE_READINGS);
+    const key = getAccountScopedKey(SANCTUM_STORAGE_KEYS.GRIMOIRE_READINGS, userId);
+    const raw = localStorage.getItem(key);
     let list: SanctumGrimoireReading[] = [];
     if (raw) {
       try {
@@ -185,18 +190,18 @@ export function saveReadingToGrimoire(reading: SanctumGrimoireReading): boolean 
         savedToGrimoire: true,
       };
       list.push(updatedReading);
-      localStorage.setItem(SANCTUM_STORAGE_KEYS.GRIMOIRE_READINGS, JSON.stringify(list));
+      localStorage.setItem(key, JSON.stringify(list));
 
       // Also sync back to daily draw record if it is a daily reading
       if (reading.type === "daily") {
-        const currentDaily = getStoredDailyReading();
+        const currentDaily = getStoredDailyReading(userId);
         if (currentDaily && currentDaily.id === reading.id) {
-          saveDailyReading({ ...currentDaily, savedToGrimoire: true });
+          saveDailyReading({ ...currentDaily, savedToGrimoire: true }, userId);
         }
       }
 
       // Count saved grimoire entries toward Grimoire Keeper mark
-      recordGrimoireSave(reading.id);
+      recordGrimoireSave(reading.id, userId);
 
       window.dispatchEvent(new CustomEvent("sanctum:grimoire-updated", { detail: { action: "save", id: reading.id } }));
       return true;
@@ -213,11 +218,12 @@ export function saveReadingToGrimoire(reading: SanctumGrimoireReading): boolean 
  * Retrieves all saved entries from the Grimoire ledger.
  * Sorted newest first by timestamp. Gracefully ignores malformed records.
  */
-export function getGrimoireEntries(): SanctumGrimoireReading[] {
+export function getGrimoireEntries(userId?: string | null): SanctumGrimoireReading[] {
   if (typeof window === "undefined") return [];
 
   try {
-    const raw = localStorage.getItem(SANCTUM_STORAGE_KEYS.GRIMOIRE_READINGS);
+    const key = getAccountScopedKey(SANCTUM_STORAGE_KEYS.GRIMOIRE_READINGS, userId);
+    const raw = localStorage.getItem(key);
     if (!raw) return [];
 
     const parsed = JSON.parse(raw);
@@ -246,22 +252,23 @@ export function getGrimoireEntries(): SanctumGrimoireReading[] {
  * Reconciles the Daily Tarot saved flag if the deleted entry was today's daily draw,
  * without resetting or rerolling today's active card.
  */
-export function deleteGrimoireEntry(id: string): boolean {
+export function deleteGrimoireEntry(id: string, userId?: string | null): boolean {
   if (typeof window === "undefined") return false;
 
   try {
-    const currentList = getGrimoireEntries();
+    const key = getAccountScopedKey(SANCTUM_STORAGE_KEYS.GRIMOIRE_READINGS, userId);
+    const currentList = getGrimoireEntries(userId);
     const targetEntry = currentList.find((item) => item.id === id);
     if (!targetEntry) return false;
 
     const filtered = currentList.filter((item) => item.id !== id);
-    localStorage.setItem(SANCTUM_STORAGE_KEYS.GRIMOIRE_READINGS, JSON.stringify(filtered));
+    localStorage.setItem(key, JSON.stringify(filtered));
 
     // If deleting today's daily draw, update the daily record's saved flag without resetting the draw
     if (targetEntry.type === "daily") {
-      const currentDaily = getStoredDailyReading();
+      const currentDaily = getStoredDailyReading(userId);
       if (currentDaily && currentDaily.id === id) {
-        saveDailyReading({ ...currentDaily, savedToGrimoire: false });
+        saveDailyReading({ ...currentDaily, savedToGrimoire: false }, userId);
       }
     }
 
@@ -277,16 +284,17 @@ export function deleteGrimoireEntry(id: string): boolean {
  * Permanently removes all saved entries from the Grimoire ledger.
  * Reconciles the active Daily Tarot saved flag without rerolling today's card.
  */
-export function clearGrimoire(): void {
+export function clearGrimoire(userId?: string | null): void {
   if (typeof window === "undefined") return;
 
   try {
-    localStorage.removeItem(SANCTUM_STORAGE_KEYS.GRIMOIRE_READINGS);
+    const key = getAccountScopedKey(SANCTUM_STORAGE_KEYS.GRIMOIRE_READINGS, userId);
+    localStorage.removeItem(key);
 
     // Keep today's daily card intact, but update saved status to false
-    const currentDaily = getStoredDailyReading();
+    const currentDaily = getStoredDailyReading(userId);
     if (currentDaily) {
-      saveDailyReading({ ...currentDaily, savedToGrimoire: false });
+      saveDailyReading({ ...currentDaily, savedToGrimoire: false }, userId);
     }
 
     window.dispatchEvent(new CustomEvent("sanctum:grimoire-updated", { detail: { action: "clear" } }));
@@ -298,12 +306,12 @@ export function clearGrimoire(): void {
 /**
  * Calculates counts of saved items by category.
  */
-export function countGrimoireEntriesByType(): {
+export function countGrimoireEntriesByType(userId?: string | null): {
   total: number;
   tarot: number;
   workings: number;
 } {
-  const entries = getGrimoireEntries();
+  const entries = getGrimoireEntries(userId);
   const tarot = entries.filter((e) => e.type === "daily" || e.type === "three-card").length;
   const workings = entries.filter((e) => e.type === "working").length;
 

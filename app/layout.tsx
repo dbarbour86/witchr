@@ -72,7 +72,8 @@ export const metadata: Metadata = {
       "Bad breakup. Shitty job. No direction. Weird energy. Practical rituals for real life.",
   },
   icons: {
-    icon: "/icon.svg",
+    icon: "/images/icon.png",
+    apple: "/images/icon.png",
   },
 };
 

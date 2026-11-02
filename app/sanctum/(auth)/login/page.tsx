@@ -248,6 +248,16 @@ function LoginForm() {
           <p className="text-[11px] font-mono text-purple-400/60 pt-1">
             Your inquiry and answers will remain intact upon signing in.
           </p>
+
+          <div className="flex items-center justify-center gap-3 text-[10px] font-mono text-purple-400/50 pt-1">
+            <Link href="/privacy" className="hover:text-purple-300 transition-colors">
+              Privacy Policy
+            </Link>
+            <span>·</span>
+            <Link href="/terms" className="hover:text-purple-300 transition-colors">
+              Terms of Service
+            </Link>
+          </div>
         </div>
       </div>
     </div>

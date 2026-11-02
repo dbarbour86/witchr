@@ -153,6 +153,16 @@ export function Footer() {
                   Safety & Disclaimers
                 </Link>
               </li>
+              <li>
+                <Link href="/privacy" className="text-bone-dim hover:text-lavender-light transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="text-bone-dim hover:text-lavender-light transition-colors">
+                  Terms of Service
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -162,9 +172,19 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-bone-dim font-mono">
           <p>© {currentYear} Witchr.com · All rights reserved.</p>
-          <p className="text-center sm:text-right">
-            For reflective and educational purposes · Not psychological or medical advice.
-          </p>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-3 gap-y-1">
+            <Link href="/privacy" className="hover:text-lavender-light transition-colors">
+              Privacy
+            </Link>
+            <span>·</span>
+            <Link href="/terms" className="hover:text-lavender-light transition-colors">
+              Terms
+            </Link>
+            <span>·</span>
+            <Link href="/disclaimer" className="hover:text-lavender-light transition-colors">
+              Disclaimers
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

@@ -352,6 +352,31 @@ export function SanctumShell({ children }: SanctumShellProps) {
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 text-purple-400" />
               </Link>
+              <div className="flex items-center justify-center gap-3 text-[10px] font-mono text-purple-400/60 pt-1">
+                <Link
+                  href="/privacy"
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:text-purple-200 transition-colors"
+                >
+                  Privacy
+                </Link>
+                <span>·</span>
+                <Link
+                  href="/terms"
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:text-purple-200 transition-colors"
+                >
+                  Terms
+                </Link>
+                <span>·</span>
+                <Link
+                  href="/disclaimer"
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:text-purple-200 transition-colors"
+                >
+                  Disclaimers
+                </Link>
+              </div>
               <p className="text-[9.5px] font-mono text-purple-400/60 text-center tracking-wider uppercase">
                 A quieter place for louder questions.
               </p>

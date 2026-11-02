@@ -9,12 +9,12 @@ export const metadata: Metadata = {
   description:
     "Why Witchr exists. A grounded, modern philosophy of ritual, symbolism, and psychological boundaries without fluffy spiritual clichés or false promises.",
   alternates: {
-    canonical: "https://witchr.com/about",
+    canonical: "https://www.witchr.com/about",
   },
   openGraph: {
     title: "About Witchr — Witchcraft Without the Bullshit | Witchr",
     description: "Witchcraft for modern problems. Take what helps. Leave what doesn’t.",
-    url: "https://witchr.com/about",
+    url: "https://www.witchr.com/about",
     type: "website",
   },
   twitter: {
@@ -26,15 +26,15 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "About", item: "https://witchr.com/about" },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "About", item: "https://www.witchr.com/about" },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
     title: "About Witchr — Witchcraft Without the Bullshit | Witchr",
     description:
       "Why Witchr exists. A grounded, modern philosophy of ritual, symbolism, and psychological boundaries.",
-    url: "https://witchr.com/about",
+    url: "https://www.witchr.com/about",
   });
 
   return (

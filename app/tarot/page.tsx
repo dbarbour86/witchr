@@ -10,13 +10,13 @@ export const metadata: Metadata = {
   description:
     "Structured tarot spreads for diagnosing blind spots, decision paralysis, boundary release, and reflective inquiry. Not fortune-telling, but clear questions.",
   alternates: {
-    canonical: "https://witchr.com/tarot",
+    canonical: "https://www.witchr.com/tarot",
   },
   openGraph: {
     title: "Tarot Spreads for Clarity & Self-Reflection | Witchr",
     description:
       "Structured tarot spreads for diagnosing blind spots, decision paralysis, and reflective inquiry.",
-    url: "https://witchr.com/tarot",
+    url: "https://www.witchr.com/tarot",
     type: "website",
   },
   twitter: {
@@ -29,15 +29,15 @@ export const metadata: Metadata = {
 
 export default function TarotIndexPage() {
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Tarot", item: "https://witchr.com/tarot" },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Tarot", item: "https://www.witchr.com/tarot" },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
     title: "Tarot Spreads for Clarity & Self-Reflection | Witchr",
     description:
       "Structured tarot spreads for diagnosing blind spots, decision paralysis, and reflective inquiry.",
-    url: "https://witchr.com/tarot",
+    url: "https://www.witchr.com/tarot",
   });
 
   return (

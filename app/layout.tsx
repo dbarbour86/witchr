@@ -25,7 +25,7 @@ const sansFont = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://witchr.com"),
+  metadataBase: new URL("https://www.witchr.com"),
   title: {
     default: "Witchr — Witchcraft for Modern Problems",
     template: "%s | Witchr",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://witchr.com",
+    url: "https://www.witchr.com",
     siteName: "Witchr",
     title: "Witchr — Witchcraft for Modern Problems",
     description:

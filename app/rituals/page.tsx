@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   description:
     "The complete Witchr ritual library. Grounded, practical rituals for boundaries, money clarity, heartbreak, anxiety, and decision paralysis.",
   alternates: {
-    canonical: "https://witchr.com/rituals",
+    canonical: "https://www.witchr.com/rituals",
   },
   openGraph: {
     title: "Modern Witchcraft Rituals for Real-Life Problems | Witchr",
     description:
       "Start with a problem. Leave with something to do. The complete Witchr ritual library.",
-    url: "https://witchr.com/rituals",
+    url: "https://www.witchr.com/rituals",
     type: "website",
   },
   twitter: {
@@ -28,15 +28,15 @@ export const metadata: Metadata = {
 
 export default function RitualsPage() {
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Rituals", item: "https://witchr.com/rituals" },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Rituals", item: "https://www.witchr.com/rituals" },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
     title: "Modern Witchcraft Rituals for Real-Life Problems | Witchr",
     description:
       "The complete Witchr ritual library. Grounded, practical rituals for boundaries, money clarity, heartbreak, anxiety, and decision paralysis.",
-    url: "https://witchr.com/rituals",
+    url: "https://www.witchr.com/rituals",
   });
 
   return (

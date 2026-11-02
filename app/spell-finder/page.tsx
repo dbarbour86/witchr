@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   description:
     "You don’t need to know what kind of spell you’re looking for. Start with what’s bothering you. Instant grounded recommendations.",
   alternates: {
-    canonical: "https://witchr.com/spell-finder",
+    canonical: "https://www.witchr.com/spell-finder",
   },
   openGraph: {
     title: "Spell Finder — Find a Ritual for What’s Eating You | Witchr",
     description:
       "Start with the problem. Find a practical, grounded ritual in two steps.",
-    url: "https://witchr.com/spell-finder",
+    url: "https://www.witchr.com/spell-finder",
     type: "website",
   },
   twitter: {
@@ -26,15 +26,15 @@ export const metadata: Metadata = {
 
 export default function SpellFinderPage() {
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Spell Finder", item: "https://witchr.com/spell-finder" },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Spell Finder", item: "https://www.witchr.com/spell-finder" },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
     title: "Spell Finder — Find a Ritual for What’s Eating You | Witchr",
     description:
       "Start with the problem. Find a practical, grounded ritual in two steps.",
-    url: "https://witchr.com/spell-finder",
+    url: "https://www.witchr.com/spell-finder",
   });
 
   return (

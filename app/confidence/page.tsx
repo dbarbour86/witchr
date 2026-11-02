@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   description:
     "Modern witchcraft rituals and grounding practices for building quiet confidence, taking up space, and speaking with authority.",
   alternates: {
-    canonical: "https://witchr.com/confidence",
+    canonical: "https://www.witchr.com/confidence",
   },
   openGraph: {
     title: "Confidence Spells & Rituals | Witchr",
     description:
       "Modern witchcraft rituals and grounding practices for building quiet confidence, taking up space, and speaking with authority.",
-    url: "https://witchr.com/confidence",
+    url: "https://www.witchr.com/confidence",
     type: "website",
   },
   twitter: {

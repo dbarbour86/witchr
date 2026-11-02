@@ -19,7 +19,7 @@ export const RITUALS: Ritual[] = [
     ],
     substitutions: [
       "No black candle? White candle, or simply a bowl of salted tap water.",
-      "No salt? Black pepper, rosemary, or pure cold tap water.",
+      "No salt? [Black pepper](/ingredients/black-pepper), [rosemary](/herbs/rosemary), or pure cold tap water.",
     ],
     steps: [
       {
@@ -182,6 +182,7 @@ export const RITUALS: Ritual[] = [
     ],
     substitutions: [
       "No stone? Your house key, a heavy coin, or a solid ring on your finger works identically.",
+      "Optional herbal sensory anchor: A small slice of dried [Ginger](/herbs/ginger) in your pocket provides a warming tactile touchstone to break mental hesitation before speaking.",
     ],
     steps: [
       {
@@ -235,7 +236,7 @@ export const RITUALS: Ritual[] = [
       "Clean paper and ink",
     ],
     substitutions: [
-      "No herbs? A lemon slice, cinnamon stick, or plain salt in water works cleanly.",
+      "No herbs? A lemon slice, cinnamon stick, plain salt, or [moon water](/ingredients/moon-water) works cleanly as an intentional ritual wash.",
     ],
     steps: [
       {
@@ -391,13 +392,13 @@ export const RITUALS: Ritual[] = [
     estimatedTime: "20 minutes",
     difficulty: "Simple",
     supplies: [
-      "A green or honey-colored beeswax candle",
+      "A [green candle](/candles/green) or honey-colored beeswax candle",
       "A toothpick, pin, or blunt needle for carving",
       "A few drops of olive oil or cinnamon oil",
       "A small piece of paper",
     ],
     substitutions: [
-      "Any neutral candle. Kitchen olive oil works wonderfully.",
+      "Any neutral candle. Kitchen olive oil works wonderfully. Whole [cloves](/herbs/clove) or ground cinnamon can be placed around the dish as a grounding aromatic anchor.",
     ],
     steps: [
       {
@@ -446,7 +447,7 @@ export const RITUALS: Ritual[] = [
     difficulty: "Simple",
     supplies: [
       "A small pocket mirror or reflective compact",
-      "A pinch of coarse black pepper or dry rosemary",
+      "A pinch of coarse [black pepper](/ingredients/black-pepper) or dry [rosemary](/herbs/rosemary)",
       "A glass of tap water",
     ],
     substitutions: [
@@ -559,6 +560,7 @@ export const RITUALS: Ritual[] = [
     ],
     substitutions: [
       "Any flower from your yard or a green leaf from a houseplant.",
+      "Optional tactile anchor: A piece of raw or tumbled [Rose Quartz](/crystals/rose-quartz) placed beside your mirror or atop your journal anchors gentle self-compassion while defining sovereign relationship boundaries.",
     ],
     steps: [
       {
@@ -612,7 +614,7 @@ export const RITUALS: Ritual[] = [
       "A timer",
     ],
     substitutions: [
-      "A simple coin flip or drawing from a cup works reliably.",
+      "A simple coin flip or drawing from a cup works reliably. Holding a tactile stone like [amethyst](/crystals/amethyst) can help steady nervous breathing while weighing options.",
     ],
     steps: [
       {

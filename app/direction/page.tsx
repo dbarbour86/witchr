@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   description:
     "Practical rituals and decision-making tools for breaking executive freeze, overcoming analysis paralysis, and starting fresh.",
   alternates: {
-    canonical: "https://witchr.com/direction",
+    canonical: "https://www.witchr.com/direction",
   },
   openGraph: {
     title: "Rituals for Clarity & Direction | Witchr",
     description:
       "Practical rituals and decision-making tools for breaking executive freeze, overcoming analysis paralysis, and starting fresh.",
-    url: "https://witchr.com/direction",
+    url: "https://www.witchr.com/direction",
     type: "website",
   },
   twitter: {

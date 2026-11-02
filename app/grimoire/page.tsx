@@ -4,18 +4,19 @@ import { GRIMOIRE_SECTIONS } from "@/content/grimoire";
 import { JsonLd, getBreadcrumbJsonLd, getWebPageJsonLd } from "@/components/JsonLd";
 import { CelestialDivider, FourPointStar, GrimoireStar } from "@/components/OrnateFrames";
 import { ArrowRight, ShieldCheck, Flame } from "lucide-react";
+import { FormattedProse } from "@/components/CorrespondenceView";
 
 export const metadata: Metadata = {
   title: "Practical Grimoire & Occult Reference Guide",
   description:
     "A clean, grounded beginner reference hub for candle colors, common pantry herbs, lunar timing, and intention crafting. No dogma, just practical foundations.",
   alternates: {
-    canonical: "https://witchr.com/grimoire",
+    canonical: "https://www.witchr.com/grimoire",
   },
   openGraph: {
     title: "Practical Grimoire & Occult Reference Guide | Witchr",
     description: "Pantry herbs, candle colors, lunar timing, and intention crafting. Zero bullshit.",
-    url: "https://witchr.com/grimoire",
+    url: "https://www.witchr.com/grimoire",
     type: "website",
   },
   twitter: {
@@ -27,15 +28,15 @@ export const metadata: Metadata = {
 
 export default function GrimoirePage() {
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Grimoire", item: "https://witchr.com/grimoire" },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Grimoire", item: "https://www.witchr.com/grimoire" },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
     title: "Practical Grimoire & Occult Reference Guide | Witchr",
     description:
       "A clean, grounded beginner reference hub for candle colors, common pantry herbs, lunar timing, and intention crafting.",
-    url: "https://witchr.com/grimoire",
+    url: "https://www.witchr.com/grimoire",
   });
 
   return (
@@ -116,6 +117,26 @@ export default function GrimoirePage() {
               </div>
             )}
 
+            {sec.id === "moon-phases" && (
+              <div className="p-4 sm:p-5 rounded-xl bg-surface border border-border-highlight flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <span className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon font-semibold">
+                    Lunar Craft & Elemental Waters
+                  </span>
+                  <p className="text-sm text-bone-muted font-sans">
+                    Looking to anchor intentions during lunar transits? Read our complete reference guide on preparing and using moon water safely.
+                  </p>
+                </div>
+                <Link
+                  href="/ingredients/moon-water"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface-elevated hover:bg-surface-hover text-lavender-light border border-border-ornate hover:border-lavender text-xs font-mono uppercase tracking-ceremonial font-semibold shrink-0 transition-colors min-h-[44px]"
+                >
+                  <span>Moon Water Reference</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {sec.items.map((item, idx) => (
                 <div
@@ -172,7 +193,7 @@ export default function GrimoirePage() {
 
                       {item.notes && (
                         <p className="text-xs text-bone-dim italic pt-1 border-t border-border-subtle/60">
-                          {item.notes}
+                          <FormattedProse text={item.notes} />
                         </p>
                       )}
                     </div>

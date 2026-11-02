@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   description:
     "Modern rituals for cord cutting, release, closure, and putting down past chapters and relationships with clean finality.",
   alternates: {
-    canonical: "https://witchr.com/letting-go",
+    canonical: "https://www.witchr.com/letting-go",
   },
   openGraph: {
     title: "Letting Go Spells & Rituals | Witchr",
     description:
       "Modern rituals for cord cutting, release, closure, and putting down past chapters and relationships with clean finality.",
-    url: "https://witchr.com/letting-go",
+    url: "https://www.witchr.com/letting-go",
     type: "website",
   },
   twitter: {

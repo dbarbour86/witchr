@@ -27,14 +27,14 @@ export const metadata: Metadata = {
   description:
     "The complete Witchr ritual ingredient directory. Explore mineral grounding, threshold elements, traditional lore, and practical witchcraft uses for essential ingredients.",
   alternates: {
-    canonical: "https://witchr.com/ingredients",
+    canonical: "https://www.witchr.com/ingredients",
   },
   openGraph: {
     title:
       "Ingredients in Witchcraft: Minerals, Elements & Ritual Directory | Witchr",
     description:
       "Explore the Witchr ingredient directory. Grounded reference entries on mineral grounding, traditional folk preservation, and practical witchcraft uses for essential ritual ingredients.",
-    url: "https://witchr.com/ingredients",
+    url: "https://www.witchr.com/ingredients",
     type: "website",
   },
   twitter: {
@@ -50,8 +50,8 @@ export default function IngredientsHubPage() {
   const ingredients = getCorrespondencesByCategory("ingredient");
 
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Ingredients", item: "https://witchr.com/ingredients" },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Ingredients", item: "https://www.witchr.com/ingredients" },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
@@ -59,13 +59,13 @@ export default function IngredientsHubPage() {
       "Ingredients in Witchcraft: Minerals, Elements & Ritual Directory | Witchr",
     description:
       "The complete Witchr ritual ingredient directory. Explore mineral grounding, threshold elements, traditional lore, and practical witchcraft uses for essential ingredients.",
-    url: "https://witchr.com/ingredients",
+    url: "https://www.witchr.com/ingredients",
   });
 
   const itemListJsonLd = getItemListJsonLd(
     ingredients.map((item) => ({
       name: `${item.name} in Witchcraft`,
-      url: `https://witchr.com/ingredients/${item.slug}`,
+      url: `https://www.witchr.com/ingredients/${item.slug}`,
       description: item.oneLiner,
     }))
   );

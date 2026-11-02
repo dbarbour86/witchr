@@ -9,12 +9,12 @@ export const metadata: Metadata = {
   description:
     "Original geometric line-art sigils for boundaries, confidence, focus, release, and motivation. Practical visual anchors for modern intentions.",
   alternates: {
-    canonical: "https://witchr.com/sigils",
+    canonical: "https://www.witchr.com/sigils",
   },
   openGraph: {
     title: "Simple Sigils for Protection, Confidence & Focus | Witchr",
     description: "Give the intention a symbol. Clean original sigil gallery.",
-    url: "https://witchr.com/sigils",
+    url: "https://www.witchr.com/sigils",
     type: "website",
   },
   twitter: {
@@ -26,15 +26,15 @@ export const metadata: Metadata = {
 
 export default function SigilsPage() {
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Sigils", item: "https://witchr.com/sigils" },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Sigils", item: "https://www.witchr.com/sigils" },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
     title: "Simple Sigils for Protection, Confidence & Focus | Witchr",
     description:
       "Original geometric line-art sigils for boundaries, confidence, focus, release, and motivation. Practical visual anchors for modern intentions.",
-    url: "https://witchr.com/sigils",
+    url: "https://www.witchr.com/sigils",
   });
 
   return (

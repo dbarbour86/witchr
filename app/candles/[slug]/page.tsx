@@ -32,12 +32,12 @@ export async function generateMetadata({
     title: item.seoTitle,
     description: item.seoDescription,
     alternates: {
-      canonical: `https://witchr.com/candles/${item.slug}`,
+      canonical: `https://www.witchr.com/candles/${item.slug}`,
     },
     openGraph: {
       title: `${item.seoTitle} | Witchr`,
       description: item.seoDescription,
-      url: `https://witchr.com/candles/${item.slug}`,
+      url: `https://www.witchr.com/candles/${item.slug}`,
       type: "article",
     },
     twitter: {

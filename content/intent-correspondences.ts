@@ -161,6 +161,16 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
           "Hang above bedposts or windows to shield unconscious sleep states and preserve psychic sovereignty during deep rest.",
         sensoryAnchor: "Silvery-backed bitter wild foliage",
       },
+      {
+        name: "Clove",
+        slug: "clove",
+        url: "/herbs/clove",
+        categoryLabel: "Herb / Botanical",
+        role: "Warding Discord & Fortifying Personal Resolve",
+        howToUse:
+          "Keep whole dried cloves in an entryway dish or carry in a sachet to reinforce firm boundaries and deter intrusive energy.",
+        sensoryAnchor: "Intense, warming, woody eugenol fragrance",
+      },
     ],
     candles: [
       {
@@ -196,6 +206,28 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
           "Lay a discrete line across the front threshold, pour in a ring around candles during severance, or add to warm baths to strip emotional static.",
         sensoryAnchor: "Dense, non-decaying crystalline grains",
         badge: "Foundation",
+      },
+      {
+        name: "Black Pepper",
+        slug: "black-pepper",
+        url: "/ingredients/black-pepper",
+        categoryLabel: "Ritual Spice / Defense",
+        role: "Active Banishing, Rejection & Fierce Boundaries",
+        howToUse:
+          "Scatter whole peppercorns into boundary sachets, cast across uninvited pathways, or pair with salt to actively drive away intrusive hostility.",
+        sensoryAnchor: "Pungent, biting, hot aromatic peppercorns",
+        badge: "Active Defense",
+      },
+      {
+        name: "Black Tourmaline",
+        slug: "black-tourmaline",
+        url: "/crystals/black-tourmaline",
+        categoryLabel: "Crystal / Mineral Bedrock",
+        role: "Somatic Grounding, Boundary Anchoring & Static Absorption",
+        howToUse:
+          "Place near entryways as an unyielding boundary stone, keep on stressful work desks, or hold during somatic centering to ground nervous system friction.",
+        sensoryAnchor: "Dense, heavy, striated black raw mineral crystal",
+        badge: "Grounding Anchor",
       },
     ],
     symbols: [
@@ -491,7 +523,7 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
       {
         name: "Rose Quartz",
         slug: "rose-quartz",
-        url: "/love",
+        url: "/crystals/rose-quartz",
         categoryLabel: "Mineral Specimen",
         role: "Tactile Anchor for Self-Compassion",
         howToUse:
@@ -794,6 +826,17 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
           "Dissolve 2 tablespoons into a bucket of warm water with vinegar for traditional floor and threshold washing.",
         sensoryAnchor: "Crystalline sodium chloride mineral grains",
         badge: "Essential",
+      },
+      {
+        name: "Moon Water",
+        slug: "moon-water",
+        url: "/ingredients/moon-water",
+        categoryLabel: "Elemental Water",
+        role: "Symbolic Renewal & Altar Tool Cleansing",
+        howToUse:
+          "Use as an intentional physical medium for symbolic threshold wiping, altar purification, or reflective reset workings.",
+        sensoryAnchor: "Clear water in a sealed glass vessel charged under nocturnal skies",
+        badge: "Lunar Renewal",
       },
     ],
     symbols: [

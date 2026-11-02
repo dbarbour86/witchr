@@ -9,12 +9,12 @@ export const metadata: Metadata = {
   description:
     "Official safety, fire prevention, medical, legal, and non-supernatural disclaimers for Witchr.com. Read before practicing.",
   alternates: {
-    canonical: "https://witchr.com/disclaimer",
+    canonical: "https://www.witchr.com/disclaimer",
   },
   openGraph: {
     title: "Safety, Medical & Supernatural Disclaimers | Witchr",
     description: "Official safety guidelines and disclaimers for Witchr.com.",
-    url: "https://witchr.com/disclaimer",
+    url: "https://www.witchr.com/disclaimer",
     type: "website",
   },
   twitter: {
@@ -26,15 +26,15 @@ export const metadata: Metadata = {
 
 export default function DisclaimerPage() {
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
-    { name: "Disclaimer", item: "https://witchr.com/disclaimer" },
+    { name: "Home", item: "https://www.witchr.com" },
+    { name: "Disclaimer", item: "https://www.witchr.com/disclaimer" },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
     title: "Safety, Medical & Supernatural Disclaimers | Witchr",
     description:
       "Official safety, fire prevention, medical, legal, and non-supernatural disclaimers for Witchr.com.",
-    url: "https://witchr.com/disclaimer",
+    url: "https://www.witchr.com/disclaimer",
   });
 
   return (

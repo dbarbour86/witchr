@@ -27,7 +27,8 @@ export const GRIMOIRE_SECTIONS: GrimoireSection[] = [
         traditionalAssociation: "Money, material growth, physical vitality, and tangible opportunity.",
         modernContext: "Anchoring financial focus, budgeting discipline, and honoring physical bodily health.",
         hex: "#2d5a37",
-        notes: "Traditionally tied to the green earth, agriculture, and practical trade.",
+        notes: "Traditionally tied to the green earth, agriculture, and practical trade. Read our complete [Green Candle Guide](/candles/green).",
+        link: "/candles/green",
       },
       {
         name: "Red",
@@ -140,6 +141,7 @@ export const GRIMOIRE_SECTIONS: GrimoireSection[] = [
         traditionalAssociation: "Culmination, revelation, emotional visibility, and celebrating harvest.",
         modernContext: "Evaluating what has borne fruit and what has failed. Checking the perimeter of your relationships.",
         badge: "Illumination Phase",
+        notes: "The traditional peak phase for preparing [Moon Water](/ingredients/moon-water) to anchor clarity and culmination.",
       },
       {
         name: "Waning Moon (Diminishing Light)",

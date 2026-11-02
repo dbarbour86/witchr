@@ -30,13 +30,13 @@ export const metadata: Metadata = {
   description:
     "Practical rituals, diagnostic tarot spreads, sigils, and modern witchcraft tools for protection, money, confidence, love, letting go, and direction.",
   alternates: {
-    canonical: "https://witchr.com",
+    canonical: "https://www.witchr.com",
   },
   openGraph: {
     title: "Witchr — Witchcraft for Modern Problems",
     description:
       "Practical rituals, diagnostic tarot spreads, sigils, and modern witchcraft tools for real life.",
-    url: "https://witchr.com",
+    url: "https://www.witchr.com",
     type: "website",
   },
   twitter: {

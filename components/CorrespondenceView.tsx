@@ -76,9 +76,11 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
 
   const isHerb = item.category === "herb" || item.routePrefix === "herbs";
   const isIngredient = item.category === "ingredient" || item.routePrefix === "ingredients";
-  const parentName = isHerb ? "Herbs" : isIngredient ? "Ingredients" : hubName;
-  const parentHref = isHerb ? "/herbs" : isIngredient ? "/ingredients" : `/${item.relatedHubSlug || "protection"}`;
-  const parentUrl = `https://witchr.com${parentHref}`;
+  const isCrystal = item.category === "crystal" || item.routePrefix === "crystals";
+  const isCandle = item.category === "candle" || item.routePrefix === "candles";
+  const parentName = isHerb ? "Herbs" : isIngredient ? "Ingredients" : isCrystal ? "Crystals" : isCandle ? "Grimoire" : hubName;
+  const parentHref = isHerb ? "/herbs" : isIngredient ? "/ingredients" : isCrystal ? "/crystals" : isCandle ? "/grimoire" : `/${item.relatedHubSlug || "protection"}`;
+  const parentUrl = `https://www.witchr.com${parentHref}`;
 
   const primaryIntentLower = (item.primaryIntent || "").toLowerCase();
   let intentGuide = { name: "Protection Guide", href: "/correspondences/protection" };
@@ -106,21 +108,21 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
   }
 
   const breadcrumbs = getBreadcrumbJsonLd([
-    { name: "Home", item: "https://witchr.com" },
+    { name: "Home", item: "https://www.witchr.com" },
     {
       name: parentName,
       item: parentUrl,
     },
     {
       name: item.name,
-      item: `https://witchr.com/${item.routePrefix}/${item.slug}`,
+      item: `https://www.witchr.com/${item.routePrefix}/${item.slug}`,
     },
   ]);
 
   const webPageJsonLd = getWebPageJsonLd({
     title: `${item.seoTitle} | Witchr`,
     description: item.seoDescription,
-    url: `https://witchr.com/${item.routePrefix}/${item.slug}`,
+    url: `https://www.witchr.com/${item.routePrefix}/${item.slug}`,
   });
 
   return (
@@ -690,6 +692,24 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
                 className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
               >
                 <span>Ingredient Directory</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            )}
+            {isCrystal && (
+              <Link
+                href="/crystals"
+                className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
+              >
+                <span>Crystal Directory</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            )}
+            {isCandle && (
+              <Link
+                href="/grimoire"
+                className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
+              >
+                <span>Grimoire Reference</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             )}

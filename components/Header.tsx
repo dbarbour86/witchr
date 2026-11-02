@@ -157,7 +157,7 @@ export function Header() {
               <nav className="flex flex-col gap-2" aria-label="Mobile Navigation List">
                 {/* The Sanctum Interactive Entry */}
                 <Link
-                  href="/sanctum"
+                  href="/sanctum/chamber"
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-serif transition-colors min-h-[48px] ${
                     pathname.startsWith("/sanctum")
@@ -169,9 +169,7 @@ export function Header() {
                     <FourPointStar className="w-3.5 h-3.5 text-lavender-moon" />
                     <span>The Sanctum</span>
                   </span>
-                  <span className="text-[10px] font-mono uppercase tracking-ceremonial px-2 py-0.5 rounded bg-surface border border-purple-800/60 text-purple-300 font-mono uppercase">
-                    Coming Soon
-                  </span>
+                  <ArrowRight className="w-4 h-4 text-purple-300" />
                 </Link>
 
                 {/* Primary Nav Links */}

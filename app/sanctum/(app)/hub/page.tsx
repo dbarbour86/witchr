@@ -110,7 +110,7 @@ export default function SanctumHubPage() {
           <div className="space-y-3 max-w-2xl">
             <div className="flex items-center gap-2">
               <Link
-                href="/sanctum"
+                href="/sanctum/chamber"
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#130728] border border-purple-800/60 text-purple-300 hover:text-white text-[10px] font-mono uppercase tracking-[0.18em] transition-colors"
               >
                 <ArrowLeft className="w-3 h-3 text-purple-400" />

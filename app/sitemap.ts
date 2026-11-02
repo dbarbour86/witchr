@@ -25,7 +25,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/disclaimer",
     "/privacy",
     "/terms",
-    "/sanctum",
   ];
 
   const rawUrls: string[] = [

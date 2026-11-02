@@ -103,9 +103,8 @@ export function Footer() {
             </div>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <Link href="/sanctum" className="text-lavender-moon hover:text-lavender-light transition-colors flex items-center gap-1.5 font-medium">
+                <Link href="/sanctum/chamber" className="text-lavender-moon hover:text-lavender-light transition-colors flex items-center gap-1.5 font-medium">
                   <span>The Sanctum</span>
-                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-surface border border-purple-800/60 text-purple-300 font-mono uppercase">Coming Soon</span>
                 </Link>
               </li>
               <li>

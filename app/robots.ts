@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/sanctum/"],
+      disallow: ["/sanctum", "/sanctum/"],
     },
     sitemap: "https://www.witchr.com/sitemap.xml",
   };

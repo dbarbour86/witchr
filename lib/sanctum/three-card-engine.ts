@@ -211,6 +211,126 @@ const POSITION_INTERPRETATIONS: Record<string, Record<SpreadPositionKey, string>
     guidance:
       "Celebrate the milestone with gratitude and dignity. Recognize the sovereignty and competence you have gained, tie off remaining threads, and honor the completion of this cycle.",
   },
+  card_wands_ace: {
+    situation:
+      "The Ace of Wands signals a distinct surge of fresh vitality or an unmistakable creative spark entering your current sphere. The initial ground is charged with untamed potential, waiting for you to seize the initiatory wand.",
+    challenge:
+      "The friction lies in scattered volatility or mistaking initial excitement for sustained mastery. You risk burning through all your fuel in a frantic burst, or conversely, second-guessing the inspiration until the fire dims.",
+    guidance:
+      "Channel the raw fire into a single clean focal point. Do not wait for a complete five-year blueprint; commit your willpower to taking the very first stroke with conviction.",
+  },
+  card_wands_two: {
+    situation:
+      "The Two of Wands indicates you have secured an initial vantage point of stability and authority. From this parapet, your attention is actively weighing future horizons and evaluating which direction merits your energy.",
+    challenge:
+      "The obstacle is the lingering hesitation to step away from safe, familiar ramparts. Fear of stepping outside your current domain can lock you into indecisive plateauing.",
+    guidance:
+      "Adopt a statesmanlike perspective. Hold your current achievements with steady confidence while drafting bold, deliberate plans for the territory you intend to enter next.",
+  },
+  card_wands_three: {
+    situation:
+      "The Three of Wands shows that your initiatives are already underway and moving through the open waters. You are in a phase of expansive perspective, observing momentum that you initiated but no longer need to force.",
+    challenge:
+      "The tension lies in anxious restlessness while waiting for distant ships to arrive. Attempting to artificially hasten outcomes or pacing the cliffside in doubt drains your stamina.",
+    guidance:
+      "Elevate your gaze to the wider horizon. Trust the integrity of the work you launched, maintain your vantage point, and build the capacity to receive the returns as they land.",
+  },
+  card_wands_four: {
+    situation:
+      "The Four of Wands signals a welcomed arrival at a stable sanctuary or celebratory threshold. A meaningful foundation has taken firm root, creating a safe clearing for rest, joy, and harmonious connection.",
+    challenge:
+      "The friction is an inability to relax into safety. If you are conditioned to constant crisis, peace can feel unnerving, tempting you to manufacture problems rather than accepting grace.",
+    guidance:
+      "Accept the earned blessing. Step through the flowered arbor, lower your armor, and celebrate the ground you have secured with genuine warmth and unreserved gratitude.",
+  },
+  card_wands_five: {
+    situation:
+      "The Five of Wands indicates that you are navigating a bustling thicket of competing voices, conflicting priorities, or overt competition. Several forces are contending for attention and dominance simultaneously.",
+    challenge:
+      "The danger is losing your composure in petty skirmishes or taking normal competitive tension as personal assault. Reactive bickering drains the vital fire needed for genuine progress.",
+    guidance:
+      "Treat the circumstance like an athletic tournament. Hold your staff firmly, sharpen your focus through the commotion, and refuse to let disorganized static provoke you out of your center.",
+  },
+  card_wands_six: {
+    situation:
+      "The Six of Wands indicates you are stepping into a visible milestone of success, recognition, or earned acclaim. Past struggles have resolved in your favor, bringing validation and a clear vantage of leadership.",
+    challenge:
+      "The friction lies in resting entirely on temporary laurels or becoming addicted to external applause. Allowing victory to breed complacency or defensive arrogance leaves you vulnerable to the next turning tide.",
+    guidance:
+      "Accept the recognition with grace and dignified humility. Acknowledge your supporters, anchor your inner confidence beyond public opinion, and use this triumphant momentum to elevate your next endeavor.",
+  },
+  card_wands_seven: {
+    situation:
+      "The Seven of Wands reveals you holding higher ground against mounting pressures, competitor pushback, or boundary testing. Having made your mark, you are now called to defend what you have rightfully established.",
+    challenge:
+      "The danger is falling into an exhausting siege mentality or second-guessing your right to stand firm. Backing down under pressure or defensively lashing out in panic concedes the advantage you hold.",
+    guidance:
+      "Hold your ground with unwavering conviction. You occupy the vantage point for good reason; plant your feet, refuse to over-explain your core boundaries, and trust that your principled stance will outlast the commotion below.",
+  },
+  card_wands_eight: {
+    situation:
+      "The Eight of Wands signals rapid acceleration, incoming communications, and decisive momentum. The obstacles that stalled your path have cleared, launching events forward with electrifying speed.",
+    challenge:
+      "The friction is dizziness or panicked reactivity in the face of swift change. Frantically trying to micro-manage every flying spear or rushing impulsively without aim leads to careless missteps.",
+    guidance:
+      "Align your focus and steer the current with calm agility. Make swift, clean decisions, clear logistical bottlenecks, and let the arrows of your intention reach their mark without unnecessary interference.",
+  },
+  card_wands_nine: {
+    situation:
+      "The Nine of Wands shows you standing watch at the final defensive perimeter, battle-tested and resilient after enduring multiple trials. You have weathered the hardest storms, but the fatigue of vigilance weighs heavily.",
+    challenge:
+      "The obstacle is defensive paranoia or mistaking normal interactions for fresh threats. Clinging to protective armor even in safe harbors drains the very stamina required for the finish line.",
+    guidance:
+      "Conserve your remaining reserves and hold your post with steady grit. You possess the proven endurance to complete this journey; protect your essential boundaries without isolating yourself in fear.",
+  },
+  card_wands_ten: {
+    situation:
+      "The Ten of Wands reveals a circumstance where passion or commitment has compounded into an overwhelming burden. You have shouldered too many staves, trudging uphill under an unsustainable volume of duties.",
+    challenge:
+      "The friction is martyring yourself to misplaced obligations or believing that asking for help is failure. Refusing to lay down extraneous weight risks physical exhaustion or sudden collapse before the threshold.",
+    guidance:
+      "Perform a ruthless audit of what you are carrying. Put down the bundles that belong to others or to outgrown commitments, delegate essential tasks, and carry only the core staff needed to step into the sanctuary ahead.",
+  },
+  card_wands_page: {
+    situation:
+      "The Page of Wands indicates a fresh current of creative curiosity or an unexpected invitation entering your sphere. You stand at the threshold of a new area of study, project, or interest that sparks your imagination.",
+    challenge:
+      "The obstacle lies in scattered restlessness or abandoning the spark as soon as practical effort is required. Starting multiple ventures without nurturing any of them dilutes your vital fire.",
+    guidance:
+      "Adopt the posture of an eager student and intrepid explorer. Ask honest questions, follow genuine fascination without needing immediate perfection, and allow yourself to learn through playful experimentation.",
+  },
+  card_wands_knight: {
+    situation:
+      "The Knight of Wands reveals a situation characterized by intense velocity, adventurous momentum, and bold initiative. You or the forces around you are moving with fierce passion and decisive speed.",
+    challenge:
+      "The friction is reckless impulsiveness, hot-headed impatience, or burning out your fuel before reaching the destination. Rushing into conflict without situational awareness creates avoidable casualties.",
+    guidance:
+      "Channel your fire with focused conviction. Back your vision with courage, take decisive action without second-guessing, but ensure your trajectory is aligned before releasing the reins.",
+  },
+  card_wands_queen: {
+    situation:
+      "The Queen of Wands marks a circumstance where your personal sovereignty, charisma, and creative confidence are taking center stage. You have the magnetic warmth and inner fire to shape your environment.",
+    challenge:
+      "The danger is allowing insecurity to breed defensiveness, jealousy, or an exhausting need for constant validation. Shrinking your light to placate others diminishes your natural influence.",
+    guidance:
+      "Inhabit your throne with unapologetic warmth and steady self-assurance. Stand tall in your authenticity, extend generous encouragement to others, and let your quiet confidence speak for itself.",
+  },
+  card_wands_king: {
+    situation:
+      "The King of Wands indicates you are in a position of executive responsibility and visionary leadership. The path demands clear long-term strategy, decisive governance, and steadfast determination.",
+    challenge:
+      "The obstacle is becoming autocratic, impatient with slower collaborators, or stubbornly forcing a personal agenda at the expense of reality. Arrogance under pressure fractures your alliance.",
+    guidance:
+      "Lead with seasoned maturity and principled vision. Keep your sights firmly on the long horizon, take full accountability for outcomes, and inspire others by the integrity of your actions.",
+  },
+  card_cups_ace: {
+    situation:
+      "The Ace of Cups signals the arrival of a profound emotional opening, intuitive awakening, or new wellspring of affection and grace. An old emotional drought is breaking, bringing restorative waters.",
+    challenge:
+      "The friction is emotional guardedness or cynicism that refuses to let the cup be filled. Clinging to past betrayals or fearing vulnerability prevents genuine connection from taking root.",
+    guidance:
+      "Lower your defensive shields and allow your heart to soften. Trust your intuitive instincts, receive compassion without suspicion, and let genuine empathy guide your immediate responses.",
+  },
 };
 
 /**

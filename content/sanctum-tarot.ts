@@ -11,6 +11,8 @@ export interface SanctumTarotCard {
   reflectiveInterpretation: string;
   reflectionPrompt: string;
   practicalTakeaway: string;
+  suit?: "wands" | "cups" | "swords" | "pentacles";
+  arcana?: "major" | "minor";
   image: {
     src?: string;
     alt: string;
@@ -36,7 +38,22 @@ export interface SanctumTarotCard {
       | "moon"
       | "sun"
       | "judgement"
-      | "world";
+      | "world"
+      | "wands-ace"
+      | "wands-two"
+      | "wands-three"
+      | "wands-four"
+      | "wands-five"
+      | "wands-six"
+      | "wands-seven"
+      | "wands-eight"
+      | "wands-nine"
+      | "wands-ten"
+      | "wands-page"
+      | "wands-knight"
+      | "wands-queen"
+      | "wands-king"
+      | "cups-ace";
   };
 }
 
@@ -748,6 +765,516 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
       src: "/images/sanctum/tarot/the-world.webp",
       alt: "The World — Occult ceremonial tarot card of cosmic wholeness, laurel wreath, and triumphant integration",
       motif: "world",
+    },
+  },
+  {
+    id: "card_wands_ace",
+    slug: "ace-of-wands",
+    number: 1,
+    numeral: "ACE",
+    name: "Ace of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Primal Spark", "Creative Catalyst", "Raw Vitality"],
+    traditionalThemes: [
+      "The primordial impulse of inspiration and direct will",
+      "Sudden clarity or enthusiasm demanding purposeful expression",
+      "Fertile creative breakthroughs and initiatory courage",
+      "Channeling raw spiritual fire without squandering it in idle fantasy",
+    ],
+    reversedThemes: [
+      "Creative blockage or false starts due to impatience",
+      "Misdirected passion burning out before taking root",
+      "Stifling an authentic spark out of hesitation or fear of failure",
+    ],
+    traditionalMeaning:
+      "Emerging from the nocturnal clouds beneath a glowing crescent moon, a hand emerges holding a living, budding staff crowned with luminous violet fire. Overlooking mountain ranges and a distant citadel, the Ace of Wands embodies the supreme root of the element of Fire—the undiluted spark of divine inspiration, generative energy, and the sovereign impulse to create.",
+    reflectiveInterpretation:
+      "The Ace of Wands represents an authentic surge of spiritual and creative momentum. Something inside you is ready to ignite: a project, an overdue boundary, or a bold shift in perspective. This card reminds you that inspiration is a vital catalyst, but it requires grounding. Do not let the spark dissipate in rumination; give it an immediate, tangible container.",
+    reflectionPrompt:
+      "What sudden creative or intuitive spark has recently grabbed your attention, and what concrete container does it need today?",
+    practicalTakeaway:
+      "Take one immediate physical action on your newest inspiration before the initial momentum cools.",
+    image: {
+      src: "/images/sanctum/tarot/ace-of-wands.webp",
+      alt: "Ace of Wands — Occult ceremonial tarot card of primal fire, creative inspiration, and sudden catalyst",
+      motif: "wands-ace",
+    },
+  },
+  {
+    id: "card_wands_two",
+    slug: "two-of-wands",
+    number: 2,
+    numeral: "II",
+    name: "Two of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Strategic Vision", "Domain Authority", "Threshold of Expansion"],
+    traditionalThemes: [
+      "Surveying one's domain from an established vantage point",
+      "Formulating deliberate plans for future exploration",
+      "Holding the balance between current stability and bold expansion",
+      "Exercising personal sovereignty over one's life trajectory",
+    ],
+    reversedThemes: [
+      "Restlessness and discontent with current accomplishments",
+      "Fear of leaving comfortable perimeters to take calculated risks",
+      "Analysis paralysis disguised as endless strategic preparation",
+    ],
+    traditionalMeaning:
+      "A robed witch stands upon a high stone battlement overlooking a tranquil bay and the rising sun, holding a rooted wand in one hand and cradling a globe in the other. A second wand stands affixed to the parapet beside a ceremonial banner. The Two of Wands depicts the moment of conscious sovereignty—surveying what has already been built while deliberate foresight turns toward unmapped horizons.",
+    reflectiveInterpretation:
+      "The Two of Wands marks a pivotal juncture where comfortable familiarity meets the call of the unknown. You have established a defensible footing and earned genuine competence; now, the question shifts from survival to purposeful direction. Holding the globe reminds you that the boundaries of your world are determined by your willingness to look beyond immediate ramparts.",
+    reflectionPrompt:
+      "What familiar perimeter have you outgrown, and what long-range vision deserves your strategic commitment?",
+    practicalTakeaway:
+      "Carve out dedicated time today to step back from tactical busywork and draft the overarching strategic plan for your next phase.",
+    image: {
+      src: "/images/sanctum/tarot/two-of-wands.webp",
+      alt: "Two of Wands — Occult ceremonial tarot card of vision, domain authority, and strategic planning",
+      motif: "wands-two",
+    },
+  },
+  {
+    id: "card_wands_three",
+    slug: "three-of-wands",
+    number: 3,
+    numeral: "III",
+    name: "Three of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Foresight Realized", "Ships Returning", "Purposeful Expansion"],
+    traditionalThemes: [
+      "Watching one's initial investments launch across the waters",
+      "Confident expectation grounded in thorough groundwork",
+      "Expanding influence into broader arenas and alliances",
+      "Embracing exploration, long-range travel, and compound momentum",
+    ],
+    reversedThemes: [
+      "Disappointment over delayed returns or unforeseen logistical obstacles",
+      "Impatience leading to premature abandonment of sound ventures",
+      "Reluctance to expand beyond narrow local boundaries",
+    ],
+    traditionalMeaning:
+      "Standing upon a rugged cliff edge flanked by three firmly planted, budding wands, a cloaked traveler looks out across a dark violet sea as three tall sailing vessels navigate toward the horizon beneath luminous celestial moons. The Three of Wands symbolizes established enterprise, visionary leadership, and the serene confidence of having set powerful causes in motion that are now maturing across distance and time.",
+    reflectiveInterpretation:
+      "The Three of Wands is the card of patient momentum. Unlike the internal deliberation of the Two, the Three indicates that your ships have already been dispatched. Your past choices, intentions, and workings are actively sailing across the open sea. Your role now is to maintain steady vigilance, hold the high ground, and prepare to welcome the harvest when your vessels return to harbor.",
+    reflectionPrompt:
+      "What deliberate intentions or investments have you previously launched into the world, and how are you preparing to receive their results?",
+    practicalTakeaway:
+      "Trust the seeds and projects you have already set in motion. Focus your attention on preparing infrastructure to receive expansion rather than anxious micromanagement.",
+    image: {
+      src: "/images/sanctum/tarot/three-of-wands.webp",
+      alt: "Three of Wands — Occult ceremonial tarot card of foresight, ships returning, and purposeful expansion",
+      motif: "wands-three",
+    },
+  },
+  {
+    id: "card_wands_four",
+    slug: "four-of-wands",
+    number: 4,
+    numeral: "IV",
+    name: "Four of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Sacred Sanctuary", "Joyous Milestone", "Communal Harmony"],
+    traditionalThemes: [
+      "Celebrating an earned threshold of harmony and stability",
+      "Anchoring a consecrated home, community, or creative space",
+      "Gratitude for peace, safety, and mutual belonging",
+      "Temporary pause in labor to honor genuine connection",
+    ],
+    reversedThemes: [
+      "Internal disharmony disrupting a celebration or domestic space",
+      "Feeling alienated or unable to celebrate despite outer achievements",
+      "Postponing joy until an unreachable standard of perfection is met",
+    ],
+    traditionalMeaning:
+      "Four sturdy carved wands form a ceremonial arbor woven with lush floral garlands and ribbons, framing a welcoming castle citadel under a full moon. Two figures adorned in ceremonial robes raise decorated chalices in joyful revelry. The Four of Wands represents the sanctification of space, earned rest, the warmth of homecoming, and the deep, communal celebration of an accomplished milestone.",
+    reflectiveInterpretation:
+      "The Four of Wands is a luminous marker of sanctuary and celebration. It indicates that you have arrived at a safe, grounded harbor within your journey. The foundation you have constructed is solid enough to support genuine celebration, peace, and restorative joy. Allow yourself to drop your defensive guard, share your blessings with trusted company, and acknowledge that life is not solely an unyielding siege.",
+    reflectionPrompt:
+      "What recent milestone or safe haven have you constructed that deserves celebration and unhurried gratitude?",
+    practicalTakeaway:
+      "Consciously pause from striving today to celebrate an earned victory. Consecrate your immediate living space or share a meal in communion with someone you trust.",
+    image: {
+      src: "/images/sanctum/tarot/four-of-wands.webp",
+      alt: "Four of Wands — Occult ceremonial tarot card of sacred sanctuary, celebration, and harmonious threshold",
+      motif: "wands-four",
+    },
+  },
+  {
+    id: "card_wands_five",
+    slug: "five-of-wands",
+    number: 5,
+    numeral: "V",
+    name: "Five of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Dynamic Friction", "Testing of Will", "Spirited Competition"],
+    traditionalThemes: [
+      "Clashing perspectives, competitive sparring, or chaotic energy",
+      "Testing skills, boundaries, and endurance against worthy equals",
+      "Sorting through conflicting priorities and fragmented demands",
+      "Productive tension that sharpens competence when stripped of malice",
+    ],
+    reversedThemes: [
+      "Petty conflict, passive aggression, or exhausted infighting",
+      "Avoidance of necessary direct competition out of discomfort",
+      "Artificial drama masking deeper unspoken power dynamics",
+    ],
+    traditionalMeaning:
+      "Five youthful figures clad in dark robes raise tall wands in an energetic, chaotic melee on a rugged hillside beneath a radiant moon. Though the staves cross and clash vigorously, their contest is an athletic tournament rather than lethal combat. The Five of Wands represents the crucible of competition, dynamic brainstorming, testing of ideas, and the unavoidable friction that arises when distinct creative wills collide.",
+    reflectiveInterpretation:
+      "The Five of Wands brings noise, contention, and the clashing of different wills. It shows that you are in the thick of a lively contest or navigating conflicting priorities where everyone is vying for voice and territory. This friction is not necessarily destructive—it is a sparring match that tests your stamina, clarifies your core convictions, and weeds out weak arguments. Do not take the turbulence personally; view it as an athletic sharpening of your resolve.",
+    reflectionPrompt:
+      "Where are you currently experiencing chaotic static or conflicting demands, and how can you treat this friction as a test of skill rather than personal hostility?",
+    practicalTakeaway:
+      "Clarify your essential non-negotiables in any current disagreement, and avoid burning valuable energy on petty squabbles that do not affect the main outcome.",
+    image: {
+      src: "/images/sanctum/tarot/five-of-wands.webp",
+      alt: "Five of Wands — Occult ceremonial tarot card of spirited debate, dynamic competition, and testing of will",
+      motif: "wands-five",
+    },
+  },
+  {
+    id: "card_wands_six",
+    slug: "six-of-wands",
+    number: 6,
+    numeral: "VI",
+    name: "Six of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Earned Triumph", "Public Recognition", "Vindicated Will"],
+    traditionalThemes: [
+      "Public acclaim, validation, and celebration following struggle",
+      "Vindicated purpose and holding earned leadership with dignity",
+      "Standing tall amid collective recognition and shared success",
+      "Bearing victory with humility rather than becoming intoxicated by applause",
+    ],
+    reversedThemes: [
+      "Fleeting acclaim, hollow praise, or wounded professional pride",
+      "Delayed public recognition or feeling unappreciated despite success",
+      "Arrogance following victory creating sudden vulnerability",
+    ],
+    traditionalMeaning:
+      "A crowned rider in ceremonial dark robes rides upon a decorated white steed through an applauding gathering of practitioners, holding aloft a tall budding staff crowned with a golden laurel wreath. Beside the horse, five attendant staves are raised in reverent salute beneath a waxing celestial crescent. The Six of Wands represents the moment of public vindication, victorious emergence from trial, and the dignified acceptance of earned leadership.",
+    reflectiveInterpretation:
+      "The Six of Wands marks an undeniable threshold of victory. The friction and chaotic skirmishes of the Five have resolved in your favor through persistence and alignment. Your competence is visibly recognized, not merely in your private conviction, but in the collective arena. Accept this recognition without false modesty, but remember that true sovereignty does not depend on the crowd's applause. Let this victory fortify your endurance for the road ahead.",
+    reflectionPrompt:
+      "What hard-won milestone or inner victory has recently materialized, and how will you honor your competence without becoming dependent on outside acclaim?",
+    practicalTakeaway:
+      "Acknowledge and claim your progress today. Share credit where it is genuinely due, and stand squarely in the authority you have worked to build.",
+    image: {
+      src: "/images/sanctum/tarot/six-of-wands.webp",
+      alt: "Six of Wands — Occult ceremonial tarot card of victory, public recognition, and triumphant leadership",
+      motif: "wands-six",
+    },
+  },
+  {
+    id: "card_wands_seven",
+    slug: "seven-of-wands",
+    number: 7,
+    numeral: "VII",
+    name: "Seven of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Defiant Sovereignty", "High Ground Defense", "Unbending Courage"],
+    traditionalThemes: [
+      "Holding the high ground against encroaching opposition",
+      "Defending personal boundaries, integrity, or hard-won territory",
+      "Standing resolute against the majority or prevailing current",
+      "Moral courage and uncompromising refusal to capitulate",
+    ],
+    reversedThemes: [
+      "Exhaustion from endless defensiveness or chronic siege mentality",
+      "Feeling overwhelmed by numbers or giving up right before a breakthrough",
+      "Stubbornly defending an obsolete perimeter out of pride",
+    ],
+    traditionalMeaning:
+      "Standing atop a steep, craggy promontory beneath a storm-swept twilight sky, a fierce practitioner wields a heavy, living wand with both hands, repelling six opposing staves thrusting upward from the shadows below. Clad in protective robes and braced firmly against the incline, the figure commands the higher elevation with unwavering grit. The Seven of Wands depicts the defense of hard-won ground, courage under pressure, and the unyielding determination to hold fast against overwhelming odds.",
+    reflectiveInterpretation:
+      "The Seven of Wands places you in the crucible of defense. Having achieved visibility and secured ground, you now face the inevitable pushback: challenges to your authority, boundary testing, or demands to dilute your standards. You hold the vantage point of higher ground. Do not apologize for the perimeter you have established. Stand firm, root your stance, and let your convictions speak through unyielding resolve.",
+    reflectionPrompt:
+      "What boundary or earned position are others currently testing, and what internal anchor will keep you grounded against the pressure to fold?",
+    practicalTakeaway:
+      "Hold your ground firmly on one non-negotiable boundary today. Refuse to explain, over-justify, or yield territory you have rightfully claimed.",
+    image: {
+      src: "/images/sanctum/tarot/seven-of-wands.webp",
+      alt: "Seven of Wands — Occult ceremonial tarot card of high ground defense, courage, and unbending boundaries",
+      motif: "wands-seven",
+    },
+  },
+  {
+    id: "card_wands_eight",
+    slug: "eight-of-wands",
+    number: 8,
+    numeral: "VIII",
+    name: "Eight of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Swift Acceleration", "Decisive Momentum", "Unobstructed Flight"],
+    traditionalThemes: [
+      "Rapid acceleration, incoming messages, and sudden breakthrough",
+      "Stagnant obstacles dissolving into swift forward motion",
+      "Arrows of will speeding toward their intended targets",
+      "Decisive action requiring presence, alignment, and sharp reflexes",
+    ],
+    reversedThemes: [
+      "Frustrating delays, miscommunication, or missed connections",
+      "Chaotic rushing leading to careless errors or physical burnout",
+      "Trying to force momentum before the channel is genuinely clear",
+    ],
+    traditionalMeaning:
+      "Eight flowering wands streak diagonally through a nocturnal violet sky like luminous arrows of fire, soaring unimpeded over a serene valley, winding river, and distant sanctuary tower beneath distant stars. Free from human hands or earthly friction, their trajectory is swift, purposeful, and certain. The Eight of Wands represents the sudden release of stalled energy, rapid transit, electrifying news, and the pure momentum of will moving at speed.",
+    reflectiveInterpretation:
+      "The Eight of Wands signals that the waiting phase has abruptly ended. Events, communications, and long-gestating projects are accelerating in unison. What previously felt stalled or delayed is now moving with unstoppable velocity. This is not the time for second-guessing or hesitation; align your focus, trust your preparation, and steer the current rather than fighting its speed.",
+    reflectionPrompt:
+      "Where is momentum suddenly accelerating in your life, and how will you stay focused and centered amid the speed of change?",
+    practicalTakeaway:
+      "Respond decisively to incoming opportunities or communications today. Keep your schedule lean so you can move smoothly with the momentum.",
+    image: {
+      src: "/images/sanctum/tarot/eight-of-wands.webp",
+      alt: "Eight of Wands — Occult ceremonial tarot card of swift momentum, rapid transit, and incoming breakthrough",
+      motif: "wands-eight",
+    },
+  },
+  {
+    id: "card_wands_nine",
+    slug: "nine-of-wands",
+    number: 9,
+    numeral: "IX",
+    name: "Nine of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Tested Resilience", "Final Sentinel", "Unbroken Vigilance"],
+    traditionalThemes: [
+      "Standing resolute after enduring multiple trials and skirmishes",
+      "Guarding the sacred perimeter while bearing the scars of past battles",
+      "Drawing upon deep wells of stamina for the final stretch",
+      "Distinguishing between healthy vigilance and paralyzing paranoia",
+    ],
+    reversedThemes: [
+      "Chronic exhaustion, defensive paranoia, or hyper-vigilance",
+      "Refusing to drop armor even in genuine sanctuary and safety",
+      "Collapsing right before the finish line out of accumulated fatigue",
+    ],
+    traditionalMeaning:
+      "A battle-worn practitioner bearing a bandaged forehead stands sentinel in a consecrated clearing, gripping a stout staff with both hands. Behind them stands a palisade of eight rooted wands forming an impenetrable defensive barrier under a luminous full moon. Though weary from past battles, the figure's eyes remain clear, steady, and watchful. The Nine of Wands represents the resilience of the soul, enduring strength near the end of a long ordeal, and the protective boundaries that preserve your vital essence.",
+    reflectiveInterpretation:
+      "The Nine of Wands speaks to the tired sentinel within you. You have weathered repeated trials and carried yourself through protracted campaigns; the scars you bear are proof of your survival, not your weakness. You are now guarding the final perimeter. You do not need to fight every passing shadow; simply hold your post, conserve your remaining energy, and remember that you possess the grit to see this journey to its resolution.",
+    reflectionPrompt:
+      "What weariness are you currently carrying from past battles, and what boundary will protect your stamina without isolating you behind cold walls?",
+    practicalTakeaway:
+      "Guard your energy fiercely today. Do not take on any extra battles or unneeded obligations; preserve your focus for the final stretch.",
+    image: {
+      src: "/images/sanctum/tarot/nine-of-wands.webp",
+      alt: "Nine of Wands — Occult ceremonial tarot card of tested resilience, defensive palisade, and unbroken vigilance",
+      motif: "wands-nine",
+    },
+  },
+  {
+    id: "card_wands_ten",
+    slug: "ten-of-wands",
+    number: 10,
+    numeral: "X",
+    name: "Ten of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Culminating Burden", "Weight of Excess", "Threshold of Release"],
+    traditionalThemes: [
+      "Carrying the heavy, accumulated weight of too many commitments",
+      "Approaching the destination while blinded by the sheer volume of tasks",
+      "Success becoming burdensome due to unwillingness to delegate",
+      "The critical necessity of laying down what no longer serves your core journey",
+    ],
+    reversedThemes: [
+      "Severe burnout, physical breakdown, or collapsing under avoidable strain",
+      "Inability to say no or chronic emotional martyrdom",
+      "Dropping unnecessary burdens and reclaiming breath and freedom",
+    ],
+    traditionalMeaning:
+      "A robed figure bends under the crushing weight of ten heavy, bundled staves, trudging uphill along a winding mountain path toward a glowing sanctuary tower in the distance. The sheer mass of the wands blocks the traveler's forward vision, requiring every ounce of bodily strength to maintain momentum. The Ten of Wands represents the culmination of the fire suit—where unrestrained passion and accumulated duties become an oppressive load, signaling the urgent need to lay down extraneous burdens.",
+    reflectiveInterpretation:
+      "The Ten of Wands arrives when labor has crossed the line from honorable devotion into crushing overload. You have taken on too many staves: obligations, emotional weights, or tasks you convinced yourself only you could carry. The sanctuary is in sight, but you cannot enter its gates while dragging a forest on your back. Identify which staves belong to you and which you picked up out of guilt or habit. It is time to put the excess down.",
+    reflectionPrompt:
+      "What heavy obligation or emotional burden are you stubbornly carrying that does not belong to you or your future?",
+    practicalTakeaway:
+      "Choose one task, commitment, or self-imposed burden to put down, delegate, or decline today. Give your nervous system room to breathe.",
+    image: {
+      src: "/images/sanctum/tarot/ten-of-wands.webp",
+      alt: "Ten of Wands — Occult ceremonial tarot card of accumulated burden, overwhelm, and the threshold of release",
+      motif: "wands-ten",
+    },
+  },
+  {
+    id: "card_wands_page",
+    slug: "page-of-wands",
+    number: 11,
+    numeral: "PAGE",
+    name: "Page of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Restless Curiosity", "Creative Spark", "Spirited Discovery"],
+    traditionalThemes: [
+      "Curiosity, inspiration, exploration, and new creative opportunities",
+      "The eager spark of youthful enthusiasm ready to explore uncharted territory",
+      "Delivering messages of inspiration, sudden ideas, or creative invitations",
+      "Approaching unknown ground with an open mind and playful boldness",
+    ],
+    reversedThemes: [
+      "Scattered focus, procrastination, or starting projects without follow-through",
+      "Restless impatience leading to hasty mistakes or careless blunders",
+      "Self-doubt suppressing an authentic creative spark before it ignites",
+    ],
+    traditionalMeaning:
+      "A youthful traveler clad in flowing ceremonial robes stands upon a rocky overlook, holding aloft a budding staff topped with a luminous violet blossom. Gazing upward at the nocturnal sky where a waxing crescent moon shines among radiant stars, the figure embodies the spirit of eager exploration. The Page of Wands represents the birth of creative curiosity, the sudden desire to explore the unknown, and the courage to pursue new horizons with fresh, unfiltered optimism.",
+    reflectiveInterpretation:
+      "The Page of Wands brings a breeze of fresh inspiration and playful curiosity into your world. A new door or creative spark is presenting itself, inviting you to step into the role of a learner and explorer. You do not need to possess all the answers or predict the entire journey; what matters now is your willingness to experiment, ask perceptive questions, and follow what genuinely fascinates you. Approach this threshold with open eyes and a beginner's heart.",
+    reflectionPrompt:
+      "What new idea or unexplored territory is currently calling to your curiosity, and what is one small experiment you can run to investigate it?",
+    practicalTakeaway:
+      "Follow one spontaneous curiosity today without worrying about where it leads. Say yes to a fresh conversation, sketch a raw idea, or explore an unfamiliar topic.",
+    image: {
+      src: "/images/sanctum/tarot/page-of-wands.webp",
+      alt: "Page of Wands — Occult ceremonial tarot card of curiosity, creative exploration, and fresh inspiration",
+      motif: "wands-page",
+    },
+  },
+  {
+    id: "card_wands_knight",
+    slug: "knight-of-wands",
+    number: 12,
+    numeral: "KNIGHT",
+    name: "Knight of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Fiery Audacity", "Decisive Velocity", "Fearless Pursuit"],
+    traditionalThemes: [
+      "Passion, confidence, adventure, and decisive action",
+      "Charging forward with infectious vitality and unstoppable conviction",
+      "Embracing adventure and daring to pursue ambitious visions",
+      "Channeling high-octane drive into tangible forward movement",
+    ],
+    reversedThemes: [
+      "Reckless impulsiveness, hot-headed reactivity, or burning bridges",
+      "Fierce momentum without strategy, leading to premature burnout",
+      "Aggressive impatience when circumstances require deliberate pacing",
+    ],
+    traditionalMeaning:
+      "An armored knight in ceremonial battle dress rides a powerful, rearing warhorse across a rugged, storm-lit ridge, thrusting upward a blazing staff radiating violet fire. The nocturnal sky churns with celestial energy as stars frame the warrior's resolute gaze. The Knight of Wands represents the absolute charge of willful momentum—unapologetic courage, adventurous vigor, and the dynamic readiness to seize life by the reins.",
+    reflectiveInterpretation:
+      "The Knight of Wands heralds an era of decisive action, daring momentum, and magnetic confidence. The period of quiet contemplation has given way to active pursuit; hesitation will only dull your blade. When this archetype charges into your life, it calls on you to back yourself completely, ride the crest of your enthusiasm, and advance toward your ambition with bold authenticity. Channel the heat into purposeful direction rather than scattered wildfires.",
+    reflectionPrompt:
+      "Where have you been holding back out of caution, and what bold, decisive move is your spirit ready to execute?",
+    practicalTakeaway:
+      "Commit to one bold, assertive action today that you have been postponing. Let your genuine conviction carry you forward.",
+    image: {
+      src: "/images/sanctum/tarot/knight-of-wands.webp",
+      alt: "Knight of Wands — Occult ceremonial tarot card of passion, adventurous confidence, and decisive momentum",
+      motif: "wands-knight",
+    },
+  },
+  {
+    id: "card_wands_queen",
+    slug: "queen-of-wands",
+    number: 13,
+    numeral: "QUEEN",
+    name: "Queen of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Radiant Sovereignty", "Magnetic Vitality", "Fierce Independence"],
+    traditionalThemes: [
+      "Independence, courage, charisma, and fertile creativity",
+      "Radiating self-assurance and magnetic personal authority",
+      "Fierce devotion to personal truth and generous warmth toward others",
+      "Commanding respect naturally without needing to dominate or diminish",
+    ],
+    reversedThemes: [
+      "Insecurity masking as jealousy, possessiveness, or vindictiveness",
+      "Dimming your light to appease the discomfort of others",
+      "Overbearing control or exhausting theatricality born of unmet needs",
+    ],
+    traditionalMeaning:
+      "Draped in star-embroidered ceremonial robes, a serene and commanding queen sits upon a stone throne carved with lions. In her right hand she holds a tall staff topped with an illuminated flower, while at her feet rests a calm, watchful lioness. Framed by blooming lilies and rugged mountains beneath a radiant celestial canopy, the Queen of Wands represents the sovereign mastery of fire—warmth, radiant charisma, fierce loyalty, and unshakeable creative independence.",
+    reflectiveInterpretation:
+      "The Queen of Wands invites you to inhabit your natural sovereignty with unapologetic warmth and courage. You do not need to shrink to make others comfortable, nor do you need to shout to be respected. Like the queen beside her lioness, your presence alone commands authority when you are rooted in self-worth. Radiate your genuine fire, trust your creative instincts, and lead by the quiet power of your own authenticity.",
+    reflectionPrompt:
+      "Where are you dimming your natural charisma or independence, and how can you step fully into your authentic radiance?",
+    practicalTakeaway:
+      "Step into any room or interaction today with your head held high. Express your opinion clearly, warmly, and without self-deprecating apologies.",
+    image: {
+      src: "/images/sanctum/tarot/queen-of-wands.webp",
+      alt: "Queen of Wands — Occult ceremonial tarot card of independence, magnetic charisma, courage, and creative warmth",
+      motif: "wands-queen",
+    },
+  },
+  {
+    id: "card_wands_king",
+    slug: "king-of-wands",
+    number: 14,
+    numeral: "KING",
+    name: "King of Wands",
+    suit: "wands",
+    arcana: "minor",
+    shortKeywords: ["Visionary Leadership", "Executive Mastery", "Sovereign Will"],
+    traditionalThemes: [
+      "Leadership, vision, determination, and creative mastery",
+      "Translating high-level inspiration into enduring, realized reality",
+      "Commanding respect through seasoned wisdom, integrity, and decisive focus",
+      "Inspiring others to rally around a shared, elevated vision",
+    ],
+    reversedThemes: [
+      "Autocratic rigidity, dogmatism, or unwillingness to hear dissent",
+      "Unrealistic expectations driving collaborators or self into ground",
+      "Abuse of authority or impulsive arrogance undermining true leadership",
+    ],
+    traditionalMeaning:
+      "A mature, crowned sovereign sits poised upon a monumental stone throne carved with lions and salamanders, holding a living staff crowned with eternal violet fire. Backed by a radiant cosmic halo and distant mountain ranges, the king's steady gaze reflects seasoned command and long-range vision. The King of Wands represents the mature culmination of the fire element—executive authority, unyielding determination, and the power to translate bold visions into lasting structures.",
+    reflectiveInterpretation:
+      "The King of Wands calls you to the seat of visionary authority. You have moved past the initial sparks and skirmishes; now you are called to direct the overarching course. True mastery does not panic in the face of temporary obstacles; it holds the long-term vision steady and makes measured, courageous decisions. Trust your track record, take responsibility for the outcome, and lead with clarity and dignity.",
+    reflectionPrompt:
+      "What overarching vision are you responsible for steering, and what executive decision must you make to maintain its momentum?",
+    practicalTakeaway:
+      "Make one strategic executive decision today that aligns with your long-term vision, rather than reacting to short-term distractions.",
+    image: {
+      src: "/images/sanctum/tarot/king-of-wands.webp",
+      alt: "King of Wands — Occult ceremonial tarot card of visionary leadership, determination, mastery, and sovereign will",
+      motif: "wands-king",
+    },
+  },
+  {
+    id: "card_cups_ace",
+    slug: "ace-of-cups",
+    number: 1,
+    numeral: "ACE",
+    name: "Ace of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["Fountain of Grace", "Emotional Awakening", "Open Heart"],
+    traditionalThemes: [
+      "New emotional beginnings, compassion, love, and intuitive awakening",
+      "The uninhibited outpouring of heartfelt affection, healing, and spiritual grace",
+      "Dissolving old emotional armor to welcome genuine intimacy and connection",
+      "Tuning into the deep subterranean currents of intuition and psychic receptive flow",
+    ],
+    reversedThemes: [
+      "Emotional withholding, guarded numbness, or fear of vulnerability",
+      "Feeling emotionally drained from giving more than you receive",
+      "Suppressing genuine intuition out of fear of being hurt again",
+    ],
+    traditionalMeaning:
+      "An ethereal hand emerges from nocturnal mists holding an ornate ceremonial chalice, from which five luminous streams of living water pour into a tranquil pond blooming with sacred water lilies. Beneath a glowing, radiant full moon, the waters ripple with spiritual vitality. The Ace of Cups embodies the pure root of the Water element—the primordial wellspring of love, emotional renewal, boundless empathy, and the awakening of profound intuitive perception.",
+    reflectiveInterpretation:
+      "The Ace of Cups heralds the opening of the emotional heart. Whether through a new relationship, a rekindled passion, or a deep wave of self-compassion, living waters are refilling your cup. If you have been living behind guarded walls or enduring an emotional drought, this archetype invites you to soften. Allow yourself to feel deeply, trust your intuitive hunches, and receive the grace and affection seeking to reach you.",
+    reflectionPrompt:
+      "Where has your heart grown rigid or guarded, and what would it look like to offer yourself or another unconditional grace today?",
+    practicalTakeaway:
+      "Perform one gentle act of genuine compassion today—either toward someone who needs warmth, or quietly toward yourself.",
+    image: {
+      src: "/images/sanctum/tarot/ace-of-cups.webp",
+      alt: "Ace of Cups — Occult ceremonial tarot card of emotional beginnings, overflowing chalice, love, and intuition",
+      motif: "cups-ace",
     },
   },
 ];

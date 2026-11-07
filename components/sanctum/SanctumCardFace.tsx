@@ -131,6 +131,43 @@ export function SanctumCardFace({ card, size = "large", className = "" }: Sanctu
           </div>
         );
 
+      case "wands-ace":
+      case "wands-two":
+      case "wands-three":
+      case "wands-four":
+      case "wands-five":
+      case "wands-six":
+      case "wands-seven":
+      case "wands-eight":
+      case "wands-nine":
+      case "wands-ten":
+      case "wands-page":
+      case "wands-knight":
+      case "wands-queen":
+      case "wands-king":
+        return (
+          <div className="relative flex items-center justify-center w-full h-full py-4">
+            <div className="w-24 h-24 rounded-full border border-purple-800/60 flex items-center justify-center bg-surface-elevated/90 shadow-glow-purple relative z-10">
+              <MatchstickIcon className="w-9 h-9 text-purple-300" />
+            </div>
+            <div className="absolute top-2 right-4">
+              <FourPointStar className="w-3.5 h-3.5 text-lavender-light" />
+            </div>
+          </div>
+        );
+
+      case "cups-ace":
+        return (
+          <div className="relative flex items-center justify-center w-full h-full py-4">
+            <div className="w-24 h-24 rounded-full border border-purple-800/60 flex items-center justify-center bg-surface-elevated/90 shadow-glow-purple relative z-10">
+              <PotionBottleIcon className="w-9 h-9 text-purple-300" />
+            </div>
+            <div className="absolute top-2 right-4">
+              <FourPointStar className="w-3.5 h-3.5 text-lavender-light" />
+            </div>
+          </div>
+        );
+
       default:
         return (
           <div className="flex items-center justify-center w-full h-full">
@@ -206,7 +243,9 @@ export function SanctumCardFace({ card, size = "large", className = "" }: Sanctu
           {card.name}
         </h3>
         <p className="text-[10px] font-mono uppercase tracking-ceremonial text-lavender-dim pt-0.5">
-          Major Arcana
+          {card.arcana === "minor"
+            ? `Suit of ${card.suit ? card.suit.charAt(0).toUpperCase() + card.suit.slice(1) : "Wands"}`
+            : "Major Arcana"}
         </p>
       </div>
     </div>

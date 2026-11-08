@@ -475,6 +475,190 @@ const POSITION_INTERPRETATIONS: Record<string, Record<SpreadPositionKey, string>
     guidance:
       "Audit the true cost of continued battle and choose your dignity over petty triumph. Sheathe your blade, decline to engage in toxic squabbles, and walk away from conflicts that drain your spirit.",
   },
+  card_swords_six: {
+    situation:
+      "The Six of Swords reveals a quiet passage away from conflict toward calmer waters. You are in transition, leaving acute turmoil behind to seek mental sanctuary.",
+    challenge:
+      "The obstacle is lingering attachment to past grievances, carrying heavy baggage that risks swamping the boat, or feeling anxious about the quiet stillness ahead.",
+    guidance:
+      "Allow yourself to be carried into recovery. Refuse to be pulled back into finished skirmishes, focus on navigating toward safe shores, and trust the restoration of peace.",
+  },
+  card_swords_seven: {
+    situation:
+      "The Seven of Swords highlights a circumstance requiring tactical stealth, independent maneuvering, or protecting your strategy from public scrutiny. Direct confrontation is ill-advised.",
+    challenge:
+      "The friction is slipping into deceit, paranoia, or feeling like an imposter. Operating in secret to evade necessary accountability damages integrity and breeds mistrust.",
+    guidance:
+      "Deploy strategic discretion with clean ethics. Keep your plans confidential, secure what is essential for your independence, and outmaneuver obstacles with quiet wit.",
+  },
+  card_swords_eight: {
+    situation:
+      "The Eight of Swords indicates a situation where you feel restricted, silenced, or trapped by circumstance. You are surrounded by obstacles that seem insurmountable.",
+    challenge:
+      "The friction is learned helplessness and self-imposed limitation. The cords binding you are loose and the path out is open, but fear convinces you that escape is impossible.",
+    guidance:
+      "Dismantle the mental cage you have built. Recognize that your thoughts are projecting the confinement, take off the blindfold of panic, and take the first brave step into freedom.",
+  },
+  card_swords_nine: {
+    situation:
+      "The Nine of Swords reveals a landscape dominated by anxiety, insomnia, or worst-case catastrophizing. Midnight panic is distorting your perception of reality.",
+    challenge:
+      "The danger is believing every terror your racing mind invents, spiraling into paralysis, and suffering tenfold over catastrophes that will never come to pass.",
+    guidance:
+      "Ground your nervous system in mundane truth. Stop debating with fearful thoughts in the dark, breathe deeply into your physical body, and wait for the dawn to reveal facts.",
+  },
+  card_swords_ten: {
+    situation:
+      "The Ten of Swords marks an undeniable, absolute ending. A painful betrayal, collapse, or grueling struggle has run its course; the battle is officially over.",
+    challenge:
+      "The friction is refusing to accept that something is dead, replaying the trauma of defeat, or wallowing in dramatic victimhood rather than acknowledging closure.",
+    guidance:
+      "Accept the finality with solemn relief. The worst has occurred and you survived it; release what is gone, rest upon the shore, and look toward the golden dawn breaking ahead.",
+  },
+  card_swords_page: {
+    situation:
+      "The Page of Swords brings an alert, inquisitive energy to your circumstance. You are gathering information, asking sharp questions, and scanning the horizon with vigilance.",
+    challenge:
+      "The obstacle is paranoid hyper-vigilance, petty gossip, or picking unnecessary fights out of defensive insecurity. Weaponizing questions to score points breeds hostility.",
+    guidance:
+      "Channel your mental sharpness into honest discovery. Stay curious, seek objective data, question dogma with respectful courage, and speak the truth with fearless clarity.",
+  },
+  card_swords_knight: {
+    situation:
+      "The Knight of Swords indicates a situation of fierce velocity, urgent ambition, and direct execution. The time calls for fast-paced action and uncompromising momentum.",
+    challenge:
+      "The friction is reckless impatience, charging blindly into unknown terrain, or mowing over allies in your haste to prevail. Momentum without strategy leads to disaster.",
+    guidance:
+      "Execute your plan with decisive conviction. Back your ideas with courageous momentum, cut through bureaucratic delays, and strike directly toward your objective with precision.",
+  },
+  card_swords_queen: {
+    situation:
+      "The Queen of Swords reveals an environment demanding radical discernment, clear boundaries, and honest communication. You are called to see through flattery to the truth.",
+    challenge:
+      "The danger is cold cynicism, emotional callousness, or isolating yourself behind an impenetrable armor of intellect out of fear of being hurt again.",
+    guidance:
+      "Inhabit the throne of sovereign clarity. Speak the truth with calm, uncompromising authority, uphold your boundaries without apology, and remain fair, wise, and composed.",
+  },
+  card_swords_king: {
+    situation:
+      "The King of Swords marks a circumstance requiring intellectual governance, judicial objectivity, and principled leadership. Calm, disciplined authority is needed.",
+    challenge:
+      "The friction is rigid authoritarianism, intellectual arrogance, or ruling with clinical detachment that disregards human empathy. Being technically right is not enough.",
+    guidance:
+      "Lead with principled integrity and impartial logic. Set aside emotional reactivity, weigh the facts with seasoned justice, and make the executive call that serves the highest good.",
+  },
+  card_pentacles_ace: {
+    situation:
+      "The Ace of Pentacles heralds the arrival of a grounded, real-world opportunity. A tangible seed of financial prosperity, security, or physical health is placed in your hands.",
+    challenge:
+      "The obstacle is squandering the opportunity through impatience, ignoring practical execution, or failing to realize that abundance requires dedicated physical labor to grow.",
+    guidance:
+      "Plant this golden seed in rich soil. Welcome the mundane opportunity with practical gratitude, build the daily habits to sustain it, and nurture your investment with patient discipline.",
+  },
+  card_pentacles_two: {
+    situation:
+      "The Two of Pentacles indicates a circumstance requiring agile multitasking, dynamic resource management, or adapting to shifting demands. Multiple plates are spinning, demanding your tactical dexterity.",
+    challenge:
+      "The obstacle is becoming overwhelmed by chaotic priorities or dropping essential responsibilities. Resisting the need to adapt or attempting to force rigid control onto moving variables causes avoidable burnout.",
+    guidance:
+      "Adopt the posture of a nimble juggler. Accept that balance is an active, continuous adjustment rather than a static state, prioritize your core commitments, and let peripheral noise wait.",
+  },
+  card_pentacles_three: {
+    situation:
+      "The Three of Pentacles reveals a situation where collaborative effort, skilled craftsmanship, and foundational construction are taking center stage. You are laying the groundwork for an enduring endeavor.",
+    challenge:
+      "The friction lies in ego clashes, resisting constructive feedback, or cutting corners on quality. Insisting on isolated control when the project demands cooperative specialization undermines the structure.",
+    guidance:
+      "Commit to excellence and lean into collaborative synergy. Value the distinct expertise of your allies, hold your craftsmanship to rigorous standards, and build each layer with patient mastery.",
+  },
+  card_pentacles_four: {
+    situation:
+      "The Four of Pentacles reflects a circumstance focused on consolidation, security, and safeguarding material stability. You have established a defensible foundation and are protecting your resources.",
+    challenge:
+      "The friction is falling into a scarcity mindset, hoarding control, or refusing to let energy circulate. Clinging so tightly to safety that you suffocate growth turns your sanctuary into a gilded cage.",
+    guidance:
+      "Maintain sensible security without letting fear dictate your posture. Acknowledge the stability you have already secured, establish healthy perimeters, and allow resources to circulate with measured confidence.",
+  },
+  card_pentacles_five: {
+    situation:
+      "The Five of Pentacles indicates an acute period of material strain, physical fatigue, or feeling isolated in the cold. A resource shortfall or systemic friction is testing your endurance.",
+    challenge:
+      "The danger is giving in to despair, nursing victimhood, or allowing stubborn pride to prevent you from seeking help. Trudging through the storm alone while ignoring nearby sanctuary compounds your hardship.",
+    guidance:
+      "Look up from the frozen ground and recognize the sanctuary right beside you. Swallow your pride, reach out for tangible community support, and take one practical step toward shelter and restoration.",
+  },
+  card_pentacles_six: {
+    situation:
+      "The Six of Pentacles reveals an environment centered on resource distribution, mutual aid, or balancing the scales of giving and receiving. Energy and resources are seeking equitable circulation.",
+    challenge:
+      "The friction lies in unequal power dynamics, transactional strings attached to generosity, or chronic overgiving that depletes your own vault. Refusing to receive support is as damaging as refusing to give.",
+    guidance:
+      "Restore equilibrium to your scales. If you have surplus, distribute it with grace and dignity; if you are in need, receive assistance with open gratitude and zero shame. True community is built on reciprocal flow.",
+  },
+  card_pentacles_seven: {
+    situation:
+      "The Seven of Pentacles reflects a natural plateau in an ongoing venture or investment. You have sown the seeds and put in substantial labor; now you are pausing to assess the early yield and inspect the health of the crop.",
+    challenge:
+      "The danger is restless impatience—demanding premature results, digging up seeds to verify their growth, or walking away right before compounding momentum takes hold.",
+    guidance:
+      "Give your investments the quiet time they require to ripen. Step back from frantic activity, objectively evaluate what is producing fruit versus what is draining your reserves, and trust the organic timeline of physical reality.",
+  },
+  card_pentacles_eight: {
+    situation:
+      "The Eight of Pentacles indicates a period of dedicated apprenticeship, skill acquisition, or focused craftsmanship. You are working in your private workshop, honing your technique with meticulous care.",
+    challenge:
+      "The obstacle is either perfectionist paralysis that prevents you from completing work, or cutting corners and rushing through the fundamentals in search of cheap acclaim.",
+    guidance:
+      "Return to the workbench with humble devotion. Embrace the quiet, repetitive rhythm of dedicated practice, polish every detail to high standards, and let the undeniable quality of your craftsmanship speak for itself.",
+  },
+  card_pentacles_nine: {
+    situation:
+      "The Nine of Pentacles represents a sovereign estate of material security, personal independence, and earned peace. You have built a resilient, beautiful sanctuary through your own disciplined choices.",
+    challenge:
+      "The friction lies in workaholic habits that prevent you from actually enjoying your security, or letting self-sufficiency harden into rigid isolation that shuts out genuine intimacy.",
+    guidance:
+      "Take deep pleasure in the sanctuary you have cultivated. Inhabit your independence with poise and gratitude, maintain your high standards, and honor the hard work that secured your autonomy.",
+  },
+  card_pentacles_ten: {
+    situation:
+      "The Ten of Pentacles marks a culmination of long-term stability, generational foundations, or ancestral legacy. The focus is on enduring structures that support family, community, and future horizons.",
+    challenge:
+      "The friction involves family obligations that feel stifling, disputes over material control, or assuming financial accumulation alone can substitute for emotional and spiritual roots.",
+    guidance:
+      "Anchor your choices in long-term legacy. Protect the foundations that shelter your loved ones, break toxic ancestral patterns while preserving timeless wisdom, and build structures meant to endure beyond your lifetime.",
+  },
+  card_pentacles_page: {
+    situation:
+      "The Page of Pentacles marks the arrival of a grounded opportunity, a pragmatic study, or a new physical venture. A tangible seed is placed before you, inviting serious practical dedication.",
+    challenge:
+      "The temptation is daydreaming about grand wealth while resisting the tedious entry-level groundwork, or allowing fear of looking foolish to delay starting your education.",
+    guidance:
+      "Adopt the mindset of a dedicated apprentice. Ask practical questions, study the fundamentals with eager humility, and build reliable daily routines to support your emerging venture.",
+  },
+  card_pentacles_knight: {
+    situation:
+      "The Knight of Pentacles embodies methodical progress, steadfast reliability, and disciplined follow-through. The current terrain requires unyielding stamina and consistent labor rather than swift heroics.",
+    challenge:
+      "The risk is stubborn tunnel vision, resisting necessary adjustments out of sheer obstinacy, or letting routine calcify into joyless, uninspired drudgery.",
+    guidance:
+      "Put your shoulder to the wheel and plow your field row by row. Ignore flashy distractions, fulfill your responsibilities with quiet honor, and let relentless consistency carry you steadily to completion.",
+  },
+  card_pentacles_queen: {
+    situation:
+      "The Queen of Pentacles reveals an environment centered on practical abundance, physical nourishment, and grounded stewardship. You are establishing a haven where body, soul, and enterprise can flourish.",
+    challenge:
+      "The danger is over-functioning—exhausting yourself tending to everyone else's physical needs while neglecting your own vessel, or using material caretaking to control others.",
+    guidance:
+      "Nurture your ground truth. Attend to your physical health, create order and warmth in your immediate sanctuary, and lead with the pragmatic, generous wisdom that transforms resources into lasting vitality.",
+  },
+  card_pentacles_king: {
+    situation:
+      "The King of Pentacles represents executive authority, material mastery, and proven economic stewardship. You have the leverage, acumen, and stability to direct large-scale endeavors with grounded confidence.",
+    challenge:
+      "The trap is cynical materialism—evaluating everything solely by its bottom line, or becoming an immovable, tyrannical gatekeeper resistant to fresh ideas.",
+    guidance:
+      "Command your domain with seasoned, benevolent leadership. Make decisions grounded in practical wisdom, protect the security of those who rely on you, and invest your wealth into enduring, generative enterprises.",
+  },
 };
 
 /**

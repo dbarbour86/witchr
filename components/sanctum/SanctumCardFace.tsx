@@ -11,6 +11,7 @@ import {
   PotionBottleIcon,
   CandleAltarIcon,
   RitualShearsIcon,
+  CrystalClusterIcon,
 } from "@/components/OrnateFrames";
 import { CelestialCircle, MatchstickIcon } from "@/components/BrandSymbols";
 
@@ -186,10 +187,44 @@ export function SanctumCardFace({ card, size = "large", className = "" }: Sanctu
       case "swords-three":
       case "swords-four":
       case "swords-five":
+      case "swords-six":
+      case "swords-seven":
+      case "swords-eight":
+      case "swords-nine":
+      case "swords-ten":
+      case "swords-page":
+      case "swords-knight":
+      case "swords-queen":
+      case "swords-king":
         return (
           <div className="relative flex items-center justify-center w-full h-full py-4">
             <div className="w-24 h-24 rounded-full border border-purple-800/60 flex items-center justify-center bg-surface-elevated/90 shadow-glow-purple relative z-10">
               <RitualShearsIcon className="w-9 h-9 text-purple-300" />
+            </div>
+            <div className="absolute top-2 right-4">
+              <FourPointStar className="w-3.5 h-3.5 text-lavender-light" />
+            </div>
+          </div>
+        );
+
+      case "pentacles-ace":
+      case "pentacles-two":
+      case "pentacles-three":
+      case "pentacles-four":
+      case "pentacles-five":
+      case "pentacles-six":
+      case "pentacles-seven":
+      case "pentacles-eight":
+      case "pentacles-nine":
+      case "pentacles-ten":
+      case "pentacles-page":
+      case "pentacles-knight":
+      case "pentacles-queen":
+      case "pentacles-king":
+        return (
+          <div className="relative flex items-center justify-center w-full h-full py-4">
+            <div className="w-24 h-24 rounded-full border border-purple-800/60 flex items-center justify-center bg-surface-elevated/90 shadow-glow-purple relative z-10">
+              <CrystalClusterIcon className="w-9 h-9 text-purple-300" />
             </div>
             <div className="absolute top-2 right-4">
               <FourPointStar className="w-3.5 h-3.5 text-lavender-light" />

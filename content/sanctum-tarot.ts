@@ -17,61 +17,84 @@ export interface SanctumTarotCard {
     src?: string;
     alt: string;
     motif:
-      | "fool"
-      | "magician"
-      | "high-priestess"
-      | "empress"
-      | "emperor"
-      | "hierophant"
-      | "lovers"
-      | "chariot"
-      | "strength"
-      | "hermit"
-      | "wheel-of-fortune"
-      | "justice"
-      | "hanged-man"
-      | "death"
-      | "temperance"
-      | "devil"
-      | "tower"
-      | "star"
-      | "moon"
-      | "sun"
-      | "judgement"
-      | "world"
-      | "wands-ace"
-      | "wands-two"
-      | "wands-three"
-      | "wands-four"
-      | "wands-five"
-      | "wands-six"
-      | "wands-seven"
-      | "wands-eight"
-      | "wands-nine"
-      | "wands-ten"
-      | "wands-page"
-      | "wands-knight"
-      | "wands-queen"
-      | "wands-king"
-      | "cups-ace"
-      | "cups-two"
-      | "cups-three"
-      | "cups-four"
-      | "cups-five"
-      | "cups-six"
-      | "cups-seven"
-      | "cups-eight"
-      | "cups-nine"
-      | "cups-ten"
-      | "cups-page"
-      | "cups-knight"
-      | "cups-queen"
-      | "cups-king"
-      | "swords-ace"
-      | "swords-two"
-      | "swords-three"
-      | "swords-four"
-      | "swords-five";
+    | "fool"
+    | "magician"
+    | "high-priestess"
+    | "empress"
+    | "emperor"
+    | "hierophant"
+    | "lovers"
+    | "chariot"
+    | "strength"
+    | "hermit"
+    | "wheel-of-fortune"
+    | "justice"
+    | "hanged-man"
+    | "death"
+    | "temperance"
+    | "devil"
+    | "tower"
+    | "star"
+    | "moon"
+    | "sun"
+    | "judgement"
+    | "world"
+    | "wands-ace"
+    | "wands-two"
+    | "wands-three"
+    | "wands-four"
+    | "wands-five"
+    | "wands-six"
+    | "wands-seven"
+    | "wands-eight"
+    | "wands-nine"
+    | "wands-ten"
+    | "wands-page"
+    | "wands-knight"
+    | "wands-queen"
+    | "wands-king"
+    | "cups-ace"
+    | "cups-two"
+    | "cups-three"
+    | "cups-four"
+    | "cups-five"
+    | "cups-six"
+    | "cups-seven"
+    | "cups-eight"
+    | "cups-nine"
+    | "cups-ten"
+    | "cups-page"
+    | "cups-knight"
+    | "cups-queen"
+    | "cups-king"
+    | "swords-ace"
+    | "swords-two"
+    | "swords-three"
+    | "swords-four"
+    | "swords-five"
+    | "swords-six"
+    | "swords-seven"
+    | "swords-eight"
+    | "swords-nine"
+    | "swords-ten"
+    | "swords-page"
+    | "swords-knight"
+    | "swords-queen"
+    | "swords-king"
+    | "pentacles-ace"
+    | "pentacles-two"
+    | "pentacles-three"
+    | "pentacles-four"
+    | "pentacles-five"
+    | "pentacles-six"
+    | "pentacles-seven"
+    | "pentacles-eight"
+    | "pentacles-nine"
+    | "pentacles-ten"
+    | "pentacles-page"
+    | "pentacles-knight"
+    | "pentacles-queen"
+    | "pentacles-king";
   };
 }
 
@@ -1905,6 +1928,788 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
       src: "/images/sanctum/tarot/five-of-swords.webp",
       alt: "Five of Swords — Occult ceremonial tarot card of conflict, hollow victory, tension, and severed alliances",
       motif: "swords-five",
+    },
+  },
+  {
+    id: "card_swords_six",
+    slug: "six-of-swords",
+    number: 6,
+    numeral: "VI",
+    name: "Six of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Rupture Behind", "Nocturnal Crossing", "Quiet Recovery"],
+    traditionalThemes: [
+      "Transition, necessary departure, recovery after turmoil, and navigating toward calmer waters",
+      "Carrying essential baggage while leaving behind acute battlefield friction",
+      "A journey of quiet healing guided by objective perspective",
+      "Moving from mental agitation into measured stillness and gradual restoration",
+    ],
+    reversedThemes: [
+      "Unresolved baggage sabotaging new horizons or emotional turbulence resurfacing",
+      "Refusing to move forward out of stubborn loyalty to old wounds",
+      "Stalled transitions or feeling adrift without a clear navigational compass",
+    ],
+    traditionalMeaning:
+      "A cloaked ferryman steers a wooden barge across a tranquil body of water beneath a nocturnal sky toward a distant, peaceful shore. In the vessel, two huddled figures sit quietly amid six upright swords embedded securely into the hull, their blades pointing downward into the wood without piercing the bottom. The waters beside the boat ripple with receding wake, while ahead the surface is glass-calm. The Six of Swords depicts a solemn, deliberate passage—the crossing from acute mental turmoil into calmer waters, where healing can finally take root.",
+    reflectiveInterpretation:
+      "The Six of Swords marks the quiet threshold between surviving the storm and beginning to heal. You may still carry the scars, the sorrow, and the exhaustion of what transpired, but the worst of the crisis is behind you. This is not a triumphant voyage with celebratory fanfare; it is a somber, necessary relocation of your energy toward safety. Do not rush your recovery or attempt to unpack all your grief while you are still in mid-crossing. Keep your hands steady, let the waters carry you, and trust that calm shores are waiting ahead.",
+    reflectionPrompt:
+      "What battlefield or toxic dynamic have you recently walked away from, and what permission do you need to give yourself to quietly rest during this crossing?",
+    practicalTakeaway:
+      "Take one deliberate action to create physical or mental distance from an unresolved stressor today—decline to re-enter a finished dispute and protect your peace.",
+    image: {
+      src: "/images/sanctum/tarot/six-of-swords.webp",
+      alt: "Six of Swords — Occult ceremonial tarot card of transition, recovery, quiet crossing, and moving forward",
+      motif: "swords-six",
+    },
+  },
+  {
+    id: "card_swords_seven",
+    slug: "seven-of-swords",
+    number: 7,
+    numeral: "VII",
+    name: "Seven of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Tactical Stealth", "Strategic Autonomy", "Guarded Maneuver"],
+    traditionalThemes: [
+      "Strategy, tactical cunning, stealth, independence, and unconventional solutions",
+      "Outmaneuvering a rigid system or adversary through intellect rather than brute force",
+      "Guarding your plans quietly and withholding your hand until the moment is right",
+      "The fine line between necessary self-preservation and deceitful evasion",
+    ],
+    reversedThemes: [
+      "Being caught in a deception or having a covert scheme exposed",
+      "Imposter syndrome, guilt, or confessing secrets to restore integrity",
+      "Sloppy execution of a clandestine plan causing collateral damage",
+    ],
+    traditionalMeaning:
+      "A cloaked practitioner tiptoes away from a military camp under the cover of a crescent moon, carrying five gleaming swords in his arms while glancing back over his shoulder at two swords still planted firmly in the earth outside the pavilions. The nocturnal camp sleeps unaware. The Seven of Swords illustrates strategic agility—the sovereign art of taking what is necessary for your survival and slipping away unnoticed, operating by your own wits when direct confrontation would result in defeat.",
+    reflectiveInterpretation:
+      "The Seven of Swords acknowledges that conventional, head-on confrontation is not always the wisest tactic. Sometimes, survival and self-preservation demand stealth, strategic discretion, and quiet maneuvering. You do not owe full transparency to people or institutions that do not respect your perimeter. Work behind the scenes, keep your counsel private, and gather what you need to protect your future. However, maintain a strict moral boundary: use strategy to secure your freedom, never to manipulate or exploit the innocent.",
+    reflectionPrompt:
+      "Where in your life is quiet discretion and independent strategy far more effective than public debate or direct confrontation?",
+    practicalTakeaway:
+      "Keep your next key move completely private today. Refrain from announcing your plans, seeking premature validation, or sharing drafts before they are secured.",
+    image: {
+      src: "/images/sanctum/tarot/seven-of-swords.webp",
+      alt: "Seven of Swords — Occult ceremonial tarot card of strategy, tactical stealth, independence, and calculated maneuvers",
+      motif: "swords-seven",
+    },
+  },
+  {
+    id: "card_swords_eight",
+    slug: "eight-of-swords",
+    number: 8,
+    numeral: "VIII",
+    name: "Eight of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Self-Imposed Enclosure", "Illusion of Confinement", "Untying the Mind"],
+    traditionalThemes: [
+      "Mental restriction, feeling trapped, limiting self-beliefs, and perceived helplessness",
+      "Imprisonment constructed primarily out of anxious thoughts and feared consequences",
+      "Standing paralyzed in a ring of blades while the bindings remain loose enough to slip off",
+      "The courageous awakening required to dismantle the cage you built around yourself",
+    ],
+    reversedThemes: [
+      "Breaking free from mental paralysis, seeing past limiting narratives, and taking first steps",
+      "Accepting responsibility for your own agency rather than blaming external captors",
+      "Lingering fear as you step through the open boundary into unfamiliar freedom",
+    ],
+    traditionalMeaning:
+      "A blindfolded figure bound loosely with crimson cords stands in muddy marshland surrounded by an enclosure of eight upright broadswords planted firmly in the earth. Water pools around her bare feet, yet an open path leads directly behind her toward high ground and a distant castle. The bindings are loose, and no guard stands watch. The Eight of Swords depicts the psychology of confinement—how fear, trauma conditioning, and distorted narratives construct an impenetrable fortress out of mere shadows.",
+    reflectiveInterpretation:
+      "The Eight of Swords holds up a mirror to the stories you tell yourself about what you 'cannot' do. You may feel cornered, silenced, or trapped by circumstance, but examine your cage closely: who tied the knots? Who planted the blades? Often, we stay frozen in painful situations because familiar confinement feels safer than the terrifying responsibility of freedom. The cords around your wrists are loose, the swords do not touch your flesh, and the path behind you is open. Shake off the blindfold and take a step.",
+    reflectionPrompt:
+      "What self-limiting belief or catastrophic assumption is keeping you paralyzed, and what simple truth dismantles the illusion of your helplessness?",
+    practicalTakeaway:
+      "Name the single biggest barrier you feel trapped by. Challenge it directly by asking: 'If I was 10% braver today, what obvious action would I take right now?' Then take it.",
+    image: {
+      src: "/images/sanctum/tarot/eight-of-swords.webp",
+      alt: "Eight of Swords — Occult ceremonial tarot card of mental restriction, perceived confinement, and breaking free from illusion",
+      motif: "swords-eight",
+    },
+  },
+  {
+    id: "card_swords_nine",
+    slug: "nine-of-swords",
+    number: 9,
+    numeral: "IX",
+    name: "Nine of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Midnight Crucible", "The Weight of Guilt", "Dawn Beyond Anguish"],
+    traditionalThemes: [
+      "Anxiety, insomnia, nightmare spirals, guilt, and the torment of 3:00 AM thoughts",
+      "The mind turning inward against itself, magnifying worst-case scenarios in the dark",
+      "Acute mental anguish that feels overwhelming yet exists almost entirely in anticipation",
+      "Recognizing that nocturnal panic always dissolves when exposed to the clear light of dawn",
+    ],
+    reversedThemes: [
+      "Reaching out for help during mental crisis, the gradual lifting of panic, and emotional relief",
+      "Chronic insomnia and despair eroding physical health if left unaddressed",
+      "Learning to calm nervous system spirals through grounding rituals and mundane reality",
+    ],
+    traditionalMeaning:
+      "A figure sits bolt upright in a carved wooden bed beneath a midnight-black wall upon which nine horizontal broadswords hang in stark, threatening alignment. The figure clutches their face in their hands, weeping in anguish as night terrors and racing thoughts overwhelm the room. The quilt draped across the bed is embroidered with celestial roses and astrological glyphs. The Nine of Swords depicts the solitary crucible of mental torment—the nocturnal tempest where anxiety manufactures unbearable monsters from unresolved fears.",
+    reflectiveInterpretation:
+      "The Nine of Swords speaks directly to the terror of the midnight hours. When sleep eludes you and catastrophic thoughts echo through your head, every problem feels insurmountable and every mistake feels fatal. Do not negotiate with your mind at three in the morning. When your nervous system is in terror, logic is hijacked. Remind yourself: feelings are real, but catastrophic thoughts are not facts. Put your feet on the cold floor, breathe slowly into your belly, and wait for dawn. The sun will rise, and reality will prove far more manageable than your nightmares.",
+    reflectionPrompt:
+      "What recurring fear or guilt is keeping you awake at night, and what would happen if you brought that fear into the daylight and examined it objectively?",
+    practicalTakeaway:
+      "When nocturnal worry strikes, do not remain tossing in bed: turn on a dim lamp, write down every raw fear onto paper to get it out of your body, drink a glass of water, and ground your bare feet on the floor.",
+    image: {
+      src: "/images/sanctum/tarot/nine-of-swords.webp",
+      alt: "Nine of Swords — Occult ceremonial tarot card of anxiety, insomnia, mental anguish, and morning release",
+      motif: "swords-nine",
+    },
+  },
+  {
+    id: "card_swords_ten",
+    slug: "ten-of-swords",
+    number: 10,
+    numeral: "X",
+    name: "Ten of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["The Final Rupture", "Bottoming Out", "The First Glimmer of Dawn"],
+    traditionalThemes: [
+      "Painful endings, betrayal, rock bottom, unavoidable finality, and release from struggle",
+      "The absolute culmination of mental conflict where nothing further can be lost",
+      "Accepting that a chapter, dynamic, or illusion is utterly dead and cannot be resuscitated",
+      "The golden dawn breaking along the horizon as the darkest hour concludes",
+    ],
+    reversedThemes: [
+      "Slow recovery from devastating collapse, surviving the worst, and rising from the ashes",
+      "Refusing to accept a finished conclusion or picking at wounds of past betrayals",
+      "Fear of ruins preventing you from seeing the fresh ground cleared for rebuilding",
+    ],
+    traditionalMeaning:
+      "A figure lies prone upon a desolate stone shoreline, draped in a crimson shroud, with ten silver broadswords driven along the spine into the ground. Beyond the dark expanse of black water and heavy nocturnal clouds, a brilliant strip of golden sunlight illuminates the horizon, heralding the unavoidable arrival of a new dawn. The Ten of Swords portrays the dramatic, undeniable end of a grueling cycle—the moment when the struggle ceases because there is simply nothing left to fight.",
+    reflectiveInterpretation:
+      "The Ten of Swords marks absolute finality. Whatever battle you have been fighting, whatever relationship or venture has been slowly deteriorating, the collapse is now complete. There is a strange, profound relief in hitting the bottom: the suspense is over, the worst has happened, and you survived it. Do not waste precious energy trying to reanimate a corpse. The swords have fallen; the struggle is done. Lie still for a moment, let your tears wash the wound clean, and notice the golden light on the horizon. The only direction left from here is up.",
+    reflectionPrompt:
+      "What battle or dead situation is truly, unequivocally finished, and what burden can you finally set down now that there is nothing left to defend?",
+    practicalTakeaway:
+      "Officially declare closure today: throw away a physical reminder of a finished battle, block an exhausting line of communication, and take a long, deep breath of sovereign freedom.",
+    image: {
+      src: "/images/sanctum/tarot/ten-of-swords.webp",
+      alt: "Ten of Swords — Occult ceremonial tarot card of painful endings, rock bottom, finality, and dawn on the horizon",
+      motif: "swords-ten",
+    },
+  },
+  {
+    id: "card_swords_page",
+    slug: "page-of-swords",
+    number: 11,
+    numeral: "PAGE",
+    name: "Page of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Vigilant Mind", "Inquisitive Spark", "Uncompromising Discernment"],
+    traditionalThemes: [
+      "Curiosity, sharp intellect, vigilance, active observation, and eager communication",
+      "Approaching the world with a detective's eye and an insatiable desire to understand truth",
+      "Testing boundaries, asking probing questions, and gathering intelligence",
+      "The energetic spark of youthful intellectual courage ready to speak truth to power",
+    ],
+    reversedThemes: [
+      "Snoopiness, gossip, paranoia, or defensive aggression when challenged",
+      "All talk and no action, intellectual arrogance, or biting cynicism",
+      "Blunt, tactless speech that burns relationships without solving problems",
+    ],
+    traditionalMeaning:
+      "A youthful mystic clad in aerodynamic violet and slate robes stands poised upon a rocky crag, holding an upright sword firmly in both hands while surveying the wind-swept horizon. Ragged clouds scud across the nocturnal sky as a flock of birds wheels overhead, yet the Page's gaze is fierce, alert, and unwavering. The Page of Swords represents the awakening of intellectual vigilance—the spirited readiness to seek truth, investigate anomalies, and challenge dogma with fearless curiosity.",
+    reflectiveInterpretation:
+      "The Page of Swords brings the restless energy of an inquisitive intellect. You are scanning your horizon, picking up on discrepancies, and asking questions that others may prefer to avoid. Do not apologize for your curiosity or your sharp eye for detail. However, remember the difference between vigilant discernment and paranoid suspicion: use your mental agility to uncover reality and sharpen your skills, rather than seeking out offenses or picking unnecessary intellectual fights.",
+    reflectionPrompt:
+      "What situation are you observing with heightened vigilance, and what honest question needs to be asked before you proceed?",
+    practicalTakeaway:
+      "Research one crucial detail or fact you feel uncertain about today. Ask the direct question you've been dancing around, and write down the exact answer without assumption.",
+    image: {
+      src: "/images/sanctum/tarot/page-of-swords.webp",
+      alt: "Page of Swords — Occult ceremonial tarot card of curiosity, vigilance, intellectual spark, and fearless questioning",
+      motif: "swords-page",
+    },
+  },
+  {
+    id: "card_swords_knight",
+    slug: "knight-of-swords",
+    number: 12,
+    numeral: "KNIGHT",
+    name: "Knight of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Fierce Velocity", "Relentless Resolve", "Decisive Charge"],
+    traditionalThemes: [
+      "Ambition, determination, high-velocity action, razor-sharp focus, and rapid execution",
+      "Charging directly into the fray with unshakeable conviction and intellectual force",
+      "Cutting through red tape, dithering, and hesitation to accomplish an urgent objective",
+      "Championing a principled cause with fearless, uncompromising momentum",
+    ],
+    reversedThemes: [
+      "Reckless aggression, impatience, steamrolling over others, and intellectual arrogance",
+      "Charging blindly into conflict without assessing risks or situational terrain",
+      "Burnout caused by running at full throttle without tactical patience",
+    ],
+    traditionalMeaning:
+      "A fierce warrior in gleaming ceremonial armor charges forward on a powerful galloping warhorse across a stormy, wind-swept plain. With cloak streaming behind him like wings, he thrusts an unsheathed broadsword high into the tempestuous sky, riding directly into the heart of the gale without hesitation. The Knight of Swords embodies unstoppable intellectual drive—the pure, concentrated velocity of a mind fully committed to executing its will regardless of the obstacles in its path.",
+    reflectiveInterpretation:
+      "The Knight of Swords signals that the era of passive contemplation has ended; speed, conviction, and decisive execution are now required. When this archetype charges into your life, you are called to cut through excuses, silence second-guessing, and strike toward your objective with uncompromising focus. Back your ideas with fierce courage. Just ensure your blade is aimed at the true target, rather than mowing down allies in your haste to arrive.",
+    reflectionPrompt:
+      "Where has overthinking or diplomacy stalled necessary progress, and what bold, decisive action are you prepared to execute today?",
+    practicalTakeaway:
+      "Execute one difficult, delayed task with absolute focus today: make the high-stakes phone call, hit send on the crucial proposal, or confront the obstacle directly.",
+    image: {
+      src: "/images/sanctum/tarot/knight-of-swords.webp",
+      alt: "Knight of Swords — Occult ceremonial tarot card of ambition, swift execution, determination, and intellectual force",
+      motif: "swords-knight",
+    },
+  },
+  {
+    id: "card_swords_queen",
+    slug: "queen-of-swords",
+    number: 13,
+    numeral: "QUEEN",
+    name: "Queen of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Sovereign Discernment", "The Clear Mirror", "Uncompromising Candor"],
+    traditionalThemes: [
+      "Perceptive discernment, intellectual sovereignty, emotional boundaries, and radical honesty",
+      "Seeing straight through flattery, manipulation, and self-deception with piercing clarity",
+      "A leader who has weathered profound grief and emerged with wisdom, wit, and dignity",
+      "Setting clear, uncompromising boundaries with absolute composure and zero apology",
+    ],
+    reversedThemes: [
+      "Cold, bitter cynicism, emotional numbness, or cruel hyper-critical judgment",
+      "Using intellectual sharpness to insulate yourself from intimacy and warmth",
+      "Holding past betrayals as a permanent grudge against all humanity",
+    ],
+    traditionalMeaning:
+      "A dignified queen sits in profile upon an intricately carved marble throne adorned with winged cherubs and celestial butterflies, holding an upright broadsword in her right hand while extending her left palm in an open, authoritative gesture. Above her, high cirrus clouds drift across a crystalline indigo sky. Her gaze is penetrating, calm, and sorrow-tested. The Queen of Swords represents the mastery of mental sovereignty—the sovereign who perceives truth without delusion, protects her perimeter with dignity, and speaks candidly without malice.",
+    reflectiveInterpretation:
+      "The Queen of Swords is the patron of radical clarity. She has lived through betrayal and sorrow, yet she refused to let pain make her bitter; instead, she transformed it into razor-sharp discernment. When this queen enters your reading, she invites you to clear the emotional smog from your decision-making. Stop tiptoeing around people who do not respect your boundaries. Extend your open hand in fairness, hold your sword upright in sovereignty, and say exactly what you mean.",
+    reflectionPrompt:
+      "Where have you been softening the truth to avoid discomfort, and what boundary do you need to enforce with clear, calm authority?",
+    practicalTakeaway:
+      "Communicate one clear, unambiguous boundary today. State what you will and will not accept, calmly and without lengthy justifications.",
+    image: {
+      src: "/images/sanctum/tarot/queen-of-swords.webp",
+      alt: "Queen of Swords — Occult ceremonial tarot card of discernment, radical honesty, boundaries, and intellectual sovereignty",
+      motif: "swords-queen",
+    },
+  },
+  {
+    id: "card_swords_king",
+    slug: "king-of-swords",
+    number: 14,
+    numeral: "KING",
+    name: "King of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Architect of Truth", "Judicious Authority", "Principled Governance"],
+    traditionalThemes: [
+      "Intellectual authority, judicial wisdom, disciplined logic, and principled governance",
+      "Ruling with objective fairness, strategic foresight, and unwavering ethical standards",
+      "Severing personal bias and emotional reactivity to render impartial decisions",
+      "Mastery of language, law, strategy, and systems architecture",
+    ],
+    reversedThemes: [
+      "Autocratic tyranny, cold cruelty, intellectual arrogance, and rigid dogmatism",
+      "Using superior intelligence to manipulate, humiliate, or control others",
+      "Judgment devoid of mercy, alienating everyone in pursuit of clinical correctness",
+    ],
+    traditionalMeaning:
+      "Upon a tall stone throne flanked by carved serpents and crescent moons, a commanding monarch sits facing forward with crown aloft, holding an upright double-edged broadsword tilted slightly in his right hand. His indigo robes are draped with an ermine collar and purple mantle. The sky behind him is calm and unclouded. The King of Swords embodies the apex of mental authority—the judge, strategist, and executive whose decisions are governed by rigorous intellect, ethical duty, and unswerving adherence to truth.",
+    reflectiveInterpretation:
+      "The King of Swords commands you to step into intellectual leadership. In times of confusion, panic, or emotional chaos, a community or project desperately needs someone who can look at the facts objectively, weigh the evidence without bias, and chart a principled course forward. This king does not govern by emotional whim; he governs by proven principles and strategic clarity. Check your emotions at the door of your deliberation chamber, evaluate the reality before you, and render your verdict with steady authority.",
+    reflectionPrompt:
+      "What complex situation requires you to put aside emotional reactivity and evaluate the facts with clinical, principled objectivity?",
+    practicalTakeaway:
+      "Make an executive decision on a matter you've been vacillating on. Write out the pros, cons, and ethical imperatives, choose the most principled path, and commit to enforcing it.",
+    image: {
+      src: "/images/sanctum/tarot/king-of-swords.webp",
+      alt: "King of Swords — Occult ceremonial tarot card of intellectual authority, principled governance, clarity, and strategic leadership",
+      motif: "swords-king",
+    },
+  },
+  {
+    id: "card_pentacles_ace",
+    slug: "ace-of-pentacles",
+    number: 1,
+    numeral: "ACE",
+    name: "Ace of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Seed of Prosperity", "Tangible Foundation", "The Golden Threshold"],
+    traditionalThemes: [
+      "New financial opportunity, tangible beginnings, material prosperity, and grounded growth",
+      "The primal root of the Earth element offering physical abundance and security",
+      "Planting a seed that will compound into lasting real-world security",
+      "Practical manifestation enacted through dedicated discipline and patience",
+    ],
+    reversedThemes: [
+      "Missed financial opportunity, poor planning, or squandering initial capital",
+      "Greed, short-sighted speculation, or expecting wealth without doing the foundational labor",
+      "Delays in physical manifestation due to ungrounded or unrealistic execution",
+    ],
+    traditionalMeaning:
+      "An ethereal celestial arm emerges from nocturnal clouds holding an enormous golden pentacle engraved with sacred pentagram geometries, glowing with warm celestial light. Below, a lush garden blooming with lilies and roses is enclosed by a stone wall with an arched doorway leading toward distant, sunlit mountains. The Ace of Pentacles represents the seed of the Earth element—the arrival of concrete, real-world opportunity, the gift of physical well-being, and the foundation upon which enduring wealth and stability are built.",
+    reflectiveInterpretation:
+      "The Ace of Pentacles places a tangible golden coin directly into your hand. This is not a vague promise of spiritual enlightenment or emotional inspiration; it is concrete, mundane opportunity knocking at your door—a new job, a profitable venture, a health turnaround, or a physical investment. The gift is real, but remember: a seed only flourishes if it is planted in nutrient-rich soil and tended with daily labor. Welcome this practical blessing, honor its physical reality, and commit to the disciplined work required to help it grow.",
+    reflectionPrompt:
+      "What concrete, tangible opportunity is presenting itself to you, and what grounded routine or investment will allow it to take deep root?",
+    practicalTakeaway:
+      "Take one concrete step to plant this seed today: deposit funds into savings, buy the raw material, register the domain, or make one physical improvement to your workspace.",
+    image: {
+      src: "/images/sanctum/tarot/ace-of-pentacles.webp",
+      alt: "Ace of Pentacles — Occult ceremonial tarot card of opportunity, material prosperity, tangible beginnings, and financial stability",
+      motif: "pentacles-ace",
+    },
+  },
+  {
+    id: "card_pentacles_two",
+    slug: "two-of-pentacles",
+    number: 2,
+    numeral: "II",
+    name: "Two of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Dynamic Equilibrium", "Juggling Currents", "Fluid Prioritization"],
+    traditionalThemes: [
+      "Balance, adaptability, multitasking, and managing fluctuating resources",
+      "Navigating competing demands with nimble grace and flexibility",
+      "The ongoing rhythm of investment and return, ebb and flow",
+      "Holding equilibrium while standing on shifting ground",
+    ],
+    reversedThemes: [
+      "Overcommitment, dropping critical balls, or financial disorganization",
+      "Feeling overwhelmed by too many spinning plates or chaotic scheduling",
+      "Clinging to a rigid plan when circumstances require agile maneuvering",
+    ],
+    traditionalMeaning:
+      "A nimble practitioner stands upon a rocky shore balancing two glowing, engraved pentacles within an endless lemniscate ribbon of luminous violet silk. In the turbulent sea behind them, two ships ride the crests of rolling waves with steady composure. The Two of Pentacles captures the art of dynamic equilibrium—the understanding that balance in the physical world is never static stillness, but a continuous, agile dance with changing realities.",
+    reflectiveInterpretation:
+      "The Two of Pentacles acknowledges that your life is currently demanding dexterity. You are managing multiple commitments, budgets, or shifting priorities, and trying to freeze reality into a perfect schedule will only cause strain. The magic of this archetype lies in fluidity: bend your knees, anticipate the next wave, and don't take every wobble as failure. As long as you stay present in the dance, you have the agility to keep what truly matters aloft.",
+    reflectionPrompt:
+      "Which competing priorities are stretching your attention right now, and what non-essential task can you set down to regain your balance?",
+    practicalTakeaway:
+      "Audit your daily plate: identify your two non-negotiable obligations for today, and consciously defer or delegate one tertiary task.",
+    image: {
+      src: "/images/sanctum/tarot/two-of-pentacles.webp",
+      alt: "Two of Pentacles — Occult ceremonial tarot card of balance, adaptability, shifting priorities, and dynamic equilibrium",
+      motif: "pentacles-two",
+    },
+  },
+  {
+    id: "card_pentacles_three",
+    slug: "three-of-pentacles",
+    number: 3,
+    numeral: "III",
+    name: "Three of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Master Craftsmanship", "Allied Construction", "Architectural Mastery"],
+    traditionalThemes: [
+      "Collaboration, skilled craftsmanship, collective labor, and shared mastery",
+      "Building an enduring physical foundation through coordinated expertise",
+      "Having your competence recognized and valued by respected peers",
+      "The dedication to refining raw material into enduring excellence",
+    ],
+    reversedThemes: [
+      "Misaligned collaboration, ego clashes, or lack of shared standards",
+      "Sloppy workmanship, cutting corners, or ignoring foundational blueprints",
+      "Feeling unappreciated or working in isolation without constructive feedback",
+    ],
+    traditionalMeaning:
+      "Within the grand stone archway of an ancient ceremonial chamber, a stonecarver stands upon a wooden bench holding hammer and chisel, conferring with an architect and a master astrologer who hold detailed parchment blueprints. Above their heads, carved into the vaulted stone arch, three ornate golden pentacles form a radiant triangular keystone. The Three of Pentacles honors the sacred marriage of vision, technical skill, and mutual collaboration in erecting monuments that outlast the season.",
+    reflectiveInterpretation:
+      "The Three of Pentacles celebrates the integrity of devoted labor and the multiplier of aligned collaboration. You are building something meant to endure, whether a craft, a career, or a foundational system. This is not the phase for solo heroism or secretive tinkering; it is the time to solicit high-standard feedback, partner with people who respect the work, and pay meticulous attention to technical details. Take deep pride in your workbench; excellence is built one deliberate stroke at a time.",
+    reflectionPrompt:
+      "What project or skill are you currently building, and whose complementary expertise or honest feedback could elevate its craftsmanship?",
+    practicalTakeaway:
+      "Reach out to an ally or mentor to review a specific piece of your work, or spend an uninterrupted hour sharpening the core technical mechanics of your craft.",
+    image: {
+      src: "/images/sanctum/tarot/three-of-pentacles.webp",
+      alt: "Three of Pentacles — Occult ceremonial tarot card of collaboration, craftsmanship, teamwork, and foundational skill",
+      motif: "pentacles-three",
+    },
+  },
+  {
+    id: "card_pentacles_four",
+    slug: "four-of-pentacles",
+    number: 4,
+    numeral: "IV",
+    name: "Four of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Guarded Vault", "Fortified Sovereignty", "Scarcity's Grip"],
+    traditionalThemes: [
+      "Financial security, boundary preservation, consolidation, and material stability",
+      "Protecting hard-won assets and creating a defensible fortress of resources",
+      "The prudent conservation of energy, time, and physical wealth",
+      "The danger of scarcity mindset transforming healthy boundaries into a self-made prison",
+    ],
+    reversedThemes: [
+      "Compulsive hoarding, miserly fear, or extreme fear of financial loss",
+      "Suffocating control that prevents growth, generosity, or healthy circulation",
+      "A sudden forced release of assets due to clinging too tightly",
+    ],
+    traditionalMeaning:
+      "A crowned sovereign sits upon a carved stone dais overlooking a fortified city, clutching a large golden pentacle tightly against their chest. Two other pentacles rest firmly beneath their feet, while a fourth balances upon their crown. Every limb is engaged in pinning down their wealth. The Four of Pentacles depicts the paradox of material control—the security of fortified boundaries, balanced against the rigid immobility that occurs when fear prevents energy from circulating.",
+    reflectiveInterpretation:
+      "The Four of Pentacles appears when your focus turns toward security, consolidation, and defense. It is entirely valid to protect what you have earned through disciplined labor; building a stable foundation requires saying no to reckless leakage. However, notice your grip. Are you holding your resources with steady sovereignty, or is unexamined terror whispering that you will lose everything if you relax a single muscle? Remember: an unyielding vault protects wealth, but nothing living can grow inside it.",
+    reflectionPrompt:
+      "Where is a fear of scarcity causing you to clutch resources, control, or energy so tightly that you are choking off forward movement?",
+    practicalTakeaway:
+      "Perform a concrete financial review: confirm what is safely set aside for security, and consciously release one small, generous expenditure or gift without guilt.",
+    image: {
+      src: "/images/sanctum/tarot/four-of-pentacles.webp",
+      alt: "Four of Pentacles — Occult ceremonial tarot card of financial security, control, guarded boundaries, and material stability",
+      motif: "pentacles-four",
+    },
+  },
+  {
+    id: "card_pentacles_five",
+    slug: "five-of-pentacles",
+    number: 5,
+    numeral: "V",
+    name: "Five of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Winter of Want", "Sanctuary in the Storm", "The Unseen Threshold"],
+    traditionalThemes: [
+      "Financial hardship, isolation, material vulnerability, and enduring cold winters",
+      "Feeling locked out, unassisted, or forgotten in your hour of physical need",
+      "The acute ache of scarcity straining your physical and emotional reserves",
+      "Overlooking the warm, lighted sanctuary standing mere feet away through the storm",
+    ],
+    reversedThemes: [
+      "The slow return of economic vitality, recovery from illness, or discovering refuge",
+      "Pride preventing you from asking for the assistance that is readily available",
+      "Internalizing material setbacks as proof of personal unworthiness",
+    ],
+    traditionalMeaning:
+      "Two weary travelers trudge barefoot through deep snow beneath a nocturnal blizzard. One limps forward on crude crutches, while the other is wrapped in threadbare blankets. Just above their bowed heads, the glowing stained-glass window of a sacred sanctuary illuminates five golden pentacles embedded in leaded glass, radiating warmth into the blizzard. The Five of Pentacles depicts the winter of physical struggle—and the quiet tragedy of enduring hardship alone while sanctuary waits just across the threshold.",
+    reflectiveInterpretation:
+      "The Five of Pentacles speaks to genuine hardship, economic strain, or the profound loneliness of feeling excluded from security. Hard times test the strongest spirit, and you are not asked to pretend the cold does not bite. But look up from the frozen ground. The greatest danger in difficult seasons is not the setback itself, but the isolating pride that convinces you no help exists. Sanctuary, warmth, and solidarity are closer than you realize. Lower your defenses and knock on the door.",
+    reflectionPrompt:
+      "What material or physical burden are you quietly enduring in isolation, and who can you reach out to for concrete support today?",
+    practicalTakeaway:
+      "Identify the single most pressing physical or financial stressor facing you right now. Take one mundane action: apply for aid, make an honest call, or ask an ally for guidance.",
+    image: {
+      src: "/images/sanctum/tarot/five-of-pentacles.webp",
+      alt: "Five of Pentacles — Occult ceremonial tarot card of hardship, material struggle, winter storm, and seeking sanctuary",
+      motif: "pentacles-five",
+    },
+  },
+  {
+    id: "card_pentacles_six",
+    slug: "six-of-pentacles",
+    number: 6,
+    numeral: "VI",
+    name: "Six of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Sacred Reciprocity", "The Balanced Scales", "Equitable Circulation"],
+    traditionalThemes: [
+      "Generosity, equitable exchange, sharing resources, and the balanced scale of giving and receiving",
+      "Distributing material blessings with dignity and without condescension",
+      "Receiving assistance with grace, recognizing that sovereignty includes knowing how to receive",
+      "The continuous circular flow of energy that sustains healthy communities",
+    ],
+    reversedThemes: [
+      "Transactional charity with hidden strings, power imbalances, or performative altruism",
+      "One-sided relationships where one person constantly drains while the other overgives",
+      "Refusing needed support out of stubborn ego or feeling indebted and demeaned",
+    ],
+    traditionalMeaning:
+      "A noble merchant clad in rich purple vestments stands before a stone archway, holding a balanced bronze merchant's scale in their left hand while carefully weighing and pouring coins from their right hand into the open palms of two seated supplicants. Six golden pentacles glow in celestial symmetry along the masonry above. The Six of Pentacles embodies the sacred law of reciprocity—the conscious distribution of wealth, time, and influence to ensure that the entire ecosystem remains nourished and equitable.",
+    reflectiveInterpretation:
+      "The Six of Pentacles asks you to examine the flow of giving and receiving in your life. Wealth, wisdom, and emotional support are living waters meant to circulate. If you have been blessed with surplus, share it deliberately and with deep respect for the dignity of those you assist. If you are currently in a season of need, open your hands and receive without shame. Remember: the scale must balance on both sides; chronic overgiving is just as disordered as hoarding.",
+    reflectionPrompt:
+      "Is your current dynamic of giving and receiving in true equilibrium, or are you overextending yourself to maintain control or unworthiness?",
+    practicalTakeaway:
+      "Engage in one act of clean, no-strings-attached reciprocity today—either give practical aid to someone who needs it, or gratefully accept an offering of help without deflection.",
+    image: {
+      src: "/images/sanctum/tarot/six-of-pentacles.webp",
+      alt: "Six of Pentacles — Occult ceremonial tarot card of generosity, reciprocity, fairness, and balanced resource flow",
+      motif: "pentacles-six",
+    },
+  },
+  {
+    id: "card_pentacles_seven",
+    slug: "seven-of-pentacles",
+    number: 7,
+    numeral: "VII",
+    name: "Seven of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Patient Cultivation", "The Mid-Harvest Assessment", "The Long Game"],
+    traditionalThemes: [
+      "Patience, long-term investment, evaluating progress, and pausing to assess the harvest",
+      "Stepping back from labor to observe how seeds have taken root in physical reality",
+      "Resisting premature gratification while trusting the natural compounding cycle of growth",
+      "Deciding whether to continue cultivating a crop or prune unproductive efforts",
+    ],
+    reversedThemes: [
+      "Impatience, abandoning efforts right before manifestation, or frustration with slow results",
+      "Pouring energy into exhausted soil that will never yield a return",
+      "Laziness or lack of follow-through after initial enthusiasm wanes",
+    ],
+    traditionalMeaning:
+      "A focused cultivator clad in rugged indigo and deep purple vestments leans upon their spade within a lush nocturnal garden. They gaze contemplatively at a flourishing vine laden with seven gleaming golden pentacles embedded among the leaves. The moon casts quiet light across the furrowed earth. The Seven of Pentacles depicts the quiet art of the mid-harvest assessment—the deliberate pause in physical labor where you evaluate the yield of your investments, honor the patience required for organic maturation, and decide your next strategic cultivation.",
+    reflectiveInterpretation:
+      "The Seven of Pentacles invites you to step back from the grind and inspect your garden. You have put in the hours, planted the seeds, and tended the soil; now, the work requires patience rather than frantic intervention. Growth in the material realm follows seasons, not overnight impulses. Do not dig up your seeds just to check if the roots are growing. Assess what is truly thriving with honest eyes, prune away dead weight, and give your worthwhile endeavors the steady time they need to ripen.",
+    reflectionPrompt:
+      "What long-term endeavor requires your patient trust right now, and what premature impulse do you need to rein in?",
+    practicalTakeaway:
+      "Conduct a structured review of an ongoing project or financial plan. Note what has demonstrably grown, celebrate the progress, and refrain from making impulsive changes for the next thirty days.",
+    image: {
+      src: "/images/sanctum/tarot/seven-of-pentacles.webp",
+      alt: "Seven of Pentacles — Occult ceremonial tarot card of patient cultivation, assessment, long-term growth, and sustainable investment",
+      motif: "pentacles-seven",
+    },
+  },
+  {
+    id: "card_pentacles_eight",
+    slug: "eight-of-pentacles",
+    number: 8,
+    numeral: "VIII",
+    name: "Eight of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Sacred Craftsmanship", "Diligent Mastery", "Repetitive Devotion"],
+    traditionalThemes: [
+      "Dedicated craftsmanship, mastery of skill, focused repetitive labor, and disciplined practice",
+      "Honing your craft behind closed doors with meticulous attention to detail",
+      "Finding transcendent purpose in the mundane, steady rhythm of daily work",
+      "Apprenticeship, continuous improvement, and the accumulation of technical expertise",
+    ],
+    reversedThemes: [
+      "Cutting corners, careless craftsmanship, rushing for shallow praise, or lack of discipline",
+      "Perfectionist paralysis where nothing is ever deemed finished or good enough",
+      "Mindless drudgery in a career or craft that drains your soul without offering growth",
+    ],
+    traditionalMeaning:
+      "An artisan dressed in violet robes sits intently at a sturdy wooden workbench in their stone workshop, carving sacred geometric glyphs onto a golden pentacle with a sharp bronze chisel. Five completed pentacles hang proudly on the workshop wall, another rests at their feet, and one is clamped securely to the anvil. The artisan works in quiet solitude, completely absorbed in their craft. The Eight of Pentacles represents the sacred devotion of the artisan—the patient, repetitive application of focused effort that elevates simple labor into enduring mastery.",
+    reflectiveInterpretation:
+      "The Eight of Pentacles calls you to the workbench. Real mastery is never born of sudden flashes or viral shortcuts; it is forged through the quiet, unglamorous hours of showing up and refining your technique. When this card appears, dismiss distractions and focus deeply on the details of your trade. Whether you are writing, coding, creating ritual tools, or mastering a discipline, treat your task as a sacred practice. Polish each edge with pride. The world will recognize the quality of what you build in private.",
+    reflectionPrompt:
+      "What specific skill or craft are you called to refine through patient, repetitive practice today?",
+    practicalTakeaway:
+      "Block out two hours of uninterrupted, distraction-free deep work. Dedicate that time entirely to practicing the fundamental mechanics of your craft without seeking external validation.",
+    image: {
+      src: "/images/sanctum/tarot/eight-of-pentacles.webp",
+      alt: "Eight of Pentacles — Occult ceremonial tarot card of craftsmanship, mastery, focused labor, and disciplined dedication",
+      motif: "pentacles-eight",
+    },
+  },
+  {
+    id: "card_pentacles_nine",
+    slug: "nine-of-pentacles",
+    number: 9,
+    numeral: "IX",
+    name: "Nine of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Sovereign Solitude", "Disciplined Abundance", "Cultivated Grace"],
+    traditionalThemes: [
+      "Self-reliance, material independence, refined comfort, and sovereign self-sufficiency",
+      "Enjoying the abundant harvest created through your own sustained discipline and discernment",
+      "A tranquil sanctuary of beauty, security, and poise established on your own terms",
+      "Solitary contentment without needing external validation or codependent compromise",
+    ],
+    reversedThemes: [
+      "Living beyond your means, superficial luxury concealing debt, or financial dependence",
+      "Paranoid isolation, loneliness disguised as self-sufficiency, or disconnection from community",
+      "Workaholic tendencies that prevent you from ever enjoying what you have built",
+    ],
+    traditionalMeaning:
+      "An elegant sovereign clad in luxurious purple and gold robes strolls through a walled vineyard heavy with ripe grapes and nine radiant golden pentacles. A hooded peregrine falcon rests calmly upon their gloved wrist, symbolizing disciplined instincts and refined focus. A celestial archway frames the tranquil background. The Nine of Pentacles depicts the serenity of earned independence—the sovereign estate built through personal agency, where material security and refined peace are savored in graceful self-sufficiency.",
+    reflectiveInterpretation:
+      "The Nine of Pentacles celebrates the harvest of your self-reliance. You have walked a demanding path, made prudent sacrifices, and established a personal sanctuary that belongs entirely to you. You do not owe your stability to anyone else's fickle favor. Take a breath and actually enjoy the fruits of your labor: the quiet morning, the safe roof, the quality of your surroundings. Cultivate your independence with dignity. You have earned your seat in this garden; inhabit it with poise and zero apology.",
+    reflectionPrompt:
+      "How can you more fully acknowledge and savor the independence and security you have built with your own hands?",
+    practicalTakeaway:
+      "Treat yourself to a solitary ritual of comfort or beauty today—savor a high-quality meal, take a quiet walk in nature, or purchase a fine tool for your home—without feeling the need to justify it.",
+    image: {
+      src: "/images/sanctum/tarot/nine-of-pentacles.webp",
+      alt: "Nine of Pentacles — Occult ceremonial tarot card of independence, self-reliance, luxury, abundance, and sovereign grace",
+      motif: "pentacles-nine",
+    },
+  },
+  {
+    id: "card_pentacles_ten",
+    slug: "ten-of-pentacles",
+    number: 10,
+    numeral: "X",
+    name: "Ten of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Enduring Legacy", "Generational Stability", "The Great Arch"],
+    traditionalThemes: [
+      "Generational wealth, long-term legacy, family foundations, and ancestral continuity",
+      "Building structures, wealth, and traditions designed to outlive your personal lifetime",
+      "Culmination of material security that extends across community, lineage, and home",
+      "Rooted belonging within an enduring tradition and thriving family ecosystem",
+    ],
+    reversedThemes: [
+      "Family disputes over inheritance, toxic ancestral expectations, or suffocating tradition",
+      "Financial losses that threaten the family estate, fragile foundations, or lack of long-term planning",
+      "Focusing exclusively on material wealth while neglecting emotional and spiritual inheritance",
+    ],
+    traditionalMeaning:
+      "Beneath a majestic stone archway engraved with ancestral heraldry, three generations gather within a fortified courtyard alongside two loyal hounds. An elder sovereign in an ornate tapestry mantle watches over a young couple and their playing child, while ten gleaming golden pentacles are arranged across the scene in the sacred geometry of the Tree of Life. The Ten of Pentacles represents the zenith of material manifestation—the creation of lasting wealth, family security, and cultural legacy that protects and nourishes future generations.",
+    reflectiveInterpretation:
+      "The Ten of Pentacles lifts your vision beyond immediate survival toward the horizon of legacy. True wealth is not merely what is in your wallet this week; it is the enduring foundation, knowledge, and community roots you bequeath to those who follow. Consider how your present choices contribute to long-term stability. What traditions are you preserving, and what toxic cycles are you breaking? Build with materials that endure. Strive for the kind of security that shelters your loved ones and honors your ancestors.",
+    reflectionPrompt:
+      "What enduring legacy, tradition, or long-term security are you building for the future, beyond your immediate desires?",
+    practicalTakeaway:
+      "Take one action that protects or builds long-term security: review your estate planning or emergency fund, organize crucial family documents, or invest in an enduring asset.",
+    image: {
+      src: "/images/sanctum/tarot/ten-of-pentacles.webp",
+      alt: "Ten of Pentacles — Occult ceremonial tarot card of legacy, generational wealth, family stability, and long-term security",
+      motif: "pentacles-ten",
+    },
+  },
+  {
+    id: "card_pentacles_page",
+    slug: "page-of-pentacles",
+    number: 11,
+    numeral: "PAGE",
+    name: "Page of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Apprentice of the Earth", "Grounded Ambition", "The Seed of Skill"],
+    traditionalThemes: [
+      "Practical ambition, eager apprenticeship, financial learning, and tangible new ventures",
+      "Approaching material goals with a humble student's mindset and a willingness to do the groundwork",
+      "Receiving good news regarding studies, contracts, jobs, or practical investments",
+      "A grounded curiosity focused on real-world systems, crafts, and financial mechanics",
+    ],
+    reversedThemes: [
+      "Procrastination, daydreaming about wealth without taking physical steps, or lack of progress",
+      "Short-sighted financial mistakes, poor study habits, or feeling overwhelmed by basic mechanics",
+      "Frustration with the slow, mundane entry level of a new profession",
+    ],
+    traditionalMeaning:
+      "A focused youth dressed in forest green and deep violet garments stands in a freshly tilled field surrounded by blooming wildflowers and mature trees, backed by a distant mountain range. They hold a luminous golden pentacle aloft in both hands, gazing into its etched surface with reverence and scholarly fascination. The Page of Pentacles symbolizes the grounded student of life—the initial spark of practical curiosity that seeks to understand physical laws, master trades, and turn raw ambitions into viable ventures.",
+    reflectiveInterpretation:
+      "The Page of Pentacles brings the fresh, grounded energy of a dedicated apprentice. You are standing at the threshold of a new physical endeavor—a course of study, a business venture, a health habit, or a financial plan. Do not be ashamed of being a novice. The Page's greatest superpower is humble, attentive curiosity. Treat this phase as an apprenticeship: read the manual, learn the rules of the terrain, and practice the basic fundamentals without pretending you already know everything. Clear beginnings yield strong structures.",
+    reflectionPrompt:
+      "What new skill, project, or financial discipline are you ready to study with humble, wholehearted dedication?",
+    practicalTakeaway:
+      "Enroll in the course, buy the introductory guide, or schedule a consultation with someone who has already mastered the practical skill you want to develop.",
+    image: {
+      src: "/images/sanctum/tarot/page-of-pentacles.webp",
+      alt: "Page of Pentacles — Occult ceremonial tarot card of practical ambition, apprenticeship, learning, and grounded opportunities",
+      motif: "pentacles-page",
+    },
+  },
+  {
+    id: "card_pentacles_knight",
+    slug: "knight-of-pentacles",
+    number: 12,
+    numeral: "KNIGHT",
+    name: "Knight of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Unyielding Persistence", "The Steady Plow", "Methodical Mastery"],
+    traditionalThemes: [
+      "Patience, reliability, perseverance, responsibility, steady progress, and methodical execution",
+      "The unwavering workhorse who finishes what others abandon when novelty fades",
+      "Guarding the perimeter and stewarding resources with absolute duty and loyalty",
+      "Plowing furrow by furrow with quiet resolve until the entire field is fertile",
+    ],
+    reversedThemes: [
+      "Stubborn inflexibility, obsessive micromanagement, resistance to necessary change",
+      "Boredom, feeling trapped in monotonous drudgery, or perfectionism causing stalling",
+      "Laziness, unreliability, or neglecting vital physical duties",
+    ],
+    traditionalMeaning:
+      "A stalwart knight in heavy ceremonial armor sits motionless upon a formidable, heavy-footed draft horse in the middle of a dark, plowed field. The horse stands firmly rooted to the earth. In the knight's gauntleted palm rests a heavy golden pentacle, which he examines with solemn, unwavering focus. The Knight of Pentacles represents the epitome of physical stamina, dependability, and unshakeable discipline—the warrior of labor who understands that enduring victories are won through consistent, methodical effort rather than flashy heroics.",
+    reflectiveInterpretation:
+      "The Knight of Pentacles is the antidote to the modern worship of speed and instant results. While others chase volatile trends or abandon projects at the first sign of boredom, this knight puts his head down and plows the field row by row. When he enters your reading, he asks you to embody relentless consistency. Are you following through on your commitments? Are your daily habits aligned with your long-term goals? Do not seek glamorous shortcuts; the unyielding power of methodical work will carry you past every obstacle.",
+    reflectionPrompt:
+      "What vital responsibility requires your patient, uncomplaining persistence right now, even if the work feels routine?",
+    practicalTakeaway:
+      "Choose one stalled or monotonous task and commit to completing it today without distraction. Do the mundane duty fully, cleanly, and without complaint.",
+    image: {
+      src: "/images/sanctum/tarot/knight-of-pentacles.webp",
+      alt: "Knight of Pentacles — Occult ceremonial tarot card of patience, reliability, perseverance, duty, and steady progress",
+      motif: "pentacles-knight",
+    },
+  },
+  {
+    id: "card_pentacles_queen",
+    slug: "queen-of-pentacles",
+    number: 13,
+    numeral: "QUEEN",
+    name: "Queen of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Sovereign Earth", "Sanctuary of Plenty", "Pragmatic Grace"],
+    traditionalThemes: [
+      "Nurturing, abundance, practicality, independence, grounded generosity, and physical stewardship",
+      "Creating a warm, resilient haven where body, soul, and community can deeply flourish",
+      "Down-to-earth wisdom that solves complex problems with common sense and tangible resources",
+      "Balancing ambitious material stewardship with heartfelt care for the living world",
+    ],
+    reversedThemes: [
+      "Neglecting self-care in service of work, smothering others with material control, or financial anxiety",
+      "Martyrdom through over-functioning, or letting domestic and financial duties devolve into chaos",
+      "Superficial status-seeking or tying self-worth solely to material possessions",
+    ],
+    traditionalMeaning:
+      "A serene queen sits upon a stone throne carved with beasts of the field, satyrs, and celestial spirals, nestled within a blooming rose arbor beneath an open sky. A wild hare leaps through the grass beside her throne. Cradled gently in her lap is a massive golden pentacle, which she supports with tender devotion. The Queen of Pentacles embodies the sovereign mother of the earth—the pragmatic, nurturing guardian whose wealth is translated directly into nourishment, warm hospitality, sensory delight, and steadfast emotional safety.",
+    reflectiveInterpretation:
+      "The Queen of Pentacles brings the medicine of grounded nourishment. She reminds you that true wealth is not just numbers on a screen, but having clean food on the table, warmth in your hearth, physical vitality in your bones, and peace in your home. When she graces your reading, she invites you to bring practical, loving care to your immediate environment. Tend to your physical vessel, feed your people, declutter your space, and ground your spirit in the simple goodness of physical life.",
+    reflectionPrompt:
+      "How can you better nurture your physical body, home sanctuary, or community with grounded, practical care today?",
+    practicalTakeaway:
+      "Prepare a nourishing home-cooked meal, clean and consecrate your living space, or do one practical act of physical care that grounds your nervous system.",
+    image: {
+      src: "/images/sanctum/tarot/queen-of-pentacles.webp",
+      alt: "Queen of Pentacles — Occult ceremonial tarot card of nurturing, practical abundance, independence, and grounded generosity",
+      motif: "pentacles-queen",
+    },
+  },
+  {
+    id: "card_pentacles_king",
+    slug: "king-of-pentacles",
+    number: 14,
+    numeral: "KING",
+    name: "King of Pentacles",
+    suit: "pentacles",
+    arcana: "minor",
+    shortKeywords: ["Master of the Citadel", "Generative Sovereign", "Material Stewardship"],
+    traditionalThemes: [
+      "Prosperity, stability, responsible leadership, material mastery, stewardship, and enterprise",
+      "The mature architect of wealth who transforms barren ideas into flourishing, self-sustaining empires",
+      "Generous, reliable authority rooted in financial security, business acumen, and physical prudence",
+      "Protecting and growing assets so that the entire kingdom enjoys safety and prosperity",
+    ],
+    reversedThemes: [
+      "Greed, corruption, ruthless materialism, or valuing profit over human dignity",
+      "Financial mismanagement, stubborn stubbornness, or clinging to a failing enterprise out of ego",
+      "Using wealth as a weapon to dominate, demean, or control dependents",
+    ],
+    traditionalMeaning:
+      "A regal monarch sits upon an imposing black marble throne adorned with carved bull heads and celestial vines, holding a golden scepter in his right hand while resting his left hand upon a large golden pentacle on his knee. His heavy robes are embroidered with ripe bunches of purple grapes and dark ivy. Behind him rises his fortified citadel and flourishing castle gardens. The King of Pentacles represents the apex of worldly accomplishment—the master builder, investor, and steward who commands material reality with wisdom, generous authority, and unshakeable stability.",
+    reflectiveInterpretation:
+      "The King of Pentacles asks you to step into executive mastery over your material domain. Whatever you touch right now has the potential to become solid, secure, and enduring—provided you approach it with seasoned discipline and strategic foresight. Do not gamble on volatile fantasies. Act like the sovereign of your estate: review your books, strengthen your contracts, invest in proven foundations, and lead your enterprises with calm, generous authority. You have the capability to create lasting prosperity for yourself and those under your care.",
+    reflectionPrompt:
+      "Where are you being called to exercise mature, responsible leadership over your finances, enterprise, or material world?",
+    practicalTakeaway:
+      "Make a decisive, strategic business or financial choice today—negotiate a fair rate, allocate investment capital, or solidify an agreement with the steady authority of a seasoned leader.",
+    image: {
+      src: "/images/sanctum/tarot/king-of-pentacles.webp",
+      alt: "King of Pentacles — Occult ceremonial tarot card of prosperity, material mastery, stability, responsible leadership, and stewardship",
+      motif: "pentacles-king",
     },
   },
 ];

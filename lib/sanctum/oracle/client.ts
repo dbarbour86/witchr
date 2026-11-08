@@ -12,7 +12,15 @@ import {
   OracleConversationOutput,
   OracleApiResponse,
 } from "./types";
-import { WITCHR_ORACLE_SYSTEM_PROMPT, buildTarotPrompt, buildWorkingPrompt, buildConversationPrompt } from "./prompts";
+import {
+  WITCHR_ORACLE_SYSTEM_PROMPT,
+  WITCHR_ORACLE_CONVERSATION_SYSTEM_PROMPT,
+  buildTarotPrompt,
+  buildWorkingPrompt,
+  buildConversationPrompt,
+  buildConversationMessages,
+  OracleConversationMessagePayload,
+} from "./prompts";
 import { validateTarotOutput, validateWorkingOutput, validateConversationOutput } from "./validation";
 import { getTarotFallback, getWorkingFallback, getConversationFallback } from "./fallbacks";
 
@@ -21,8 +29,16 @@ interface ProviderConfig {
   apiKey: string;
 }
 
+interface ConversationProviderConfig {
+  provider: "openai" | "gemini";
+  apiKey: string;
+  model: string;
+  apiType: "responses" | "chat" | "gemini";
+}
+
 /**
  * Resolves all configured AI providers from server environment in priority order.
+ * Used for Three-Card Tarot and Ritual Workings.
  */
 function resolveAvailableProviders(): ProviderConfig[] {
   const preferred = (process.env.ORACLE_AI_PROVIDER || "").toLowerCase().trim();
@@ -66,27 +82,147 @@ function resolveAvailableProviders(): ProviderConfig[] {
   return providers;
 }
 
+/**
+ * Resolves configured AI providers for conversational dialogue in priority order.
+ * In local development (or when ORACLE_CONVERSATION_MODEL is configured),
+ * prioritizes gpt-6-luna via the OpenAI Responses API.
+ * In production when unconfigured, preserves standard production routing.
+ */
+function resolveConversationProviders(): ConversationProviderConfig[] {
+  const isLocal = process.env.NODE_ENV !== "production";
+  const preferred = (process.env.ORACLE_AI_PROVIDER || "").toLowerCase().trim();
+  const forcedConversationModel = process.env.ORACLE_CONVERSATION_MODEL?.trim();
+
+  const geminiKey =
+    process.env.GEMINI_API_KEY ||
+    process.env.GOOGLE_API_KEY ||
+    (preferred === "gemini" ? process.env.ORACLE_AI_API_KEY : undefined);
+
+  const openaiKey =
+    process.env.OPENAI_API_KEY ||
+    (preferred === "openai" ? process.env.ORACLE_AI_API_KEY : undefined);
+
+  const providers: ConversationProviderConfig[] = [];
+
+  // Determine local vs production primary model for OpenAI conversation
+  // In local development, default to gpt-6-luna for conversational testing
+  const openaiConversationModel =
+    forcedConversationModel ||
+    (isLocal || preferred === "openai" ? "gpt-6-luna" : "gpt-4o-mini");
+
+  const useResponses = openaiConversationModel.toLowerCase().includes("luna");
+
+  if (isLocal || preferred === "openai" || forcedConversationModel) {
+    // Local / OpenAI priority: Luna first, Gemini fallback
+    if (openaiKey && openaiKey.trim().length > 0) {
+      providers.push({
+        provider: "openai",
+        apiKey: openaiKey.trim(),
+        model: openaiConversationModel,
+        apiType: useResponses ? "responses" : "chat",
+      });
+    }
+    if (geminiKey && geminiKey.trim().length > 0) {
+      providers.push({
+        provider: "gemini",
+        apiKey: geminiKey.trim(),
+        model: process.env.GEMINI_MODEL || "gemini-flash-latest",
+        apiType: "gemini",
+      });
+    }
+  } else {
+    // Production default when unconfigured: Gemini first, OpenAI fallback
+    if (geminiKey && geminiKey.trim().length > 0) {
+      providers.push({
+        provider: "gemini",
+        apiKey: geminiKey.trim(),
+        model: process.env.GEMINI_MODEL || "gemini-flash-latest",
+        apiType: "gemini",
+      });
+    }
+    if (openaiKey && openaiKey.trim().length > 0) {
+      providers.push({
+        provider: "openai",
+        apiKey: openaiKey.trim(),
+        model: openaiConversationModel,
+        apiType: useResponses ? "responses" : "chat",
+      });
+    }
+  }
+
+  return providers;
+}
+
 function resolveProviderConfig(): ProviderConfig | null {
   const all = resolveAvailableProviders();
   return all.length > 0 ? all[0] : null;
 }
 
 /**
- * Invokes Gemini Flash via standard REST API with structured JSON output.
+ * Resolves the completion token budget based on request type and environment override.
+ * Conversations default to 500 tokens (enough for complete JSON and deeper answers without bloat).
+ * Tarots and ritual workings default to 1500 tokens for rich multi-step instructions.
  */
-async function callGemini(apiKey: string, prompt: string, signal: AbortSignal): Promise<string> {
+function resolveMaxTokens(isConversation: boolean): number {
+  if (process.env.ORACLE_MAX_TOKENS) {
+    const parsed = parseInt(process.env.ORACLE_MAX_TOKENS, 10);
+    if (!isNaN(parsed) && parsed > 0) return parsed;
+  }
+  return isConversation ? 500 : 1500;
+}
+
+/**
+ * Invokes Gemini Flash via standard REST API with structured JSON output.
+ * Supports either a single string prompt or multi-turn conversational contents.
+ */
+async function callGemini(
+  apiKey: string,
+  input: string | OracleConversationMessagePayload[],
+  signal: AbortSignal
+): Promise<string> {
   const model = process.env.GEMINI_MODEL || "gemini-flash-latest";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+  let systemInstructionText = WITCHR_ORACLE_SYSTEM_PROMPT;
+  let contents: Array<{ role: "user" | "model"; parts: [{ text: string }] }> = [];
+
+  if (Array.isArray(input)) {
+    const systemMsg = input.find((m) => m.role === "system");
+    if (systemMsg) {
+      systemInstructionText = systemMsg.content;
+    }
+    const turns = input.filter((m) => m.role !== "system");
+
+    let lastRole: "user" | "model" | null = null;
+    for (const turn of turns) {
+      const geminiRole = turn.role === "assistant" ? "model" : "user";
+      if (geminiRole === lastRole && contents.length > 0) {
+        contents[contents.length - 1].parts[0].text += `\n\n${turn.content}`;
+      } else {
+        contents.push({ role: geminiRole, parts: [{ text: turn.content }] });
+        lastRole = geminiRole;
+      }
+    }
+
+    if (contents.length > 0 && contents[0].role === "model") {
+      contents.unshift({ role: "user", parts: [{ text: "Hello" }] });
+    }
+  } else {
+    contents = [{ role: "user", parts: [{ text: input }] }];
+  }
+
+  const maxTokens = resolveMaxTokens(Array.isArray(input));
 
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      systemInstruction: { parts: [{ text: WITCHR_ORACLE_SYSTEM_PROMPT }] },
+      contents,
+      systemInstruction: { parts: [{ text: systemInstructionText }] },
       generationConfig: {
         responseMimeType: "application/json",
         temperature: 0.7,
+        maxOutputTokens: maxTokens,
       },
     }),
     signal,
@@ -107,10 +243,84 @@ async function callGemini(apiKey: string, prompt: string, signal: AbortSignal): 
 }
 
 /**
- * Invokes OpenAI chat/completions via standard REST API with JSON object response.
+ * Invokes OpenAI's Responses API (/v1/responses) for modern reasoning models like gpt-6-luna.
+ * Supports structured JSON object responses with 'reasoning: { effort: "low" }'.
  */
-async function callOpenAI(apiKey: string, prompt: string, signal: AbortSignal): Promise<string> {
+async function callOpenAIResponses(
+  apiKey: string,
+  model: string,
+  input: OracleConversationMessagePayload[],
+  signal: AbortSignal
+): Promise<string> {
+  const url = "https://api.openai.com/v1/responses";
+
+  // Map messages to Responses API input format
+  // System messages must be role: 'developer' for json_object formatting in the Responses API
+  const formattedInput = input.map((m) => ({
+    role: m.role === "system" ? "developer" : m.role,
+    content: m.content,
+  }));
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model,
+      input: formattedInput,
+      text: { format: { type: "json_object" } },
+      reasoning: { effort: "low" },
+    }),
+    signal,
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text().catch(() => "Unknown error");
+    throw new Error(`OpenAI Responses API error [${res.status}]: ${errorText.slice(0, 150)}`);
+  }
+
+  const data = await res.json();
+  let text = data.output_text || "";
+  if (!text && Array.isArray(data.output)) {
+    for (const item of data.output) {
+      if (item.content) {
+        for (const part of item.content) {
+          if (part.type === "output_text" && part.text) {
+            text += part.text;
+          }
+        }
+      }
+    }
+  }
+
+  if (!text || typeof text !== "string") {
+    throw new Error("Empty content in OpenAI Responses API response");
+  }
+
+  return text;
+}
+
+/**
+ * Invokes OpenAI chat/completions via standard REST API with JSON object response.
+ * Supports either a single string prompt or multi-turn conversational messages.
+ */
+async function callOpenAI(
+  apiKey: string,
+  input: string | OracleConversationMessagePayload[],
+  signal: AbortSignal
+): Promise<string> {
   const url = "https://api.openai.com/v1/chat/completions";
+
+  const messages = Array.isArray(input)
+    ? input
+    : [
+        { role: "system", content: WITCHR_ORACLE_SYSTEM_PROMPT },
+        { role: "user", content: input },
+      ];
+
+  const maxTokens = resolveMaxTokens(Array.isArray(input));
 
   const res = await fetch(url, {
     method: "POST",
@@ -120,12 +330,10 @@ async function callOpenAI(apiKey: string, prompt: string, signal: AbortSignal): 
     },
     body: JSON.stringify({
       model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: WITCHR_ORACLE_SYSTEM_PROMPT },
-        { role: "user", content: prompt },
-      ],
+      messages,
       response_format: { type: "json_object" },
       temperature: 0.7,
+      max_completion_tokens: maxTokens,
     }),
     signal,
   });
@@ -149,7 +357,7 @@ async function callOpenAI(apiKey: string, prompt: string, signal: AbortSignal): 
  */
 async function executeProviderCall(
   config: ProviderConfig,
-  prompt: string,
+  input: string | OracleConversationMessagePayload[],
   timeoutMs = 12_000
 ): Promise<string> {
   const controller = new AbortController();
@@ -157,9 +365,9 @@ async function executeProviderCall(
 
   try {
     if (config.provider === "gemini") {
-      return await callGemini(config.apiKey, prompt, controller.signal);
+      return await callGemini(config.apiKey, input, controller.signal);
     } else {
-      return await callOpenAI(config.apiKey, prompt, controller.signal);
+      return await callOpenAI(config.apiKey, input, controller.signal);
     }
   } finally {
     clearTimeout(timeoutId);
@@ -398,10 +606,10 @@ export async function generateConversationOracleResponse(
   input: OracleConversationInput
 ): Promise<OracleApiResponse<OracleConversationOutput>> {
   const startTime = Date.now();
-  const availableProviders = resolveAvailableProviders();
+  const conversationProviders = resolveConversationProviders();
 
   // If no AI keys configured, immediately use deterministic written tradition fallback
-  if (availableProviders.length === 0) {
+  if (conversationProviders.length === 0) {
     if (process.env.NODE_ENV !== "production") {
       console.log("[Sanctum Oracle] fallback used: provider_unavailable");
     }
@@ -417,27 +625,36 @@ export async function generateConversationOracleResponse(
     };
   }
 
-  const prompt = buildConversationPrompt(input);
+  const conversationMessages = buildConversationMessages(input);
   let lastError = "Provider execution failed";
-  let lastProviderUsed: "gemini" | "openai" = availableProviders[0].provider;
+  let lastProviderUsed: "gemini" | "openai" = conversationProviders[0].provider;
+  let lastModelUsed = conversationProviders[0].model;
 
-  for (const providerConfig of availableProviders) {
+  for (const providerConfig of conversationProviders) {
     lastProviderUsed = providerConfig.provider;
+    lastModelUsed = providerConfig.model;
     if (process.env.NODE_ENV !== "production") {
-      console.log(`[Sanctum Oracle] provider: ${providerConfig.provider}`);
+      console.log(`[Sanctum Oracle] provider: ${providerConfig.provider} (${providerConfig.model})`);
     }
 
     try {
-      const timeoutMs = 12_000;
+      const timeoutMs = 15_000;
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeoutMs);
 
       let rawOutput = "";
       try {
-        if (providerConfig.provider === "gemini") {
-          rawOutput = await callGemini(providerConfig.apiKey, prompt, controller.signal);
+        if (providerConfig.apiType === "responses") {
+          rawOutput = await callOpenAIResponses(
+            providerConfig.apiKey,
+            providerConfig.model,
+            conversationMessages,
+            controller.signal
+          );
+        } else if (providerConfig.provider === "gemini") {
+          rawOutput = await callGemini(providerConfig.apiKey, conversationMessages, controller.signal);
         } else {
-          rawOutput = await callOpenAI(providerConfig.apiKey, prompt, controller.signal);
+          rawOutput = await callOpenAI(providerConfig.apiKey, conversationMessages, controller.signal);
         }
       } finally {
         clearTimeout(timer);
@@ -469,20 +686,33 @@ export async function generateConversationOracleResponse(
         console.log("[Sanctum Oracle] provider response accepted");
       }
 
+      // Crisis Safety Guardrail: Guarantee immediate helpline access if severe self-harm ideation is detected
+      const isCrisisInput = /\b(kill\s+(?:my\s*self|myself)|end\s+(?:it\s+all|my\s+life)|suicid|want\s+to\s+die|don't\s+want\s+to\s+live|cant\s+go\s+on|can't\s+go\s+on|hurt\s+myself|self\s*harm)\b/i.test(input.message);
+      let validatedData = validation.data;
+      if (isCrisisInput && !validatedData.reply.includes("988")) {
+        validatedData = {
+          ...validatedData,
+          reply: `${validatedData.reply}\n\nPlease connect with immediate, confidential human support:\n- In the US and Canada: Call or text 988 (Suicide & Crisis Lifeline, 24/7, free).\n- In the UK: Call 111 or call 116 123 (Samaritans).\n- International: https://findahelpline.com`,
+          reflectionQuestion: undefined,
+          suggestedAction: null,
+        };
+      }
+
       return {
         success: true,
         meta: {
           source: "oracle-ai",
           fallback: false,
           provider: providerConfig.provider,
+          model: providerConfig.model,
           latencyMs: Date.now() - startTime,
         },
-        data: validation.data,
+        data: validatedData,
       };
     } catch (error) {
       lastError = error instanceof Error ? error.message : "Unknown error";
       if (process.env.NODE_ENV !== "production") {
-        console.log(`[Sanctum Oracle] provider ${providerConfig.provider} error: ${lastError}`);
+        console.log(`[Sanctum Oracle] provider ${providerConfig.provider} (${providerConfig.model}) error: ${lastError}`);
       }
       // If there is another provider in availableProviders, the loop automatically tries the next one!
     }
@@ -500,6 +730,7 @@ export async function generateConversationOracleResponse(
       fallback: true,
       fallbackReason: lastError,
       provider: lastProviderUsed,
+      model: lastModelUsed,
       latencyMs: Date.now() - startTime,
     },
     data: getConversationFallback(input),

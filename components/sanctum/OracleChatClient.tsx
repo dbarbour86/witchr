@@ -50,10 +50,25 @@ const INITIAL_ORACLE_MESSAGE: ChatEntry = {
   id: "initial-oracle-greeting",
   role: "oracle",
   content:
-    "What brings you here? Whether you carry acute friction, seek clarity for an unexamined choice, or wish to explore a ritual working with your physical tools, speak freely.",
+    "What brings you here? Whether you carry acute friction, seek clarity for an unexamined choice, or wish to explore a ritual working with your physical tools, speak freely.\n\nWhat is the single most honest sentence that describes where your energy is focused today?",
   timestamp: new Date().toISOString(),
-  reflectionQuestion: "What is the single most honest sentence that describes where your energy is focused today?",
 };
+
+/**
+ * Returns clean conversational prose for an Oracle message, weaving any existing
+ * reflectionQuestion directly into the text if not already present, ensuring
+ * seamless natural flow and preventing duplicate questions.
+ */
+function getOracleDisplayContent(entry: ChatEntry): string {
+  if (entry.role !== "oracle") return entry.content;
+  if (!entry.reflectionQuestion) return entry.content;
+  const content = entry.content.trim();
+  const question = entry.reflectionQuestion.trim();
+  if (content.toLowerCase().includes(question.toLowerCase())) {
+    return content;
+  }
+  return `${content}\n\n${question}`;
+}
 
 /**
  * Trims dialogue history to at most maxMessages while strictly preserving complete
@@ -251,9 +266,16 @@ export function OracleChatClient() {
 
     try {
       // Prepare history payload for API (up to last 10 prior messages before current inquiry)
+      // Preserves any previous reflectionQuestion asked by the Oracle so context is intact
       const historyPayload: OracleChatMessage[] = activeMessages
         .slice(-MAX_HISTORY_MESSAGES)
-        .map((m) => ({ role: m.role, content: m.content }));
+        .map((m) => {
+          let historyContent = m.content;
+          if (m.role === "oracle" && m.reflectionQuestion && !historyContent.includes(m.reflectionQuestion)) {
+            historyContent = `${historyContent}\n\n${m.reflectionQuestion}`;
+          }
+          return { role: m.role, content: historyContent };
+        });
 
       const res = await fetch("/api/sanctum/oracle", {
         method: "POST",
@@ -324,13 +346,8 @@ export function OracleChatClient() {
         id: `oracle-fallback-${Date.now()}`,
         role: "oracle",
         content:
-          "The ambient currents in the chamber waver, yet the core inquiry remains clear: every friction you face is diagnostic. When noise crowds out intuition, return your attention to your physical body, breathe, and name what is immediately within your sovereignty.",
-        reflectionQuestion: "What is one concrete reality you can control in this exact hour?",
-        suggestedAction: {
-          label: "Draw Today's Card",
-          href: "/sanctum/tarot",
-          type: "tarot",
-        },
+          "The ambient currents in the chamber waver, yet the core inquiry remains clear: every friction you face is diagnostic. When noise crowds out intuition, return your attention to your physical body, breathe, and name what is immediately within your sovereignty. What is one concrete reality you can control in this exact hour?",
+        suggestedAction: null,
         timestamp: new Date().toISOString(),
       };
 
@@ -359,10 +376,10 @@ export function OracleChatClient() {
   };
 
   const handleCopyMessage = async (entry: ChatEntry) => {
+    const displayContent = getOracleDisplayContent(entry);
     const textToCopy = [
-      entry.content,
-      entry.reflectionQuestion ? `\nReflection: ${entry.reflectionQuestion}` : "",
-      entry.suggestedAction ? `\nSuggested Action: ${entry.suggestedAction.label} (${entry.suggestedAction.href})` : "",
+      displayContent,
+      entry.suggestedAction ? `\n\nSuggested Action: ${entry.suggestedAction.label} (${entry.suggestedAction.href})` : "",
     ].join("");
 
     try {
@@ -470,69 +487,63 @@ export function OracleChatClient() {
                   }`}
                 >
                   <p className={`font-sans leading-relaxed whitespace-pre-wrap ${isUser ? "text-purple-100" : "text-bone"}`}>
-                    {entry.content}
+                    {isUser ? entry.content : getOracleDisplayContent(entry)}
                   </p>
 
-                  {/* Reflection Question Highlight Box */}
-                  {!isUser && entry.reflectionQuestion && (
-                    <div className="p-3.5 rounded-lg bg-[#110522] border-l-2 border-purple-400 border-t border-r border-b border-purple-900/50 text-xs sm:text-sm text-bone font-sans space-y-1">
-                      <span className="text-[10px] font-mono tracking-widest uppercase text-purple-300 font-semibold block">
-                        Reflection Inquest
-                      </span>
-                      <span className="leading-relaxed text-purple-100 block">“{entry.reflectionQuestion}”</span>
+                  {/* Actions & Copy Toolbar for Oracle Messages */}
+                  {!isUser && (
+                    <div className="pt-2 flex items-center justify-between gap-3 border-t border-purple-900/40">
+                      {entry.suggestedAction ? (() => {
+                        let actionHref = entry.suggestedAction.href;
+                        if (entry.suggestedAction.type === "working" || actionHref.startsWith("/sanctum/working")) {
+                          const relevantUserMsg = [...messages.slice(0, messages.findIndex((m) => m.id === entry.id) + 1)]
+                            .reverse()
+                            .find((m) => m.role === "user")?.content;
+                          if (relevantUserMsg && relevantUserMsg.trim().length > 0) {
+                            const cleanIntention = relevantUserMsg.trim();
+                            actionHref = `/sanctum/working?intention=${encodeURIComponent(cleanIntention)}`;
+                          }
+                        }
+
+                        return (
+                          <Link
+                            href={actionHref}
+                            prefetch={false}
+                            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-purple-950/70 hover:bg-purple-900/90 border border-purple-500/60 text-purple-200 hover:text-white text-xs font-mono uppercase tracking-wider transition-all shadow-sm group"
+                          >
+                            {entry.suggestedAction.type === "tarot" && <Sparkles className="w-3.5 h-3.5 text-purple-400" />}
+                            {entry.suggestedAction.type === "spread" && <Compass className="w-3.5 h-3.5 text-purple-400" />}
+                            {entry.suggestedAction.type === "working" && <Wand2 className="w-3.5 h-3.5 text-purple-400" />}
+                            {entry.suggestedAction.type === "grimoire" && <BookOpen className="w-3.5 h-3.5 text-purple-400" />}
+                            <span>{entry.suggestedAction.label}</span>
+                            <ArrowRight className="w-3 h-3 text-purple-400 group-hover:translate-x-1 transition-transform" />
+                          </Link>
+                        );
+                      })() : (
+                        <div />
+                      )}
+
+                      {/* Copy Action */}
+                      <button
+                        type="button"
+                        onClick={() => handleCopyMessage(entry)}
+                        className="text-purple-400/60 hover:text-purple-300 text-[11px] font-mono flex items-center gap-1 transition-colors"
+                        title="Copy reflection to clipboard"
+                      >
+                        {copiedId === entry.id ? (
+                          <>
+                            <Check className="w-3 h-3 text-purple-300" />
+                            <span>Copied</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3" />
+                            <span className="hidden sm:inline">Copy</span>
+                          </>
+                        )}
+                      </button>
                     </div>
                   )}
-
-                  {/* Suggested Sanctum Action Link */}
-                  {!isUser && entry.suggestedAction && (() => {
-                    let actionHref = entry.suggestedAction.href;
-                    if (entry.suggestedAction.type === "working" || actionHref.startsWith("/sanctum/working")) {
-                      const relevantUserMsg = [...messages.slice(0, messages.findIndex((m) => m.id === entry.id) + 1)]
-                        .reverse()
-                        .find((m) => m.role === "user")?.content;
-                      if (relevantUserMsg && relevantUserMsg.trim().length > 0) {
-                        const cleanIntention = relevantUserMsg.trim();
-                        actionHref = `/sanctum/working?intention=${encodeURIComponent(cleanIntention)}`;
-                      }
-                    }
-
-                    return (
-                      <div className="pt-2 flex items-center justify-between gap-3 border-t border-purple-900/40">
-                        <Link
-                          href={actionHref}
-                          prefetch={false}
-                          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-purple-950/70 hover:bg-purple-900/90 border border-purple-500/60 text-purple-200 hover:text-white text-xs font-mono uppercase tracking-wider transition-all shadow-sm group"
-                        >
-                          {entry.suggestedAction.type === "tarot" && <Sparkles className="w-3.5 h-3.5 text-purple-400" />}
-                          {entry.suggestedAction.type === "spread" && <Compass className="w-3.5 h-3.5 text-purple-400" />}
-                          {entry.suggestedAction.type === "working" && <Wand2 className="w-3.5 h-3.5 text-purple-400" />}
-                          {entry.suggestedAction.type === "grimoire" && <BookOpen className="w-3.5 h-3.5 text-purple-400" />}
-                          <span>{entry.suggestedAction.label}</span>
-                          <ArrowRight className="w-3 h-3 text-purple-400 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-
-                        {/* Copy Action */}
-                        <button
-                          type="button"
-                          onClick={() => handleCopyMessage(entry)}
-                          className="text-purple-400/60 hover:text-purple-300 text-[11px] font-mono flex items-center gap-1 transition-colors"
-                          title="Copy reflection to clipboard"
-                        >
-                          {copiedId === entry.id ? (
-                            <>
-                              <Check className="w-3 h-3 text-purple-300" />
-                              <span>Copied</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3 h-3" />
-                              <span className="hidden sm:inline">Copy</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    );
-                  })()}
                 </div>
               </div>
             );

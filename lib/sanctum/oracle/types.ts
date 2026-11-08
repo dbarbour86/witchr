@@ -103,6 +103,7 @@ export interface OracleResponseMeta {
   fallback: boolean;
   fallbackReason?: string;
   provider?: string;
+  model?: string;
   latencyMs?: number;
 }
 

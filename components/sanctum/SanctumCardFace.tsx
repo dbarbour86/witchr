@@ -157,10 +157,39 @@ export function SanctumCardFace({ card, size = "large", className = "" }: Sanctu
         );
 
       case "cups-ace":
+      case "cups-two":
+      case "cups-three":
+      case "cups-four":
+      case "cups-five":
+      case "cups-six":
+      case "cups-seven":
+      case "cups-eight":
+      case "cups-nine":
+      case "cups-ten":
+      case "cups-page":
+      case "cups-knight":
+      case "cups-queen":
+      case "cups-king":
         return (
           <div className="relative flex items-center justify-center w-full h-full py-4">
             <div className="w-24 h-24 rounded-full border border-purple-800/60 flex items-center justify-center bg-surface-elevated/90 shadow-glow-purple relative z-10">
               <PotionBottleIcon className="w-9 h-9 text-purple-300" />
+            </div>
+            <div className="absolute top-2 right-4">
+              <FourPointStar className="w-3.5 h-3.5 text-lavender-light" />
+            </div>
+          </div>
+        );
+
+      case "swords-ace":
+      case "swords-two":
+      case "swords-three":
+      case "swords-four":
+      case "swords-five":
+        return (
+          <div className="relative flex items-center justify-center w-full h-full py-4">
+            <div className="w-24 h-24 rounded-full border border-purple-800/60 flex items-center justify-center bg-surface-elevated/90 shadow-glow-purple relative z-10">
+              <RitualShearsIcon className="w-9 h-9 text-purple-300" />
             </div>
             <div className="absolute top-2 right-4">
               <FourPointStar className="w-3.5 h-3.5 text-lavender-light" />

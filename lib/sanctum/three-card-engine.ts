@@ -331,6 +331,150 @@ const POSITION_INTERPRETATIONS: Record<string, Record<SpreadPositionKey, string>
     guidance:
       "Lower your defensive shields and allow your heart to soften. Trust your intuitive instincts, receive compassion without suspicion, and let genuine empathy guide your immediate responses.",
   },
+  card_cups_two: {
+    situation:
+      "The Two of Cups reveals a circumstance centered on mutual connection, alliance, or reciprocal emotional exchange. A relationship or creative partnership is taking center stage as equal energies meet.",
+    challenge:
+      "The friction is falling into codependency, unspoken scorekeeping, or expecting the other person to complete what you haven't healed within yourself. Demanding perfection from a partnership fractures trust.",
+    guidance:
+      "Meet the other party as a sovereign equal with clear boundaries and transparent intentions. Cultivate honest reciprocity, listen without rehearsing a defense, and build the alliance on mutual respect.",
+  },
+  card_cups_three: {
+    situation:
+      "The Three of Cups indicates a present moment enriched by community, friendship, celebration, or collaborative harmony. A shared milestone or the warmth of your circle is ready to be honored.",
+    challenge:
+      "The obstacle lies in social burnout, superficial gossip disguised as bonding, or feeling isolated despite being surrounded by others. Sacrificing your authenticity to keep the group happy breeds quiet resentment.",
+    guidance:
+      "Gather with those who genuinely nourish your spirit and celebrate your growth without rivalry. Share your joy freely, lean on your kindred circle for support, and let communal laughter restore your vitality.",
+  },
+  card_cups_four: {
+    situation:
+      "The Four of Cups reveals an emotional plateau marked by introspection, apathy, or mild disillusionment. The rewards that once satisfied you have grown stale, prompting a natural inward retreat.",
+    challenge:
+      "The friction is calcifying withdrawal into chronic cynicism or blind stubbornness. By fixating solely on what disappointed you in the past, you risk overlooking a genuine offering waiting right in front of you.",
+    guidance:
+      "Honor your need for quiet reassessment without slamming the door on life. Allow discontent to diagnose what must change, but keep your peripheral vision open to the fresh invitation seeking your attention.",
+  },
+  card_cups_five: {
+    situation:
+      "The Five of Cups reflects a situation shadowed by grief, regret, or a painful disappointment. An investment, bond, or dream has spilled, and the immediate atmosphere demands space for mourning.",
+    challenge:
+      "The danger is drowning in sorrow or defining your entire identity by the spilled vessels. Clinging to remorse or endlessly replaying what went wrong blinds you to the vital support still standing behind you.",
+    guidance:
+      "Give your grief the dignified space it deserves without rushing to manufacture false optimism. Weep for what was lost, release self-blame, and when your breath steadies, turn around to claim the two cups still standing full.",
+  },
+  card_cups_six: {
+    situation:
+      "The Six of Cups highlights the influence of nostalgia, childhood roots, or longtime allies entering your present sphere. A familiar warmth or an uncorrupted memory is resurfacing to provide perspective.",
+    challenge:
+      "The obstacle is getting trapped in the past or romanticizing old history through rose-tinted illusion. Hiding in nostalgic comfort to avoid adult responsibility prevents you from building a vibrant present.",
+    guidance:
+      "Retrieve the pure, unarmored joy and open-hearted curiosity of your younger self. Apply that innocent wisdom to your current challenges, and extend a simple, generous kindness to someone in your orbit without expectation.",
+  },
+  card_cups_seven: {
+    situation:
+      "The Seven of Cups indicates a circumstance saturated with competing choices, rich imagination, or intoxicating possibilities. Your mind is generating numerous scenarios, each glittering with its own allure.",
+    challenge:
+      "The friction is shiny-object paralysis or mistaking glamorous daydreams for real progress. Chasing illusions without testing their substance squanders your vital energy and leaves you fundamentally grounded nowhere.",
+    guidance:
+      "Sift through the vapor of fantasy with grounded discernment. Ruthlessly eliminate the options that are merely glamorous distractions, and commit your focused labor to the single path that holds genuine reality.",
+  },
+  card_cups_eight: {
+    situation:
+      "The Eight of Cups marks a solemn threshold of departure. You have recognized that an existing situation, though once meaningful or comfortable, no longer feeds your evolving spirit, prompting you to walk away.",
+    challenge:
+      "The friction is lingering in emotional stagnation out of fear of the unknown or feeling guilty for outgrowing what others still value. Clinging to an empty room only compounds your internal exhaustion.",
+    guidance:
+      "Trust your deep knowing and take the sovereign step forward into the open night. You do not need to stage a dramatic scene; quietly gather your essentials, leave what is finished behind, and climb toward authentic fulfillment.",
+  },
+  card_cups_nine: {
+    situation:
+      "The Nine of Cups reveals a circumstance characterized by emotional satisfaction, comfort, and well-earned peace. A heartfelt desire or long-pursued milestone has materialized, offering genuine respite.",
+    challenge:
+      "The obstacle is smug complacency or waiting in anxious dread for the other shoe to drop. Denying yourself the pleasure of your accomplishments out of guilt or superstitious fear tarnishes the harvest.",
+    guidance:
+      "Receive the fullness of this moment with an open, grateful heart. Allow yourself to celebrate your achievements, savor the comfort of your sanctuary, and share your good fortune with genuine warmth.",
+  },
+  card_cups_ten: {
+    situation:
+      "The Ten of Cups indicates a present reality anchored in lasting emotional fulfillment, peaceful sanctuary, and deep relational harmony. You are surrounded by foundational safety and shared belonging.",
+    challenge:
+      "The friction lies in demanding unattainable perfection from your family or loved ones, or projecting an image of flawless bliss while ignoring small cracks. Fear of losing paradise can turn you into an anxious protector.",
+    guidance:
+      "Rest deeply in the security and love that currently envelops you. Nurture the everyday bonds that sustain your sanctuary, communicate with unconditional kindness, and let shared appreciation reinforce your foundation.",
+  },
+  card_cups_page: {
+    situation:
+      "The Page of Cups marks the arrival of a gentle intuitive hunch, a creative invitation, or a fresh emotional beginning. An unexpected message or spark of curiosity is rippling across your surface.",
+    challenge:
+      "The obstacle is cynical dismissal or emotional hypersensitivity. Ridiculing your own intuition as silly or taking every subtle emotional wave as a personal slight will choke the tender spark before it grows.",
+    guidance:
+      "Adopt the stance of a curious, open-hearted mystic. Welcome intuitive whispers and playful creative impulses without requiring immediate logical justification, and express your tender truths with gentle sincerity.",
+  },
+  card_cups_knight: {
+    situation:
+      "The Knight of Cups indicates a circumstance animated by romance, creative longing, or an emotional quest. You or someone approaching you is moving with sincere feeling, charm, and poetic devotion.",
+    challenge:
+      "The obstacle is becoming swept away by unrealistic idealism, chasing seductive mirages, or promising grand emotional devotions without following through. Mistaking infatuation for grounded truth breeds disillusionment.",
+    guidance:
+      "Channel your emotional sensitivity into authentic, courageous expression. State your sincere desires without games, honor the beauty in your craft or connection, and anchor your poetic ideals into dependable actions.",
+  },
+  card_cups_queen: {
+    situation:
+      "The Queen of Cups reveals a situation where deep intuition, empathy, and emotional intelligence are taking center stage. The answer you seek operates in the quiet currents beneath surface logic.",
+    challenge:
+      "The friction is emotional martyrdom, taking on the unprocessed distress of others, or sinking into moody hypersensitivity. Forgetting where your perimeter ends and another's begins drains your psychic reserves.",
+    guidance:
+      "Inhabit the throne of sovereign compassion. Trust the quiet reporting of your intuition, hold loving space without absorbing chaos, and nurture yourself with the same tenderness you extend to the world.",
+  },
+  card_cups_king: {
+    situation:
+      "The King of Cups indicates an environment requiring seasoned emotional composure, diplomatic balance, and steady leadership. Turbulent waves are rolling, calling for an unshakeable center of gravity.",
+    challenge:
+      "The friction is swinging between emotional repression and volatile outbursts, or using stoic detachment to avoid authentic intimacy. Forcing control through manipulation destroys psychological safety.",
+    guidance:
+      "Lead with emotional mastery and calm authority. Feel the full spectrum of reality without being unseated by the storm, communicate with measured warmth, and anchor the room through your steady presence.",
+  },
+  card_swords_ace: {
+    situation:
+      "The Ace of Swords marks a circumstance where absolute mental clarity, truth, or a sudden intellectual breakthrough is taking center stage. A fog of confusion has lifted, exposing the raw ground facts with undeniable sharpness.",
+    challenge:
+      "The friction is weaponizing clarity into cruelty or intellectual arrogance. Slicing through problems with cold, unyielding logic without honoring human nuance or timing creates collateral damage.",
+    guidance:
+      "Wield the blade of discernment with clean precision. Speak the unvarnished truth without malice, make the decisive cut that frees your energy from ambiguity, and align your actions with the reality right before you.",
+  },
+  card_swords_two: {
+    situation:
+      "The Two of Swords reveals a stalemate where two opposing choices, loyalties, or viewpoints are locked in tense equilibrium. You are holding a defensive posture, hesitating at a crucial crossroads.",
+    challenge:
+      "The obstacle is using endless analysis or deliberate blindness to avoid the discomfort of commitment. Pretending you don't know what to do only prolongs the internal tension and drains your vitality.",
+    guidance:
+      "Remove the blindfold and face both sides of the dilemma squarely. Accept that every meaningful choice requires closing one door to open another, and trust yourself to handle the consequences of moving forward.",
+  },
+  card_swords_three: {
+    situation:
+      "The Three of Swords indicates a present circumstance marked by heartache, painful disclosure, or the piercing realization that an expectation has collapsed. An unavoidable truth has struck directly at the heart.",
+    challenge:
+      "The danger is nursing grievances, wallowing in despair, or shutting your emotional center down behind hardened cynicism. Letting sorrow calcify into bitterness poisons your future growth.",
+    guidance:
+      "Allow yourself to feel the full, honest grief without rushing to fix it. Cry the necessary tears, acknowledge the wound without self-blame, and let the storm wash away the illusions that kept you trapped.",
+  },
+  card_swords_four: {
+    situation:
+      "The Four of Swords marks a necessary interlude of rest, convalescence, and mental retreat. Your nervous system is calling for sanctuary after a demanding period of stress or struggle.",
+    challenge:
+      "The friction is compulsive restlessness, guilt over taking downtime, or ignoring warning signs of cognitive burnout. Rushing back into conflict prematurely guarantees poor judgment and exhaustion.",
+    guidance:
+      "Declare a sacred truce with your obligations. Enforce non-negotiable boundaries around your rest, step back from noise and argument, and allow your mental reserves to rebuild in quiet stillness.",
+  },
+  card_swords_five: {
+    situation:
+      "The Five of Swords reveals a landscape shaped by conflict, hostile tension, or a competitive zero-sum confrontation. Harsh words or ego-driven maneuvering have left the atmosphere frayed.",
+    challenge:
+      "The friction is the compulsive need to win at any cost or nursing vindictive desires for payback. Dominating an opponent through spite or deception achieves only a hollow, isolating victory.",
+    guidance:
+      "Audit the true cost of continued battle and choose your dignity over petty triumph. Sheathe your blade, decline to engage in toxic squabbles, and walk away from conflicts that drain your spirit.",
+  },
 };
 
 /**

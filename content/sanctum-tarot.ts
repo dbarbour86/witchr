@@ -53,7 +53,25 @@ export interface SanctumTarotCard {
       | "wands-knight"
       | "wands-queen"
       | "wands-king"
-      | "cups-ace";
+      | "cups-ace"
+      | "cups-two"
+      | "cups-three"
+      | "cups-four"
+      | "cups-five"
+      | "cups-six"
+      | "cups-seven"
+      | "cups-eight"
+      | "cups-nine"
+      | "cups-ten"
+      | "cups-page"
+      | "cups-knight"
+      | "cups-queen"
+      | "cups-king"
+      | "swords-ace"
+      | "swords-two"
+      | "swords-three"
+      | "swords-four"
+      | "swords-five";
   };
 }
 
@@ -1275,6 +1293,618 @@ export const SANCTUM_TAROT_DECK: SanctumTarotCard[] = [
       src: "/images/sanctum/tarot/ace-of-cups.webp",
       alt: "Ace of Cups — Occult ceremonial tarot card of emotional beginnings, overflowing chalice, love, and intuition",
       motif: "cups-ace",
+    },
+  },
+  {
+    id: "card_cups_two",
+    slug: "two-of-cups",
+    number: 2,
+    numeral: "II",
+    name: "Two of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["Sacred Alliance", "Mutual Recognition", "Sovereign Bond"],
+    traditionalThemes: [
+      "Harmonious union, mutual attraction, emotional reciprocity, and genuine partnership",
+      "Two individuals meeting as conscious equals with open hands",
+      "Dissolving barriers through honest emotional exchange and shared understanding",
+      "The alchemical marriage of complementary energies creating a stronger whole",
+    ],
+    reversedThemes: [
+      "Codependency, unspoken imbalances, or transactional dynamics eroding trust",
+      "Fear of vulnerability leading to emotional games or defensive posturing",
+      "Projecting idealized fantasies onto a partner rather than accepting their reality",
+    ],
+    traditionalMeaning:
+      "Two robed practitioners stand face-to-face before an ancient altar beneath a violet twilight sky, raising ornate chalices in mutual toast. Above their joined cups hovers the winged caduceus intertwined with celestial serpents, glowing with iridescent lunar light. The Two of Cups depicts the alchemy of reciprocal connection—not two halves desperately seeking completion, but two whole entities choosing to weave their sovereignty together in trust, affection, and shared purpose.",
+    reflectiveInterpretation:
+      "The Two of Cups honors the threshold where authentic connection takes root. When mutual respect and genuine emotional transparency align, a third sacred space opens between two people. This archetype invites you to meet another person—or a fragmented aspect of yourself—with unarmored honesty. True partnership does not ask you to diminish your perimeter to make room for another; it expands both participants through shared clarity and quiet loyalty.",
+    reflectionPrompt:
+      "Where is an alliance or relationship inviting deeper mutual honesty, and what unspoken expectation can you release to meet them as an equal?",
+    practicalTakeaway:
+      "Initiate one honest, validating check-in with a partner or close confidant today. Speak without defensiveness and listen with full presence.",
+    image: {
+      src: "/images/sanctum/tarot/two-of-cups.webp",
+      alt: "Two of Cups — Occult ceremonial tarot card of sacred alliance, mutual attraction, emotional reciprocity, and sovereign partnership",
+      motif: "cups-two",
+    },
+  },
+  {
+    id: "card_cups_three",
+    slug: "three-of-cups",
+    number: 3,
+    numeral: "III",
+    name: "Three of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["Communal Joy", "Kindred Circle", "Shared Abundance"],
+    traditionalThemes: [
+      "Celebration, sisterhood, collaborative camaraderie, and communal joy",
+      "Rejoicing in shared milestones and the harvest of collective effort",
+      "Finding safety, laughter, and restorative connection among chosen kin",
+      "Honoring the sacred circle where each voice is received without rivalry",
+    ],
+    reversedThemes: [
+      "Social burnout, cliquish exclusion, or superficial camaraderie masking gossip",
+      "Feeling isolated in a crowd or overextending emotional labor to keep the peace",
+      "Overindulgence used to numb underlying emotional exhaustion",
+    ],
+    traditionalMeaning:
+      "Three figures dance in a woven circle beneath a celestial canopy draped in wild grapevines and flowering nocturnal jasmine. Each lifts a gleaming chalice toward the full moon, their laughter merging with the rustle of nocturnal leaves. The Three of Cups represents communal communion—the sweet restorative medicine of gathering with those who celebrate your vitality without envy, holding each other up in joy and gratitude.",
+    reflectiveInterpretation:
+      "The Three of Cups reminds you that emotional resilience is never meant to be sustained in total isolation. Even the most self-reliant witch requires the warmth of a circle. When life grows heavy or work turns solitary, this card invites you to lay down your defenses and bask in genuine camaraderie. Celebrate how far you and your companions have traveled, exchange stories, and let the laughter of trusted kindred recharge your spirit.",
+    reflectionPrompt:
+      "Who in your circle genuinely celebrates your victories without envy, and how can you share a moment of gratitude or laughter with them today?",
+    practicalTakeaway:
+      "Send a spontaneous message of genuine appreciation to a kindred friend or gather with someone whose presence leaves your cup full.",
+    image: {
+      src: "/images/sanctum/tarot/three-of-cups.webp",
+      alt: "Three of Cups — Occult ceremonial tarot card of celebration, friendship, kindred circle, and communal joy",
+      motif: "cups-three",
+    },
+  },
+  {
+    id: "card_cups_four",
+    slug: "four-of-cups",
+    number: 4,
+    numeral: "IV",
+    name: "Four of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["Sanctuary of Withdrawal", "Apathy's Diagnosis", "Inner Reassessment"],
+    traditionalThemes: [
+      "Introspection, emotional withdrawal, contemplative pause, and dissatisfaction",
+      "Sitting with discontent as diagnostic evidence that old rewards no longer satisfy",
+      "Turning inward to recalibrate desires before taking external action",
+      "The danger of overlooking a fresh offering because attention is fixated on what disappointed",
+    ],
+    reversedThemes: [
+      "Chronic cynicism, bitter isolation, or stubborn refusal to engage with new life",
+      "Ignoring real opportunities out of habitual numbness or lingering resentment",
+      "Wallowing in dissatisfaction rather than articulating what must genuinely change",
+    ],
+    traditionalMeaning:
+      "A solitary contemplative sits beneath the shadowed boughs of an ancient willow, arms crossed in quiet reflection as three cups rest unmoved upon the moss before them. From an ethereal violet cloud, a spectral hand extends a fourth cup glowing with radiant starlight, yet the figure's gaze remains turned inward. The Four of Cups illustrates the necessary stillness of reassessment—and the gentle reminder that withdrawal must not become emotional blindness.",
+    reflectiveInterpretation:
+      "The Four of Cups signals a phase of emotional plateau or apathy. When familiar pleasures fall flat and routine offerings feel hollow, the psyche is not being difficult—it is signaling that an outgrown chapter has reached its natural conclusion. Do not force enthusiasm where it does not exist. However, beware of turning contemplative pause into hardened cynicism; a subtle, authentic gift is waiting just outside your current field of vision when you choose to look up.",
+    reflectionPrompt:
+      "What in your life currently feels uninspiring or flat, and what is your emotional numbness trying to protect you from feeling?",
+    practicalTakeaway:
+      "Take fifteen uninterrupted minutes away from screens and obligations to sit in quiet reflection. Acknowledge what is no longer working without judgment.",
+    image: {
+      src: "/images/sanctum/tarot/four-of-cups.webp",
+      alt: "Four of Cups — Occult ceremonial tarot card of contemplation, introspection, reassessment, and quiet discernment",
+      motif: "cups-four",
+    },
+  },
+  {
+    id: "card_cups_five",
+    slug: "five-of-cups",
+    number: 5,
+    numeral: "V",
+    name: "Five of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["Honoring Loss", "Sacred Mourning", "The Enduring Vessels"],
+    traditionalThemes: [
+      "Grief, heartbreak, regret, emotional shedding, and sorrow",
+      "Acknowledging that something cherished has spilled and cannot be recovered",
+      "Allowing grief its dignified space without being consumed by despair",
+      "Discovering the two upright cups standing quietly behind you once the storm softens",
+    ],
+    reversedThemes: [
+      "Perpetual mourning, clinging to grievances, or defining identity through heartbreak",
+      "Refusing to turn around to see the support and vitality that still remain",
+      "Prematurely forcing positivity to bypass the necessary ache of genuine loss",
+    ],
+    traditionalMeaning:
+      "A dark-cloaked figure stands draped in mourning robes beside a dark, winding river beneath a stormy sky. At their feet lie three spilled chalices, their crimson contents seeping into the gravel. Yet behind the grieving traveler stand two upright golden cups, brimming with clear, untainted water, with a sturdy arched stone bridge leading back toward a safe sanctuary in the distance. The Five of Cups captures the sacred anatomy of loss—the pain of what was spilled, paired with the enduring truth of what remains.",
+    reflectiveInterpretation:
+      "The Five of Cups holds space for the ache of genuine grief and disappointment. When an investment collapses, a relationship ends, or a vision dissolves, sorrow is the only honest response. You are not required to rush your healing or manufacture false optimism. Weep for what was lost; honor what was poured out. But remember: the spilled cups do not define the entirety of your landscape. When your breath returns, turn around and recognize the two vessels still standing upright and full.",
+    reflectionPrompt:
+      "What loss or regret are you still grieving, and what enduring truth or supportive bond remains standing intact behind you?",
+    practicalTakeaway:
+      "Name one specific regret or disappointment aloud or onto paper, allow yourself to feel it fully, then consciously wash your face with cool water to anchor the transition.",
+    image: {
+      src: "/images/sanctum/tarot/five-of-cups.webp",
+      alt: "Five of Cups — Occult ceremonial tarot card of grief, loss, emotional healing, and enduring hope",
+      motif: "cups-five",
+    },
+  },
+  {
+    id: "card_cups_six",
+    slug: "six-of-cups",
+    number: 6,
+    numeral: "VI",
+    name: "Six of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["Ancestral Memory", "Innocent Wholeness", "Tender Nostalgia"],
+    traditionalThemes: [
+      "Nostalgia, childhood memories, heartfelt generosity, and emotional innocence",
+      "Reconnecting with the purest, uncorrupted version of your creative spirit",
+      "Receiving gentle kindness from your roots, memories, or longtime companions",
+      "Offering a gift of simple goodwill without strings or transactional agendas",
+    ],
+    reversedThemes: [
+      "Living trapped in the past or romanticizing a painful history through rose-tinted delusion",
+      "Refusing to grow up or hiding in childlike helplessness to avoid sovereign responsibility",
+      "Allowing unresolved childhood conditioning to dictate current adult boundaries",
+    ],
+    traditionalMeaning:
+      "Within the secluded courtyard of an ancient sanctuary, two figures exchange a large ceremonial goblet blooming with six-petaled white flowers. Five other cups, similarly filled with fragrant blossoms, stand along the stone pathway leading toward a safe stone keep. A warm twilight glow illuminates the scene. The Six of Cups depicts the return of innocent warmth—the sweet medicine of memories, ancestral roots, and kindness given purely from the heart.",
+    reflectiveInterpretation:
+      "The Six of Cups transports you across the river of time to the simple, unarmored places of your history. Before the world taught you cynicism, guardrails, and doubt, you knew what delighted you with absolute clarity. This archetype invites you to retrieve that early spark. Whether through revisiting a beloved childhood passion, reconnecting with an old ally, or extending pure kindness to another, allow tenderness to soften your armor.",
+    reflectionPrompt:
+      "What did your younger self love with fierce innocence, and how can you invite a fragment of that pure joy back into your adult reality today?",
+    practicalTakeaway:
+      "Engage in one activity purely for childlike pleasure today—revisit a nostalgic song, a comfort craft, or extend a simple, no-strings-attached kindness to someone you cherish.",
+    image: {
+      src: "/images/sanctum/tarot/six-of-cups.webp",
+      alt: "Six of Cups — Occult ceremonial tarot card of nostalgia, innocence, memory, and heartfelt kindness",
+      motif: "cups-six",
+    },
+  },
+  {
+    id: "card_cups_seven",
+    slug: "seven-of-cups",
+    number: 7,
+    numeral: "VII",
+    name: "Seven of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["Mirage and Desire", "Sifting Illusions", "Conscious Selection"],
+    traditionalThemes: [
+      "Multiple options, active imagination, daydreaming, and seductive temptations",
+      "Standing before an array of alluring prospects without knowing which holds substance",
+      "The seductive pull of fantasy disguising itself as genuine opportunity",
+      "The urgent necessity of grounding vision into practical discernment",
+    ],
+    reversedThemes: [
+      "Chronic indecision, shiny object syndrome, and chasing phantom promises",
+      "Paralysis caused by endless wishful thinking without committing to a single path",
+      "Waking up abruptly from an intoxicating illusion to face unavoidable practical demands",
+    ],
+    traditionalMeaning:
+      "A silhouetted practitioner stands in awe before seven luminous chalices floating within swirling purple and indigo mists. Each cup bears a distinct ethereal apparition: a jewel-encrusted castle, a serpent of wisdom, a laurel wreath of victory, a glowing mask of desire, a dragon of primal power, a cluster of gems, and a veiled luminous figure radiating divine light. The Seven of Cups captures the dizzying kaleidoscope of imagination—and the test of seeing past glittering glamour to choose what is real.",
+    reflectiveInterpretation:
+      "The Seven of Cups reveals a mind teeming with possibilities, fantasies, and potential trajectories. While imagination is the primal crucible of all magic, an abundance of untethered daydreams will scatter your vital energy and stall your progress. Not every sparkling goblet holds pure water; some contain venom, illusion, or empty vapors. The challenge of this archetype is not dreaming up more options, but having the courage to prune away illusions and choose the single path worthy of your labor.",
+    reflectionPrompt:
+      "Which alluring dream or fantasy is distracting you from taking concrete, mundane steps toward your true objective?",
+    practicalTakeaway:
+      "Write down all the competing ideas or options currently cluttering your head, strike through the distractions, and commit to advancing exactly ONE today.",
+    image: {
+      src: "/images/sanctum/tarot/seven-of-cups.webp",
+      alt: "Seven of Cups — Occult ceremonial tarot card of choices, imagination, illusions, and discernment",
+      motif: "cups-seven",
+    },
+  },
+  {
+    id: "card_cups_eight",
+    slug: "eight-of-cups",
+    number: 8,
+    numeral: "VIII",
+    name: "Eight of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["The Midnight Threshold", "Conscious Departure", "Pursuit of Depth"],
+    traditionalThemes: [
+      "Walking away, seeking higher truth, leaving the outgrown behind, and spiritual longing",
+      "Recognizing that even what was built with care no longer nourishes your spirit",
+      "Turning your back on comfortable emotional stagnation to seek deeper meaning",
+      "The quiet courage of nocturnal departure without dramatic fanfare",
+    ],
+    reversedThemes: [
+      "Clinging to dead situations out of comfort or fear of the unknown",
+      "Aimless escapism, running away whenever intimacy or commitment requires effort",
+      "Returning repeatedly to toxic dynamics because the doorway forward feels lonely",
+    ],
+    traditionalMeaning:
+      "A cloaked pilgrim holding a slender staff walks deliberately away from an orderly stack of eight golden chalices arranged in a neat row. Moving toward a rugged mountain pass beneath an eclipse of sun and moon, the traveler does not look back. The Eight of Cups marks the quiet turning point of emotional maturity—the sovereign realization that while what you built was valuable, staying any longer would starve your evolving soul.",
+    reflectiveInterpretation:
+      "The Eight of Cups marks one of the most courageous thresholds in the entire deck: leaving behind what is familiar, respectable, and even successful because it no longer holds spiritual life for you. This is not reckless abandonment or petty retreat; it is the somber, deliberate departure of someone who respects their own depth too much to remain stagnant. You do not owe anyone an apology for outgrowing an old room. Pack your staff, step out into the midnight air, and ascend the high pass toward genuine meaning.",
+    reflectionPrompt:
+      "What relationship, project, or role has run its course, and what inner truth is urging you to walk toward higher ground?",
+    practicalTakeaway:
+      "Identify one commitment or habit that drains you without feeding your growth. Take one decisive step today to create distance or politely withdraw.",
+    image: {
+      src: "/images/sanctum/tarot/eight-of-cups.webp",
+      alt: "Eight of Cups — Occult ceremonial tarot card of walking away, seeking depth, departure, and emotional transformation",
+      motif: "cups-eight",
+    },
+  },
+  {
+    id: "card_cups_nine",
+    slug: "nine-of-cups",
+    number: 9,
+    numeral: "IX",
+    name: "Nine of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["The Wish Fulfilled", "Sovereign Satiety", "Deep Gratitude"],
+    traditionalThemes: [
+      "Contentment, emotional satisfaction, pleasure, wishes fulfilled, and self-sufficiency",
+      "Basking in the warm satisfaction of personal labor and emotional peace",
+      "Enjoying sensory pleasures and the fruits of your sovereignty without guilt",
+      "Recognizing that your cup is full and you are fundamentally safe",
+    ],
+    reversedThemes: [
+      "Smug complacency, self-indulgent greed, or superficial vanity",
+      "Getting what you wished for only to discover it does not bring inner peace",
+      "Overeating, overspending, or hoarding pleasure while others go without",
+    ],
+    traditionalMeaning:
+      "A contented witch clad in rich plum and obsidian vestments sits serenely upon a carved bench, arms folded comfortably across their chest with a calm, knowing smile. Behind them, upon a crescent altar draped in midnight silk, nine ornate chalices glow with warm, golden luminescence. Known traditionally as 'The Wish Card,' the Nine of Cups embodies deep emotional satiety—the quiet bliss of arriving at a sanctuary of your own making, where desire and reality rest in complete alignment.",
+    reflectiveInterpretation:
+      "The Nine of Cups heralds a moment of well-earned emotional ease, satisfaction, and self-honoring pleasure. You have weathered difficult trials and done the deep interior labor; now, the universe invites you to sit back and savor your life. Drop the habit of waiting for the other shoe to drop. Satiety is not a trap; it is your birthright. Look upon the vessels you have filled with your own devotion, receive the blessing of what has arrived, and let genuine gratitude wash over you.",
+    reflectionPrompt:
+      "What recent milestone, comfort, or wish has manifested in your life that you have not yet stopped to celebrate and truly enjoy?",
+    practicalTakeaway:
+      "Treat yourself deliberately today to a simple, guilt-free sensory pleasure—a slow meal, a long bath with salt, or an hour spent entirely on your own terms.",
+    image: {
+      src: "/images/sanctum/tarot/nine-of-cups.webp",
+      alt: "Nine of Cups — Occult ceremonial tarot card of contentment, wishes fulfilled, gratitude, and sovereign peace",
+      motif: "cups-nine",
+    },
+  },
+  {
+    id: "card_cups_ten",
+    slug: "ten-of-cups",
+    number: 10,
+    numeral: "X",
+    name: "Ten of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["Sanctuary of the Heart", "Lasting Harmony", "The Radiant Horizon"],
+    traditionalThemes: [
+      "Emotional fulfillment, domestic peace, lasting harmony, and shared belonging",
+      "Living in resonant alignment with your deepest values and loved ones",
+      "A home and hearth built on unconditional acceptance, safety, and joy",
+      "The blessing of enduring emotional wholeness that shelters future generations",
+    ],
+    reversedThemes: [
+      "Domestic tension, shattered harmony, or values mismatched within a household",
+      "Pretending everything is perfect for external appearances while internal fractures fester",
+      "Unrealistic expectations of constant bliss causing unnecessary disappointment",
+    ],
+    traditionalMeaning:
+      "A loving family stands upon a verdant hillside overlooking a tranquil stream and a welcoming stone cottage. Above them, arcing across a starry twilight sky, ten radiant chalices form an ethereal rainbow of glowing lunar light. Two children dance freely on the meadow grass as the figures lift their arms in joyous awe. The Ten of Cups represents the culmination of emotional journeying—the realization of true belonging, peaceful sanctuary, and the deep emotional safety of a loving community.",
+    reflectiveInterpretation:
+      "The Ten of Cups represents the summit of the Water suit: emotional sanctuary, lasting harmony, and the realization that you are held in love and belonging. This card does not promise a life devoid of challenges; rather, it reflects a foundational security so sturdy that storms can rage outside without disturbing the peace within your walls. Celebrate your sacred hearth, honor the people who anchor your life with safety, and recognize that you are home.",
+    reflectionPrompt:
+      "What does true emotional home and unconditional belonging feel like in your body, and how can you cultivate that sanctuary for yourself and those you cherish?",
+    practicalTakeaway:
+      "Do one small act to bring warmth and harmony into your living space or household today—light a hearth candle, tidy a shared corner, or share a loving word with someone who lives alongside you.",
+    image: {
+      src: "/images/sanctum/tarot/ten-of-cups.webp",
+      alt: "Ten of Cups — Occult ceremonial tarot card of lasting harmony, emotional fulfillment, home, and belonging",
+      motif: "cups-ten",
+    },
+  },
+  {
+    id: "card_cups_page",
+    slug: "page-of-cups",
+    number: 11,
+    numeral: "PAGE",
+    name: "Page of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["Intuitive Messenger", "Playful Wonder", "The Tender Spark"],
+    traditionalThemes: [
+      "Creative inspiration, intuitive messages, emotional curiosity, and gentle beginnings",
+      "Listening to quiet hunches and poetic synchronicities without cynical judgment",
+      "Approaching relationships and artistry with innocent curiosity and open vulnerability",
+      "Receiving an unexpected invitation or revelation that stirs the imagination",
+    ],
+    reversedThemes: [
+      "Emotional immaturity, hypersensitivity, or escaping into moody daydreams",
+      "Doubting genuine intuitive hits because they defy cold rational logic",
+      "Overreacting to perceived slights with petulant drama or defensive theatrics",
+    ],
+    traditionalMeaning:
+      "A youthful mystic clad in robes adorned with water lilies and silver fish stands at the water's edge, gazing with delighted wonder at a golden cup from which a curious silver fish emerges to meet their gaze. The nocturnal tide rolls gently behind them under a shimmering crescent moon. The Page of Cups embodies the sweet, uncanny birth of intuition—the playful willingness to suspend disbelief, listen to the whisper from the deep, and welcome unexpected emotional and creative invitations.",
+    reflectiveInterpretation:
+      "The Page of Cups brings a whimsical, intuitive message from the subterranean realm of your psyche. Often, profound insight does not arrive through thunderous pronouncements; it appears as a quiet hunch, an odd dream, or a sudden pang of creative curiosity. Do not let your adult cynicism dismiss these fragile impulses. Be as open and receptive as the Page gazing at the fish in the cup. Something wondrous is trying to speak with you through the language of feeling.",
+    reflectionPrompt:
+      "What subtle hunch, artistic impulse, or emotional message have you been ignoring, and what happens if you treat it with genuine curiosity today?",
+    practicalTakeaway:
+      "Record the first intuition, dream symbol, or creative impulse that strikes you today, without judging or editing it. Treat it as a message from the deep.",
+    image: {
+      src: "/images/sanctum/tarot/page-of-cups.webp",
+      alt: "Page of Cups — Occult ceremonial tarot card of intuition, creative curiosity, gentle inspiration, and emotional wonder",
+      motif: "cups-page",
+    },
+  },
+  {
+    id: "card_cups_knight",
+    slug: "knight-of-cups",
+    number: 12,
+    numeral: "KNIGHT",
+    name: "Knight of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["Poetic Chivalry", "Emotional Quest", "Romantic Visionary"],
+    traditionalThemes: [
+      "Romantic pursuit, artistic vision, emotional eloquence, and following the heart's calling",
+      "A charming emissary bearing gifts of affection, poetic truth, and sincere intention",
+      "Navigating the world guided by beauty, empathy, and intuitive ideals",
+      "Channeling sensitive emotions into creative offerings and devoted connection",
+    ],
+    reversedThemes: [
+      "Moody escapism, emotional manipulation, or love-bombing that evaporates under pressure",
+      "Chasing unrealistic fantasies while neglecting practical responsibilities",
+      "Disillusionment when flawed human reality fails to match an idealized pedestal",
+    ],
+    traditionalMeaning:
+      "A graceful knight clad in armor engraved with leaping fish and nocturnal currents rides a stately white steed along the banks of a winding twilight river. In his right hand he extends a glowing golden chalice, his winged ceremonial helmet symbolizing the flight of exalted imagination. The Knight of Cups represents the quest of the romantic visionary—the courageous dedication to advance toward one's emotional and creative ideals with grace, sincerity, and poetic chivalry.",
+    reflectiveInterpretation:
+      "The Knight of Cups arrives as an invitation to lead with your heart. Unlike colder archetypes that demand tactical detachment, this knight reminds you that vulnerability and passionate devotion are sovereign powers in their own right. Whether through an intimate connection, a creative passion project, or a cause that stirs your empathy, allow yourself to be moved. Bring your deepest longing into the physical room with unarmored grace, but remember: true chivalry follows through on the promises whispered in the moonlight.",
+    reflectionPrompt:
+      "What emotional dream or creative offering are you carrying, and what honest gesture of devotion can you extend to share it today?",
+    practicalTakeaway:
+      "Express genuine appreciation or poetic affection to someone you care about today, or dedicate an hour of undistracted focus to a creative project purely for the love of the craft.",
+    image: {
+      src: "/images/sanctum/tarot/knight-of-cups.webp",
+      alt: "Knight of Cups — Occult ceremonial tarot card of romance, artistic vision, emotional pursuit, and poetic grace",
+      motif: "cups-knight",
+    },
+  },
+  {
+    id: "card_cups_queen",
+    slug: "queen-of-cups",
+    number: 13,
+    numeral: "QUEEN",
+    name: "Queen of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["Sovereign Compassion", "Intuitive Sanctuary", "Luminous Empathy"],
+    traditionalThemes: [
+      "Deep empathy, intuitive mastery, unconditional presence, and psychic receptivity",
+      "Holding space for raw emotional truth without absorbing another's turbulence",
+      "A tranquil sanctuary where the wounded heart finds shelter and healing",
+      "Tuning into subterranean currents and deciphering the symbolic language of dreams",
+    ],
+    reversedThemes: [
+      "Emotional codependency, martyrdom, or drowning in secondhand suffering",
+      "Hypersensitivity leading to emotional shut-down or moody withdrawal",
+      "Spiritual bypassing or mistaking projection for genuine psychic intuition",
+    ],
+    traditionalMeaning:
+      "Seated upon an ornate throne carved with sea nymphs, shells, and celestial serpents at the edge of a nocturnal ocean, a serene queen gazes into the depths of a closed, jeweled chalice shaped like a sacred temple. The tranquil sea mirrors the starlit sky as her flowing robes dissolve into the lapping tide. The Queen of Cups represents the zenith of emotional maturity—the sovereign who rules the realm of feeling from a place of unshakable stillness, deep empathy, and luminous psychic discernment.",
+    reflectiveInterpretation:
+      "The Queen of Cups embodies sovereign compassion. She does not fear the tide of complex feeling because she has explored the deepest trenches of her own psyche and emerged whole. When this archetype enters your reading, she invites you to listen beneath the surface chatter of everyday life. What does your quiet intuition report about your current circumstance? You do not need to harden your perimeter to stay safe; true emotional power lies in remaining soft, receptive, and fiercely grounded in your own truth.",
+    reflectionPrompt:
+      "Where is your emotional wisdom urging you to soften, and how can you hold loving space for yourself or another without absorbing their storm?",
+    practicalTakeaway:
+      "Create a quiet ritual of emotional check-in today: light a candle, place both hands over your heart, and ask: 'What does my emotional body need right now?' Honor the answer without rationalizing.",
+    image: {
+      src: "/images/sanctum/tarot/queen-of-cups.webp",
+      alt: "Queen of Cups — Occult ceremonial tarot card of compassion, intuitive mastery, deep empathy, and emotional sanctuary",
+      motif: "cups-queen",
+    },
+  },
+  {
+    id: "card_cups_king",
+    slug: "king-of-cups",
+    number: 14,
+    numeral: "KING",
+    name: "King of Cups",
+    suit: "cups",
+    arcana: "minor",
+    shortKeywords: ["Anchor in the Storm", "Emotional Mastery", "Seasoned Composure"],
+    traditionalThemes: [
+      "Emotional stability, seasoned wisdom, diplomatic restraint, and balance under pressure",
+      "Ruling over turbulent waters without being tossed by waves or storms",
+      "Combining compassionate empathy with clear-headed executive discernment",
+      "Navigating complex crises with steady calm and principled composure",
+    ],
+    reversedThemes: [
+      "Emotional volatility, cold repression, or explosive outbursts masked as authority",
+      "Passive-aggressive manipulation or using emotional vulnerability as leverage",
+      "Detached stoicism that denies genuine feeling out of fear of losing control",
+    ],
+    traditionalMeaning:
+      "Upon a stone throne floating steadily amid a surging sea, a seasoned sovereign sits crowned with celestial gold, holding a glowing scepter in one hand and a sacred chalice in the other. Across the stormy water behind him, a diving dolphin and a ship ride the swelling waves unharmed. The King of Cups represents the pinnacle of emotional mastery—the leader whose inner compass remains steadfast regardless of the turbulence churning across the outer sea.",
+    reflectiveInterpretation:
+      "The King of Cups is the anchor in the storm. Life may be tossing chaotic demands, intense personalities, or acute friction your way, but you have the power to choose your response rather than reacting impulsively. This king does not suppress emotion; he feels it fully and channels it into measured, principled action. When tempers flare or panic rises in your environment, step into his quiet sovereignty. Be the calm center of gravity that others can trust to hold the line.",
+    reflectionPrompt:
+      "What external chaos or emotional storm is testing your composure, and how can you anchor yourself as the steady sovereign of your space?",
+    practicalTakeaway:
+      "When friction or reactivity arises today, take three deep belly breaths before speaking. Respond with measured calm, firm boundaries, and seasoned perspective.",
+    image: {
+      src: "/images/sanctum/tarot/king-of-cups.webp",
+      alt: "King of Cups — Occult ceremonial tarot card of emotional maturity, calm leadership, seasoned wisdom, and sovereignty",
+      motif: "cups-king",
+    },
+  },
+  {
+    id: "card_swords_ace",
+    slug: "ace-of-swords",
+    number: 1,
+    numeral: "ACE",
+    name: "Ace of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Piercing Truth", "Mental Breakthrough", "Decisive Clarity"],
+    traditionalThemes: [
+      "Sudden clarity, razor-sharp discernment, cutting through delusion, and new intellectual breakthroughs",
+      "The pure elemental force of Air slicing away ambiguity and confusion",
+      "Unyielding truth spoken with authority and sovereign precision",
+      "A decisive realization that fundamentally alters your understanding of reality",
+    ],
+    reversedThemes: [
+      "Weaponized intellect, brutal bluntness, or intellectual cruelty",
+      "Mental chaos, obsessive overthinking, or confusion clouding judgment",
+      "Using harsh logic to rationalize emotional detachment or cruelty",
+    ],
+    traditionalMeaning:
+      "An ethereal celestial arm emerges from nocturnal clouds holding an upright, double-edged blade gleaming with cold silver fire. Crowning the sword is a radiant golden wreath entwined with olive and palm leaves, beneath which fall six droplets of celestial luminescence. Above, the nocturnal expanse is clear and sharp with distant stars. The Ace of Swords represents the pure seed of the Air element—uncompromising mental clarity, the sudden breakthrough that cuts through deception, and the sovereign power of objective truth.",
+    reflectiveInterpretation:
+      "The Ace of Swords cuts through the fog of hesitation and rationalization. When this archetype emerges, it demands unadorned honesty with yourself. The comfortable illusions that previously cushioned your indecision are cleaved away, leaving the stark, crystalline ground truth exposed. This is not a weapon of malice, but a surgical instrument of liberation: once you clearly name the reality before you, you can no longer pretend not to see it.",
+    reflectionPrompt:
+      "What uncomfortable truth are you finally seeing with sharp clarity, and what decisive choice does that truth require of you?",
+    practicalTakeaway:
+      "Write down the single most honest, unvarnished sentence describing your current challenge. Strip away qualifiers, excuses, and diplomatic softening.",
+    image: {
+      src: "/images/sanctum/tarot/ace-of-swords.webp",
+      alt: "Ace of Swords — Occult ceremonial tarot card of mental clarity, sharp discernment, truth, and breakthrough",
+      motif: "swords-ace",
+    },
+  },
+  {
+    id: "card_swords_two",
+    slug: "two-of-swords",
+    number: 2,
+    numeral: "II",
+    name: "Two of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Blindfolded Stalemate", "Crossed Blades", "Tense Equilibrium"],
+    traditionalThemes: [
+      "Indecision, difficult choices, mental stalemate, and emotional defense",
+      "Holding two opposing realities in suspended tension to avoid the fallout of choosing",
+      "Protecting the heart behind a barrier of cold analytical neutrality",
+      "The temporary safety—and ultimate paralysis—of deliberate ignorance",
+    ],
+    reversedThemes: [
+      "Information overload forcing a messy, uncontrolled breakthrough",
+      "The defensive wall crumbling before you are prepared to face reality",
+      "Reckless decision-making triggered by the agony of lingering in suspense",
+    ],
+    traditionalMeaning:
+      "A blindfolded practitioner clad in gray and obsidian vestments sits upon a square stone bench at the edge of a nocturnal sea. Across her chest she holds two heavy, gleaming broadswords crossed in rigorous symmetry. Behind her, rocky crags pierce calm waters beneath a waxing crescent moon. The Two of Swords portrays a deliberate truce—a conscious choice to blind oneself to external stimulation while balancing two irreconcilable demands in precarious equilibrium.",
+    reflectiveInterpretation:
+      "The Two of Swords reflects a stalemate of your own making. You may believe you need more information before choosing, but in truth, you already know what each choice demands—and you dread the consequences of making either one. Crossing your blades protects your heart from exposure, but holding this posture requires immense muscular tension. The blindfold cannot remain forever; at some point, the sea will rise, and deliberate ignorance will cost more than a difficult choice.",
+    reflectionPrompt:
+      "Which two competing truths are you attempting to balance, and what choice are you postponing out of fear of its consequences?",
+    practicalTakeaway:
+      "Lower your arms and name the choice directly. Flip a coin—not to obey the outcome, but to notice whether your gut feels relief or disappointment when it lands.",
+    image: {
+      src: "/images/sanctum/tarot/two-of-swords.webp",
+      alt: "Two of Swords — Occult ceremonial tarot card of stalemate, difficult choices, balanced blades, and indecision",
+      motif: "swords-two",
+    },
+  },
+  {
+    id: "card_swords_three",
+    slug: "three-of-swords",
+    number: 3,
+    numeral: "III",
+    name: "Three of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Shattered Illusion", "The Pierced Heart", "Cleansing Release"],
+    traditionalThemes: [
+      "Heartbreak, sorrow, piercing truth, emotional release, and grief",
+      "The acute agony when reality shatters a cherished expectation or trust",
+      "A wound delivered by cold facts, harsh words, or unavoidable separation",
+      "The storm that clears poisoned air, initiating necessary emotional cleansing",
+    ],
+    reversedThemes: [
+      "Reliving past wounds endlessly or picking at scabbed betrayals",
+      "Repressing acute grief beneath cynical detachment, poisoning the emotional well",
+      "Gradual recovery as the blades are gently withdrawn from the heart",
+    ],
+    traditionalMeaning:
+      "Against a tempestuous sky torn by driving rain and lightning, three silver swords pierce through a radiant, glowing heart suspended in mid-air. Heavy storm clouds churn around the altar, yet the torrential downpour cleanses the scorched stone below. The Three of Swords represents the painful convergence of heart and mind—the visceral sting when an unavoidable truth strikes to the core, clearing illusions through an inevitable emotional storm.",
+    reflectiveInterpretation:
+      "The Three of Swords does not sugarcoat the sting of reality. When words wound, betrayals surface, or an illusion collapses, the pain is real and deserves solemn dignity. Do not attempt to bypass this ache with hollow platitudes or rushed intellectual rationalization. The swords pierce deeply, but they also puncture the abscess of false hope, releasing what had been secretly rotting. Let the storm rain down; the downpour that breaks your heart will ultimately cleanse your vision.",
+    reflectionPrompt:
+      "What painful truth has recently pierced through your defenses, and what grief do you need to allow yourself to feel without judgment?",
+    practicalTakeaway:
+      "Allow yourself fifteen minutes of unreserved release—cry, write an unsent letter detailing the raw hurt, and then burn or shred the paper to release the blade.",
+    image: {
+      src: "/images/sanctum/tarot/three-of-swords.webp",
+      alt: "Three of Swords — Occult ceremonial tarot card of heartbreak, piercing truth, sorrow, and storm cleansing",
+      motif: "swords-three",
+    },
+  },
+  {
+    id: "card_swords_four",
+    slug: "four-of-swords",
+    number: 4,
+    numeral: "IV",
+    name: "Four of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Sanctuary of Silence", "Mental Convalescence", "Sacred Truce"],
+    traditionalThemes: [
+      "Rest, recovery, meditation, sanctuary, and mental convalescence",
+      "Stepping off the battlefield to allow nervous system restoration",
+      "Withdrawing from debate, conflict, and decision-making into protective silence",
+      "Replenishing depleted intellectual reserves before re-entering the arena",
+    ],
+    reversedThemes: [
+      "Prematurely rushing back into chaos before healing is complete",
+      "Burnout caused by refusing to acknowledge mental exhaustion",
+      "Using isolation as permanent avoidance rather than temporary restoration",
+    ],
+    traditionalMeaning:
+      "Within the quiet stone alcove of a secluded sanctuary, an armored effigy lies peacefully in repose upon an ancient sarcophagus, hands folded in contemplative prayer. Three swords hang blade-down along the stained glass wall above, while a fourth sword rests horizontally beneath the figure. Soft candlelight filters through celestial glass. The Four of Swords represents the sacred necessity of convalescence—laying down arms to let the mind heal in stillness.",
+    reflectiveInterpretation:
+      "The Four of Swords orders an immediate cease-fire. You have been fighting, planning, defending, or enduring high cognitive strain for too long without replenishing your reserves. You cannot think your way through nervous exhaustion; the intellect will only produce distorted conclusions when running on fumes. Sheathe your blades, step off the field of battle, and enter sanctuary. Rest is not surrender—it is the tactical maintenance that preserves your competence.",
+    reflectionPrompt:
+      "Where is mental fatigue or conflict wearing down your reserves, and how can you enforce a non-negotiable pocket of silence today?",
+    practicalTakeaway:
+      "Schedule a strict mental sabbath today: silence all non-essential notifications, step away from argumentative arenas, and take an hour of undisturbed horizontal rest.",
+    image: {
+      src: "/images/sanctum/tarot/four-of-swords.webp",
+      alt: "Four of Swords — Occult ceremonial tarot card of rest, recovery, sanctuary, and mental restoration",
+      motif: "swords-four",
+    },
+  },
+  {
+    id: "card_swords_five",
+    slug: "five-of-swords",
+    number: 5,
+    numeral: "V",
+    name: "Five of Swords",
+    suit: "swords",
+    arcana: "minor",
+    shortKeywords: ["Hollow Victory", "Battlefield Reckoning", "Severed Alliances"],
+    traditionalThemes: [
+      "Conflict, hollow triumph, ego-driven battle, tension, and collateral damage",
+      "Winning the argument while destroying the relationship or common cause",
+      "Confronting petty malice, hostility, betrayal, or zero-sum dynamics",
+      "Recognizing when victory costs more than walking away",
+    ],
+    reversedThemes: [
+      "Lingering resentment and vindictiveness poisoning future interactions",
+      "Desire to make amends after an ugly dispute or stepping back from toxic skirmishes",
+      "Recognizing the exhaustion of perpetual warfare and surrendering pride for peace",
+    ],
+    traditionalMeaning:
+      "A victor stands smirk-faced upon a blustery hill beneath ragged, turbulent clouds, clutching three swords over one shoulder while two more lie abandoned at his feet. In the distance, two vanquished figures walk away toward a turbulent shoreline with bowed heads. The Five of Swords depicts the bitter taste of hollow victory—the realization that dominating an opponent through brute ego or sharp cruelty leaves you triumphant, yet fundamentally isolated in ruins.",
+    reflectiveInterpretation:
+      "The Five of Swords diagnoses conflict driven by pride, spite, or the compulsive need to prove yourself right at all costs. Winning a debate, scoring a verbal strike, or enforcing your dominance might gratify the ego in the moment, but take a ruthless look at the wreckage around you. Who did you alienate? What goodwill was permanently burned? Some battles are simply not worth winning; true mastery knows when to sheath the blade and walk away from small-minded skirmishes.",
+    reflectionPrompt:
+      "Are you fighting to resolve a problem or merely fighting to be right, and what will your 'victory' actually cost you?",
+    practicalTakeaway:
+      "Step back from an active dispute or petty argument today. Refuse to take the bait, decline to send the biting comeback, and choose peace over vindication.",
+    image: {
+      src: "/images/sanctum/tarot/five-of-swords.webp",
+      alt: "Five of Swords — Occult ceremonial tarot card of conflict, hollow victory, tension, and severed alliances",
+      motif: "swords-five",
     },
   },
 ];

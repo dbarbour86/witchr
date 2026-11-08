@@ -78,8 +78,8 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
   const isIngredient = item.category === "ingredient" || item.routePrefix === "ingredients";
   const isCrystal = item.category === "crystal" || item.routePrefix === "crystals";
   const isCandle = item.category === "candle" || item.routePrefix === "candles";
-  const parentName = isHerb ? "Herbs" : isIngredient ? "Ingredients" : isCrystal ? "Crystals" : isCandle ? "Grimoire" : hubName;
-  const parentHref = isHerb ? "/herbs" : isIngredient ? "/ingredients" : isCrystal ? "/crystals" : isCandle ? "/grimoire" : `/${item.relatedHubSlug || "protection"}`;
+  const parentName = isHerb ? "Herbs" : isIngredient ? "Ingredients" : isCrystal ? "Crystals" : isCandle ? "Candles" : hubName;
+  const parentHref = isHerb ? "/herbs" : isIngredient ? "/ingredients" : isCrystal ? "/crystals" : isCandle ? "/candles" : `/${item.relatedHubSlug || "protection"}`;
   const parentUrl = `https://www.witchr.com${parentHref}`;
 
   const primaryIntentLower = (item.primaryIntent || "").toLowerCase();
@@ -678,22 +678,54 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
           </div>
           <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
             {isHerb && (
-              <Link
-                href="/herbs"
-                className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
-              >
-                <span>Herb Directory</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              <>
+                <Link
+                  href="/herbs"
+                  className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
+                >
+                  <span>Herb Directory</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href="/ingredients"
+                  className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
+                >
+                  <span>Ingredients</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href="/rituals"
+                  className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
+                >
+                  <span>Rituals</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </>
             )}
             {isIngredient && (
-              <Link
-                href="/ingredients"
-                className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
-              >
-                <span>Ingredient Directory</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              <>
+                <Link
+                  href="/ingredients"
+                  className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
+                >
+                  <span>Ingredient Directory</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href="/herbs"
+                  className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
+                >
+                  <span>Related Herbs</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href="/candles"
+                  className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
+                >
+                  <span>Candle Guides</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </>
             )}
             {isCrystal && (
               <Link
@@ -705,13 +737,22 @@ export function CorrespondenceView({ item }: CorrespondenceViewProps) {
               </Link>
             )}
             {isCandle && (
-              <Link
-                href="/grimoire"
-                className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
-              >
-                <span>Grimoire Reference</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              <>
+                <Link
+                  href="/candles"
+                  className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
+                >
+                  <span>Candle Directory</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href="/herbs"
+                  className="text-xs font-mono uppercase tracking-wideDisplay text-bone-dim hover:text-lavender-light flex items-center gap-1 min-h-[44px]"
+                >
+                  <span>Herbs</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </>
             )}
             <Link
               href="/spell-finder"

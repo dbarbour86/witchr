@@ -409,6 +409,29 @@ export default function HerbsHubPage() {
         </div>
       </section>
 
+      {/* 5.5. Cross-Directory Navigation */}
+      <section className="pt-4 border-t border-border flex flex-wrap items-center justify-between gap-4 text-xs font-mono uppercase tracking-ceremonial text-bone-dim">
+        <span>Explore Related References:</span>
+        <div className="flex items-center gap-4 flex-wrap">
+          <Link href="/ingredients" className="hover:text-lavender-light flex items-center gap-1 min-h-[44px]">
+            <span>Ingredients Directory</span>
+            <ArrowRight className="w-3 h-3 text-lavender-moon" />
+          </Link>
+          <Link href="/candles" className="hover:text-lavender-light flex items-center gap-1 min-h-[44px]">
+            <span>Candle Directory</span>
+            <ArrowRight className="w-3 h-3 text-lavender-moon" />
+          </Link>
+          <Link href="/rituals" className="hover:text-lavender-light flex items-center gap-1 min-h-[44px]">
+            <span>Ritual Library</span>
+            <ArrowRight className="w-3 h-3 text-lavender-moon" />
+          </Link>
+          <Link href="/library" className="hover:text-lavender-light flex items-center gap-1 min-h-[44px]">
+            <span>Full Library Index</span>
+            <ArrowRight className="w-3 h-3 text-lavender-moon" />
+          </Link>
+        </div>
+      </section>
+
       {/* 6. Product CTA */}
       <ProductCTA
         title="The Witchr Botanical Field Guide"

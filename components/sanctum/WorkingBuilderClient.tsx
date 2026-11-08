@@ -587,9 +587,21 @@ export function WorkingBuilderClient() {
 
               {/* Available Ingredients */}
               <div className="space-y-3">
-                <span className="font-mono text-xs uppercase tracking-[0.2em] text-purple-200 font-semibold block">
-                  AVAILABLE PANTRY &amp; HERBAL INGREDIENTS
-                </span>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-purple-200 font-semibold block">
+                    AVAILABLE PANTRY &amp; HERBAL INGREDIENTS
+                  </span>
+                  <Link
+                    href="/ingredients"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] font-mono text-purple-300 hover:text-lavender-light transition-colors"
+                    title="Open public Witchr Ingredient Directory in new tab"
+                  >
+                    <span>Ingredient Directory</span>
+                    <ArrowRight className="w-3 h-3 text-purple-400" />
+                  </Link>
+                </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {SANCTUM_INGREDIENT_CATALOG.map((item) => {

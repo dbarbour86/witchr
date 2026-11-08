@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MoonPhaseRibbon, CelestialDivider, FourPointStar } from "./OrnateFrames";
+import { Flame } from "lucide-react";
 
 export function Footer() {
   const pathname = usePathname();
@@ -32,9 +33,7 @@ export function Footer() {
               aria-label="Witchr Homepage"
             >
               <div className="w-8 h-8 rounded-lg bg-surface border border-border-highlight flex items-center justify-center text-lavender group-hover:border-lavender/60 transition-colors shadow-subtle">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" className="w-4 h-4 text-lavender-moon">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.85 0 3.58-.5 5.07-1.38-4.22-.92-7.37-4.68-7.37-9.19 0-4.08 2.61-7.55 6.27-8.83C14.73 2.22 13.4 2 12 2z" />
-                </svg>
+                <Flame className="w-4 h-4 text-lavender-moon group-hover:text-lavender-light transition-colors" />
               </div>
               <span className="font-display text-2xl md:text-3xl font-bold tracking-ceremonial text-bone">
                 WITCHR
@@ -103,18 +102,13 @@ export function Footer() {
             </div>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <Link href="/sanctum/chamber" className="text-lavender-moon hover:text-lavender-light transition-colors flex items-center gap-1.5 font-medium">
-                  <span>The Sanctum</span>
+                <Link href="/library" className="text-lavender-moon hover:text-lavender-light transition-colors flex items-center gap-1.5 font-medium">
+                  <span>Library Archives &amp; Index</span>
                 </Link>
               </li>
               <li>
-                <Link href="/spell-finder" className="hover:text-lavender-light transition-colors">
-                  Spell Finder Tool
-                </Link>
-              </li>
-              <li>
-                <Link href="/rituals" className="hover:text-lavender-light transition-colors">
-                  Ritual Library
+                <Link href="/ingredients" className="hover:text-lavender-light transition-colors">
+                  Ingredient Directory
                 </Link>
               </li>
               <li>
@@ -123,8 +117,28 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/candles" className="hover:text-lavender-light transition-colors">
+                  Candle Directory
+                </Link>
+              </li>
+              <li>
+                <Link href="/crystals" className="hover:text-lavender-light transition-colors">
+                  Crystal Directory
+                </Link>
+              </li>
+              <li>
                 <Link href="/correspondences" className="hover:text-lavender-light transition-colors">
                   Correspondences Codex
+                </Link>
+              </li>
+              <li>
+                <Link href="/grimoire" className="hover:text-lavender-light transition-colors">
+                  Beginner Grimoire
+                </Link>
+              </li>
+              <li>
+                <Link href="/rituals" className="hover:text-lavender-light transition-colors">
+                  Ritual Library
                 </Link>
               </li>
               <li>
@@ -138,8 +152,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/grimoire" className="hover:text-lavender-light transition-colors">
-                  Beginner Grimoire
+                <Link href="/sanctum/chamber" className="text-purple-300 hover:text-lavender-light transition-colors flex items-center gap-1.5">
+                  <span>The Sanctum Workstation</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/spell-finder" className="hover:text-lavender-light transition-colors">
+                  Spell Finder Tool
                 </Link>
               </li>
               <li>

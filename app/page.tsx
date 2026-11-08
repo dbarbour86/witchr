@@ -21,7 +21,7 @@ import {
   CandleAltarIcon,
   CelestialCompassIcon,
 } from "@/components/OrnateFrames";
-import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Sparkles, Layers, Leaf, Flame, Compass, BookOpen } from "lucide-react";
 
 export const metadata: Metadata = {
   title: {
@@ -298,6 +298,156 @@ export default function HomePage() {
           {featuredRituals.map((ritual) => (
             <RitualCard key={ritual.slug} ritual={ritual} />
           ))}
+        </div>
+      </section>
+
+      {/* 4.5. THE WITCHR LIBRARY: Public Reference Archives */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-labelledby="library-preview-heading">
+        <div className="p-8 sm:p-10 md:p-12 rounded-2xl bg-[#090414]/90 border border-purple-900/60 relative overflow-hidden shadow-[0_0_60px_rgba(76,29,149,0.2)]">
+          {/* Subtle background glow & corner flourishes */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/5 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute top-3 left-3 opacity-40 pointer-events-none">
+            <TarotCornerFlourish className="w-4 h-4 text-purple-400" />
+          </div>
+          <div className="absolute top-3 right-3 opacity-40 pointer-events-none rotate-90">
+            <TarotCornerFlourish className="w-4 h-4 text-purple-400" />
+          </div>
+
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 relative z-10">
+            <div>
+              <span className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon flex items-center gap-1.5">
+                <FourPointStar className="w-2.5 h-2.5 text-purple-400" />
+                <span>Public Reference Archives</span>
+              </span>
+              <h2
+                id="library-preview-heading"
+                className="text-3xl sm:text-4xl md:text-5xl font-display font-semibold text-bone tracking-wide mt-1"
+              >
+                Explore the Witchr Library
+              </h2>
+              <p className="text-bone-muted text-sm sm:text-base mt-2 font-sans max-w-2xl leading-relaxed">
+                Grounded reference entries on pantry minerals, kitchen botanicals, candle flame dynamics, and classical intent alignments. Zero dogma, zero gatekeeping.
+              </p>
+            </div>
+            <Link
+              href="/library"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-950/70 hover:bg-purple-900 border border-purple-700/60 text-purple-200 hover:text-white text-xs font-mono uppercase tracking-wider font-semibold transition-all self-start md:self-auto shrink-0 shadow-sm"
+            >
+              <span>Enter Full Library</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {/* 4 Distinct Cards for Core Categories */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 relative z-10">
+            {/* Ingredients */}
+            <Link
+              href="/ingredients"
+              className="p-5 rounded-xl bg-[#0e0622] hover:bg-[#150930] border border-purple-900/50 hover:border-purple-500/70 transition-all duration-200 group flex flex-col justify-between space-y-4"
+            >
+              <div className="space-y-3">
+                <div className="w-9 h-9 rounded-lg bg-surface border border-purple-800/60 flex items-center justify-center text-purple-300 group-hover:border-purple-400 transition-colors">
+                  <Layers className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-purple-400 font-semibold block">
+                    Pantry Minerals
+                  </span>
+                  <h3 className="font-serif text-lg font-semibold text-bone group-hover:text-lavender-light transition-colors mt-0.5">
+                    Ingredients
+                  </h3>
+                  <p className="text-xs text-bone-dim leading-relaxed mt-1 font-sans">
+                    Salt, honey, pepper &amp; moon water—mundane physical anchors that ground boundary craft.
+                  </p>
+                </div>
+              </div>
+              <span className="text-[11px] font-mono text-purple-300 group-hover:text-lavender-light inline-flex items-center gap-1 pt-2 border-t border-purple-900/40">
+                <span>4 Verified Guides</span>
+                <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </Link>
+
+            {/* Herbs */}
+            <Link
+              href="/herbs"
+              className="p-5 rounded-xl bg-[#0e0622] hover:bg-[#150930] border border-purple-900/50 hover:border-purple-500/70 transition-all duration-200 group flex flex-col justify-between space-y-4"
+            >
+              <div className="space-y-3">
+                <div className="w-9 h-9 rounded-lg bg-surface border border-purple-800/60 flex items-center justify-center text-emerald-300 group-hover:border-emerald-400 transition-colors">
+                  <Leaf className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-semibold block">
+                    Botanical Codex
+                  </span>
+                  <h3 className="font-serif text-lg font-semibold text-bone group-hover:text-lavender-light transition-colors mt-0.5">
+                    Herbs &amp; Plants
+                  </h3>
+                  <p className="text-xs text-bone-dim leading-relaxed mt-1 font-sans">
+                    Rosemary, basil, garden sage, lavender &amp; cinnamon—kitchen lore and botanical safety.
+                  </p>
+                </div>
+              </div>
+              <span className="text-[11px] font-mono text-purple-300 group-hover:text-lavender-light inline-flex items-center gap-1 pt-2 border-t border-purple-900/40">
+                <span>12 Verified Guides</span>
+                <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </Link>
+
+            {/* Candles */}
+            <Link
+              href="/candles"
+              className="p-5 rounded-xl bg-[#0e0622] hover:bg-[#150930] border border-purple-900/50 hover:border-purple-500/70 transition-all duration-200 group flex flex-col justify-between space-y-4"
+            >
+              <div className="space-y-3">
+                <div className="w-9 h-9 rounded-lg bg-surface border border-purple-800/60 flex items-center justify-center text-amber-300 group-hover:border-amber-400 transition-colors">
+                  <Flame className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-semibold block">
+                    Flame &amp; Color
+                  </span>
+                  <h3 className="font-serif text-lg font-semibold text-bone group-hover:text-lavender-light transition-colors mt-0.5">
+                    Candle Lore
+                  </h3>
+                  <p className="text-xs text-bone-dim leading-relaxed mt-1 font-sans">
+                    White, black, red &amp; green candles—color psychology, temporal focus &amp; fire safety.
+                  </p>
+                </div>
+              </div>
+              <span className="text-[11px] font-mono text-purple-300 group-hover:text-lavender-light inline-flex items-center gap-1 pt-2 border-t border-purple-900/40">
+                <span>4 Color Guides</span>
+                <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </Link>
+
+            {/* Correspondences */}
+            <Link
+              href="/correspondences"
+              className="p-5 rounded-xl bg-[#0e0622] hover:bg-[#150930] border border-purple-900/50 hover:border-purple-500/70 transition-all duration-200 group flex flex-col justify-between space-y-4"
+            >
+              <div className="space-y-3">
+                <div className="w-9 h-9 rounded-lg bg-surface border border-purple-800/60 flex items-center justify-center text-purple-300 group-hover:border-purple-400 transition-colors">
+                  <Compass className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-purple-400 font-semibold block">
+                    Intent Matrix
+                  </span>
+                  <h3 className="font-serif text-lg font-semibold text-bone group-hover:text-lavender-light transition-colors mt-0.5">
+                    Correspondences
+                  </h3>
+                  <p className="text-xs text-bone-dim leading-relaxed mt-1 font-sans">
+                    Master tables linking herbs, candles, minerals and timing across protection, love &amp; money.
+                  </p>
+                </div>
+              </div>
+              <span className="text-[11px] font-mono text-purple-300 group-hover:text-lavender-light inline-flex items-center gap-1 pt-2 border-t border-purple-900/40">
+                <span>Master Intent Codex</span>
+                <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </Link>
+          </div>
         </div>
       </section>
 

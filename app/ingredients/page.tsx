@@ -317,12 +317,20 @@ export default function IngredientsHubPage() {
             <span>Herbs Directory</span>
             <ArrowRight className="w-3 h-3 text-lavender-moon" />
           </Link>
+          <Link href="/candles" className="hover:text-lavender-light flex items-center gap-1 min-h-[44px]">
+            <span>Candle Directory</span>
+            <ArrowRight className="w-3 h-3 text-lavender-moon" />
+          </Link>
           <Link href="/correspondences" className="hover:text-lavender-light flex items-center gap-1 min-h-[44px]">
             <span>Correspondences Codex</span>
             <ArrowRight className="w-3 h-3 text-lavender-moon" />
           </Link>
-          <Link href="/candles/black" className="hover:text-lavender-light flex items-center gap-1 min-h-[44px]">
-            <span>Candle Guides</span>
+          <Link href="/rituals" className="hover:text-lavender-light flex items-center gap-1 min-h-[44px]">
+            <span>Ritual Library</span>
+            <ArrowRight className="w-3 h-3 text-lavender-moon" />
+          </Link>
+          <Link href="/library" className="hover:text-lavender-light flex items-center gap-1 min-h-[44px]">
+            <span>Full Library Index</span>
             <ArrowRight className="w-3 h-3 text-lavender-moon" />
           </Link>
         </div>

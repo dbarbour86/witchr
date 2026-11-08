@@ -4,17 +4,52 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GrimoireStar, FourPointStar } from "./OrnateFrames";
-import { Menu, X, ArrowRight, Sparkles } from "lucide-react";
+import {
+  Menu,
+  X,
+  ArrowRight,
+  Sparkles,
+  ChevronDown,
+  Layers,
+  Leaf,
+  Flame,
+  Compass,
+  BookOpen,
+} from "lucide-react";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [libraryDropdownOpen, setLibraryDropdownOpen] = useState(false);
   const hamburgerButtonRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
-  // Close mobile menu on route change
+  // Close menus on route change
   useEffect(() => {
     setMobileMenuOpen(false);
+    setLibraryDropdownOpen(false);
   }, [pathname]);
+
+  // Click outside listener for desktop Library dropdown
+  useEffect(() => {
+    if (!libraryDropdownOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setLibraryDropdownOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setLibraryDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [libraryDropdownOpen]);
 
   // Lock body scroll and manage escape key when mobile menu is open
   useEffect(() => {
@@ -46,14 +81,62 @@ export function Header() {
     return null;
   }
 
-  const navLinks = [
-    { name: "Spell Finder", href: "/spell-finder" },
+  const libraryItems = [
+    {
+      name: "Ingredients",
+      href: "/ingredients",
+      desc: "Pantry salts, honey, water & minerals",
+      icon: <Layers className="w-4 h-4 text-purple-300" />,
+    },
+    {
+      name: "Herbs",
+      href: "/herbs",
+      desc: "Classical botanicals & kitchen craft",
+      icon: <Leaf className="w-4 h-4 text-emerald-300" />,
+    },
+    {
+      name: "Candles",
+      href: "/candles",
+      desc: "Color meanings & flame focus",
+      icon: <Flame className="w-4 h-4 text-amber-300" />,
+    },
+    {
+      name: "Correspondences",
+      href: "/correspondences",
+      desc: "Master intention alignment codex",
+      icon: <Compass className="w-4 h-4 text-purple-300" />,
+    },
+    {
+      name: "Beginner Grimoire",
+      href: "/grimoire",
+      desc: "Practical occult foundations & timing",
+      icon: <BookOpen className="w-4 h-4 text-lavender-light" />,
+    },
+    {
+      name: "All Guides & Archives",
+      href: "/library",
+      desc: "The complete master reference index",
+      icon: <Sparkles className="w-4 h-4 text-lavender-moon" />,
+      highlight: true,
+    },
+  ];
+
+  const primaryNavLinks = [
     { name: "Rituals", href: "/rituals" },
     { name: "Tarot", href: "/tarot" },
     { name: "Sigils", href: "/sigils" },
-    { name: "Grimoire", href: "/grimoire" },
+    { name: "Sanctum", href: "/sanctum/chamber" },
     { name: "About", href: "/about" },
   ];
+
+  const isLibraryActive =
+    pathname === "/library" ||
+    pathname.startsWith("/ingredients") ||
+    pathname.startsWith("/herbs") ||
+    pathname.startsWith("/candles") ||
+    pathname.startsWith("/crystals") ||
+    pathname.startsWith("/correspondences") ||
+    pathname === "/grimoire";
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#07070b]/95 backdrop-blur-md border-b border-border-subtle transition-colors">
@@ -64,11 +147,9 @@ export function Header() {
           className="flex items-center gap-2.5 text-bone hover:text-lavender-light transition-colors group py-2"
           aria-label="Witchr Homepage"
         >
-          {/* Ornate Moon & Star Emblem */}
+          {/* Ceremonial Brand Flame Emblem */}
           <div className="w-8 h-8 rounded-lg bg-surface border border-border-highlight flex items-center justify-center text-lavender group-hover:border-lavender/60 group-hover:shadow-glow-subtle transition-all">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" className="w-4 h-4 text-lavender-moon">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.85 0 3.58-.5 5.07-1.38-4.22-.92-7.37-4.68-7.37-9.19 0-4.08 2.61-7.55 6.27-8.83C14.73 2.22 13.4 2 12 2z" />
-            </svg>
+            <Flame className="w-4 h-4 text-lavender-moon group-hover:text-lavender-light transition-colors" />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
@@ -84,8 +165,83 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium tracking-wide" aria-label="Main Navigation">
-          {navLinks.map((link) => {
+        <nav className="hidden md:flex items-center gap-5 lg:gap-7 text-sm font-medium tracking-wide" aria-label="Main Navigation">
+          {/* Library Dropdown Item */}
+          <div
+            ref={dropdownRef}
+            className="relative"
+            onMouseEnter={() => setLibraryDropdownOpen(true)}
+            onMouseLeave={() => setLibraryDropdownOpen(false)}
+          >
+            <button
+              type="button"
+              onClick={() => setLibraryDropdownOpen((prev) => !prev)}
+              aria-haspopup="true"
+              aria-expanded={libraryDropdownOpen}
+              className={`inline-flex items-center gap-1 py-2 text-xs uppercase tracking-wideDisplay font-mono transition-colors relative cursor-pointer ${
+                isLibraryActive
+                  ? "text-lavender-light font-semibold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-lavender-dim after:via-lavender-light after:to-lavender-dim after:shadow-glow-purple"
+                  : "text-bone-muted hover:text-bone"
+              }`}
+            >
+              <span>Library</span>
+              <ChevronDown
+                className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                  libraryDropdownOpen ? "rotate-180 text-lavender-light" : "text-bone-dim"
+                }`}
+              />
+            </button>
+
+            {/* Desktop Dropdown Flyout Panel */}
+            {libraryDropdownOpen && (
+              <div
+                role="menu"
+                aria-label="Library Reference Menu"
+                className="absolute top-full -left-4 w-72 pt-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150"
+              >
+                <div className="p-2.5 rounded-xl bg-[#100c19] border border-purple-800/70 shadow-[0_16px_50px_rgba(10,5,25,0.95)] space-y-1">
+                  <div className="px-3 py-1.5 border-b border-purple-900/40 flex items-center justify-between">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-lavender-dim font-semibold">
+                      Reference Archives
+                    </span>
+                    <FourPointStar className="w-2.5 h-2.5 text-purple-400" />
+                  </div>
+
+                  {libraryItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      role="menuitem"
+                      onClick={() => setLibraryDropdownOpen(false)}
+                      className={`flex items-start gap-2.5 p-2.5 rounded-lg transition-colors group ${
+                        item.highlight
+                          ? "bg-purple-950/60 hover:bg-purple-900/80 border border-purple-700/50 mt-1"
+                          : "hover:bg-purple-950/40 text-bone hover:text-white"
+                      }`}
+                    >
+                      <div className="p-1 rounded bg-[#181226] border border-purple-800/60 mt-0.5 shrink-0 group-hover:border-purple-500 transition-colors">
+                        {item.icon}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-serif font-semibold text-bone group-hover:text-lavender-light flex items-center gap-1.5">
+                          <span>{item.name}</span>
+                          {item.highlight && (
+                            <ArrowRight className="w-3 h-3 text-purple-400 group-hover:translate-x-0.5 transition-transform" />
+                          )}
+                        </div>
+                        <p className="text-[11px] font-sans text-bone-dim leading-tight truncate mt-0.5">
+                          {item.desc}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Primary Nav Links */}
+          {primaryNavLinks.map((link) => {
             const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
             return (
               <Link
@@ -146,60 +302,129 @@ export function Header() {
             role="dialog"
             aria-label="Mobile Navigation"
           >
-            <div className="space-y-4 pt-1">
+            <div className="space-y-5 pt-1">
               <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
                 <span className="text-[11px] font-mono uppercase tracking-ceremonial text-lavender-dim">
-                  The Grimoire Folio
+                  Navigation &amp; Library
                 </span>
                 <GrimoireStar className="w-3.5 h-3.5 text-lavender-dim" />
               </div>
 
-              <nav className="flex flex-col gap-2" aria-label="Mobile Navigation List">
-                {/* The Sanctum Interactive Entry */}
-                <Link
-                  href="/sanctum/chamber"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-serif transition-colors min-h-[48px] ${
-                    pathname.startsWith("/sanctum")
-                      ? "bg-surface-elevated text-lavender-light font-semibold border-l-2 border-lavender shadow-glow-subtle"
-                      : "text-lavender-moon hover:text-lavender-light bg-surface/70 hover:bg-surface border border-border-highlight/60"
-                  }`}
-                >
-                  <span className="flex items-center gap-2">
-                    <FourPointStar className="w-3.5 h-3.5 text-lavender-moon" />
-                    <span>The Sanctum</span>
-                  </span>
-                  <ArrowRight className="w-4 h-4 text-purple-300" />
-                </Link>
+              {/* The Sanctum Interactive Entry */}
+              <Link
+                href="/sanctum/chamber"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-serif transition-colors min-h-[48px] ${
+                  pathname.startsWith("/sanctum")
+                    ? "bg-surface-elevated text-lavender-light font-semibold border-l-2 border-lavender shadow-glow-subtle"
+                    : "text-lavender-moon hover:text-lavender-light bg-surface/70 hover:bg-surface border border-border-highlight/60"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <FourPointStar className="w-3.5 h-3.5 text-lavender-moon" />
+                  <span>The Sanctum</span>
+                </span>
+                <ArrowRight className="w-4 h-4 text-purple-300" />
+              </Link>
 
-                {/* Primary Nav Links */}
-                {navLinks.map((link) => {
-                  const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
-                  return (
+              {/* Dedicated Library Section */}
+              <div className="space-y-2 pt-2">
+                <div className="flex items-center justify-between px-1">
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-lavender-dim font-semibold">
+                    Occult Library Archives
+                  </span>
+                  <Link
+                    href="/library"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-[10px] font-mono uppercase tracking-wider text-purple-300 hover:text-lavender-light"
+                  >
+                    View All →
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  {libraryItems.slice(0, 5).map((item) => (
                     <Link
-                      key={link.name}
-                      href={link.href}
+                      key={item.href}
+                      href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-serif transition-colors min-h-[48px] ${
-                        isActive
-                          ? "bg-surface-elevated text-lavender-light font-semibold border-l-2 border-lavender shadow-glow-subtle"
-                          : "text-bone hover:text-lavender-light bg-surface/30 hover:bg-surface border border-border-subtle/50"
+                      className={`p-3 rounded-xl border flex flex-col justify-between text-left transition-colors min-h-[64px] ${
+                        pathname === item.href || pathname.startsWith(item.href + "/")
+                          ? "bg-surface-elevated border-lavender/60 text-lavender-light"
+                          : "bg-surface/50 border-purple-900/50 hover:bg-surface text-bone hover:text-white"
                       }`}
                     >
-                      <span>{link.name}</span>
-                      <ArrowRight className="w-4 h-4 text-bone-dim" />
+                      <div className="flex items-center gap-1.5">
+                        {item.icon}
+                        <span className="font-serif text-sm font-semibold truncate">
+                          {item.name}
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-mono text-bone-dim truncate mt-1">
+                        {item.name === "Ingredients"
+                          ? "Salts & Minerals"
+                          : item.name === "Herbs"
+                          ? "Botanicals"
+                          : item.name === "Candles"
+                          ? "Flame Lore"
+                          : item.name === "Correspondences"
+                          ? "Intents"
+                          : "Foundations"}
+                      </span>
                     </Link>
-                  );
-                })}
-              </nav>
+                  ))}
+                  <Link
+                    href="/library"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-3 rounded-xl border border-purple-700/60 bg-purple-950/40 hover:bg-purple-900/60 flex flex-col justify-between text-left transition-colors min-h-[64px]"
+                  >
+                    <div className="flex items-center gap-1.5 text-lavender-light">
+                      <Sparkles className="w-4 h-4 text-lavender-moon" />
+                      <span className="font-serif text-sm font-semibold">
+                        All Guides
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-mono text-purple-300 truncate mt-1">
+                      Full Index →
+                    </span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Primary Practices Links */}
+              <div className="space-y-1.5 pt-2">
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-lavender-dim font-semibold px-1 block">
+                  Practices &amp; Tools
+                </span>
+                <nav className="flex flex-col gap-1.5" aria-label="Mobile Navigation List">
+                  {primaryNavLinks.map((link) => {
+                    const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+                    return (
+                      <Link
+                        key={link.name}
+                        href={link.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-serif transition-colors min-h-[44px] ${
+                          isActive
+                            ? "bg-surface-elevated text-lavender-light font-semibold border-l-2 border-lavender shadow-glow-subtle"
+                            : "text-bone hover:text-lavender-light bg-surface/30 hover:bg-surface border border-border-subtle/50"
+                        }`}
+                      >
+                        <span>{link.name}</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-bone-dim" />
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </div>
             </div>
 
             {/* Single Primary Mobile CTA */}
-            <div className="space-y-4 pt-6 mt-6 border-t border-border-subtle shrink-0">
+            <div className="space-y-3 pt-4 mt-4 border-t border-border-subtle shrink-0">
               <Link
                 href="/spell-finder"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2.5 py-3.5 px-5 rounded-xl bg-surface-elevated hover:bg-surface-hover text-lavender-light font-mono text-xs uppercase tracking-ceremonial font-semibold border border-lavender/50 shadow-glow-purple transition-all text-center min-h-[48px] active:scale-[0.98]"
+                className="w-full flex items-center justify-center gap-2.5 py-3 px-5 rounded-xl bg-surface-elevated hover:bg-surface-hover text-lavender-light font-mono text-xs uppercase tracking-ceremonial font-semibold border border-lavender/50 shadow-glow-purple transition-all text-center min-h-[48px] active:scale-[0.98]"
               >
                 <Sparkles className="w-4 h-4 text-lavender-moon" />
                 <span>Find a ritual</span>

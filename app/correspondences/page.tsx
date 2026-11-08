@@ -144,6 +144,93 @@ export default function CorrespondencesHubPage() {
         <CelestialDivider className="max-w-sm my-4" />
       </header>
 
+      {/* 2.5. Primary Material Categories Hub */}
+      <section aria-labelledby="material-categories-heading" className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-border pb-3 gap-2">
+          <div>
+            <span className="text-xs font-mono uppercase tracking-ceremonial text-lavender-moon flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5 text-lavender-moon" />
+              <span>Reference Directories</span>
+            </span>
+            <h2
+              id="material-categories-heading"
+              className="text-xl sm:text-2xl font-display font-semibold text-bone mt-0.5 tracking-wide"
+            >
+              Explore by Material Category
+            </h2>
+          </div>
+          <Link
+            href="/library"
+            className="text-xs font-mono uppercase tracking-wider text-purple-300 hover:text-lavender-light flex items-center gap-1"
+          >
+            <span>Master Library Index</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <Link
+            href="/ingredients"
+            className="p-4 rounded-xl bg-surface border border-purple-900/50 hover:border-purple-500/70 transition-all group flex flex-col justify-between min-h-[88px]"
+          >
+            <div className="flex items-center gap-2">
+              <Layers className="w-4 h-4 text-purple-300" />
+              <span className="font-serif text-sm font-semibold text-bone group-hover:text-lavender-light transition-colors">
+                Ingredients
+              </span>
+            </div>
+            <span className="text-[11px] font-mono text-bone-dim group-hover:text-purple-300 transition-colors mt-2">
+              Salts &amp; Minerals →
+            </span>
+          </Link>
+
+          <Link
+            href="/herbs"
+            className="p-4 rounded-xl bg-surface border border-purple-900/50 hover:border-emerald-500/70 transition-all group flex flex-col justify-between min-h-[88px]"
+          >
+            <div className="flex items-center gap-2">
+              <Leaf className="w-4 h-4 text-emerald-300" />
+              <span className="font-serif text-sm font-semibold text-bone group-hover:text-lavender-light transition-colors">
+                Herbs &amp; Plants
+              </span>
+            </div>
+            <span className="text-[11px] font-mono text-bone-dim group-hover:text-emerald-300 transition-colors mt-2">
+              12 Botanicals →
+            </span>
+          </Link>
+
+          <Link
+            href="/candles"
+            className="p-4 rounded-xl bg-surface border border-purple-900/50 hover:border-amber-500/70 transition-all group flex flex-col justify-between min-h-[88px]"
+          >
+            <div className="flex items-center gap-2">
+              <Flame className="w-4 h-4 text-amber-300" />
+              <span className="font-serif text-sm font-semibold text-bone group-hover:text-lavender-light transition-colors">
+                Candles
+              </span>
+            </div>
+            <span className="text-[11px] font-mono text-bone-dim group-hover:text-amber-300 transition-colors mt-2">
+              4 Color Guides →
+            </span>
+          </Link>
+
+          <Link
+            href="/crystals"
+            className="p-4 rounded-xl bg-surface border border-purple-900/50 hover:border-sky-500/70 transition-all group flex flex-col justify-between min-h-[88px]"
+          >
+            <div className="flex items-center gap-2">
+              <Compass className="w-4 h-4 text-sky-300" />
+              <span className="font-serif text-sm font-semibold text-bone group-hover:text-lavender-light transition-colors">
+                Crystals
+              </span>
+            </div>
+            <span className="text-[11px] font-mono text-bone-dim group-hover:text-sky-300 transition-colors mt-2">
+              Boundary Stones →
+            </span>
+          </Link>
+        </div>
+      </section>
+
       {/* 3. Core Intent Guides (Protection, Love, Cleansing) */}
       <section aria-labelledby="intent-hubs-heading" className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-border pb-4 gap-2">

@@ -18,16 +18,33 @@ export async function GET(request: Request) {
     cookieRedirect ||
     "/sanctum/chamber";
 
-  // Validate internal redirect
+  // Validate internal redirect destination path
   const safeNext =
     rawNext.startsWith("/sanctum") && !rawNext.startsWith("//") && !rawNext.includes(":")
       ? rawNext
       : "/sanctum/chamber";
 
-  // In proxy/serverless environments like Vercel preview, respect x-forwarded-host
-  const forwardedHost = request.headers.get("x-forwarded-host");
+  // Explicit, hardened host allowlist (strictly avoids blanket *.vercel.app wildcard)
+  const forwardedHost = request.headers.get("x-forwarded-host")?.trim().toLowerCase();
   const isLocal = process.env.NODE_ENV === "development";
-  const baseUrl = isLocal ? origin : forwardedHost ? `https://${forwardedHost}` : origin;
+
+  const isApprovedHost = (host: string | undefined): boolean => {
+    if (!host) return false;
+    // Production domains
+    if (host === "www.witchr.com" || host === "witchr.com") return true;
+    // Project-specific alias
+    if (host === "witchr-one.vercel.app") return true;
+    // Team-scoped Vercel preview deployments (supports legitimate hyphenated branch names)
+    if (/^witchr(-[a-z0-9]+)*-derekbarbour-9724s-projects\.vercel\.app$/.test(host)) return true;
+    // Local development hosts
+    if (isLocal && (host === "localhost:3000" || host === "127.0.0.1:3000" || host === "localhost" || host === "127.0.0.1")) {
+      return true;
+    }
+    return false;
+  };
+
+  const safeHost = isApprovedHost(forwardedHost) ? forwardedHost : null;
+  const baseUrl = isLocal ? origin : safeHost ? `https://${safeHost}` : "https://www.witchr.com";
   const targetRedirect = `${baseUrl}${safeNext}`;
 
   // Check for OAuth cancellation or provider errors (e.g. access_denied)

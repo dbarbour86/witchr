@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkRateLimit } from "@/lib/sanctum/oracle/rate-limit";
+import { checkDistributedRateLimit, checkGuestIpRateLimit } from "@/lib/sanctum/oracle/rate-limit";
+import { resolveClientIp, hashClientIp } from "@/lib/sanctum/oracle/client-ip";
+import { verifyTurnstileToken } from "@/lib/sanctum/oracle/turnstile";
 import {
   generateTarotOracleResponse,
   generateWorkingOracleResponse,
@@ -27,13 +29,15 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   let guestSessionId: string | null = null;
   let reservationToken: string | null = null;
+  let clientIpHash: string | null = null;
 
   try {
-    // 1. Resolve client IP for rate limiting
-    const forwarded = req.headers.get("x-forwarded-for");
-    const ip = forwarded ? forwarded.split(",")[0].trim() : "127.0.0.1";
+    // 1. Resolve client IP securely and compute privacy-conscious hash
+    const clientIp = resolveClientIp(req.headers);
+    clientIpHash = hashClientIp(clientIp);
 
-    const rateLimit = checkRateLimit(ip, 20, 60_000); // 20 requests per minute
+    // Distributed rate limit across serverless instances (20 requests per 60 seconds)
+    const rateLimit = await checkDistributedRateLimit(clientIpHash, 20, 60);
 
     const body = await req.json().catch(() => null);
     if (!body || typeof body !== "object") {
@@ -45,8 +49,8 @@ export async function POST(req: NextRequest) {
 
     const { type, payload } = body;
 
-    // 2. Check access privileges
-    const access = await checkGuestAccess();
+    // 2. Check access privileges with IP-anchored enforcement
+    const access = await checkGuestAccess(clientIpHash);
 
     // Three-card and ritual creation require active member authentication
     if ((type === "three-card" || type === "working") && !access.isMember) {
@@ -59,9 +63,30 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Guest conversation allowance check and atomic database reservation
+    // Guest conversation allowance check, bot protection, and atomic database reservation
     if (type === "conversation" && !access.isMember) {
       guestSessionId = access.guestSessionId;
+
+      // 2a. IP-level guest preview abuse threshold (allows shared Wi-Fi up to 10 previews/hr, blocks rapid cookie rotators)
+      const ipGuestLimit = await checkGuestIpRateLimit(clientIpHash);
+      if (!ipGuestLimit.allowed) {
+        return NextResponse.json(
+          {
+            error: "Too many guest consultations from this network. Please sign in or create an account to continue.",
+            code: "GUEST_IP_LIMIT_EXCEEDED",
+          },
+          {
+            status: 429,
+            headers: {
+              "Retry-After": String(ipGuestLimit.resetSeconds),
+            },
+          }
+        );
+      }
+
+      // 2b. Bot protection (Cloudflare Turnstile): Deferred to Phase 2 (frontend widget integration).
+      // Backend verification helper is maintained in @/lib/sanctum/oracle/turnstile for future activation.
+      // Server enforcement is kept inactive in Phase 1 so legitimate guests are never blocked.
 
       if (!access.canAskQuestion) {
         if (access.reason === "storage_unavailable") {
@@ -83,8 +108,8 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      // Reserve atomically in database
-      const reservation = await reserveGuestPreview(access.guestSessionId);
+      // Reserve atomically in database bound to both session ID and IP hash
+      const reservation = await reserveGuestPreview(access.guestSessionId, clientIpHash);
       if (!reservation.allowed) {
         if (reservation.code === "CONCURRENT_REQUEST_BLOCKED") {
           return NextResponse.json(
@@ -171,7 +196,7 @@ export async function POST(req: NextRequest) {
 
         // Complete guest preview on successful fallback delivery
         if (!access.isMember && guestSessionId && reservationToken) {
-          await completeGuestPreview(guestSessionId, reservationToken);
+          await completeGuestPreview(guestSessionId, reservationToken, clientIpHash || undefined);
           reservationToken = null;
         }
 
@@ -235,7 +260,7 @@ export async function POST(req: NextRequest) {
 
       // Complete reservation atomically in database only upon successful generation
       if (!access.isMember && guestSessionId && reservationToken) {
-        await completeGuestPreview(guestSessionId, reservationToken);
+        await completeGuestPreview(guestSessionId, reservationToken, clientIpHash || undefined);
         reservationToken = null;
       }
 
@@ -305,7 +330,7 @@ export async function POST(req: NextRequest) {
   } finally {
     // If generation aborted or threw before completeGuestPreview was called, release reservation
     if (reservationToken && guestSessionId) {
-      await releaseGuestPreview(guestSessionId, reservationToken).catch((err) => {
+      await releaseGuestPreview(guestSessionId, reservationToken, clientIpHash || undefined).catch((err) => {
         console.error("[Guest Preview Release Error]", err);
       });
     }

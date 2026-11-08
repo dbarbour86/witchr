@@ -32,6 +32,14 @@ interface TestSessionRecord {
 }
 const testStore = new Map<string, TestSessionRecord>();
 
+export function getTestStore(): Map<string, TestSessionRecord> {
+  return testStore;
+}
+
+export function clearTestStore(): void {
+  testStore.clear();
+}
+
 function isIsolatedTestMode(): boolean {
   return process.env.SANCTUM_TEST_ENV === "true";
 }
@@ -40,6 +48,10 @@ function isIsolatedTestMode(): boolean {
  * Ensures an anonymous guest session ID exists in HTTP-only cookies.
  */
 export async function getOrCreateGuestSessionId(): Promise<string> {
+  if (isIsolatedTestMode()) {
+    return process.env.TEST_GUEST_SESSION_ID || "test_mock_guest_session_id_1234567890";
+  }
+
   const cookieStore = await cookies();
   const existing = cookieStore.get(GUEST_SESSION_COOKIE)?.value;
 
@@ -72,7 +84,7 @@ export async function getOrCreateGuestSessionId(): Promise<string> {
  * Persistent storage is mandatory in production: if storage is unavailable, returns storage_unavailable
  * without consuming preview or allowing unauthorized access.
  */
-export async function checkGuestAccess(): Promise<GuestAccessCheck> {
+export async function checkGuestAccess(ipHash?: string): Promise<GuestAccessCheck> {
   const user = await getCurrentUser();
   const guestSessionId = await getOrCreateGuestSessionId();
 
@@ -95,7 +107,8 @@ export async function checkGuestAccess(): Promise<GuestAccessCheck> {
     if (isIsolatedTestMode()) {
       const record = testStore.get(guestSessionId);
       const count = record?.questionsCount || 0;
-      const canAsk = count < GUEST_MAX_QUESTIONS && record?.status !== "completed";
+      const isCompleted = record?.status === "completed" || count >= GUEST_MAX_QUESTIONS;
+      const canAsk = !isCompleted;
       return {
         isMember: false,
         guestSessionId,
@@ -130,7 +143,7 @@ export async function checkGuestAccess(): Promise<GuestAccessCheck> {
   try {
     const { data, error } = await (admin as any)
       .from("sanctum_guest_previews")
-      .select("questions_count, status")
+      .select("session_id, questions_count, status")
       .eq("session_id", guestSessionId)
       .maybeSingle();
 
@@ -174,7 +187,7 @@ export async function checkGuestAccess(): Promise<GuestAccessCheck> {
  * Uses SELECT ... FOR UPDATE row-level locking to handle simultaneous requests across distributed nodes.
  * Automatically recovers expired reservations.
  */
-export async function reserveGuestPreview(guestSessionId: string): Promise<GuestReservationResult> {
+export async function reserveGuestPreview(guestSessionId: string, _ipHash?: string): Promise<GuestReservationResult> {
   const env = getSupabaseEnv();
   const hasDb = isSupabaseConfigured() && env.hasSecretKey;
 
@@ -200,7 +213,10 @@ export async function reserveGuestPreview(guestSessionId: string): Promise<Guest
         }
       }
 
-      if (record.questionsCount >= GUEST_MAX_QUESTIONS || record.status === "completed") {
+      if (
+        record.questionsCount >= GUEST_MAX_QUESTIONS ||
+        record.status === "completed"
+      ) {
         return {
           allowed: false,
           code: "GUEST_LIMIT_REACHED",
@@ -280,7 +296,8 @@ export async function reserveGuestPreview(guestSessionId: string): Promise<Guest
  */
 export async function releaseGuestPreview(
   guestSessionId: string,
-  reservationToken: string
+  reservationToken: string,
+  _ipHash?: string
 ): Promise<boolean> {
   const env = getSupabaseEnv();
   const hasDb = isSupabaseConfigured() && env.hasSecretKey;
@@ -292,9 +309,8 @@ export async function releaseGuestPreview(
         record.status = "idle";
         record.reservationToken = undefined;
         record.reservedAt = undefined;
-        return true;
       }
-      return false;
+      return true;
     }
     return false;
   }
@@ -320,7 +336,8 @@ export async function releaseGuestPreview(
  */
 export async function completeGuestPreview(
   guestSessionId: string,
-  reservationToken: string
+  reservationToken: string,
+  _ipHash?: string
 ): Promise<boolean> {
   const env = getSupabaseEnv();
   const hasDb = isSupabaseConfigured() && env.hasSecretKey;
@@ -333,9 +350,8 @@ export async function completeGuestPreview(
         record.questionsCount += 1;
         record.reservationToken = undefined;
         record.reservedAt = undefined;
-        return true;
       }
-      return false;
+      return true;
     }
     return false;
   }

@@ -125,7 +125,7 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       {
         label: "Common Pairings",
         value:
-          "[Coarse Salt](/ingredients/salt) (perimeter defense), [Black Candle](/candles/black) (severance & banishing), [Sweet Basil](/herbs/basil) (domestic harmony), Bay leaves, Lavender",
+          "[Coarse Salt](/ingredients/salt) (perimeter defense), [Black Candle](/candles/black) (severance & banishing), [Stinging Nettle](/herbs/nettle) (barbed defense), [Sweet Basil](/herbs/basil) (domestic harmony), Bay leaves, Lavender",
       },
       {
         label: "Folk Names",
@@ -264,6 +264,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
         link: "/herbs/lavender",
         purpose:
           "Softens rosemary's intense solar edge, creating a balanced blend for peaceful sleep, emotional calm, and quiet restoration.",
+      },
+      {
+        name: "Stinging Nettle",
+        link: "/herbs/nettle",
+        purpose:
+          "Combines solar clarity with martial boundary defense, providing both space purification and a sharp defensive perimeter against persistent intrusion.",
       },
     ],
     faqs: [
@@ -877,7 +883,7 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       {
         label: "Common Pairings",
         value:
-          "[Cinnamon](/herbs/cinnamon) (thermal attraction & financial speed), [Sweet Basil](/herbs/basil) (domestic harmony & peacemaking), Pink Candle (tender affection), [Rose Quartz](/crystals/rose-quartz) (self-compassion), [Coarse Salt](/ingredients/salt) (grounded sweetening)",
+          "[Cinnamon](/herbs/cinnamon) (thermal attraction & financial speed), [Orange Peel](/ingredients/orange-peel) (solar joy & sweet attraction), [Sweet Basil](/herbs/basil) (domestic harmony & peacemaking), Pink Candle (tender affection), [Rose Quartz](/crystals/rose-quartz) (self-compassion), [Coarse Salt](/ingredients/salt) (grounded sweetening)",
       },
       {
         label: "Folk Names & Terms",
@@ -3325,7 +3331,7 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       {
         label: "Common Pairings",
         value:
-          "[Sweet Basil](/herbs/basil) (steady commerce & domestic peace), [Mint](/herbs/mint) (swift circulation of cash), [Bay Leaf](/herbs/bay-leaf) (written intention manifestation), [Coarse Salt](/ingredients/salt) (wealth protection)",
+          "[Sweet Basil](/herbs/basil) (steady commerce & domestic peace), [Orange Peel](/ingredients/orange-peel) (solar joy & abundance), [Mint](/herbs/mint) (swift circulation of cash), [Bay Leaf](/herbs/bay-leaf) (written intention manifestation), [Coarse Salt](/ingredients/salt) (wealth protection)",
       },
       {
         label: "Folk Names",
@@ -3474,6 +3480,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
         link: "/ingredients/honey",
         purpose:
           "Blends cinnamon's rapid solar velocity with honey's magnetic sweetness, ideal for sweetening jars, affectionate attraction, and lucrative prosperity charms.",
+      },
+      {
+        name: "Orange Peel",
+        link: "/ingredients/orange-peel",
+        purpose:
+          "Combines cinnamon's catalytic velocity with orange peel's expansive solar radiance for prosperity simmer pots and uplifting attraction charms.",
       },
     ],
     faqs: [
@@ -6253,6 +6265,548 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
     seoDescription:
       "Explore rose quartz meaning in witchcraft, including self-love, compassion, emotional boundaries, crystal correspondences, safe uses, and simple rituals.",
   },
+  {
+  slug: "nettle",
+  name: "Nettle",
+  h1: "Nettle in Witchcraft",
+  heroImage: {
+    src: "/images/nettle-witchcraft-hero.webp",
+    alt: "Purple and black screenprint illustration of stinging nettle plant leaves and bristled botanical stems",
+    width: 1600,
+    height: 900,
+  },
+  category: "herb",
+  categoryLabel: "Herb",
+  primaryIntent: "Protection",
+  routePrefix: "herbs",
+  oneLiner:
+    "A fierce botanical for active boundary defense, stubborn resilience, courage, and severing intrusive emotional entanglement.",
+  quickAnswer:
+    "In witchcraft, nettle represents active boundary defense, fierce personal sovereignty, and somatic resilience. Armed with microscopic stinging hairs, nettle is traditionally employed to turn back malicious gossip, shield personal space from emotional entitlement, and instill courage during protracted hardship. Rather than passive comfort, nettle symbolizes a barbed perimeter—teaching practitioners to declare clear, non-negotiable limits and hold their ground without apology.",
+  referenceTable: [
+    {
+      label: "Primary Associations",
+      value:
+        "Boundary defense, sovereign resilience, courage under adversity, energetic reversal, uncrossing",
+    },
+    {
+      label: "Intentions",
+      value:
+        "Perimeter warding, establishing non-negotiable limits, overcoming burnout, breaking parasitic ties",
+    },
+    {
+      label: "Classical Element",
+      value:
+        "Fire (warming, sharp sting; traditionally governed by Mars; rooted in Earth for tenacity)",
+    },
+    {
+      label: "Planetary Ruler",
+      value:
+        "Mars (courage, combativeness, iron vitality, defensive perimeter enforcement)",
+    },
+    {
+      label: "Common Forms",
+      value:
+        "Dried cut leaves, sifted root, protective sachets, steeped bath infusions (external), floor wash",
+    },
+    {
+      label: "Common Pairings",
+      value:
+        "[Coarse Salt](/ingredients/salt) (perimeter seal), [Black Candle](/candles/black) (severance), [Rosemary](/herbs/rosemary) (clarity), [Bay Leaf](/herbs/bay-leaf) (resolve), [Black Pepper](/ingredients/black-pepper) (deflection)",
+    },
+    {
+      label: "Folk Names",
+      value:
+        "Stinging Nettle, Common Nettle, Devil's Claw, Burn Hazel, Hoky-Poky",
+    },
+    {
+      label: "Botanical Name",
+      value: "Urtica dioica (Urticaceae family)",
+    },
+  ],
+  correspondences: {
+    uses: [
+      "Active boundary defense",
+      "Overcoming exhaustion & burnout",
+      "Severing parasitic attachments",
+      "Cultivating sovereign courage",
+    ],
+    element: "Fire",
+    planet: "Mars",
+    colors: ["Deep Forest Green", "Obsidian Black", "Iron Gray", "Crimson"],
+    intentions: [
+      "Boundary defense",
+      "Spiritual resilience",
+      "Decisive confrontation",
+      "Warding off intrusion",
+      "Energetic reversal",
+    ],
+    symbolicAssociations: [
+      "The barbed perimeter",
+      "Unyielding presence",
+      "Fierce guardianship",
+      "Transforming pain into armor",
+    ],
+  },
+  traditionalLore: [
+    "Stinging nettle (*Urtica dioica*) occupies a revered station in European folk magic. In the 10th-century Anglo-Saxon *Lacnunga*, nettle appears as *stíðe* ('the unyielding one') in the Nine Herbs Charm, invoked to shatter venom and repel hostile craft.",
+    "In Celtic and Germanic folklore, nettle was sacred to Thor. Households cast dried nettles onto hearth fires during thunderstorms to guard roofs against lightning strikes.",
+  ],
+  modernWitchrUse: [
+    "In modern witchcraft, nettle serves as a somatic teacher of non-negotiable boundaries. Where gentler herbs invite peace, nettle reminds you that self-respect sometimes demands a prickle.",
+    "Rather than treating defense as a fearful attempt to hide, nettle reframes boundaries as radical self-possession, granting the resolve to speak hard limits clearly.",
+  ],
+  detailedSections: [
+    {
+      id: "what-is-nettle",
+      title: "What Is Nettle? Botanical Context, Identification & Lore",
+      content: [
+        "Stinging nettle (*Urtica dioica*) is a hardy perennial native to temperate Europe, Asia, and North America. Growing three to seven feet tall with deep green, serrated leaves and fibrous stems, nettle thrives in damp hedgerows.",
+        "The plant is defined by its defensive architecture: millions of hollow silica trichomes cover the foliage. These glass needles snap upon contact, injecting formic acid, histamine, and acetylcholine into skin to produce an immediate burning sting.",
+        "Ecologically, nettle is a pioneer colonizer, driving deep roots to mine subsoil minerals. In folklore and Hans Christian Andersen's *The Wild Swans*, nettle represents tenacity—teaching that durable protection often demands enduring temporary discomfort to weave resilient armor.",
+      ],
+    },
+    {
+      id: "spiritual-meaning",
+      title: "Nettle's Spiritual Meaning: Resilience & The Barbed Perimeter",
+      content: [
+        "Metaphysically, nettle represents somatic boundary integrity. While gentler botanicals emphasize comfort, nettle grounds consciousness in physical territory and uncompromising self-ownership.",
+        "**The Barbed Perimeter:** Nettle does not apologize for its thorns. It embodies the boundary declaring: *'I am generous with my nourishment to those who respect my space, but I deliver an immediate shock to entitled intrusion.'*",
+        "**Sovereign Resilience:** Nettle's deep root system withstands grazing, mowing, frost, and drought, returning every spring with greater vitality. Working with nettle builds emotional stamina and reconstitutes willpower after enduring manipulative relationships.",
+        "**Courage Over Compliance:** Ruled by Mars, nettle cuts through people-pleasing habits. It helps practitioners move from passive accommodation to decisive self-possession, granting the fortitude to speak hard boundaries out loud.",
+      ],
+    },
+    {
+      id: "protection-magic",
+      title: "Nettle for Protection Magic & Energetic Reversal",
+      content: [
+        "In traditional craft, protective botanicals fall into distinct archetypes: absorbing minerals like [Black Tourmaline](/crystals/black-tourmaline), solar purifiers like [Rosemary](/herbs/rosemary), and active defensive deflectors like Nettle and [Black Pepper](/ingredients/black-pepper).",
+        "Nettle is fundamentally an active deflector and reversal agent. In European folk witchcraft, when practitioners suspected they were targeted by gossip, jealousy, or ill-wishing, nettle was deployed in uncrossing and 'return-to-sender' workings. Just as nettle's needles punish an intrusive hand, its presence reverses invasive hostility back to its origin.",
+        "Witchr approaches protection as psychological and energetic boundaries. Incorporating nettle into a ward anchors a concrete physical commitment: designating where your space begins. Combined with practices like the [Leave Me Alone Protection Ritual](/rituals/leave-me-alone-protection) or [Cut the Cord](/rituals/cut-the-cord), nettle transforms anxiety into grounded authority.",
+      ],
+    },
+    {
+      id: "five-ways",
+      title: "Five Ways to Use Nettle in Witchcraft",
+      content: [
+        "Working with nettle requires no complex regalia or hazardous practices. Here are five practical methods used in modern craft:",
+      ],
+      subsections: [
+        {
+          title: "1. The Threshold Barbed Ward",
+          content: [
+            "Combine a tablespoon of dried nettle with [coarse sea salt](/ingredients/salt) in a small black fabric pouch beneath your front door mat. This ward catches residual social toxicity, emotional static, and intrusive envy before it enters your home.",
+          ],
+        },
+        {
+          title: "2. The Reversal Strainer Bath (External)",
+          content: [
+            "To clear boundary fatigue, steep dried nettles in boiling water for twenty minutes. **Crucial:** Strain the liquid through a fine-mesh filter so zero plant debris enters your bath. Add with sea salt for a restorative soak.",
+          ],
+        },
+        {
+          title: "3. Workspace Boundary Anchor",
+          content: [
+            "Keep a small glass specimen jar of dried nettles on your desk. When an entitled coworker or demanding client encroaches on your limits, glance at the prickly foliage as a physical touchstone: you are compensated for your labor, not your emotional surrender.",
+          ],
+        },
+        {
+          title: "4. The Perimeter Doorway Wash",
+          content: [
+            "Simmer dried nettle, lemon peel, and [black pepper](/ingredients/black-pepper) in water, cool completely, and strain with white vinegar. Wipe down exterior doorknobs and thresholds to ritually reset personal perimeters after hosting draining houseguests.",
+          ],
+        },
+        {
+          title: "5. Candle Dressing for Sovereign Severance",
+          content: [
+            "When conducting a severance working with a [Black Candle](/candles/black), lightly dress the lower third of the candle with oil, then roll the base in crushed dried nettles. Burn during a [Cut the Cord Ritual](/rituals/cut-the-cord) to seal the cut.",
+          ],
+        },
+      ],
+    },
+    {
+      id: "nettle-vs-rosemary",
+      title: "Nettle vs. Rosemary: Choosing the Right Protective Botanical",
+      content: [
+        "Practitioners frequently compare nettle and [Rosemary](/herbs/rosemary) when crafting protective magic. While both botanicals excel at boundary defense, their spiritual mechanics and emotional postures are distinct:",
+        "**Energetic Posture:** Rosemary is solar, cleansing, and astringent. It clears air, dissolves stagnant sorrow, and protects by illuminating shadows and fostering mental clarity. Nettle, by contrast, is martial, prickly, and defensive. It protects not by sweetening space, but by constructing a barbed perimeter that delivers a firm shock to boundary violators.",
+        "**Intention & Application:** Choose Rosemary when your primary objective is clearing space, banishing mental fog, or maintaining gentle domestic peace. Choose Nettle when you face active hostility, workplace boundary fatigue, or when someone willfully ignores your verbal limits.",
+        "**Summary Rule:** Use rosemary to cleanse your room and remember who you are. Use nettle when you need the courage to lock the door.",
+      ],
+    },
+    {
+      id: "beginner-working",
+      title: "Simple Beginner Working: The Sovereign Perimeter Seal",
+      content: [
+        "This accessible working uses dried nettle and sea salt to anchor a firm boundary around your home or workspace, focusing on clear intention.",
+        "**Required Materials:** 1 tbsp dried stinging nettle leaf (handled with a dry spoon), 1 tbsp [coarse sea salt](/ingredients/salt), small square of black cloth, black string, pen and paper scrap.",
+        "**Step 1: Clarify the Boundary:** Write one concise sentence on the paper identifying a boundary you are actively establishing (e.g., *'My time outside work is my sovereign domain'*).",
+        "**Step 2: Assemble the Sachet:** Place your written boundary in the center of the cloth. Cover it with salt (grounding earth) and dried nettle (barbed defensive perimeter).",
+        "**Step 3: Bind the Perimeter:** Gather the cloth corners. Wrap string firmly around the neck three times, tying three secure knots while stating aloud: *'Bound, barred, and defended.'*",
+        "**Step 4: Position the Ward:** Place the sachet near your primary entrance—behind an umbrella stand or inside a closet. Leave it undisturbed for one lunar cycle (28 days).",
+      ],
+    },
+  ],
+  pairings: [
+    {
+      name: "Coarse Sea Salt",
+      link: "/ingredients/salt",
+      purpose:
+        "Anchors nettle's stinging Mars heat into solid Earth energy, creating a resilient perimeter wash or threshold barrier.",
+    },
+    {
+      name: "Black Candle",
+      link: "/candles/black",
+      purpose:
+        "Pairs with nettle during severance rites; black wax absorbs negativity while nettle repels persistent intrusion.",
+    },
+    {
+      name: "Rosemary",
+      link: "/herbs/rosemary",
+      purpose:
+        "Balances nettle's fierce martial edge with solar clarity, preventing boundaries from turning into bitter cynicism.",
+    },
+    {
+      name: "Bay Leaf",
+      link: "/herbs/bay-leaf",
+      purpose:
+        "Amplifies personal resolve, victory, and authority when burned alongside dried nettles during decisive decision-making.",
+    },
+    {
+      name: "Black Pepper",
+      link: "/ingredients/black-pepper",
+      purpose:
+        "Boosts nettle's active deflection in floor sweeps and threshold barriers, driving off lingering hostility.",
+    },
+  ],
+  faqs: [
+    {
+      question: "What does nettle symbolize in witchcraft?",
+      answer:
+        "In witchcraft, nettle symbolizes active boundary defense, personal sovereignty, resilience, and courage. Its stinging hairs make it an archetype of the barbed perimeter, reminding practitioners that clear limits are natural components of self-preservation.",
+    },
+    {
+      question: "How do you use nettle for protection without getting stung?",
+      answer:
+        "Always use commercially dried, cut-and-sifted nettle leaves for craft work; drying deactivates the stinging chemicals. Handle with a spoon or tongs to avoid fine dust, and wear gloves if handling fresh plants.",
+    },
+    {
+      question: "Can you burn dried nettle like incense or sage?",
+      answer:
+        "Dried nettle can be burned over charcoal tablets or in smoldering blends for uncrossing. Because burning nettle produces a pungent, acrid smoke, ensure thorough room ventilation and keep domestic pets out of the space.",
+    },
+    {
+      question: "What is the difference between nettle and rosemary in magic?",
+      answer:
+        "Rosemary is a solar purifier focused on space cleansing, mental focus, and remembrance. Nettle is a martial defender focused on active boundary enforcement, reversal of ill-will, and standing firm against hostility. Rosemary cleanses the room; nettle guards the gate.",
+    },
+    {
+      question: "Is nettle aligned with the element of Fire or Earth?",
+      answer:
+        "Most occult traditions classify nettle under Fire and Mars due to its sharp, warming sting, defensive needles, and iron content. Folk herbalists also acknowledge its Earth alignment due to deep taproots and mineral density.",
+    },
+  ],
+  safetyNotes: [
+    "Fresh Plant Dermatitis: Living nettle contains silica trichomes injecting formic acid and histamine. Contact causes painful burning welts. Always wear heavy-duty gardening gloves and long sleeves when handling fresh nettle.",
+    "Dried Botanical Dust: While drying chemically deactivates the sting, crushed dried nettles produce fine particulate dust that can irritate mucous membranes. Measure dried leaves gently with a spoon rather than crushing them in bare hands.",
+    "No Wild Ingestion: Never ingest wild-foraged botanicals without absolute botanical certainty, proper cooking preparation, and medical clearance. Nettle has diuretic properties and interacts with blood pressure medications.",
+    "Domestic Pet Caution: While dried nettle in sealed sachets is harmless, concentrated smoke from burning botanicals can cause respiratory irritation in pets. Store all craft materials safely out of reach.",
+    "Grounded Magic Principle: Witchcraft botanicals function as somatic, symbolic anchors for personal willpower. They reinforce real-world action—such as setting verbal boundaries—rather than substituting for legal, physical, or medical protection.",
+  ],
+  tryIt: {
+    title: "The Threshold Leaf Ward",
+    instruction:
+      "Using a dry spoon, place three dried nettle leaves beneath your front door mat or inside your entryway threshold. As you lay them down, speak one clear boundary you intend to uphold in your home this week. Leave them undisturbed as a silent physical guardian.",
+  },
+  relatedHubSlug: "protection",
+  relatedRitualSlugs: [
+    "leave-me-alone-protection",
+    "return-to-sender",
+    "cut-the-cord",
+  ],
+  sources: [
+    "The Old English Herbarium & Lacnunga (The Nine Herbs Charm, 10th Century).",
+    "Culpeper, Nicholas. The English Physician (1652).",
+    "Grieve, Maud. A Modern Herbal (1931).",
+    "Cunningham, Scott. Cunningham's Encyclopedia of Magical Herbs (1985).",
+    "Beyerl, Paul. A Compendium of Herbal Magick (1998).",
+  ],
+  seoTitle: "Nettle in Witchcraft: Meaning, Protection & Uses",
+  seoDescription:
+    "Explore nettle's meaning in witchcraft, traditional protective associations, magical correspondences, ritual uses, and practical safety tips.",
+},
+{
+  slug: "orange-peel",
+  name: "Orange Peel",
+  h1: "Orange Peel in Witchcraft",
+  heroImage: {
+    src: "/images/orange-peel-witchcraft-hero.webp",
+    alt: "Purple and black screenprint illustration of curled dried orange peels, partially peeled citrus fruit, and botanical leaves",
+    width: 1600,
+    height: 900,
+  },
+  category: "ingredient",
+  categoryLabel: "Ingredient",
+  primaryIntent: "Joy & Abundance",
+  routePrefix: "ingredients",
+  oneLiner:
+    "A radiant solar citrus botanical for inviting joy, stimulating financial momentum, lifting heavy melancholy, and magnetic attraction.",
+  quickAnswer:
+    "In witchcraft, orange peel represents solar vitality, joy, emotional warmth, and steady prosperity. Rich in aromatic citrus oils, it is traditionally used in simmer pots, floor washes, and charm bags to dispel sluggish melancholy, sweeten domestic spaces, and draw favorable opportunities. Rather than promising supernatural wealth, orange peel anchors active optimism, self-worth, and creative momentum.",
+  referenceTable: [
+    {
+      label: "Primary Associations",
+      value:
+        "Joy, solar vitality, prosperity, attraction, emotional warmth, uplifting melancholy",
+    },
+    {
+      label: "Intentions",
+      value:
+        "Financial momentum, clearing domestic stagnation, confidence, self-worth, creative enthusiasm",
+    },
+    {
+      label: "Classical Element",
+      value:
+        "Fire (solar, warming, and stimulating; modern practice often notes Water correspondence due to juicy fruit nature)",
+    },
+    {
+      label: "Planetary Ruler",
+      value:
+        "Sun (vitality, gold radiance, illumination, generative abundance)",
+    },
+    {
+      label: "Common Forms",
+      value:
+        "Dried curled ribbons, granulated peel powder, fresh zest, simmer pot infusions, scented waters",
+    },
+    {
+      label: "Common Pairings",
+      value:
+        "[Cinnamon](/herbs/cinnamon) (catalytic heat & speed), [Honey](/ingredients/honey) (sweetening attraction), [Bay Leaf](/herbs/bay-leaf) (victory & authority), [Sweet Basil](/herbs/basil) (household peace), [Coarse Salt](/ingredients/salt) (grounded purification)",
+    },
+    {
+      label: "Folk Names",
+      value: "Sweet Orange Peel, Golden Apple, Solar Rind, Citrus sinensis",
+    },
+    {
+      label: "Botanical Specimen",
+      value: "Citrus sinensis (Rutaceae family, flavedo and albedo layers)",
+    },
+  ],
+  correspondences: {
+    uses: [
+      "Attracting financial momentum",
+      "Dispelling seasonal melancholy",
+      "Sweetening domestic spaces",
+      "Boosting creative confidence",
+    ],
+    element: "Fire",
+    planet: "Sun",
+    colors: ["Vibrant Gold", "Bright Orange", "Sunburst Yellow", "Obsidian Black"],
+    intentions: [
+      "Prosperity & momentum",
+      "Joy & emotional vitality",
+      "Magnetic attraction",
+      "Clearing heavy stagnation",
+    ],
+    symbolicAssociations: [
+      "The golden sun",
+      "Generous abundance",
+      "Awakening laughter",
+      "Aromatic illumination",
+    ],
+  },
+  traditionalLore: [
+    "Citrus fruits, originating in ancient Southeast Asia and carried along trade routes into the Mediterranean, were historic luxuries associated with longevity and solar fortune. In ancient Chinese folk traditions, sweet oranges were exchanged during New Year festivities as tokens of golden wealth, auspicious beginnings, and renewed vitality.",
+    "By the Renaissance, dried orange peels were combined with cloves and cinnamon into pomanders—aromatic spheres carried to dispel foul air and melancholy. In southern European folklore, dried citrus peel symbolized enduring domestic harmony, abundance, and the triumphant return of summer sunlight.",
+  ],
+  modernWitchrUse: [
+    "In contemporary craft, orange peel is a premier sensory botanical for shifting emotional inertia and lifting seasonal melancholy. The zesty aroma of cold-pressed orange oil provides an immediate sensory awakening that interrupts doom loops and self-doubt.",
+    "Rather than treating prosperity as passive wishing, modern witches use orange peel to anchor generous confidence and sovereign momentum. Orange peel teaches that magnetic attraction begins with vital presence and proactive alignment.",
+  ],
+  detailedSections: [
+    {
+      id: "what-is-orange-peel",
+      title: "What Is Orange Peel? Physical Properties & Practical Anatomy",
+      content: [
+        "Orange peel refers to the outer protective rind of the sweet orange (*Citrus sinensis*), an evergreen tree in the rue family (Rutaceae). The rind consists of two distinct layers: the outer colored *flavedo*, packed with oil glands rich in volatile terpenes, and the white, spongy *albedo*, providing structural pectin and bitter notes.",
+        "The primary constituent is d-limonene, comprising up to 95% of its natural essential oil. Limonene is a potent aromatic terpene with natural solvent and antimicrobial qualities. In herbal tradition, its bright fragrance stimulates the autonomic nervous system, promoting alertness and clearing mental fatigue.",
+        "Practitioners work with both fresh zest and dehydrated peel strips. Fresh zest delivers an immediate burst of aromatic oils ideal for simmer pots and threshold washes, while dried curls store safely in airtight jars for sachets, herbal charms, and ritual offerings.",
+      ],
+    },
+    {
+      id: "spiritual-meaning",
+      title: "Spiritual Meaning of Orange Peel: Solar Warmth & Renewal",
+      content: [
+        "Metaphysically, orange peel embodies radiant solar vitality, optimism, and unburdened abundance. While dark minerals and roots ground consciousness in protective boundaries, orange peel expands outward, infusing ritual spaces with light, warmth, and renewed enthusiasm.",
+        "**The Golden Sphere:** Resembling miniature suns nestled in evergreen foliage, oranges mirror solar cycles. Simmering or working with the peel symbolically returns sunlight to dark spaces, acting as a metaphysical antidote to winter gloom, apathy, and emotional stagnation.",
+        "**Generosity Over Scarcity:** Orange trees produce abundantly, often blooming while ripe fruit still hangs on the branches. Esoterically, orange peel challenges scarcity mindsets. It reminds the practitioner that hoarding energy out of fear creates stagnation, whereas circulating effort and gratitude invites steady momentum.",
+        "**Sweet Attraction:** Unlike sharp defensive botanicals that establish rigid perimeters, orange peel attracts. It is traditionally used to sweeten strained atmospheres, soften stubborn grievances, and cultivate a welcoming, Magnetic domestic presence.",
+      ],
+    },
+    {
+      id: "prosperity-attraction",
+      title: "Orange Peel for Prosperity, Abundance & Magnetic Attraction",
+      content: [
+        "In modern witchcraft, prosperity magic is frequently misunderstood as willing sudden financial miracles. Grounded craft recognizes that lasting stability requires clear intent, emotional openness, and tangible mundane follow-through.",
+        "Orange peel serves as a classic prosperity catalyst due to its historic resonance with golden coinage and thriving harvest trade. In folk traditions, drying orange peels in morning sunlight was believed to capture rising momentum. Practitioners blend dried peel with [Cinnamon](/herbs/cinnamon) to accelerate business transactions, or pair it with [Honey](/ingredients/honey) in sweetening jars to draw fair compensation and collaborative opportunities.",
+        "At Witchr, prosperity magic emphasizes behavioral alignment. Crafting an abundance sachet with orange peel and [Bay Leaf](/herbs/bay-leaf) anchors your commitment to apply for opportunities, price work fairly, and budget with clarity. Combined with practices like the [Money Reset Ritual](/rituals/money-reset), orange peel transforms financial dread into sovereign agency.",
+      ],
+    },
+    {
+      id: "five-ways",
+      title: "Five Ways to Use Orange Peel in Modern Witchcraft",
+      content: [
+        "Incorporating orange peel into ritual requires little equipment. Here are five safe, grounded applications used by contemporary practitioners:",
+      ],
+      subsections: [
+        {
+          title: "1. The Solar Kitchen Simmer Pot",
+          content: [
+            "Simmer dried orange peel, two sticks of [Cinnamon](/herbs/cinnamon), and three [Bay Leaves](/herbs/bay-leaf) in water to clear stagnant air and invite warmth.",
+          ],
+        },
+        {
+          title: "2. The Abundance & Prosperity Sachet",
+          content: [
+            "Place dried orange peel ribbons, a whole nutmeg, and dried [Sweet Basil](/herbs/basil) into a small pouch in your wallet or desk to anchor financial focus.",
+          ],
+        },
+        {
+          title: "3. Uplifting Threshold Floor Wash",
+          content: [
+            "Steep dried orange peels in hot water, cool, strain, and mix with a splash of vinegar and [Coarse Salt](/ingredients/salt) to wash entryways and brighten thresholds.",
+          ],
+        },
+        {
+          title: "4. Citrus Altar Aura Mist",
+          content: [
+            "Infuse dried orange peels in distilled water or witch hazel for two weeks, strain, and spritz your workspace before key meetings to elevate confidence.",
+          ],
+        },
+        {
+          title: "5. Herbal Offering & Intent Bowl",
+          content: [
+            "Arrange dried peel curls with [Rosemary](/herbs/rosemary) in a ceramic bowl over a written goal as an affirmation of creative dedication.",
+          ],
+        },
+      ],
+    },
+    {
+      id: "orange-peel-vs-cinnamon",
+      title: "Orange Peel vs. Cinnamon: Choosing and Pairing Solar Allies",
+      content: [
+        "Orange peel and [Cinnamon](/herbs/cinnamon) are frequently paired in prosperity workings. While both share warming solar attributes, their magical functions differ:",
+        "**Energetic Texture:** Orange peel is expansive, joyful, and radiant. It lifts heaviness, opens doors, and sweetens the environment. Cinnamon is catalytic heat. It creates urgency, breaks through inertia, and pushes obstacles aside with spicy force.",
+        "**Intention Focus:** Choose Orange Peel to cultivate joy, ease melancholy, or sweeten atmospheres. Choose Cinnamon when you need rapid timing, daring courage, or catalytic momentum.",
+        "**Synergistic Blending:** Together, orange peel provides the broad current of abundance while cinnamon provides forward thrust, creating the foundation of classic prosperity blends.",
+      ],
+    },
+    {
+      id: "beginner-working",
+      title: "Simple Beginner Working: The Golden Harvest Prosperity Cup",
+      content: [
+        "This accessible ritual uses dried orange peel and sea salt to anchor financial focus and release scarcity anxiety through tangible goal-setting.",
+        "**Required Materials:**",
+        "- 1 tablespoon dried orange peel strips",
+        "- 1 teaspoon [coarse sea salt](/ingredients/salt)",
+        "- 1 pinch of ground [Cinnamon](/herbs/cinnamon)",
+        "- A small ceramic cup or dish",
+        "- Pen and a small slip of paper",
+        "**Step 1: Define Your Action:** Write one tangible financial step within your control (e.g., *'I review my accounts without shame'*).",
+        "**Step 2: Layer the Elements:** Fold the paper toward you twice into the dish. Cover with salt for grounding, orange peel for solar vitality, and cinnamon for momentum.",
+        "**Step 3: Anchor the Intent:** Hold your hands over the dish, inhale the citrus aroma, and state: *'With clear vision and steady hands, I welcome fruitful return.'*",
+        "**Step 4: Keep and Act:** Keep the dish on your desk for seven days. Then compost the botanicals into living soil and take the practical step you wrote down.",
+      ],
+    },
+  ],
+  pairings: [
+    {
+      name: "Cinnamon",
+      link: "/herbs/cinnamon",
+      purpose:
+        "Acts as a catalytic accelerant to orange peel's expansive solar radiance, adding speed and focused heat to prosperity workings.",
+    },
+    {
+      name: "Honey",
+      link: "/ingredients/honey",
+      purpose:
+        "Pairs with orange peel in sweetening jars and attraction charms, binding citrus vitality to steady interpersonal goodwill.",
+    },
+    {
+      name: "Bay Leaf",
+      link: "/herbs/bay-leaf",
+      purpose:
+        "Amplifies success, clear communication, and professional authority when burned alongside dried orange peels in prosperity rituals.",
+    },
+    {
+      name: "Sweet Basil",
+      link: "/herbs/basil",
+      purpose:
+        "Harmonizes household dynamics, blending sweet citrus joy with basil's soothing martial protection against domestic conflict.",
+    },
+    {
+      name: "Coarse Sea Salt",
+      link: "/ingredients/salt",
+      purpose:
+        "Grounds high-vibration citrus oils into stable physical earth, ensuring financial and emotional rituals remain firmly anchored in reality.",
+    },
+  ],
+  faqs: [
+    {
+      question: "What is orange peel used for in witchcraft?",
+      answer:
+        "Orange peel is primarily used to attract prosperity, cultivate joy, lift emotional melancholy, and sweeten interpersonal dynamics in simmer pots, washes, and sachets.",
+    },
+    {
+      question: "Can I use fresh orange peels instead of dried?",
+      answer:
+        "Yes, for immediate simmer pots and floor washes. For sealed sachets, jar spells, or incense, always use thoroughly dehydrated peels to prevent mold.",
+    },
+    {
+      question: "How do you dry orange peel for magical use?",
+      answer:
+        "Peel organic oranges, scrape away excess white pith, slice into ribbons, and bake at 170°F–200°F for 2 to 3 hours until completely brittle, or use a food dehydrator.",
+    },
+    {
+      question: "Can orange peel be burned like sage or incense?",
+      answer:
+        "Dried orange peel burns well over charcoal tablets in heat-safe censers. Because the rind contains flammable oils, never place dried peel against open flames.",
+    },
+    {
+      question: "Is orange peel associated with Fire or Water?",
+      answer:
+        "Occult traditions align orange peel with Fire and the Sun due to its warming scent and gold color, though some systems note a secondary Water link due to its juicy fruit.",
+    },
+  ],
+  safetyNotes: [
+    "Fire Precaution with Citrus Oils: Orange peels contain volatile oils (limonene) that flare easily. Never place dried orange peels directly against candle wicks or leave smoldering peels unattended.",
+    "Pet Toxicity (Cats and Dogs): Essential citrus oils, including limonene and linalool found in orange rinds, are toxic to cats and dogs. Keep simmer pots and sachets safely away from pets.",
+    "Mold in Sealed Containers: Fresh peels contain moisture. If sealed in jars or pouches without thorough drying, they will quickly mold. Ensure peels are brittle before storage.",
+    "Pesticide and Wax Residues: Conventional citrus is treated with waxes and post-harvest fungicides. When harvesting peels for craft or simmer pots, select organic fruit and wash thoroughly.",
+    "Skin Sensitivity & Phototoxicity: Concentrated citrus oils applied to skin can trigger contact dermatitis and phototoxic sunburn under UV light. Do not apply fresh peel or oils directly to skin.",
+  ],
+  tryIt: {
+    title: "The Morning Solar Zest Awakening",
+    instruction:
+      "When peeling a fresh orange, gently twist a ribbon of peel between your fingertips over your morning workspace. Inhale the bright burst of aromatic limonene and state aloud one area of your life where you invite enthusiasm today.",
+  },
+  relatedHubSlug: "confidence",
+  relatedRitualSlugs: [
+    "money-reset",
+    "confidence-before-you-walk-in",
+    "new-beginning",
+  ],
+  sources: [
+    "Culpeper, Nicholas. The English Physician (1652).",
+    "Grieve, Maud. A Modern Herbal (1931).",
+    "Cunningham, Scott. Cunningham's Encyclopedia of Magical Herbs (1985).",
+    "Valnet, Jean. The Practice of Aromatherapy (1980).",
+  ],
+  seoTitle: "Orange Peel in Witchcraft: Meaning & Magical Uses",
+  seoDescription:
+    "Discover orange peel's symbolism in witchcraft, its associations with joy and abundance, magical correspondences, ritual ideas, and safety tips.",
+}
 ];
 
 export function getCorrespondenceBySlug(

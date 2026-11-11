@@ -171,6 +171,17 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
           "Keep whole dried cloves in an entryway dish or carry in a sachet to reinforce firm boundaries and deter intrusive energy.",
         sensoryAnchor: "Intense, warming, woody eugenol fragrance",
       },
+      {
+        name: "Stinging Nettle",
+        slug: "nettle",
+        url: "/herbs/nettle",
+        categoryLabel: "Herb / Botanical",
+        role: "Active Boundary Defense & Energetic Reversal",
+        howToUse:
+          "Tuck dried leaves beneath entry thresholds, carry in a boundary sachet, or steep into a protective perimeter wash.",
+        sensoryAnchor: "Barbed, fibrous leaf texture and pungent earthy bite",
+        badge: "Barbed Shield",
+      },
     ],
     candles: [
       {

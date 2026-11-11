@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { getCorrespondencesByCategory } from "@/content/correspondences";
 import {
   JsonLd,
@@ -149,29 +150,65 @@ export default function IngredientsHubPage() {
               </div>
 
               <div className="space-y-4">
-                {/* Meta Badges */}
-                <div className="flex items-center justify-between gap-2 flex-wrap">
-                  <span className="text-[11px] font-mono uppercase tracking-ceremonial px-2.5 py-0.5 rounded bg-surface-elevated border border-border-highlight text-lavender-moon font-medium">
-                    {item.primaryIntent}
-                  </span>
-                  {item.correspondences.element && (
-                    <span className="text-[11px] font-mono text-bone-dim uppercase tracking-wider">
-                      {item.correspondences.element} · {item.correspondences.planet || "Earth"}
-                    </span>
-                  )}
-                </div>
+                {/* Header: Thumbnail + Name/Intent when artwork exists, or text-only fallback */}
+                {item.heroImage?.src ? (
+                  <div className="flex items-center gap-3.5 sm:gap-4">
+                    <div className="w-[44px] h-[44px] sm:w-[56px] sm:h-[56px] shrink-0 rounded-xl bg-surface-elevated border border-border-highlight flex items-center justify-center p-1 overflow-hidden">
+                      <Image
+                        src={item.heroImage.src}
+                        alt={item.heroImage.alt || item.name}
+                        width={56}
+                        height={56}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <div className="space-y-1 sm:space-y-1.5 min-w-0">
+                      <div>
+                        <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-ceremonial px-2.5 py-0.5 rounded bg-surface-elevated border border-border-highlight text-lavender-moon font-medium inline-block">
+                          {item.primaryIntent}
+                        </span>
+                      </div>
+                      <h3 className="font-display text-2xl sm:text-3xl font-bold text-bone group-hover:text-lavender-light transition-colors tracking-wide truncate">
+                        <Link
+                          href={`/ingredients/${item.slug}`}
+                          className="focus:outline-none focus:underline"
+                        >
+                          {item.name}
+                        </Link>
+                      </h3>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* Meta Badges */}
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <span className="text-[11px] font-mono uppercase tracking-ceremonial px-2.5 py-0.5 rounded bg-surface-elevated border border-border-highlight text-lavender-moon font-medium">
+                        {item.primaryIntent}
+                      </span>
+                      {item.correspondences.element && (
+                        <span className="text-[11px] font-mono text-bone-dim uppercase tracking-wider">
+                          {item.correspondences.element} · {item.correspondences.planet || "Earth"}
+                        </span>
+                      )}
+                    </div>
 
-                {/* Title & One-Liner */}
+                    {/* Title */}
+                    <div>
+                      <h3 className="font-display text-2xl font-bold text-bone group-hover:text-lavender-light transition-colors tracking-wide">
+                        <Link
+                          href={`/ingredients/${item.slug}`}
+                          className="focus:outline-none focus:underline"
+                        >
+                          {item.name}
+                        </Link>
+                      </h3>
+                    </div>
+                  </>
+                )}
+
+                {/* Subtitle (Full Width) */}
                 <div>
-                  <h3 className="font-display text-2xl font-bold text-bone group-hover:text-lavender-light transition-colors tracking-wide">
-                    <Link
-                      href={`/ingredients/${item.slug}`}
-                      className="focus:outline-none focus:underline"
-                    >
-                      {item.name}
-                    </Link>
-                  </h3>
-                  <p className="text-xs font-mono text-lavender-dim uppercase tracking-wider pt-0.5">
+                  <p className="text-xs font-mono text-lavender-dim uppercase tracking-wider">
                     {item.h1 || `${item.name} in Witchcraft`}
                   </p>
                 </div>

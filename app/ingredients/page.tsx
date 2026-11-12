@@ -145,82 +145,67 @@ export default function IngredientsHubPage() {
               key={item.slug}
               className="tarot-frame p-6 sm:p-7 rounded-2xl bg-surface border border-border-ornate flex flex-col justify-between hover:border-lavender/60 hover:shadow-card-tarot transition-all duration-300 group relative overflow-hidden"
             >
-              <div className="absolute top-2.5 right-2.5 pointer-events-none opacity-20 group-hover:opacity-60 transition-opacity">
-                <TarotCornerFlourish className="w-4 h-4 text-lavender-moon rotate-90" />
-              </div>
-
-              <div className="space-y-4">
-                {/* Header: Thumbnail + Name/Intent when artwork exists, or text-only fallback */}
-                {item.heroImage?.src ? (
-                  <div className="flex items-center gap-3.5 sm:gap-4">
-                    <div className="w-[44px] h-[44px] sm:w-[56px] sm:h-[56px] shrink-0 rounded-xl bg-surface-elevated border border-border-highlight flex items-center justify-center p-1 overflow-hidden">
-                      <Image
-                        src={item.heroImage.src}
-                        alt={item.heroImage.alt || item.name}
-                        width={56}
-                        height={56}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                    <div className="space-y-1 sm:space-y-1.5 min-w-0">
-                      <div>
-                        <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-ceremonial px-2.5 py-0.5 rounded bg-surface-elevated border border-border-highlight text-lavender-moon font-medium inline-block">
-                          {item.primaryIntent}
-                        </span>
-                      </div>
-                      <h3 className="font-display text-2xl sm:text-3xl font-bold text-bone group-hover:text-lavender-light transition-colors tracking-wide truncate">
-                        <Link
-                          href={`/ingredients/${item.slug}`}
-                          className="focus:outline-none focus:underline"
-                        >
-                          {item.name}
-                        </Link>
-                      </h3>
-                    </div>
+              {/* Background Illustration (Upper Right with subtle gradient fade) */}
+              {item.heroImage?.src ? (
+                <div
+                  aria-hidden="true"
+                  className="absolute top-0 right-0 w-full h-[60%] sm:h-[58%] pointer-events-none overflow-hidden select-none z-0"
+                >
+                  {/* Specimen Illustration anchored in upper-right */}
+                  <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 w-[65%] sm:w-[60%] h-[115%]">
+                    <Image
+                      src={item.heroImage.src}
+                      alt=""
+                      fill
+                      sizes="(max-width: 640px) 65vw, (max-width: 1024px) 40vw, 30vw"
+                      className="object-cover object-center opacity-80 group-hover:opacity-95 transition-opacity duration-500"
+                    />
                   </div>
-                ) : (
-                  <>
-                    {/* Meta Badges */}
-                    <div className="flex items-center justify-between gap-2 flex-wrap">
-                      <span className="text-[11px] font-mono uppercase tracking-ceremonial px-2.5 py-0.5 rounded bg-surface-elevated border border-border-highlight text-lavender-moon font-medium">
-                        {item.primaryIntent}
-                      </span>
-                      {item.correspondences.element && (
-                        <span className="text-[11px] font-mono text-bone-dim uppercase tracking-wider">
-                          {item.correspondences.element} · {item.correspondences.planet || "Earth"}
-                        </span>
-                      )}
-                    </div>
 
-                    {/* Title */}
-                    <div>
-                      <h3 className="font-display text-2xl font-bold text-bone group-hover:text-lavender-light transition-colors tracking-wide">
-                        <Link
-                          href={`/ingredients/${item.slug}`}
-                          className="focus:outline-none focus:underline"
-                        >
-                          {item.name}
-                        </Link>
-                      </h3>
-                    </div>
-                  </>
-                )}
+                  {/* Horizontal dark gradient: ensures badge, title, subtitle & description remain 100% crisp and readable */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-surface via-surface/85 to-transparent" />
 
-                {/* Subtitle (Full Width) */}
+                  {/* Vertical dark gradient: smoothly fades the illustration into solid card background by Core Applications */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-surface/60 to-surface" />
+                </div>
+              ) : null}
+
+              <div className="relative z-10 space-y-4">
+                {/* Category Badge */}
+                <div>
+                  <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.22em] px-2.5 py-0.5 rounded bg-surface-elevated/80 border border-border-highlight text-lavender-moon font-medium inline-block backdrop-blur-sm">
+                    {item.primaryIntent}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <div>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-bone group-hover:text-lavender-light transition-colors tracking-wide uppercase">
+                    <Link
+                      href={`/ingredients/${item.slug}`}
+                      className="focus:outline-none focus:underline"
+                    >
+                      {item.name}
+                    </Link>
+                  </h3>
+                </div>
+
+                {/* Subtitle */}
                 <div>
                   <p className="text-xs font-mono text-lavender-dim uppercase tracking-wider">
                     {item.h1 || `${item.name} in Witchcraft`}
                   </p>
                 </div>
 
+                {/* Description */}
                 <p className="text-sm text-bone-muted leading-relaxed font-sans line-clamp-3">
                   {item.oneLiner}
                 </p>
 
-                {/* Top Uses Quick List */}
-                <div className="pt-2 border-t border-border-subtle/60 space-y-1.5">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-bone-dim block">
-                    Core Applications:
+                {/* Core Applications Quick List (Solid dark background area) */}
+                <div className="pt-2 space-y-1.5">
+                  <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-bone-dim block">
+                    Core Applications
                   </span>
                   <ul className="space-y-1 text-xs text-bone font-sans">
                     {item.correspondences.uses.slice(0, 3).map((use, uIdx) => (
@@ -236,7 +221,7 @@ export default function IngredientsHubPage() {
               </div>
 
               {/* Card Footer Link */}
-              <div className="pt-6 mt-4 border-t border-border-subtle/40">
+              <div className="relative z-10 pt-4 mt-4 border-t border-border-subtle/40">
                 <Link
                   href={`/ingredients/${item.slug}`}
                   className="inline-flex items-center justify-between w-full text-xs font-mono uppercase tracking-ceremonial font-semibold text-lavender hover:text-lavender-light transition-colors py-2 min-h-[44px]"

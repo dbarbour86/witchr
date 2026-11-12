@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { getCorrespondencesByCategory } from "@/content/correspondences";
 import {
   JsonLd,
@@ -172,13 +173,34 @@ export default function CandlesHubPage() {
                 key={item.slug}
                 className={`tarot-frame p-6 sm:p-8 rounded-2xl ${colors.bg} border ${colors.border} ${colors.glow} flex flex-col justify-between group hover:border-lavender/60 transition-all duration-300 relative overflow-hidden`}
               >
-                <div className="absolute top-2.5 right-2.5 pointer-events-none opacity-30 group-hover:opacity-75 transition-opacity">
-                  <TarotCornerFlourish className="w-4 h-4 text-lavender-moon" />
-                </div>
+                {/* Background Illustration (Upper Right with subtle gradient fade) */}
+                {item.heroImage?.src ? (
+                  <div
+                    aria-hidden="true"
+                    className="absolute top-0 right-0 w-full h-[60%] sm:h-[58%] pointer-events-none overflow-hidden select-none z-0"
+                  >
+                    {/* Flame Specimen Illustration anchored in upper-right */}
+                    <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 w-[65%] sm:w-[60%] h-[115%]">
+                      <Image
+                        src={item.heroImage.src}
+                        alt=""
+                        fill
+                        sizes="(max-width: 640px) 65vw, (max-width: 1024px) 50vw, 40vw"
+                        className="object-cover object-center opacity-80 group-hover:opacity-95 transition-opacity duration-500"
+                      />
+                    </div>
 
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface border border-border-highlight text-xs font-mono uppercase tracking-ceremonial text-lavender-moon">
+                    {/* Horizontal dark gradient: keeps badge, title, subtitle & description readable */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-surface via-surface/85 to-transparent" />
+
+                    {/* Vertical dark gradient: smoothly fades into card background before lower card details */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-surface/60 to-surface" />
+                  </div>
+                ) : null}
+
+                <div className="relative z-10 space-y-4">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-elevated/80 border border-border-highlight text-xs font-mono uppercase tracking-ceremonial text-lavender-moon backdrop-blur-sm">
                       <Flame className={`w-3.5 h-3.5 ${colors.text}`} />
                       <span>{item.categoryLabel} · {item.primaryIntent}</span>
                     </span>
@@ -188,17 +210,25 @@ export default function CandlesHubPage() {
                   </div>
 
                   <div>
-                    <h3 className="text-2xl sm:text-3xl font-display font-semibold text-bone group-hover:text-lavender-light transition-colors tracking-wide">
-                      <Link href={`/candles/${item.slug}`}>
+                    <h3 className="font-serif text-2xl sm:text-3xl font-bold text-bone group-hover:text-lavender-light transition-colors tracking-wide uppercase">
+                      <Link
+                        href={`/candles/${item.slug}`}
+                        className="focus:outline-none focus:underline"
+                      >
                         {item.name}
                       </Link>
                     </h3>
-                    <p className="text-sm sm:text-base text-bone-muted font-sans leading-relaxed mt-2">
+                    {item.h1 && (
+                      <p className="text-xs font-mono text-lavender-dim uppercase tracking-wider pt-1">
+                        {item.h1}
+                      </p>
+                    )}
+                    <p className="text-sm sm:text-base text-bone-muted font-sans leading-relaxed mt-2 line-clamp-3">
                       {item.oneLiner}
                     </p>
                   </div>
 
-                  {/* Primary Intentions & Key Associations */}
+                  {/* Primary Intentions & Key Associations (Lower card details) */}
                   <div className="space-y-2 pt-2 border-t border-border-subtle/50">
                     <span className="text-[11px] font-mono uppercase tracking-widest text-lavender-dim block">
                       Core Applications:
@@ -217,7 +247,7 @@ export default function CandlesHubPage() {
                 </div>
 
                 {/* Card Footer Link */}
-                <div className="pt-6 mt-6 border-t border-border-subtle/40">
+                <div className="relative z-10 pt-6 mt-6 border-t border-border-subtle/40">
                   <Link
                     href={`/candles/${item.slug}`}
                     className="inline-flex items-center justify-between w-full text-xs font-mono uppercase tracking-ceremonial font-semibold text-lavender hover:text-lavender-light transition-colors py-2 min-h-[44px]"
@@ -276,15 +306,17 @@ export default function CandlesHubPage() {
             </p>
           </div>
 
-          <div className="space-y-2.5 p-5 rounded-xl bg-surface border border-border-highlight flex items-center justify-center text-lavender-moon">
-            <BookOpen className="w-4 h-4" />
+          <div className="space-y-2.5 p-5 rounded-xl bg-surface border border-border-subtle">
+            <div className="w-8 h-8 rounded-lg bg-surface-elevated border border-border-highlight flex items-center justify-center text-lavender-moon">
+              <BookOpen className="w-4 h-4" />
+            </div>
+            <h3 className="font-display text-lg font-semibold text-bone tracking-wide">
+              3. The Universal White Candle
+            </h3>
+            <p className="text-sm text-bone-muted leading-relaxed font-sans">
+              In classical folk magic, you never need a specialized candle cupboard. A simple white taper contains all frequencies of light and cleanly substitutes for any colored candle in any ritual.
+            </p>
           </div>
-          <h3 className="font-display text-lg font-semibold text-bone tracking-wide">
-            3. The Universal White Candle
-          </h3>
-          <p className="text-sm text-bone-muted leading-relaxed font-sans">
-            In classical folk magic, you never need a specialized candle cupboard. A simple white taper contains all frequencies of light and cleanly substitutes for any colored candle in any ritual.
-          </p>
         </div>
       </section>
 

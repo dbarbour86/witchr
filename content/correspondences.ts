@@ -6836,7 +6836,90 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
   seoTitle: "Orange Peel in Witchcraft: Meaning & Magical Uses",
   seoDescription:
     "Discover orange peel's symbolism in witchcraft, its associations with joy and abundance, magical correspondences, ritual ideas, and safety tips.",
-}
+},
+  {
+    slug: "dandelion",
+    name: "Dandelion",
+    h1: "Dandelion in Witchcraft",
+    category: "herb",
+    categoryLabel: "Herb",
+    primaryIntent: "Resilience & Letting Go",
+    routePrefix: "herbs",
+    oneLiner: "A familiar plant for reflecting on resilience, making a wish, and letting go of what you cannot control.",
+    quickAnswer: "Dandelion is used in modern witchcraft as a symbol of resilience, wishes, and release. Its persistent taproot can represent what keeps you steady, while its drifting seeds offer a way to picture an intention you can act on without controlling the outcome.",
+    correspondences: {
+      uses: ["Setting intentions", "Letting go of an outcome", "Reflecting on resilience"],
+      colors: ["Yellow", "White"],
+      symbolicAssociations: ["Taproot as persistence", "Seed head as wishes and release"],
+    },
+    traditionalLore: [
+      "The familiar custom of making a wish before blowing on a dandelion seed head gives the plant a natural place in wish work. In a modern ritual, the wish can stand for a direction you want to move in.",
+      "The flower, taproot, and seed head offer three different images to work with: showing up, holding steady, and releasing your grip. Choose the part that makes sense for the intention you have today.",
+    ],
+    modernWitchrUse: [
+      "For a fresh start, sketch a dandelion with roots and seeds. Under the roots, write one thing you want to keep. Beside the seeds, write one expectation you want to let go of.",
+      "For a wish, write a concrete action beside the thing you want. If the wish is to reconnect with someone, the action could be sending a short message when you have time to listen.",
+    ],
+    pairings: [
+      { name: "Thyme", link: "/herbs/thyme", purpose: "Quiet courage before taking the next step" },
+      { name: "Rosemary", link: "/herbs/rosemary", purpose: "Remembering what you want to carry forward" },
+    ],
+    faqs: [
+      { question: "What does a dandelion symbolize in witchcraft?", answer: "It can symbolize resilience, wishes, and release. Its taproot suggests persistence, and its windborne seeds are a familiar image of letting go." },
+      { question: "Do I need a real dandelion for a wish ritual?", answer: "A drawing or photograph works as a visual focus. You can also write the wish and put the paper somewhere you will see it when you can take the next step." },
+    ],
+    safetyNotes: ["This practice uses a drawing or an intact specimen. Leave roadside plants and plants from treated lawns in place."],
+    tryIt: {
+      title: "One wish, one action",
+      instruction: "Draw a dandelion seed head. Write one wish beside it, then write one small action you can take today. Circle the action and put the page where you will see it.",
+    },
+    relatedHubSlug: "letting-go",
+    relatedRitualSlugs: ["new-beginning"],
+    seoTitle: "Dandelion in Witchcraft: Wishes, Resilience & Letting Go",
+    seoDescription: "Explore dandelion's meaning in witchcraft, from wishes and resilience to letting go, with correspondences, herb pairings, and a simple intention practice.",
+  },
+  {
+    slug: "pink",
+    name: "Pink Candle",
+    h1: "Pink Candle Meaning in Witchcraft",
+    category: "candle",
+    categoryLabel: "Candle",
+    primaryIntent: "Self-Love & Affection",
+    routePrefix: "candles",
+    oneLiner: "A candle color associated with affection, self-kindness, friendship, and gentle repair.",
+    quickAnswer: "In modern candle magic, pink commonly represents tenderness, affection, friendship, and self-love. Use a pink candle as a visual focus while writing a note, setting a boundary with care, or deciding how you want to show up in a relationship.",
+    correspondences: {
+      uses: ["Practicing self-kindness", "Expressing affection", "Preparing for a repair conversation"],
+      colors: ["Pink", "Rose"],
+      symbolicAssociations: ["Tenderness", "Friendship", "Comfort", "Mutual affection"],
+    },
+    traditionalLore: [
+      "Modern candle-color guides commonly pair pink with affection and self-love. Color associations vary by practice and can also come from personal memories and associations.",
+      "Pink is a useful choice for work centered on small gestures of care: remembering an important day, writing a sincere apology, or honoring a friendship.",
+    ],
+    modernWitchrUse: [
+      "For self-kindness, set the candle beside a piece of paper. Write down one thing you need and one realistic way to give it to yourself today.",
+      "Before a repair conversation, write one sentence that names your part and one question you can ask with an open mind. Leave the other person room to choose how they respond.",
+    ],
+    pairings: [
+      { name: "Rose Quartz", link: "/crystals/rose-quartz", purpose: "A visual reminder of self-compassion" },
+      { name: "Red Candle", link: "/candles/red", purpose: "Explore the neighboring associations of passion and courage" },
+      { name: "Love Correspondences", link: "/correspondences/love", purpose: "Find related symbols, herbs, and intentions" },
+    ],
+    faqs: [
+      { question: "What is a pink candle used for in witchcraft?", answer: "Pink candles are commonly used for self-love, friendship, gentle affection, and reflecting on how to repair a relationship." },
+      { question: "Can I do a pink candle ritual without a flame?", answer: "Yes. Use a flameless candle or an unlit pink candle and focus on the intention or action you want to take." },
+    ],
+    safetyNotes: ["Use a stable, heat-resistant holder and keep any lit candle in sight. Keep paper, herbs, and other flammable materials away from the flame."],
+    tryIt: {
+      title: "One act of care",
+      instruction: "Place an unlit pink candle where you can see it. Write down one small act of care you can complete today, such as sending a sincere thank-you. Do that one thing.",
+    },
+    relatedHubSlug: "love",
+    relatedRitualSlugs: [],
+    seoTitle: "Pink Candle Meaning in Witchcraft: Self-Love & Affection",
+    seoDescription: "Learn what pink candles symbolize in witchcraft and how to use one for self-love, friendship, or gentle repair, with a simple flameless practice.",
+  },
 ];
 
 export function getCorrespondenceBySlug(

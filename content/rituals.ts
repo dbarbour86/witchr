@@ -560,6 +560,7 @@ export const RITUALS: Ritual[] = [
     ],
     substitutions: [
       "Any flower from your yard or a green leaf from a houseplant.",
+      "Work with a [Pink Candle](/candles/pink) for tender affection and self-kindness, a [Red Candle](/candles/red) for sovereign passion, or a [White Candle](/candles/white) for a clean slate.",
       "Optional tactile anchor: A piece of raw or tumbled [Rose Quartz](/crystals/rose-quartz) placed beside your mirror or atop your journal anchors gentle self-compassion while defining sovereign relationship boundaries.",
     ],
     steps: [
@@ -649,6 +650,59 @@ export const RITUALS: Ritual[] = [
     seoTitle: "Pick a Damn Direction Ritual — Decision Paralysis | Witchr",
     seoDescription:
       "Overcome analysis paralysis and make a concrete life decision with this grounded gut-check ritual.",
+    printableAvailable: false,
+  },
+  {
+    slug: "before-you-say-it",
+    title: "Before You Say It",
+    category: "Confidence",
+    hook: "A 5-minute thyme ritual before a hard conversation",
+    purpose: "Finding the first sentence you can actually say before a difficult conversation.",
+    whatItsActuallyFor:
+      "You’ve had the conversation in your head a dozen times. Take five minutes to find the first sentence you can actually say.",
+    estimatedTime: "5 minutes",
+    difficulty: "Simple",
+    supplies: [
+      "A sprig of [thyme](/herbs/thyme) or a pinch of dried thyme",
+      "Paper",
+      "A pen",
+    ],
+    substitutions: [
+      "No fresh thyme? A pinch of dried thyme from your kitchen works just as well.",
+      "No paper? Use the notes app on your phone, though handwriting grounds your thoughts more effectively.",
+    ],
+    steps: [
+      {
+        title: "Hold the thyme",
+        detail:
+          "Hold the sprig or rub a pinch of dried thyme between your fingers. Take one slow breath and notice the scent.",
+      },
+      {
+        title: "Name what you’ve been avoiding",
+        detail:
+          "Finish this sentence on paper: “What I need to say is…” Keep it to one thing.",
+      },
+      {
+        title: "Practice your first line",
+        detail:
+          "Write the words you’d use to open the conversation. Read them out loud once. If you get stuck, borrow this: “I’ve been putting this off, and I want to talk about it.”",
+      },
+    ],
+    reflectionPrompt:
+      "What am I afraid will happen if I speak plainly instead of waiting for the perfect moment?",
+    practicalAction:
+      "Choose a time to talk. Keep your opening sentence handy.",
+    disclaimerNote:
+      "This ritual provides psychological clarity and somatic grounding before interpersonal discussions. It is not conflict mediation or legal advice.",
+    relatedRituals: [
+      "confidence-before-you-walk-in",
+      "stop-shrinking",
+      "leave-me-alone-protection",
+    ],
+    relatedTarotSlug: "what-am-i-avoiding",
+    seoTitle: "Before You Say It — A 5-Minute Thyme Ritual",
+    seoDescription:
+      "A 5-minute thyme ritual before a hard conversation. Ground your nervous system, name what you're avoiding, and find your opening line.",
     printableAvailable: false,
   },
 ];

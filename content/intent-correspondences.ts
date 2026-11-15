@@ -499,6 +499,17 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
     ],
     candles: [
       {
+        name: "Pink Candle",
+        slug: "pink",
+        url: "/candles/pink",
+        categoryLabel: "Candle / Wax",
+        role: "Tender Affection, Friendship & Self-Kindness",
+        howToUse:
+          "Light as an unhurried visual anchor during honest self-reflection, compassionate boundary setting, or gentle relationship repair.",
+        sensoryAnchor: "Soft rose flame radiating unhurried emotional safety",
+        badge: "Tenderness & Care",
+      },
+      {
         name: "Red Candle",
         slug: "red",
         url: "/candles/red",
@@ -682,7 +693,7 @@ export const INTENT_CORRESPONDENCES: Record<string, IntentCorrespondenceData> = 
       {
         question: "What is the difference between red and pink candles in love magic?",
         answer:
-          "Red candles correspond to primal heat, sexual passion, physical vitality, and courageous attraction. Pink candles correspond to gentle tenderness, emotional safety, self-compassion, and developing romance.",
+          "Red candles correspond to primal heat, sexual passion, physical vitality, and courageous attraction. [Pink candles](/candles/pink) correspond to gentle tenderness, emotional safety, self-compassion, and developing romance.",
       },
       {
         question: "Which herb is best for healing after a painful breakup?",

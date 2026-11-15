@@ -40,6 +40,14 @@ export interface SanctumCTA {
   href: string;
 }
 
+export interface FeaturedRitualCallout {
+  badge?: string;
+  title: string;
+  subtitle: string;
+  slug: string;
+  image?: ImageAsset;
+}
+
 export interface CorrespondenceItem {
   slug: string;
   name: string;
@@ -70,6 +78,7 @@ export interface CorrespondenceItem {
     title: string;
     instruction: string;
   };
+  featuredRitual?: FeaturedRitualCallout;
   sanctumCta?: SanctumCTA;
   relatedHubSlug: string;
   relatedRitualSlugs: string[];
@@ -322,9 +331,9 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       "Grieve, Maud. A Modern Herbal (1931).",
       "Cunningham, Scott. Cunningham's Encyclopedia of Magical Herbs (1985).",
     ],
-    seoTitle: "Rosemary in Witchcraft: Magical Properties, Uses & Meaning",
+    seoTitle: "Rosemary in Witchcraft: Protection & Mental Clarity",
     seoDescription:
-      "Discover the magical properties, spiritual meaning, and practical uses of rosemary in witchcraft. Explore cleansing, protection, correspondences, and rituals.",
+      "Rosemary is the all-purpose herb of folk magic, traditionally used for boundary protection, space cleansing, and mental clarity.",
   },
   {
     slug: "basil",
@@ -570,9 +579,9 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       "Cunningham, Scott. Cunningham's Encyclopedia of Magical Herbs (1985).",
       "Yronwode, Catherine. Hoodoo Herb and Root Magic (2002).",
     ],
-    seoTitle: "Basil in Witchcraft: Meaning, Magical Properties & Uses",
+    seoTitle: "Basil in Witchcraft: Home Protection & Prosperity",
     seoDescription:
-      "Explore the magical properties, spiritual meaning, and traditional uses of basil in witchcraft. Learn correspondences for protection, peace, and prosperity.",
+      "Basil is traditionally used in witchcraft for domestic protection, calming household tension, and drawing steady prosperity.",
   },
   {
     slug: "salt",
@@ -832,9 +841,9 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       "Grieve, Maud. A Modern Herbal (1931).",
       "Pliny the Elder. Natural History (c. 77 CE), Book XXXI on the virtues of salt.",
     ],
-    seoTitle: "Salt in Witchcraft: Uses, Meaning & Protection",
+    seoTitle: "Salt in Witchcraft: Protection, Cleansing & Grounding",
     seoDescription:
-      "Explore the meaning and uses of salt in witchcraft, including protection, cleansing, boundaries, correspondences, and simple ways to use salt in modern practice.",
+      "Salt is traditionally used in witchcraft for boundary defense, space cleansing, and grounding — in circles, across thresholds, and in wash waters.",
   },
   {
     slug: "honey",
@@ -883,7 +892,7 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       {
         label: "Common Pairings",
         value:
-          "[Cinnamon](/herbs/cinnamon) (thermal attraction & financial speed), [Orange Peel](/ingredients/orange-peel) (solar joy & sweet attraction), [Sweet Basil](/herbs/basil) (domestic harmony & peacemaking), Pink Candle (tender affection), [Rose Quartz](/crystals/rose-quartz) (self-compassion), [Coarse Salt](/ingredients/salt) (grounded sweetening)",
+          "[Cinnamon](/herbs/cinnamon) (thermal attraction & financial speed), [Orange Peel](/ingredients/orange-peel) (solar joy & sweet attraction), [Sweet Basil](/herbs/basil) (domestic harmony & peacemaking), [Pink Candle](/candles/pink) (tender affection), [Rose Quartz](/crystals/rose-quartz) (self-compassion), [Coarse Salt](/ingredients/salt) (grounded sweetening)",
       },
       {
         label: "Folk Names & Terms",
@@ -1035,6 +1044,7 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       },
       {
         name: "Pink Candle",
+        link: "/candles/pink",
         purpose:
           "The traditional folk beacon for sweetening rituals; while the pink flame illuminates tender affection, the honey anoints the working with enduring sweetness.",
       },
@@ -2181,10 +2191,9 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       "Cunningham, Scott. Cunningham's Encyclopedia of Magical Herbs (1985).",
       "Valiente, Doreen. Natural Magic (1975).",
     ],
-    seoTitle:
-      "White Candle Meaning in Witchcraft: Uses, Symbolism & Correspondences",
+    seoTitle: "White Candle Meaning: Cleansing, Truth & Fresh Starts",
     seoDescription:
-      "Discover the true meaning of white candles in witchcraft. Learn correspondences for cleansing, truth, spiritual clarity, and the universal substitute tradition.",
+      "A white candle traditionally represents purification, spiritual clarity, and new beginnings — the universal substitute candle in folk magic.",
   },
   {
     slug: "red",
@@ -2360,7 +2369,7 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       {
         question: "What is the difference between a red candle and a pink candle?",
         answer:
-          "Red candles channel raw kinetic fire, physical passion, sexual desire, and assertive courage. Pink candles channel gentle affection, emotional vulnerability, self-compassion, and friendship. Red is the roaring blaze; pink is the tender hearth.",
+          "Red candles channel raw kinetic fire, physical passion, sexual desire, and assertive courage. [Pink candles](/candles/pink) channel gentle affection, emotional vulnerability, self-compassion, and friendship. Red is the roaring blaze; pink is the tender hearth.",
       },
       {
         question: "Can burning a red candle help with procrastination or low motivation?",
@@ -3740,6 +3749,12 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
         purpose:
           "Adds swift mental agility and commercial flow to bay leaf's victorious career manifestations.",
       },
+      {
+        name: "Dandelion",
+        link: "/herbs/dandelion",
+        purpose:
+          "Pairs solar intention-writing with the somatic release of wishes, balancing focused ambition with grounded resilience.",
+      },
     ],
     faqs: [
       {
@@ -4532,11 +4547,17 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       instruction:
         "Tuck a single sprig of culinary thyme into your pocket. Before walking into an uncomfortable room or confrontation, crush the leaves between your fingers, inhale the sharp aroma, and state: 'I speak with truth; I stand with courage.'",
     },
+    featuredRitual: {
+      badge: "Try this ritual",
+      title: "Before You Say It",
+      subtitle: "A 5-minute thyme ritual before a hard conversation",
+      slug: "before-you-say-it",
+    },
     relatedHubSlug: "confidence",
     relatedRitualSlugs: [
+      "before-you-say-it",
       "confidence-before-you-walk-in",
       "stop-shrinking",
-      "new-beginning",
     ],
     sources: [
       "Culpeper, Nicholas. The English Physician (1652).",
@@ -4544,9 +4565,9 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
       "Grieve, Maud. A Modern Herbal (1931).",
       "Cunningham, Scott. Cunningham's Encyclopedia of Magical Herbs (1985).",
     ],
-    seoTitle: "Thyme in Witchcraft: Magical Properties, Uses & Meaning",
+    seoTitle: "Thyme in Witchcraft: Courage, Grief Release & Sleep",
     seoDescription:
-      "Discover the magical properties, traditional folklore, and practical witchcraft uses of thyme. Learn correspondences for courage, releasing grief, and domestic resilience.",
+      "Thyme is traditionally used in witchcraft for quiet courage, releasing grief, and restful sleep — a pungent, thymol-rich herb for fortifying resolve.",
   },
   {
     slug: "mint",
@@ -6836,7 +6857,186 @@ export const CORRESPONDENCES: CorrespondenceItem[] = [
   seoTitle: "Orange Peel in Witchcraft: Meaning & Magical Uses",
   seoDescription:
     "Discover orange peel's symbolism in witchcraft, its associations with joy and abundance, magical correspondences, ritual ideas, and safety tips.",
-}
+},
+  {
+    slug: "dandelion",
+    name: "Dandelion",
+    h1: "Dandelion in Witchcraft",
+    category: "herb",
+    categoryLabel: "Herb",
+    primaryIntent: "Resilience & Letting Go",
+    routePrefix: "herbs",
+    oneLiner:
+      "A familiar plant for reflecting on resilience, making a wish, and letting go of what you cannot control.",
+    quickAnswer:
+      "Dandelion is used in modern witchcraft as a symbol of resilience, wishes, and release. Its persistent taproot can represent what keeps you steady, while its drifting seeds offer a way to picture an intention you can act on without controlling the outcome.",
+    heroImage: {
+      src: "/images/dandelion-witchcraft-hero.webp",
+      alt: "Purple and black screenprint of a dandelion flower and seed head",
+      width: 1376,
+      height: 768,
+    },
+    correspondences: {
+      uses: [
+        "Setting intentions",
+        "Letting go of an outcome",
+        "Reflecting on resilience",
+      ],
+      colors: ["Yellow", "White"],
+      symbolicAssociations: [
+        "Taproot as persistence",
+        "Seed head as wishes and release",
+      ],
+    },
+    traditionalLore: [
+      "The familiar custom of making a wish before blowing on a dandelion seed head gives the plant a natural place in wish work. In a modern ritual, the wish can stand for a direction you want to move in.",
+      "The flower, taproot, and seed head offer three different images to work with: showing up, holding steady, and releasing your grip. Choose the part that makes sense for the intention you have today.",
+    ],
+    modernWitchrUse: [
+      "For a fresh start, sketch a dandelion with roots and seeds. Under the roots, write one thing you want to keep. Beside the seeds, write one expectation you want to let go of.",
+      "For a wish, write a concrete action beside the thing you want. If the wish is to reconnect with someone, the action could be sending a short message when you have time to listen.",
+    ],
+    pairings: [
+      {
+        name: "Bay Leaf",
+        link: "/herbs/bay-leaf",
+        purpose: "Writing down explicit intentions and focusing clear mental direction",
+      },
+      {
+        name: "Mugwort",
+        link: "/herbs/mugwort",
+        purpose: "Intuitive boundary reflection and transitional threshold work",
+      },
+      {
+        name: "Moon Water",
+        link: "/ingredients/moon-water",
+        purpose: "Cleansing ritual space and honoring cyclical shifts",
+      },
+      {
+        name: "White Candle",
+        link: "/candles/white",
+        purpose: "Illuminating honest truth and anchoring fresh beginnings",
+      },
+    ],
+    faqs: [
+      {
+        question: "What does a dandelion symbolize in witchcraft?",
+        answer:
+          "It can symbolize resilience, wishes, and release. Its taproot suggests persistence, and its windborne seeds are a familiar image of letting go.",
+      },
+      {
+        question: "Do I need a real dandelion for a wish ritual?",
+        answer:
+          "A drawing or photograph works as a visual focus. You can also write the wish and put the paper somewhere you will see it when you can take the next step.",
+      },
+    ],
+    safetyNotes: [
+      "This practice uses a drawing, clean garden specimen, or dried tea. Leave roadside plants and plants from chemically treated suburban lawns in place.",
+    ],
+    tryIt: {
+      title: "One wish, one action",
+      instruction:
+        "Draw a dandelion seed head. Write one wish beside it, then write one small action you can take today. Circle the action and put the page where you will see it.",
+    },
+    relatedHubSlug: "letting-go",
+    relatedRitualSlugs: ["new-beginning"],
+    seoTitle: "Dandelion in Witchcraft: Wishes, Resilience & Letting Go",
+    seoDescription:
+      "Explore dandelion’s meaning in witchcraft, from wishes and resilience to letting go, with correspondences, herb pairings, and a simple intention practice.",
+  },
+  {
+    slug: "pink",
+    name: "Pink Candle",
+    h1: "Pink Candle Meaning in Witchcraft",
+    category: "candle",
+    categoryLabel: "Candle",
+    primaryIntent: "Self-Love & Affection",
+    routePrefix: "candles",
+    oneLiner:
+      "A candle color associated with affection, self-kindness, friendship, and gentle repair.",
+    quickAnswer:
+      "In modern candle magic, pink commonly represents tenderness, affection, friendship, and self-kindness. Use a pink candle as a visual focus while writing a note, setting a boundary with care, or deciding how you want to show up in a relationship.",
+    heroImage: {
+      src: "/images/pink-candle-witchcraft-hero.webp",
+      alt: "Purple and black screenprint of a lit candle with subtle wax drips and celestial geometry",
+      width: 1376,
+      height: 768,
+    },
+    correspondences: {
+      uses: [
+        "Practicing self-kindness",
+        "Expressing affection",
+        "Preparing for a repair conversation",
+      ],
+      colors: ["Pink", "Rose"],
+      symbolicAssociations: [
+        "Tenderness",
+        "Friendship",
+        "Comfort",
+        "Mutual affection",
+      ],
+    },
+    traditionalLore: [
+      "In contemporary occult practice, pink is widely associated with self-love, compassionate boundaries, and affectionate bonds. Unlike high-intensity love magic that seeks to sway another person's will, modern practitioners use pink candles to clarify their own emotional standards and cultivate self-compassion.",
+      "Pink is a useful choice for work centered on small gestures of care: remembering an important day, writing a sincere apology, or honoring a friendship.",
+    ],
+    modernWitchrUse: [
+      "For self-kindness, set the candle beside a piece of paper. Write down one thing you need and one realistic way to give it to yourself today.",
+      "Before a repair conversation, write one sentence that names your part and one question you can ask with an open mind. Leave the other person room to choose how they respond.",
+    ],
+    pairings: [
+      {
+        name: "Rose Quartz",
+        link: "/crystals/rose-quartz",
+        purpose: "A visual and tactile reminder of self-compassion",
+      },
+      {
+        name: "Honey",
+        link: "/ingredients/honey",
+        purpose: "Traditional sweetening and soothing relational friction",
+      },
+      {
+        name: "Lavender",
+        link: "/herbs/lavender",
+        purpose: "Calming nervous tension and easing vulnerable conversations",
+      },
+      {
+        name: "White Candle",
+        link: "/candles/white",
+        purpose: "Clarifying truth, dispelling confusion, and maintaining a clean slate",
+      },
+    ],
+    faqs: [
+      {
+        question: "What is a pink candle used for in witchcraft?",
+        answer:
+          "Pink candles are commonly used for self-love, friendship, gentle affection, and reflecting on how to repair a relationship.",
+      },
+      {
+        question: "Can I do a pink candle ritual without a flame?",
+        answer:
+          "Yes. Use a flameless candle or an unlit pink candle and focus on the intention or action you want to take.",
+      },
+      {
+        question: "What is the difference between a red candle and a pink candle?",
+        answer:
+          "In modern witchcraft, red candles channel raw kinetic fire, physical passion, sexual desire, and assertive courage. Pink candles channel gentle affection, emotional vulnerability, self-compassion, and friendship. Red is the roaring blaze; pink is the tender hearth.",
+      },
+    ],
+    safetyNotes: [
+      "Use a stable, heat-resistant holder and keep any lit candle in sight. Keep paper, herbs, and other flammable materials away from the flame.",
+    ],
+    tryIt: {
+      title: "One act of care",
+      instruction:
+        "Place an unlit pink candle where you can see it. Write down one small act of care you can complete today, such as sending a sincere thank-you. Do that one thing.",
+    },
+    relatedHubSlug: "love",
+    relatedRitualSlugs: ["love-without-losing-yourself"],
+    seoTitle: "Pink Candle Meaning in Witchcraft: Self-Love & Affection",
+    seoDescription:
+      "Learn what pink candles symbolize in witchcraft and how to use one for self-love, friendship, or gentle repair, with a simple flameless practice.",
+  },
 ];
 
 export function getCorrespondenceBySlug(
